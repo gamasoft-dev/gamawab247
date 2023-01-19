@@ -1,0 +1,12 @@
+/Users/christopher.ogbosuka/Github/GamaWabs247/src/Domian/bin/Release/net6.0/Domain.deps.json
+/Users/christopher.ogbosuka/Github/GamaWabs247/src/Domian/bin/Release/net6.0/Domain.dll
+/Users/christopher.ogbosuka/Github/GamaWabs247/src/Domian/bin/Release/net6.0/Domain.pdb
+/Users/christopher.ogbosuka/Github/GamaWabs247/src/Domian/obj/Release/net6.0/Domain.csproj.AssemblyReference.cache
+/Users/christopher.ogbosuka/Github/GamaWabs247/src/Domian/obj/Release/net6.0/Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/christopher.ogbosuka/Github/GamaWabs247/src/Domian/obj/Release/net6.0/Domain.AssemblyInfoInputs.cache
+/Users/christopher.ogbosuka/Github/GamaWabs247/src/Domian/obj/Release/net6.0/Domain.AssemblyInfo.cs
+/Users/christopher.ogbosuka/Github/GamaWabs247/src/Domian/obj/Release/net6.0/Domain.csproj.CoreCompileInputs.cache
+/Users/christopher.ogbosuka/Github/GamaWabs247/src/Domian/obj/Release/net6.0/Domain.dll
+/Users/christopher.ogbosuka/Github/GamaWabs247/src/Domian/obj/Release/net6.0/refint/Domain.dll
+/Users/christopher.ogbosuka/Github/GamaWabs247/src/Domian/obj/Release/net6.0/Domain.pdb
+/Users/christopher.ogbosuka/Github/GamaWabs247/src/Domian/obj/Release/net6.0/ref/Domain.dll

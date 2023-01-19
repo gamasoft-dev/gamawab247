@@ -1,0 +1,28 @@
+//{
+//  "profiles": {
+//    "Gamasoft.Worker": {
+//      "commandName": "Project",
+//      "environmentVariables": {
+//        "DOTNET_ENVIRONMENT": "Development"
+//      },
+//      "dotnetRunMessages": true,
+//      "applicationUrl": "http://localhost:7015"
+//    },
+//    "Docker": {
+//      "commandName": "Docker"
+//    }
+//  }
+//}
+
+{
+  "profiles": {
+    "Gamasoft.Worker": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:8015"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

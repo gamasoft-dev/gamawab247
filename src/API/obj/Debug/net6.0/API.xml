@@ -1,0 +1,303 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>API</name>
+    </assembly>
+    <members>
+        <member name="M:API.Configurations.RemoveVersionFromParameter.Apply(Microsoft.OpenApi.Models.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
+            <summary>
+            Applies the filter to the specified operation using the given context.
+            </summary>
+            <param name="operation">The operation to apply the filter to.</param>
+            <param name="context">The current operation filter context.</param>
+        </member>
+        <member name="T:API.Configurations.ConfigureSwaggerOptions">
+            <summary>
+            Configures the Swagger generation options.
+            </summary>
+            <remarks>This allows API versioning to define a Swagger document per API version after the
+            <see cref="T:Microsoft.AspNetCore.Mvc.ApiExplorer.IApiVersionDescriptionProvider"/> service has been resolved from the service container.</remarks>
+        </member>
+        <member name="M:API.Configurations.ConfigureSwaggerOptions.#ctor(Microsoft.AspNetCore.Mvc.ApiExplorer.IApiVersionDescriptionProvider)">
+            <summary>
+            Initializes a new instance of the <see cref="T:API.Configurations.ConfigureSwaggerOptions"/> class.
+            </summary>
+            <param name="provider">The <see cref="T:Microsoft.AspNetCore.Mvc.ApiExplorer.IApiVersionDescriptionProvider">provider</see> used to generate Swagger documents.</param>
+        </member>
+        <member name="M:API.Configurations.ConfigureSwaggerOptions.Configure(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
+            <inheritdoc />
+        </member>
+        <member name="M:API.Controllers.AuthController.RegisterUser(Application.DTOs.CreateUserDTO)">
+            <summary>
+            Endpoint to register a user
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.AuthController.ComfirmUserEmailAddres(Application.DTOs.VerifyTokenDTO)">
+            <summary>
+            Endpoint to verify a user email address
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.AuthController.LoginUser(Application.DTOs.UserLoginDTO)">
+            <summary>
+            Endpoint to login a user
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.AuthController.UpdateUser(System.Guid,Application.DTOs.UpdateUserDto)">
+            <summary>
+            Endpoint to update a user
+            </summary>
+            <param name="id"></param>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.AuthController.GetUserById(System.Guid)">
+            <summary>
+            Endpoint to get a user
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.AuthController.GetUsers(Application.Helpers.ResourceParameter)">
+            <summary>
+            Endpoint to get a paginated list of users
+            </summary>
+            <param name="parameter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.AuthController.RefreshToken(System.String)">
+            <summary>
+            Endpoint to login a user
+            </summary>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.AuthController.RefreshToken(Application.DTOs.RefreshTokenDTO)">
+            <summary>
+            Endpoint to generate a new access and refresh token
+            </summary>
+            <param name="mdoel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.AuthController.ForgotPassword(Application.DTOs.ResetPasswordDTO)">
+            <summary>
+            Endpoint to initializes password reset
+            </summary>
+            <param name="mdoel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.AuthController.VerifyToken(Application.DTOs.VerifyTokenDTO)">
+            <summary>
+            Endpoint to verify token
+            </summary>
+            <param name="mdoel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.AuthController.SetPassword(Application.DTOs.SetPasswordDTO)">
+            <summary>
+            Endpoint to set password
+            </summary>
+            <param name="mdoel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.BusinessesController.CreateBusiness(Application.DTOs.BusinessDtos.CreateBusinessDto)">
+            <summary>
+            Creates new business. Allow both authorized and anonymous...
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.BusinessesController.GetById(System.Guid)">
+            <summary>
+            Gets user's business by the business  identifier... E.G Id=jwbhe-22kdwe-wehwe
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.BusinessesController.UpdateBusinessInfo(Domain.Entities.Business)">
+            <summary>
+            Updates business info
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.BusinessesController.DeleteBusinessInfo(System.Guid)">
+            <summary>
+            Deletes business info by business identifier...
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.BusinessesController.GetBusinessUsers(System.Guid,Application.Helpers.ResourceParameter)">
+            <summary>
+            Endpoint to get a paginated list of users
+            </summary>
+            <param name="id"></param>
+            <param name="parameter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.BusinessesController.CreateBusinessMessageSetup(System.Guid,Application.DTOs.BusinessDtos.CreateBusinessSetupDto)">
+            <summary>
+            Creates business message template. Only allows authorized users.
+            </summary>
+            <param name="id"></param>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.BusinessesController.GetSetupByBusinessSetupId(System.Guid)">
+            <summary>
+            Gets business message by business identifier
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.BusinessesController.GetBySetupId(System.Guid)">
+            <summary>
+            Get business by business-setup id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.BusinessesController.UpdateBusinessSetupInfo(System.Guid,Domain.Entities.BusinessMessageSettings)">
+            <summary>
+            Updates the business setup properties/model
+            </summary>
+            <param name="id"></param>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.BusinessesController.GetBusinessMessageById``1(System.Guid)">
+            <summary>
+            Endpoint to get business message by id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.BusinessesController.CreateButtonMessageDto(Application.DTOs.CreateDialogDtos.CreateBusinessMessageDto{Application.DTOs.CreateDialogDtos.CreateButtonMessageDto})">
+            <summary>
+            Endpoint to create button message
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.BusinessesController.CreateListMessageDto(Application.DTOs.CreateDialogDtos.CreateBusinessMessageDto{Application.DTOs.CreateDialogDtos.CreateListMessageDto})">
+            <summary>
+            Endpoint to create list message
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.BusinessesController.CreateTextMessageDto(Application.DTOs.CreateDialogDtos.CreateBusinessMessageDto{Application.DTOs.CreateDialogDtos.CreateTextMessageDto})">
+            <summary>
+            Endpoint to create text message
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.IndustryController.GetIndustryById(System.Guid)">
+            <summary>
+            Get industry by Id.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.IndustryController.Post(Application.DTOs.CreateIndustryDto)">
+            <summary>
+            Creates industry
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.IndustryController.Put(System.Guid,Application.DTOs.UpdateIndustryDto)">
+            <summary>
+            Updates industry information
+            </summary>
+            <param name="id"></param>
+            <param name="dto"></param>
+        </member>
+        <member name="M:API.Controllers.IndustryController.Delete(System.Guid)">
+            <summary>
+            deletes industry by industry identifier
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.InteractiveMessageController.CreateReplyButtonMessage(Application.DTOs.OutboundMessageRequests.CreateReplyButtonMessageDto)">
+            <summary>
+            Endpoint to create an interactive message for reply button.
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.MessageLogsController.DeleteMessageLogById(System.Guid)">
+            <summary>
+            Endpoint to delete a message log by id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.MessageLogsController.GetMessageLogById(System.Guid)">
+            <summary>
+            Endpoint to get a message log by id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.MessageLogsController.GetMessageLogs(Application.Helpers.ResourceParameter)">
+            <summary>
+            Endpoint to get a list of all message logs
+            </summary>
+            <param name="parameter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.WhatsappUsersController.GetWhatsappUserByWaId(System.String)">
+            <summary>
+            Endpoint to get a whatsapp user by whatsapp id
+            </summary>
+            <param name="waId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.WhatsappUsersController.GetWhatsappUsers(Application.Helpers.ResourceParameter)">
+            <summary>
+            Endpoint to get a list of whatsapp users
+            </summary>
+            <param name="parameter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Controllers.WhatsappUsersController.GetMessageLogsByWhatsappId(System.Guid,Application.Helpers.ResourceParameter)">
+            <summary>
+            Endpoint to get a list of message logs by the whatsapp id
+            </summary>
+            <param name="id"></param>
+            <param name="parameter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Extensions.HttpRequestExtensions.GetRawBodyStringAsync(Microsoft.AspNetCore.Http.HttpRequest,System.Text.Encoding)">
+            <summary>
+            Retrieve the raw body as a string from the Request.Body stream
+            </summary>
+            <param name="request">Request instance to apply to</param>
+            <param name="encoding">Optional - Encoding, defaults to UTF8</param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Extensions.HttpRequestExtensions.GetRawBodyBytesAsync(Microsoft.AspNetCore.Http.HttpRequest)">
+            <summary>
+            Retrieves the raw body as a byte array from the Request.Body stream
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:API.Extensions.ServiceExtensions.ConfigureIOObjects(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Configure binding of IConfigurations to typed object for better maintainability.
+            </summary>
+            <param name="services"></param>
+            <param name="configuration"></param>
+        </member>
+    </members>
+</doc>
