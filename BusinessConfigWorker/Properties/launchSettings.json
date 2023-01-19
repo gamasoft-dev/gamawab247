@@ -1,0 +1,12 @@
+﻿{
+  "profiles": {
+    "BusinessConfigWorker": {
+      "commandName": "Project",
+      "dotnetRunMessages": true
+      //"environmentVariables": {
+      //  "DOTNET_ENVIRONMENT": "Development"
+      //},
+      //"applicationUrl": "http://localhost:5001"
+    }
+  }
+}

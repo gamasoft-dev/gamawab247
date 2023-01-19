@@ -1,0 +1,90 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4FAFC3AE-05CB-4999-97E8-2D516CBFDA73}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "src\API\API.csproj", "{6104FA46-266E-4C4D-97AB-FD9A2640E325}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "src\Application\Application.csproj", "{1687E253-E75A-4EF3-AD78-D654AF05F5EF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{F51F841C-A336-4397-9DA7-1284D7B4DB1F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Data", "src\Infrastructure.Data\Infrastructure.Data.csproj", "{06C76A86-0C54-455A-90A9-BB6431CBB545}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "src\Domian\Domain.csproj", "{7CD055C7-23BA-4E21-9D92-D3ECDAB301CC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workers", "Workers", "{42C81191-D40B-4278-972C-60D8F47F14CB}"
+	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		Gamasoft.Worker\Dockerfile = Gamasoft.Worker\Dockerfile
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gamasoft.Worker", "Gamasoft.Worker\Gamasoft.Worker.csproj", "{6BE1FA62-C7B4-4A53-ADF5-E25C0D2894EB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormProcessingWorker", "FormProcessingWorker\FormProcessingWorker.csproj", "{C2AF6AED-A300-40F2-8B8B-C165C3EC1560}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{241B9F8C-F897-4AF4-9D5E-E9732423FB83}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gamasoft.360WebhookConfig", "Gamasoft.360WebhookConfig\Gamasoft.360WebhookConfig.csproj", "{A49EC272-B572-43C6-A39E-A83F1AE506D0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6104FA46-266E-4C4D-97AB-FD9A2640E325}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6104FA46-266E-4C4D-97AB-FD9A2640E325}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6104FA46-266E-4C4D-97AB-FD9A2640E325}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6104FA46-266E-4C4D-97AB-FD9A2640E325}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1687E253-E75A-4EF3-AD78-D654AF05F5EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1687E253-E75A-4EF3-AD78-D654AF05F5EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1687E253-E75A-4EF3-AD78-D654AF05F5EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1687E253-E75A-4EF3-AD78-D654AF05F5EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F51F841C-A336-4397-9DA7-1284D7B4DB1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F51F841C-A336-4397-9DA7-1284D7B4DB1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F51F841C-A336-4397-9DA7-1284D7B4DB1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F51F841C-A336-4397-9DA7-1284D7B4DB1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06C76A86-0C54-455A-90A9-BB6431CBB545}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06C76A86-0C54-455A-90A9-BB6431CBB545}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06C76A86-0C54-455A-90A9-BB6431CBB545}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06C76A86-0C54-455A-90A9-BB6431CBB545}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CD055C7-23BA-4E21-9D92-D3ECDAB301CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CD055C7-23BA-4E21-9D92-D3ECDAB301CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CD055C7-23BA-4E21-9D92-D3ECDAB301CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CD055C7-23BA-4E21-9D92-D3ECDAB301CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BE1FA62-C7B4-4A53-ADF5-E25C0D2894EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BE1FA62-C7B4-4A53-ADF5-E25C0D2894EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BE1FA62-C7B4-4A53-ADF5-E25C0D2894EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BE1FA62-C7B4-4A53-ADF5-E25C0D2894EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2AF6AED-A300-40F2-8B8B-C165C3EC1560}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2AF6AED-A300-40F2-8B8B-C165C3EC1560}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2AF6AED-A300-40F2-8B8B-C165C3EC1560}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2AF6AED-A300-40F2-8B8B-C165C3EC1560}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A49EC272-B572-43C6-A39E-A83F1AE506D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A49EC272-B572-43C6-A39E-A83F1AE506D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A49EC272-B572-43C6-A39E-A83F1AE506D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A49EC272-B572-43C6-A39E-A83F1AE506D0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6104FA46-266E-4C4D-97AB-FD9A2640E325} = {4FAFC3AE-05CB-4999-97E8-2D516CBFDA73}
+		{1687E253-E75A-4EF3-AD78-D654AF05F5EF} = {4FAFC3AE-05CB-4999-97E8-2D516CBFDA73}
+		{F51F841C-A336-4397-9DA7-1284D7B4DB1F} = {4FAFC3AE-05CB-4999-97E8-2D516CBFDA73}
+		{06C76A86-0C54-455A-90A9-BB6431CBB545} = {4FAFC3AE-05CB-4999-97E8-2D516CBFDA73}
+		{7CD055C7-23BA-4E21-9D92-D3ECDAB301CC} = {4FAFC3AE-05CB-4999-97E8-2D516CBFDA73}
+		{6BE1FA62-C7B4-4A53-ADF5-E25C0D2894EB} = {42C81191-D40B-4278-972C-60D8F47F14CB}
+		{C2AF6AED-A300-40F2-8B8B-C165C3EC1560} = {42C81191-D40B-4278-972C-60D8F47F14CB}
+		{A49EC272-B572-43C6-A39E-A83F1AE506D0} = {42C81191-D40B-4278-972C-60D8F47F14CB}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {89A01E19-B045-4C2E-8876-F08DE5C5197D}
+	EndGlobalSection
+EndGlobal
