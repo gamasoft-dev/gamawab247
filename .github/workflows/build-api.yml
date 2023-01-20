@@ -21,6 +21,6 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
-      run: dotnet restore "./src/api/API.csproj"
+      run: dotnet restore
     - name: Build
-      run: dotnet build "/src/api/API.csproj"
+      run: dotnet build ./src/API/API.csproj
