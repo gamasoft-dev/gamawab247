@@ -20,7 +20,5 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
-    - name: Restore dependencies
-      run: dotnet restore ./gamawa247/src/API/API.csproj
     - name: Build
-      run: dotnet build ./gamawa247/src/API/API.csproj
+      run: dotnet build ./gamawa247/src/API/API.csproj --configuration Release
