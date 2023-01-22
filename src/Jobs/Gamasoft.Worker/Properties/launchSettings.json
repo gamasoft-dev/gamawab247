@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "Gamasoft.Worker": {
+      "commandName": "Project",
+      "applicationUrl": "http://localhost:8015",
+      "environmentVariables": {}
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "environmentVariables": {}
+    }
+  }
+}

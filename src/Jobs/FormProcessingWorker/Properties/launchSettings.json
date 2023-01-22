@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "FormProcessingWorker": {
+      "commandName": "Project",
+      "applicationUrl": "http://localhost:4000",
+      "environmentVariables": {}
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "environmentVariables": {}
+    }
+  }
+}
