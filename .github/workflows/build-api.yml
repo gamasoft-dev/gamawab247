@@ -21,4 +21,4 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Build
-      run: dotnet build --configuration Release
+      run: dotnet build ./src/services/API/API.csproj --configuration Release
