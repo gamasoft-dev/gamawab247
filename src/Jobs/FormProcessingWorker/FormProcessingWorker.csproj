@@ -7,6 +7,7 @@
     <UserSecretsId>dotnet-FormProcessingWorker-793D9C5D-8576-4919-8C69-0C4F47E1F011</UserSecretsId>
     <StartupObject></StartupObject>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>../../../docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
