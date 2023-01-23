@@ -5,21 +5,20 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["Gamasoft.360WebhookConfig/Gamasoft.360WebhookConfig.csproj", "Gamasoft.360WebhookConfig/"]
-COPY ["src/Application/Application.csproj", "src/Application/"]
-COPY ["src/Infrastructure/Infrastructure.csproj", "src/Infrastructure/"]
-COPY ["src/Infrastructure.Data/Infrastructure.Data.csproj", "src/Infrastructure.Data/"]
-COPY ["src/Domian/Domain.csproj", "src/Domian/"]
-RUN dotnet restore "Gamasoft.360WebhookConfig/Gamasoft.360WebhookConfig.csproj"
+COPY ["src/Jobs/Gamasoft.360WebhookConfig/Gamasoft.360WebhookConfig.csproj", "src/Jobs/Gamasoft.360WebhookConfig/"]
+COPY ["src/Libraries/Application/Application.csproj", "src/Libraries/Application/"]
+COPY ["src/Libraries/Infrastructure/Infrastructure.csproj", "src/Libraries/Infrastructure/"]
+COPY ["src/Libraries/Infrastructure.Data/Infrastructure.Data.csproj", "src/Libraries/Infrastructure.Data/"]
+COPY ["src/Libraries/Domian/Domain.csproj", "src/Libraries/Domian/"]
+RUN dotnet restore "src/Jobs/Gamasoft.360WebhookConfig/Gamasoft.360WebhookConfig.csproj"
 COPY . .
-WORKDIR "/src/Gamasoft.360WebhookConfig"
+WORKDIR "/src/src/Jobs/Gamasoft.360WebhookConfig"
 RUN dotnet build "Gamasoft.360WebhookConfig.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Gamasoft.360WebhookConfig.csproj" -c Release -o /app/publish
+RUN dotnet publish "Gamasoft.360WebhookConfig.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-#ENTRYPOINT ["dotnet", "Gamasoft.360WebhookConfig.dll"]
-CMD ASPNETCORE_URLS=http://*:$PORT dotnet Gamasoft.360WebhookConfig.dll
+ENTRYPOINT ["dotnet", "Gamasoft.360WebhookConfig.dll"]
