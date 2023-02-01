@@ -50,7 +50,7 @@ namespace API.Controllers
         [ProducesResponseType(typeof(PagedResponse<BusinessDto>), 200)]
         [Authorize(Roles = "SUPERADMIN")]
         public async Task<IActionResult> GetBusinesses([FromQuery] ResourceParameter parameter)
-        {
+        {  
             try
             {
                 var result = await _businessService.GetAllBusinesses(parameter, nameof(GetBusinesses), Url);;

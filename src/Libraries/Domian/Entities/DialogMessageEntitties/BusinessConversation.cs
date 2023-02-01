@@ -1,5 +1,6 @@
 ﻿using Domain.Common;
 using System;
+using System.Collections.Generic;
 
 namespace Domain.Entities.DialogMessageEntitties
 {
@@ -8,8 +9,7 @@ namespace Domain.Entities.DialogMessageEntitties
         public Guid Id { get; set; }
         public Guid BusinessId { get; set; }
         public string Title { get; set; }
-        
-        public BusinessMessage BusinessMessage { get; set; }
+        public BusinessMessage  BusinessMessages { get; set; }
     }
     public abstract class BaseMessageTypeDetails : AuditableEntity
     {

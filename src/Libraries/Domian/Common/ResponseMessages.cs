@@ -20,7 +20,9 @@
         public const string BusinessSettingsNotFound = "Business settings does not exist";
         public const string BusinessNotFound = "Business not found";
         public const string BusinessMessageNotFound = "Business message not found";
-        public const string ListMessageNotFound = "List message not found";
+        public const string BusinessConversationNotFound = "Business conversation not found";
+		public const string BusinessConversationNotFoundForId = "Could not retrieve business conversation for specified Id";
+		public const string ListMessageNotFound = "List message not found";
         public const string TextMessageNotFound = "Text message not found";
         public const string UpdateResponse = "Update success";
         public const string EmailAlreadyComfirmed = "Email Already Comfirmed";
