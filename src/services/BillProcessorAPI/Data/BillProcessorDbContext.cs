@@ -10,7 +10,7 @@ namespace BillProcessorAPI.Data
         {
         }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<BillPayerInfo> Users { get; set; }
         public DbSet<BillTransaction> BillTransactions { get; set; }
     }
 }
