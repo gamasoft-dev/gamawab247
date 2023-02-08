@@ -1,0 +1,26 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: build the solution services and delpoy
+
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.DEV_HOST }}
+        username: ${{ secrets.DEV_USERNAME }}
+        port: ${{ secrets.PORT }}
+        password: ${{ secrets.DEV_PASSWORD }}
+        script: cd ${{ secrets.DEV_PATH }} && ls && git pull && docker-compose -f docker-compose.yml -f docker-compose.override.yml up --build -d
+
