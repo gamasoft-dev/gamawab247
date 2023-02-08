@@ -12,7 +12,34 @@ services:
       - ASPNETCORE_URLS=http://+:80
     ports:
       - "8000:80"
+    depends_on:
+      - gamawabsdb
+      - gamawabsredis
     volumes:
       - ~/.aspnet/https:/root/.aspnet/https:ro
       - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
       # - ~/root/.aspnet/DataProtection-Keys:ro
+
+      
+  gamawabsdb:
+    container_name: gamawabsdb
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=Password@123
+      - POSTGRES_DB=gamawabsdb
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data/
+    expose:
+      - 5432
+
+  gamawabsredis:
+    container_name: gamawabsredis
+    restart: unless-stopped
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "6379:6379"
