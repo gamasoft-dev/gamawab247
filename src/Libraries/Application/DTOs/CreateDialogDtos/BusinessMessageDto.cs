@@ -14,7 +14,7 @@ public class CreateBusinessMessageDto<T>
     public int Position { get; set; }
     public string Name { get; set; }
     // This is the name of the message type (list, Reply Button, Text) etc.
-    //public string MessageType { get; set; }
+    // public string MessageType { get; set; }
     public string RecipientType { get; set; }
     
     /// <summary>
