@@ -2,35 +2,18 @@ version: '3.4'
 
 services:
   api:
-    image: ${DOCKER_REGISTRY-}api
+    image: ${DOCKER_REGISTRY-}gamawabsapi
     build:
       context: .
       dockerfile: src/services/API/Dockerfile
+  
+  gamawabsdb:
+    image: postgres:15.1-alpine
 
-  businessconfigworker:
-    image: ${DOCKER_REGISTRY-}businessconfigworker
-    build:
-      context: .
-      dockerfile: src/Jobs/BusinessConfigWorker/Dockerfile
+  gamawabsredis:
+    image: redis:6.2-alpine
 
-
-  formprocessingworker:
-    image: ${DOCKER_REGISTRY-}formprocessingworker
-    build:
-      context: .
-      dockerfile: src/Jobs/FormProcessingWorker/Dockerfile
-
-
-  gamasoft.worker:
-    image: ${DOCKER_REGISTRY-}gamasoft
-    build:
-      context: .
-      dockerfile: src/Jobs/Gamasoft.Worker/Dockerfile
-
-
-  gamasoft.360webhookconfig:
-    image: ${DOCKER_REGISTRY-}gamasoft
-    build:
-      context: .
-      dockerfile: src/Jobs/Gamasoft.360WebhookConfig/Dockerfile
+volumes:
+  gamawabs_data:
+  postgresql_data:
 
