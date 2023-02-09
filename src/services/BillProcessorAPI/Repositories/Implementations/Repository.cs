@@ -1,4 +1,5 @@
-﻿using BillProcessorAPI.Repositories.Interfaces;
+﻿using BillProcessorAPI.Data;
+using BillProcessorAPI.Repositories.Interfaces;
 using Infrastructure.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -7,9 +8,9 @@ namespace BillProcessorAPI.Repositories.Implementations
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        protected readonly AppDbContext _context;
+        protected readonly BillProcessorDbContext _context;
 
-        public Repository(AppDbContext context)
+        public Repository(BillProcessorDbContext context)
         {
             _context = context;
         }
