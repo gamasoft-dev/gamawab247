@@ -22,7 +22,7 @@ jobs:
       with:
         host: ${{ secrets.DEV_HOST }}
         username: ${{ secrets.DEV_USERNAME }}
-        port: ${{ secrets.PORT }}
+        port: ${{ secrets.DEV_PORT }}
         password: ${{ secrets.DEV_PASSWORD }}
         script: cd ${{ secrets.DEV_PATH }} && ls && git pull && docker-compose -f docker-compose.yml -f docker-compose.override.yml up --build -d
   
