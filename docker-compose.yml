@@ -6,6 +6,12 @@ services:
     build:
       context: .
       dockerfile: src/services/API/Dockerfile
+
+  billprocessorapi:
+    image: ${DOCKER_REGISTRY-}billprocessorapi
+    build:
+      context: .
+      dockerfile: src/services/BillProcessorAPI/Dockerfile
   
   gamawabsdb:
     image: postgres:15.1-alpine
