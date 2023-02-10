@@ -1,10 +1,17 @@
+using Autofac.Core;
 using BillProcessorAPI.Data;
+using BillProcessorAPI.Helpers;
+using BillProcessorAPI.Validators;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddClientDbContext(builder.Configuration);
 builder.Services.AddControllers();
+builder.Services.AddValidatorsFromAssemblyContaining<TransactionValidator>();
+builder.Services.Configure<BillTransactionSettings>(builder.Configuration.GetSection("BillTransactionSettings"));
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
