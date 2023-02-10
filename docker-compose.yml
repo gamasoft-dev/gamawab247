@@ -5,7 +5,7 @@ services:
     image: ${DOCKER_REGISTRY-}gamawabsapi
     build:
       context: .
-      dockerfile: src/services/API/Dockerfile
+      dockerfile: src/services/Gamawabs247API/Dockerfile
 
   billprocessorapi:
     image: ${DOCKER_REGISTRY-}billprocessorapi

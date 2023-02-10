@@ -6,7 +6,7 @@ services:
     container_name: gamawabs-api
     build:
       context: .
-      dockerfile: src/services/API/Dockerfile
+      dockerfile: src/services/Gamawabs247API/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
