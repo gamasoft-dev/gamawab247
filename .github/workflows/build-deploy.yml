@@ -6,8 +6,6 @@ name: build the api project and push to registry
 on:
   push:
     branches: [ "develop" ]
-  pull_request:
-    branches: [ "develop" ]
 
 jobs:
   build:
