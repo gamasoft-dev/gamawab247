@@ -3,7 +3,6 @@ version: '3.4'
 services:
   api:
     image: ${DOCKER_REGISTRY-}gamawabsapi
-    container_name: gamawabs-api
     build:
       context: .
       dockerfile: src/services/Gamawabs247API/Dockerfile
@@ -22,7 +21,6 @@ services:
   
   billprocessorapi:
     image: ${DOCKER_REGISTRY-}billprocessorapi
-    container_name: billprocessor-api
     build:
       context: .
       dockerfile: src/services/BillProcessorAPI/Dockerfile
@@ -40,7 +38,6 @@ services:
       # - ~/root/.aspnet/DataProtection-Keys:ro
 
   gamawabsdb:
-    container_name: gamawabsdb
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=Password@123
@@ -54,7 +51,6 @@ services:
       - 5432
 
   gamawabsredis:
-    container_name: gamawabsredis
     restart: unless-stopped
     command: redis-server /usr/local/etc/redis/redis.conf
     volumes:
