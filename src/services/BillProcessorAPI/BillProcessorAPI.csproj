@@ -12,16 +12,21 @@
   <ItemGroup>
     <Compile Remove="Extensions\**" />
     <Compile Remove="Mapping\**" />
+    <Compile Remove="Validators\**" />
     <Content Remove="Extensions\**" />
     <Content Remove="Mapping\**" />
+    <Content Remove="Validators\**" />
     <EmbeddedResource Remove="Extensions\**" />
     <EmbeddedResource Remove="Mapping\**" />
+    <EmbeddedResource Remove="Validators\**" />
     <None Remove="Extensions\**" />
     <None Remove="Mapping\**" />
+    <None Remove="Validators\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -35,10 +40,6 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.1" />
     <PackageReference Include="RestSharp" Version="108.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Validators\" />
   </ItemGroup>
 
   <ItemGroup>

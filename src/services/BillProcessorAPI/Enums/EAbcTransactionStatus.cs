@@ -1,9 +1,9 @@
 ﻿namespace BillProcessorAPI.Enums
 {
-    public enum ETransactionStatus
-    {
+    public enum EAbcTransactionStatus
+	{
         Pending = 1,
-        Successful,
+        Success,
         Failed
     }
 }

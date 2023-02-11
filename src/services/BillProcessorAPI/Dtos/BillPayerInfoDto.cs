@@ -21,13 +21,8 @@
 
 	public class BillReferenceRequestDto
 	{
-		public string BillReference { get; set; }
+		public string BillCode { get; set; }
+		public string PhoneNumber { get; set; }
 	}
 
-	public class BillReferenceResponseDto<T> where T : class
-	{
-		public string Status { get; set; }
-		public string Message { get; set; }
-		public T Data { get; set; }
-	}
 }

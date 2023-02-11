@@ -12,6 +12,9 @@
         public string Purpose { get; set; }
         public string PhoneNumber { get; set; }
         public DateTime? DueDate { get; set; }
+        public string AccountInfoRequestData { get; set; }
+        public string AccountInfoResponseData { get; set; }
+       
         public ICollection<BillTransaction> BillTransactions { get; set; } = new List<BillTransaction>();
     }
 }

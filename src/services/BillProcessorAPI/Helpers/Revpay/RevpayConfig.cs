@@ -19,17 +19,5 @@ namespace BillProcessorAPI.Helpers.Revpay
             }
 
         }
-
-        // the method below will produce a URL in this format : https://digital-staging.polarisbanklimited.com/LASGCollection/?billReference=12345&billType=LUC
-
-        public static string PolarisPaymentUrl(string billReference, string billType, IOptions<RevpayOptions> options)
-        {
-            string baseUrl = options.Value.PolarisBankUrl;
-            StringBuilder sb = new StringBuilder(baseUrl);
-            sb.Append("billReference=" + billReference + "&");
-            sb.Append("billType=" + billType);
-            string url = sb.ToString();
-            return url;
-        }
     }
 }
