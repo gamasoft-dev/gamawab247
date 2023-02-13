@@ -12,5 +12,6 @@ namespace BillProcessorAPI.Data
 
         public DbSet<BillPayerInfo> Users { get; set; }
         public DbSet<BillTransaction> BillTransactions { get; set; }
+        public DbSet<BillCharge> Charges { get; set; }
     }
 }
