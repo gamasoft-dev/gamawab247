@@ -10,6 +10,7 @@ using Domain.Entities.Identities;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Linq.Expressions;
+using System.Net;
 
 namespace BillProcessorAPI.Services.Implementations
 {
@@ -18,17 +19,16 @@ namespace BillProcessorAPI.Services.Implementations
 		private readonly ApiClient _apiClient;
 		private readonly IBillPayerRepository _billPayerRepo;
 		private readonly IRepository<BillTransaction> _billTransactions;
-
 		private readonly IOptions<RevpayOptions> _options;
 		private readonly IMapper _mapper;
-		private readonly IHttpContextAccessor _httpContextAccessor;
-		public BillService(IBillPayerRepository billPayerRepo, IOptions<RevpayOptions> options, ApiClient apiClient, IMapper mapper, IHttpContextAccessor httpContextAccessor, IRepository<BillTransaction> billTransactions)
+	
+		public BillService(IBillPayerRepository billPayerRepo, IOptions<RevpayOptions> options, ApiClient apiClient, IMapper mapper, IRepository<BillTransaction> billTransactions)
 		{
 			_billPayerRepo = billPayerRepo;
 			_options = options;
 			_apiClient = apiClient;
 			_mapper = mapper;
-			_httpContextAccessor = httpContextAccessor;
+			
 			_billTransactions = billTransactions;
 		}
 
@@ -47,7 +47,7 @@ namespace BillProcessorAPI.Services.Implementations
 				if (response.IsSuccessStatusCode)
 				{
 					var revPayJsonResponse = await response.Content.ReadAsStringAsync();
-					var revPayRes = JsonConvert.DeserializeObject<SuccessResponse<BillPayerInfoDto>>(revPayJsonResponse);
+					var revPayRes = JsonConvert.DeserializeObject<BillPayerInfoDto>(revPayJsonResponse);
 
 					var mappedResponse = _mapper.Map<BillPayerInfo>(revPayRes);
 					// biller information response data
@@ -58,13 +58,18 @@ namespace BillProcessorAPI.Services.Implementations
 					await _billPayerRepo.AddAsync(mappedResponse);
 					await _billPayerRepo.SaveChangesAsync();
 
-					return revPayRes;
+					return new SuccessResponse<BillPayerInfoDto>
+					{
+						Data = revPayRes,
+						Message = "Data retrieved successfully"
+					};
+					
 				}
-				throw new RestException(System.Net.HttpStatusCode.BadRequest, "Invalid Request");
+				throw new RestException(HttpStatusCode.BadRequest, "Invalid Request");
 			}
 			catch (Exception ex)
 			{
-				throw new RestException(System.Net.HttpStatusCode.InternalServerError, ex.Message);
+				throw new RestException(HttpStatusCode.InternalServerError, ex.Message);
 			}
 		}
 
@@ -72,7 +77,7 @@ namespace BillProcessorAPI.Services.Implementations
 		{
 			var revPayBaseUrl = _options.Value.BaseUrl;
 			var revReferenceLink = _options.Value.PaymentVerification;
-			var apiKey = _options.Value.ApiKey;
+			//var apiKey = _options.Value.ApiKey;
 			var response = await _apiClient.PostAsync(revPayBaseUrl, revReferenceLink, model);
 
 			if (response.IsSuccessStatusCode)
@@ -86,7 +91,7 @@ namespace BillProcessorAPI.Services.Implementations
 				//bill-transaction  request data
 				billTransaction.PaymentInfoRequestData = JsonConvert.SerializeObject(model);
 				
-				if (revPayRes.Status == EAbcTransactionStatus.Success.ToString())
+				if (revPayRes.Status == EAbcTransactionStatus.SUCCESS.ToString())
 				{
 					billTransaction.Status = ETransactionStatus.Successful.ToString();
 				}

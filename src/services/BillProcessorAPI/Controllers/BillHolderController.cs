@@ -9,7 +9,7 @@ namespace BillProcessorAPI.Controllers
 
 	[ApiController]
 	[ApiVersion("1.0")]
-	[Route("api/v{version:apiVersion}/business-form")]
+	[Route("v1/abc")]
 	[Produces("application/json")]
 	public class BillHolderController : ControllerBase
 	{

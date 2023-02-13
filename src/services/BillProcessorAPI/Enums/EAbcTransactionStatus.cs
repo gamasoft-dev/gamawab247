@@ -2,8 +2,8 @@
 {
     public enum EAbcTransactionStatus
 	{
-        Pending = 1,
-        Success,
-        Failed
+        PENDING = 1,
+        SUCCESS,
+        FAILED
     }
 }
