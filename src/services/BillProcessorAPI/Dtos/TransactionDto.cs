@@ -5,6 +5,7 @@ namespace BillProcessorAPI.Dtos
 {
     public record CreateBillChargeInputDto
     {
+        public Guid? BusinessId { get; set; }
         public string ChannelModel { get; set; }
         public decimal MaxChargeAmount { get; set; }
         public decimal MinChargeAmount { get; set; }
@@ -18,6 +19,7 @@ namespace BillProcessorAPI.Dtos
 
     public record ChargesResponseDto
     {
+        public Guid? BusinessId { get; set; }
         public string ChannelModel { get; set; }
         public decimal MaxChargeAmount { get; set; }
         public decimal MinChargeAmount { get; set; }

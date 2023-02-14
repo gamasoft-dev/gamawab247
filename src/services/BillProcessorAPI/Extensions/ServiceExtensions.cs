@@ -16,6 +16,8 @@ namespace BillProcessorAPI.Extensions
 
             serviceCollection.AddHttpClient<ITransactionService, TransactionService>()
                 .AddPolicyHandler(retryPolicy);
+            serviceCollection.AddHttpClient<IBillService, BillService>()
+                .AddPolicyHandler(retryPolicy);
         }
     }
 }

@@ -18,14 +18,22 @@ namespace BillProcessorAPI.Helpers
             return JsonSerializer.Deserialize<T>(dataAsString);
         }
 
-        public static async Task<HttpResponseMessage> PostAsJson<T>(this HttpClient httpClient, string url, T? data, IConfiguration config)
+        public static async Task<HttpResponseMessage> PostAsJson<T>(
+            this HttpClient httpClient, 
+            string url, 
+            T? data, 
+            IConfiguration config,
+            IDictionary<string, string> headers)
         {
             httpClient.DefaultRequestHeaders.Clear();
             var dataAsString = JsonSerializer.Serialize(data);
             var content = new StringContent(dataAsString, Encoding.UTF8);
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-            httpClient.DefaultRequestHeaders.Add(Authorization, $"Bearer {config["SecretKey"]}");
+            foreach (var header in headers)
+            {
+                httpClient.DefaultRequestHeaders.Add(name: header.Key, $"Bearer {config[header.Value]}");
+            }
 
             return await httpClient.PostAsync(url, content);
         }
