@@ -7,8 +7,5 @@ namespace BillProcessorAPI.Services.Interfaces
     {
         Task<SuccessResponse<TransactionVerificationResponseDto>> VerifyBillTransactionAsync(TransactionVerificationInputDto input);
         Task<SuccessResponse<object>> CreateUserBillTransaction(CreateUserBillTransactionInputDto input);
-        SuccessResponse<ChargesResponseDto> CalculateBillChargesOnAmount(ChargesInputDto input);
-        Task<SuccessResponse<ChargesResponseDto>> CreateBillCharges(CreateBillChargeInputDto input);
-        Task<SuccessResponse<IEnumerable<ChargesResponseDto>>> GetBillCharges();
     }
 }

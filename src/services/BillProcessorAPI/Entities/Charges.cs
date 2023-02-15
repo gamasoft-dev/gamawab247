@@ -3,6 +3,7 @@
     public class BillCharge : AuditableEntity
     {
         public Guid Id { get; set; }
+        public Guid? BusinessId { get; set; }
         public string ChannelModel { get; set; }
         public decimal MaxChargeAmount { get; set; }
         public decimal MinChargeAmount { get; set; }

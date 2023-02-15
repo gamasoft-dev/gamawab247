@@ -6,52 +6,58 @@ using BillProcessorAPI.Helpers;
 using BillProcessorAPI.Helpers.Revpay;
 using BillProcessorAPI.Repositories.Interfaces;
 using BillProcessorAPI.Services.Interfaces;
-using Domain.Entities.Identities;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using System.Linq.Expressions;
 using System.Net;
 
 namespace BillProcessorAPI.Services.Implementations
 {
-    public class BillService : IBillService
+	public class BillService : IBillService
 	{
-		private readonly ApiClient _apiClient;
+		private readonly IConfiguration _config;
+		private readonly HttpClient _httpClient;
 		private readonly IBillPayerRepository _billPayerRepo;
 		private readonly IRepository<BillTransaction> _billTransactions;
-		private readonly IOptions<RevpayOptions> _options;
+		private RevpayOptions RevpayOptions { get; }
 		private readonly IMapper _mapper;
-	
-		public BillService(IBillPayerRepository billPayerRepo, IOptions<RevpayOptions> options, ApiClient apiClient, IMapper mapper, IRepository<BillTransaction> billTransactions)
-		{
-			_billPayerRepo = billPayerRepo;
-			_options = options;
-			_apiClient = apiClient;
-			_mapper = mapper;
-			
-			_billTransactions = billTransactions;
-		}
 
-		public async Task<SuccessResponse<BillPayerInfoDto>> ReferenceVerification(BillReferenceRequestDto model)
+        public BillService(IBillPayerRepository billPayerRepo, IOptions<RevpayOptions> options, IMapper mapper, IRepository<BillTransaction> billTransactions, HttpClient httpClient, IConfiguration config)
+        {
+            _billPayerRepo = billPayerRepo;
+			RevpayOptions = options.Value;
+            _mapper = mapper;
+
+            _billTransactions = billTransactions;
+            _httpClient = httpClient;
+            _config = config;
+        }
+
+        public async Task<SuccessResponse<BillPayerInfoDto>> ReferenceVerification(BillReferenceRequestDto model)
 		{
-			if (_options is null)
+			if (RevpayOptions is null)
 			{
 				throw new RestException(System.Net.HttpStatusCode.PreconditionFailed, "Kindly configure the required application settings");
-			}
+            }
 
-			//var apiKey = _options.Value.ApiKey;
-			try
+            //var apiKey = _options.Value.ApiKey;
+            try
 			{
-				var response = await _apiClient.PostAsync(_options.Value.BaseUrl, _options.Value.ReferenceVerification, model);
-
-				if (response.IsSuccessStatusCode)
+                _httpClient.BaseAddress = new Uri(RevpayOptions.BaseUrl);
+                var httpResponse = await _httpClient.PostAsJson(RevpayOptions.BaseUrl, model, _config, new Dictionary<string, string>
 				{
-					var revPayJsonResponse = await response.Content.ReadAsStringAsync();
-					var revPayRes = JsonConvert.DeserializeObject<BillPayerInfoDto>(revPayJsonResponse);
+					{ "webguid", RevpayOptions.WebGuid },
+					{ "state", RevpayOptions.State },
+					{ "hash", RevpayOptions.Key },
+					{ "ClientId", RevpayOptions.ClientId }
+				});
+
+				if (httpResponse.IsSuccessStatusCode)
+				{
+                    var revPayRes = await httpResponse.ReadContentAs<BillPayerInfoDto>();
 
 					var mappedResponse = _mapper.Map<BillPayerInfo>(revPayRes);
 					// biller information response data
-					mappedResponse.AccountInfoResponseData = revPayJsonResponse;
+					mappedResponse.AccountInfoResponseData = JsonConvert.SerializeObject(revPayRes);
 					//bill-payer information request data
 					mappedResponse.AccountInfoRequestData = JsonConvert.SerializeObject(model);
 
@@ -75,12 +81,16 @@ namespace BillProcessorAPI.Services.Implementations
 
 		public async  Task<SuccessResponse<BillPaymentVerificationResponseDto>> PaymentVerification( BillPaymentVerificationRequestDto model)
 		{
-			var revPayBaseUrl = _options.Value.BaseUrl;
-			var revReferenceLink = _options.Value.PaymentVerification;
-			//var apiKey = _options.Value.ApiKey;
-			var response = await _apiClient.PostAsync(revPayBaseUrl, revReferenceLink, model);
+            _httpClient.BaseAddress = new Uri(RevpayOptions.BaseUrl);
+            var response = await _httpClient.PostAsJson(RevpayOptions.PaymentVerification, model, _config, new Dictionary<string, string>
+                {
+                    { "webguid", RevpayOptions.WebGuid },
+                    { "state", RevpayOptions.State },
+                    { "hash", RevpayOptions.Key },
+                    { "ClientId", RevpayOptions.ClientId }
+                });
 
-			if (response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
 			{
 				var revPayJsonResponse = await response.Content.ReadAsStringAsync();
 				var revPayRes = JsonConvert.DeserializeObject<BillPaymentVerificationResponseDto>(revPayJsonResponse);

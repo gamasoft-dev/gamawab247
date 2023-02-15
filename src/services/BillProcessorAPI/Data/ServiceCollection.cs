@@ -28,8 +28,6 @@ namespace BillProcessorAPI.Data
         public static void ConfigService(this IServiceCollection services, IConfiguration config)
         {
             services.AddScoped<IBillService, BillService>();
-            services.AddHttpClient<ApiClient>();
-            services.AddScoped<ApiClient>();
 			var revpaySection = config.GetSection("RevpayConfig");
 			services.Configure<RevpayOptions>(revpaySection);
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));

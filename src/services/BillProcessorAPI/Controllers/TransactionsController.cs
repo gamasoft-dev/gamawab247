@@ -1,6 +1,7 @@
 ﻿using BillProcessorAPI.Dtos;
 using BillProcessorAPI.Services.Implementations;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace BillProcessorAPI.Controllers
 {
@@ -17,6 +18,7 @@ namespace BillProcessorAPI.Controllers
 
         [HttpPost("verify")]
         [ProducesResponseType(typeof(TransactionVerificationResponseDto), 200)]
+        [SwaggerOperation(Summary = "Endpoint to verify transactions")]
         public async Task<IActionResult> VerifyTransaction(TransactionVerificationInputDto input)
         {
             var response = await _transactionService.VerifyBillTransactionAsync(input);
@@ -25,33 +27,10 @@ namespace BillProcessorAPI.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(object), 200)]
+        [SwaggerOperation(Summary = "Endpoint to add transaction details into the db")]
         public async Task<IActionResult> CreateUserBillTransaction(CreateUserBillTransactionInputDto input)
         {
             var response = await _transactionService.CreateUserBillTransaction(input);
-            return Ok(response);
-        }
-
-        [HttpPost("calculate-charge")]
-        [ProducesResponseType(typeof(ChargesResponseDto), 200)]
-        public IActionResult CalculateBillChargesOnAmount(ChargesInputDto input)
-        {
-            var response = _transactionService.CalculateBillChargesOnAmount(input);
-            return Ok(response);
-        }
-
-        [HttpPost("charges")]
-        [ProducesResponseType(typeof(ChargesResponseDto), 200)]
-        public async Task<IActionResult> CreateBillCharges(CreateBillChargeInputDto input)
-        {
-            var response = await _transactionService.CreateBillCharges(input);
-            return Ok(response);
-        }
-
-        [HttpGet("charges")]
-        [ProducesResponseType(typeof(IEnumerable<ChargesResponseDto>), 200)]
-        public async Task<IActionResult> GetBillCharges()
-        {
-            var response = await _transactionService.GetBillCharges();
             return Ok(response);
         }
     }

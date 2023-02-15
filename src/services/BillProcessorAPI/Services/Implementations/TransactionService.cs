@@ -57,7 +57,7 @@ namespace BillProcessorAPI.Services.Implementations
 
             if (!httpResponse.IsSuccessStatusCode)
             {
-                billTransaction.Status = ETransactionStatus.Failed;
+                billTransaction.Status = ETransactionStatus.Failed.ToString();
                 _logger.LogInfo($"{nameof(VerifyBillTransactionAsync)} RESPONSE => {httpResponse.ReasonPhrase} {httpResponse.RequestMessage}");
                 throw new RestException(HttpStatusCode.BadRequest, httpResponse.ReasonPhrase);
             }
@@ -68,7 +68,7 @@ namespace BillProcessorAPI.Services.Implementations
 
             if (result.Data is null)
             {
-                billTransaction.Status = ETransactionStatus.Failed;
+                billTransaction.Status = ETransactionStatus.Failed.ToString();
                 _logger.LogInfo($"{nameof(VerifyBillTransactionAsync)} RESPONSE => {JsonConvert.SerializeObject(result)}");
                 throw new RestException(HttpStatusCode.BadRequest, result.Message);
             }
@@ -77,12 +77,12 @@ namespace BillProcessorAPI.Services.Implementations
                 !result.Data.Amount.Equals(input.AmountPaid) ||
                 !result.Data.TxRef.Equals(input.TransactionReference))
             {
-                billTransaction.Status = ETransactionStatus.Failed;
+                billTransaction.Status = ETransactionStatus.Failed.ToString();
                 _logger.LogInfo($"{nameof(VerifyBillTransactionAsync)} RESPONSE => {JsonConvert.SerializeObject(result)}");
                 throw new RestException(HttpStatusCode.BadRequest, result.Message);
             }            
 
-            billTransaction.Status = ETransactionStatus.Successfull;
+            billTransaction.Status = ETransactionStatus.Successful.ToString();
             billTransaction.GatewayTransactionCharge = result.Data.ChargedAmount;
             billTransaction.Narration = result.Data.Narration;
 
@@ -106,7 +106,7 @@ namespace BillProcessorAPI.Services.Implementations
             await _billPayerRepository.AddAsync(billPayerInfo);
 
             billTransaction.UserId = billPayerInfo.Id;
-            billTransaction.Status = ETransactionStatus.Pending;
+            billTransaction.Status = ETransactionStatus.Pending.ToString();
 
             await _billTransactionRepository.AddAsync(billTransaction);
             var result = await _billTransactionRepository.SaveChangesAsync();
@@ -127,67 +127,6 @@ namespace BillProcessorAPI.Services.Implementations
                 Message = "Record created successfully",
                 Data = null
             };
-        }
-
-        public SuccessResponse<ChargesResponseDto> CalculateBillChargesOnAmount(ChargesInputDto input)
-        {    
-            var charge = GetAmountCharge(input);
-
-            var result = _mapper.Map<ChargesResponseDto>(input);
-
-            result.AmountCharge= charge;
-
-            return new SuccessResponse<ChargesResponseDto>
-            {
-                Message = "Charges calculated successfully",
-                Data = result
-            };
-        }
-
-        public async Task<SuccessResponse<ChargesResponseDto>> CreateBillCharges(CreateBillChargeInputDto input)
-        {
-            var charge = _mapper.Map<BillCharge>(input);
-
-            await _billChargeRepository.AddAsync(charge);
-            await _billChargeRepository.SaveChangesAsync();
-
-            var result = _mapper.Map<ChargesResponseDto>(charge);
-
-            return new SuccessResponse<ChargesResponseDto>
-            {
-                Message = "Bill charge created successfully",
-                Data = result
-            };
-        }
-
-        public async Task<SuccessResponse<IEnumerable<ChargesResponseDto>>> GetBillCharges()
-        {
-            var billCharges = await _billChargeRepository.GetAllAsync();
-
-            var result = _mapper.Map<IEnumerable<ChargesResponseDto>>(billCharges);
-
-            return new SuccessResponse<IEnumerable<ChargesResponseDto>>
-            {
-                Message = "Bill charges retrieved successfully",
-                Data = result
-            };
-        }
-
-        private static int GetAmountCharge(ChargesInputDto input)
-        {
-            var charge = (Math.Round((decimal)input.PercentageCharge, 2) / 100) * input.Amount;
-            var chargeAmount = Math.Round(charge, 0);
-
-            if (chargeAmount <= input.MinChargeAmount)
-                return (int)input.MinChargeAmount;
-            
-            if (chargeAmount > input.MinChargeAmount && chargeAmount < input.MaxChargeAmount)
-                return (int)chargeAmount;
-            
-            if (chargeAmount >= input.MaxChargeAmount)
-                return (int)input.MaxChargeAmount;
-
-            return default;
         }
     }
 }
