@@ -1,5 +1,6 @@
 ﻿using Application.DTOs;
 using Application.Services.Interfaces;
+using Domain.Common;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace Application.Helpers
                 url = webHookUrl
             };
 
-            var httpResult = await _httpService.Post<WebhookRequestDto, WebhookRequestDto>(url: url, header: header, request: request);
+            var httpResult = await _httpService.Post<WebhookRequestDto, WebhookRequestDto>(fullUrl: url, header: header, request: request);
             if (httpResult.Data !=null)
                 return true;
             return false;

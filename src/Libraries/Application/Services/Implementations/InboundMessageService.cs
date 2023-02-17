@@ -176,12 +176,6 @@ namespace Application.Services.Implementations
                         await ReceiveListBasedMessage(businessId, requestData);
                     }
                 }
-
-
-                if (_BaseMessageType == EMessageType.UnKnown)
-                {
-                  // handle unknown received message;   
-                }
             }
         }
 

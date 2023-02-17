@@ -23,7 +23,7 @@ namespace Domain.Entities
         public Guid BusinessId { get; set; }
         public bool CanUseNLPMapping { get; set; }
         public string Language { get; set; } = "en";
-
+        //public bool ShouldProcessInbound { get; set; } = true;
         /// <summary>
         /// This is the Id of an initial message, this message replies to
         /// </summary>

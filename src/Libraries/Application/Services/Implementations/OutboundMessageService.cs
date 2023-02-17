@@ -14,6 +14,7 @@ using Domain.Entities;
 using Domain.Enums;
 using Domain.Entities.FormProcessing;
 using System;
+using Domain.Common;
 
 // TODO: Complete and resolve errors around message log integration on message sending.
 namespace Application.Services.Implementations
@@ -78,7 +79,7 @@ namespace Application.Services.Implementations
                 var header = new RequestHeader(dictNew);
 
                 var httpResult = await _httpService.Post<OutboundMessageResponseDto, ReplyButtonMessageRequest>
-                    (url: url, header: header, request: requestObject);
+                    (fullUrl: url, header: header, request: requestObject);
 
                 var buttonOutboundMessage = _mapper.Map<OutboundMessage>(model);
 
@@ -195,7 +196,7 @@ namespace Application.Services.Implementations
                 var header = new RequestHeader(dictNew);
 
                 var httpResult = await _httpService.Post<OutboundMessageResponseDto, ListMessageInteractiveDto>
-                    (url: url, header: header, request: listMessagePayLoad);
+                    (fullUrl: url, header: header, request: listMessagePayLoad);
 
                 var listOutboundMessage = _mapper.Map<OutboundMessage>(model);
 
@@ -283,7 +284,7 @@ namespace Application.Services.Implementations
                 var header = new RequestHeader(dictNew);
 
                 var httpResult = await _httpService.Post<OutboundMessageResponseDto, TextMessageRequestDto>
-                    (url: url, header: header, request: replyTextMessageRequest);
+                    (fullUrl: url, header: header, request: replyTextMessageRequest);
 
                 var textOutboundMessage = _mapper.Map<OutboundMessage>(model);
                
@@ -407,7 +408,7 @@ namespace Application.Services.Implementations
                 var header = new RequestHeader(dictNew);
 
                 var httpResult = await _httpService.Post<OutboundMessageResponseDto, TextMessageRequestDto>
-                    (url: url, header: header, request: replyTextMessageRequest);
+                    (fullUrl: url, header: header, request: replyTextMessageRequest);
 
                 // determining if the message sent without an error.
                 if (httpResult.Data is not null)

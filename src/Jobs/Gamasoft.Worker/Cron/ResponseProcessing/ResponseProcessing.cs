@@ -61,14 +61,11 @@ public class ResponsePreProcessing : IResponsePreProcessing
             {
                 #region Initializations
                 bool sendFirstOrDefaultBusinessMessage = true;
-                BusinessMessage businessMessage = null;
+                BusinessMessage? businessMessage = null;
                 InboundMessage inboundMessage = new();
-                OutboundMessage outboundMessage = null;
+                OutboundMessage? outboundMessage = null;
                 #endregion
 
-                //// get the corresponding 
-                //foreach (var pendingInbound in getInboundDict?.Values)
-                //{
                 try
                 {
                     if (!string.IsNullOrWhiteSpace(pendingInbound.ContextMessageId))
@@ -81,13 +78,10 @@ public class ResponsePreProcessing : IResponsePreProcessing
                             .OrderByDescending(x => x.CreatedAt)
                             .LastOrDefaultAsync();
 
-                        if (outboundMessage is not null)
-                        {
-                            // sendFirstOrDefaultBusinessMessage 
-                            sendFirstOrDefaultBusinessMessage = false;
-                        }
                         if (outboundMessage?.BusinessMessageId != Guid.Empty)
                         {
+                            sendFirstOrDefaultBusinessMessage = false;
+
                             // get the associated businessMessage
                             businessMessage = await
                                 _businessMessageRepo.FirstOrDefault(x => x.Id == outboundMessage.BusinessMessageId);

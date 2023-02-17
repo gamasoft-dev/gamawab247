@@ -1,6 +1,14 @@
-﻿using Infrastructure.Repositories.Implementations;
+﻿using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Application.Services.Implementations;
+using Application.Services.Interfaces;
+using Infrastructure.Repositories.Implementations;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using Polly;
+using Polly.Extensions.Http;
+using Polly.Retry;
 
 namespace Infrastructure
 {
@@ -8,15 +16,25 @@ namespace Infrastructure
     {
         public static void AddRepositories(this IServiceCollection services)
         {
-            //services.AddClientDbContext(configuration);
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddTransient<IUserActivityRepository, UserActivityRepository>();
-            //services.AddTransient<IBusinessMessageSettingsRepository, BusinessMessagingSettingsRepository>();
-            //services.AddTransient<IBusinessRepository, BusinessRepository>();
-            services.AddScoped<IWhatsappUserRepository, WhatsappUserRepository>();
-            services.AddScoped<IMessageLogRepository, MessageLogRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
-            //services.AddTransient<IUserRepository, UserRepository>();
+
+            services.AddHttpClient<IHttpService, HttpService>()
+                .AddPolicyHandler(GetPollyPolicy());
         }
+
+        /// <summary>
+        /// Polly configuration for resilient http calls
+        /// </summary>
+        /// <returns></returns>
+        private static AsyncRetryPolicy<HttpResponseMessage> GetPollyPolicy()
+        {
+            // Create the retry policy we want
+            var retryPolicy = HttpPolicyExtensions
+                            .HandleTransientHttpError() // HttpRequestException, 5XX and 408
+                            .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(retryAttempt));
+
+            return retryPolicy;
+        }
+
     }
 }

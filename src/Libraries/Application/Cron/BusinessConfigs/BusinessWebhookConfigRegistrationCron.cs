@@ -87,7 +87,7 @@ namespace Application.Cron
             };
 
             var httpResult = await _httpService.Post<DialogWebhookConfigDto, DialogWebhookConfigDto>
-                (url: url, header: header, request: configDto);
+                (fullUrl: url, header: header, request: configDto);
 
             return httpResult;
         }

@@ -11,7 +11,9 @@ namespace Domain.Entities.DialogMessageEntitties
     {
         public Guid Id { get; set; }
         public Guid? BusinessConversationId { get; set; }
+
         public int Position { get; set; } = 2;
+
         public string Name { get; set; }
 
         /// <summary>
@@ -22,15 +24,17 @@ namespace Domain.Entities.DialogMessageEntitties
         /// <summary>
         /// This is the parent of the message this message follow. This is optional.
         /// </summary>
-        public Guid? FollowParentMessageId { get; set; }
-        
+        public Guid? FollowParentMessageId { get; set; } 
+
         // This is the name of the message type (list, Reply Button, Text) etc.
         public string MessageType { get; set; }
+
+        // individual
         public string RecipientType { get; set; }
         
         // This represents the Id of either a list of button message related to this business message
         public Guid? InteractiveMessageId { get; set; }
-        
+
         // navigation properties
         public BusinessConversation BusinessConversation { get; set; }
         public Business Business { get; set; }
@@ -41,5 +45,6 @@ namespace Domain.Entities.DialogMessageEntitties
         public Guid? BusinessFormId { get; set; }
 
         public BusinessForm BusinessForm { get; set; }
+
     }
 }

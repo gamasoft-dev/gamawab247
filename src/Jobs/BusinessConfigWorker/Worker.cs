@@ -22,6 +22,7 @@ namespace BusinessConfigWorker
                 try
                 {
                     await _businessWebhookConfigRegistrationCron.ProcessGamaSoftBusinessConfigurationTo360();
+
                     await Task.Delay(_config.MessageResponseInMilliseconds, CancellationToken.None);
                 }
 

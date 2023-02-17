@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-namespace Application.DTOs
+namespace Domain.Common
 {
     public class HttpMessageResponse<T>
     {
@@ -11,12 +12,13 @@ namespace Application.DTOs
 
     public class RequestHeader
     {
-		public RequestHeader(IDictionary<string, string> headers)
-		{
+        public RequestHeader(IDictionary<string, string> headers)
+        {
             Headers = headers;
-		}
-		public RequestHeader()
-		{ }
+        }
+        public RequestHeader()
+        { }
         public IDictionary<string, string> Headers { get; set; }
     }
 }
+
