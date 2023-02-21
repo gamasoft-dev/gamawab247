@@ -19,9 +19,21 @@ namespace Infrastructure.Data.DbContext.Configurations
                 .HasForeignKey(x=>x.AdminUserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasOne(x => x.BusinessMessageSettings)
+               .WithOne(x=>x.Business)
+               .HasForeignKey<BusinessMessageSettings>(x => x.BusinessId)
+               .OnDelete(DeleteBehavior.Cascade);
+
             builder.HasIndex(x => x.Email).IsUnique();
             builder.HasIndex(x => x.Name).IsUnique();
             builder.HasIndex(x => x.PhoneNumber).IsUnique();
+        }
+    }
+    public class BusinessMessageConfig : IEntityTypeConfiguration<BusinessMessageSettings>
+    {
+        public void Configure(EntityTypeBuilder<BusinessMessageSettings> builder)
+        {
+            builder.HasIndex(x => x.ApiKey);
         }
     }
 

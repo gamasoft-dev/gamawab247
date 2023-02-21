@@ -105,7 +105,14 @@ namespace Application.Services.Cron
                                         dialogSession.UpdatedAt = DateTime.Now;
 
                                     }
-                                       
+
+                                    // get the partner
+                                    // get the partner integration details
+                                    // what is the partnerIndentifier
+
+                                    // use the indentifier with Factory to get the correct api integration
+                                    // then call the retrieve content method.
+
                                     var sendMessageResult = await _outboundMesageService.HttpSendTextMessage(model: item, wa_Id: item.To);
                                     isSent = sendMessageResult.Data;
                                     count++;

@@ -29,7 +29,7 @@
         public const string DialogSessionNotFound = "Dialog sessiion Not Found";
         public const string UserFormRequestNotFound = "User form requet response Not Found";
 
-        public static string Duplicity { get; set; }
+        public static string Duplicity = "Record is duplicate";
         public static string LogNotFound { get; set; }
     }
 }

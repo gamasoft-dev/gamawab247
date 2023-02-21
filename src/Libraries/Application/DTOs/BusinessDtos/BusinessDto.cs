@@ -3,7 +3,7 @@ using System;
 
 namespace Application.DTOs.BusinessDtos
 {
-    public class CreateBusinessDto : AuditableEntity
+    public class CreateBusinessDto 
     {
         public string Name { get; set; }
         public Guid IndustryId { get; set; }
@@ -17,7 +17,7 @@ namespace Application.DTOs.BusinessDtos
         public string AdminPhoneNumber { get; set; }
     }
 
-    public class CreateBusinessSetupDto : AuditableEntity
+    public class CreateBusinessSetupDto 
     {
         public string WebhookUrl { get; set; }
         public string ApiKey { get; set; }

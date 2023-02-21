@@ -18,7 +18,11 @@ namespace Domain.Entities.FormProcessing.ValueObjects
         /// Name/Indentifier of the processor responsible for validating this form key/element
         /// </summary>
         public string ValidationProcessorKey { get; set; }
-        public string Label { get; set; }
+        public string Label { get; set; } = "Enter Bill Code";
+
+        public bool RequiresPartnerCallForNextResponse { get; set; }
+
+        public Guid? PartnerIntegrationId { get; set; }
 
         public static implicit operator string(FormElement v)
         {

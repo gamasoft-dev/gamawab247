@@ -32,11 +32,17 @@ namespace Infrastructure.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("text");
+
                     b.Property<Guid?>("AdminUserId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("AvatarUrl")
                         .HasColumnType("text");
+
+                    b.Property<Guid?>("BusinessMessageSettingsId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -47,7 +53,7 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("IndustryId")
+                    b.Property<Guid>("IndustryId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")
@@ -57,12 +63,20 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 
+                    b.Property<string>("RCNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Slogan")
+                        .HasColumnType("text");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AdminUserId");
+
+                    b.HasIndex("BusinessMessageSettingsId");
 
                     b.HasIndex("Email")
                         .IsUnique();
@@ -96,6 +110,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<Guid>("BusinessId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("BusinessId1")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -118,6 +135,10 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApiKey");
+
+                    b.HasIndex("BusinessId1");
 
                     b.ToTable("BusinessMessageSettings");
                 });
@@ -1052,6 +1073,35 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("OutboundMessages");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Partner", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("BusinessId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("CreatedById")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Partners");
+                });
+
             modelBuilder.Entity("Domain.Entities.SystemSettings", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1160,14 +1210,31 @@ namespace Infrastructure.Data.Migrations
                         .HasForeignKey("AdminUserId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("Domain.Entities.BusinessMessageSettings", "BusinessMessageSettings")
+                        .WithMany()
+                        .HasForeignKey("BusinessMessageSettingsId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Domain.Entities.Industry", "Industry")
                         .WithMany("Businesses")
                         .HasForeignKey("IndustryId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("AdminUser");
 
+                    b.Navigation("BusinessMessageSettings");
+
                     b.Navigation("Industry");
+                });
+
+            modelBuilder.Entity("Domain.Entities.BusinessMessageSettings", b =>
+                {
+                    b.HasOne("Domain.Entities.Business", "Business")
+                        .WithMany()
+                        .HasForeignKey("BusinessId1");
+
+                    b.Navigation("Business");
                 });
 
             modelBuilder.Entity("Domain.Entities.DialogMessageEntitties.BusinessMessage", b =>

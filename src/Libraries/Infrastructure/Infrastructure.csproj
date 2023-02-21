@@ -9,6 +9,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Newtonsoft.Json" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="..\..\.editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Http\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
 </Project>

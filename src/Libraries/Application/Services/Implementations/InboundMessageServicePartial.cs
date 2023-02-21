@@ -18,10 +18,10 @@ namespace Application.Services.Implementations
 {
     public partial class InboundMessageService
     {
-        private bool _ShouldSaveInbound = true;
-
         private async Task ReceiveTextBasedMessage(Guid id, dynamic textRequestData)
         {
+           bool shouldSaveInbound = true;
+
             if (_InteractiveMessageType != EMessageType.Text)
                 throw new RestException(HttpStatusCode.BadRequest,
                     $"This Text based implementation cannot handle this kind of message. Received-MessageType: {_BaseMessageType.ToString()}");
@@ -46,6 +46,13 @@ namespace Application.Services.Implementations
                 WhatsappUserId = this._WhatsappUser.Id,
             };
 
+            // get the partner
+            // get the partner integration details
+            // what is the partnerIndentifier
+
+            // use the indentifier with Factory to get the correct api integration
+            // then call the retrieve content method.
+
             // call the service and add messageLog
             await _messageLogService.CreateMessageLog(messageLog);
             #endregion
@@ -63,10 +70,11 @@ namespace Application.Services.Implementations
             {
                 //save user input as response to a form question.
                 await ReceiveFormResponse(messageLog, session);
-                _ShouldSaveInbound = false;
+                shouldSaveInbound = false;
             }
 
-            if (_ShouldSaveInbound)
+
+            if (shouldSaveInbound)
             {
                 if (messages != null || messages.Any())
                     foreach (var item in messages)
@@ -167,7 +175,6 @@ namespace Application.Services.Implementations
                 throw new RestException(HttpStatusCode.BadRequest, message:
                         $"{ResponseMessages.PayLoadCannotBeNull} or {ResponseMessages.ParameterCannotBeNull}");
 
-
             var business = await _businessService.GetBusinessByBusinessId(id);
             if (business == null)
                 throw new RestException(HttpStatusCode.BadRequest, $"No business with this id {id} was found to receive and process this message");
@@ -232,7 +239,7 @@ namespace Application.Services.Implementations
             bool shouldSaveRequest = true;
             HashSet<FormRequestResponse> formRequestResponses = new();
             string waId = messageLog.From;
-            
+
 
             try
             {
@@ -251,7 +258,7 @@ namespace Application.Services.Implementations
                       "Therefore processing this may break the flow", (int)HttpStatusCode.Continue);
                 }
 
-                
+
                 BusinessForm businessForm = session.SessionFormDetails.BusinessForm;
                 FormElement nextElement = businessForm?.FormElements?.FirstOrDefault(
                     x => x.Key == session?.SessionFormDetails?.NextFormElement);
@@ -331,7 +338,7 @@ namespace Application.Services.Implementations
                         session.SessionFormDetails.UserData.Add(
                         session.SessionFormDetails.CurrentFormElement, messageLog.MessageBody);
                     }
-                    
+
                 }
 
                 if (session.SessionFormDetails.CurrentElementId == session.SessionFormDetails.LastElementId)
@@ -372,7 +379,7 @@ namespace Application.Services.Implementations
             }
             catch (ProcessCancellationException ex)
             {
-                throw ex;    
+                throw ex;
             }
             catch (FormInputValidationException fx)
             {

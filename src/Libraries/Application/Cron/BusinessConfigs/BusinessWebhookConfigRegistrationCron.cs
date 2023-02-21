@@ -51,17 +51,17 @@ namespace Application.Cron
 
         public async Task ProcessGamaSoftBusinessConfigurationTo360()
         {
-            var getAll = await GetAllUnConfiguredBusinesses();
-            foreach (var item in getAll)
+            var businessMessageSettings = await GetAllUnConfiguredBusinesses();
+            foreach (var businessMessageSetting in businessMessageSettings)
             {
-                if (!string.IsNullOrWhiteSpace(item.ApiKey))
+                if (!string.IsNullOrWhiteSpace(businessMessageSetting.ApiKey))
                 {
-                    var response = await HttpProcessTo360Dialog(item.BusinessId, item.ApiKey);
+                    var response = await HttpProcessTo360Dialog(businessMessageSetting.BusinessId, businessMessageSetting.ApiKey);
                     if (response.Data is not null)
                     {
                         //update the config to true.
-                        item.WebhookUrl = response?.Data?.Url;
-                        UpdateBusinessSetupConfigStatus(item);
+                        businessMessageSetting.WebhookUrl = response?.Data?.Url;
+                        UpdateBusinessSetupConfigStatus(businessMessageSetting);
                     }
                 }
             }
@@ -87,7 +87,7 @@ namespace Application.Cron
             };
 
             var httpResult = await _httpService.Post<DialogWebhookConfigDto, DialogWebhookConfigDto>
-                (url: url, header: header, request: configDto);
+                (fullUrl: url, header: header, request: configDto);
 
             return httpResult;
         }

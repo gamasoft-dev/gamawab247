@@ -22,7 +22,6 @@ public class Program
                     o.TracesSampleRate = 1.0;
                     o.Environment = "production";
                 });
-                webBuilder.UseUrls("https://*:7000", "http://*:7001");
             })
             .UseServiceProviderFactory(new AutofacServiceProviderFactory())
             .ConfigureContainer<ContainerBuilder>(builder =>

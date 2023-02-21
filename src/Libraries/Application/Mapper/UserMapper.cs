@@ -15,7 +15,9 @@ namespace Application.Mapper
             CreateMap<CreateUserDTO, User>().AfterMap((src, dest) =>
             {
                 dest.Email = src.Email.Trim().ToLower();
-                dest.UserName = dest.Email;
+                dest.UserName = src.Email.Trim().ToLower();
+                dest.NormalizedUserName = src.Email.ToUpper();
+                dest.NormalizedEmail = src.Email.ToUpper();
                 dest.Status = EUserStatus.ACTIVE.ToString();
             });
 
