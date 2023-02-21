@@ -3,7 +3,7 @@
     public enum ETransactionStatus
     {
         Pending = 1,
-        Successfull,
+        Successful,
         Failed
     }
 }

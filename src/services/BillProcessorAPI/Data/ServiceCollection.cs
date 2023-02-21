@@ -1,4 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BillProcessorAPI.Helpers.Revpay;
+using BillProcessorAPI.Repositories.Implementations;
+using BillProcessorAPI.Repositories.Interfaces;
+using BillProcessorAPI.Services.Implementations;
+using BillProcessorAPI.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace BillProcessorAPI.Data
 {
@@ -16,5 +23,16 @@ namespace BillProcessorAPI.Data
                     .UseLoggerFactory(contextLoggerFactory);
             });
         }
+
+
+        public static void ConfigService(this IServiceCollection services, IConfiguration config)
+        {
+            services.AddScoped<IBillService, BillService>();
+			var revpaySection = config.GetSection("RevpayConfig");
+			services.Configure<RevpayOptions>(revpaySection);
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IBillPayerRepository, BillPayerRepository>();
+			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+		}
     }
 }
