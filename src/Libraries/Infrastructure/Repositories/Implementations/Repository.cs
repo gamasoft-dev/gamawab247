@@ -119,5 +119,29 @@ namespace Infrastructure.Repositories.Implementations
             await SaveChangesAsync();
             return propertyInfo;
         }
+
+        public async Task BeginTransaction(Func<Task> action, bool shouldCommitTransaction = true)
+        {
+            var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                await action();
+
+                await SaveChangesAsync();
+
+                if (shouldCommitTransaction)
+                    await transaction.CommitAsync();
+
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+            finally
+            {
+                await transaction.DisposeAsync();
+            }
+        }
     }
 }

@@ -9,6 +9,7 @@ using Domain.Entities;
 using Domain.Entities.DialogMessageEntitties;
 using Domain.Enums;
 using Infrastructure.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services.Implementations;
 
@@ -46,14 +47,10 @@ public class BusinessMessageService
     public async Task<SuccessResponse<BusinessMessageDto<ButtonMessageDto>>> 
         CreateButtonMessage(CreateBusinessMessageDto<CreateButtonMessageDto> model)
     {
-        //model.MessageType = EMessageType.Button.ToString();
-        var checkBizId = await _businessRepo.ExistsAsync(x => x.Id == model.BusinessId);
-        if (!checkBizId)
-            throw new RestException(System.Net.HttpStatusCode.BadRequest, ResponseMessages.IncorrectId);
-
-        var checkBizMessId = await _businessSettingRepo.FirstOrDefault(x => x.BusinessId == model.BusinessId);
-        if(checkBizMessId == null)
-            throw new RestException(System.Net.HttpStatusCode.NotFound, ResponseMessages.BusinessSettingsNotFound);
+        var business = await _businessRepo.Query(x => x.Id == model.BusinessId)
+              .Include(x => x.BusinessMessageSettings).FirstOrDefaultAsync();
+        if (business is null || business?.BusinessMessageSettings is null)
+            throw new RestException(System.Net.HttpStatusCode.BadRequest, "Business not found or business not configured completely");
 
         var bizMessage = _mapper.Map<BusinessMessage>(model);
         bizMessage.MessageType = EMessageType.Button.ToString();
@@ -82,13 +79,11 @@ public class BusinessMessageService
     public async Task<SuccessResponse<BusinessMessageDto<ListMessageDto>>> 
         CreateListMessage(CreateBusinessMessageDto<CreateListMessageDto> model)
     {
-        var checkBizId = await _businessRepo.ExistsAsync(x => x.Id == model.BusinessId);
-        if (!checkBizId)
-            throw new RestException(System.Net.HttpStatusCode.BadRequest, ResponseMessages.IncorrectId);
+        var business = await _businessRepo.Query(x => x.Id == model.BusinessId)
+             .Include(x => x.BusinessMessageSettings).FirstOrDefaultAsync();
 
-        var checkBizMessId = await _businessSettingRepo.FirstOrDefault(x => x.BusinessId == model.BusinessId);
-        if (checkBizMessId == null)
-            throw new RestException(System.Net.HttpStatusCode.NotFound, ResponseMessages.BusinessSettingsNotFound);
+        if (business is null || business?.BusinessMessageSettings is null)
+            throw new RestException(System.Net.HttpStatusCode.BadRequest, "Business not found or business not configured completely");
 
         var bizMessage = _mapper.Map<BusinessMessage>(model);
         var listBizMessage = _mapper.Map<ListMessage>(model.MessageTypeObject);
@@ -111,14 +106,13 @@ public class BusinessMessageService
     public async Task<SuccessResponse<BusinessMessageDto<TextMessageDto>>> 
         CreateTextMessage(CreateBusinessMessageDto<CreateTextMessageDto> model)
     {
-        var checkBizId = await _businessRepo.ExistsAsync(x => x.Id == model.BusinessId);
-        if (!checkBizId)
-            throw new RestException(System.Net.HttpStatusCode.BadRequest, ResponseMessages.IncorrectId);
+        var business = await _businessRepo.Query(x => x.Id == model.BusinessId)
+            .Include(x=>x.BusinessMessageSettings).FirstOrDefaultAsync();
 
-        var checkBizMessId = await _businessSettingRepo.FirstOrDefault(x => x.BusinessId == model.BusinessId);
-        if (checkBizMessId == null)
-            throw new RestException(System.Net.HttpStatusCode.NotFound, ResponseMessages.BusinessSettingsNotFound);
+        if (business is null || business?.BusinessMessageSettings is null)
+            throw new RestException(System.Net.HttpStatusCode.BadRequest, "Business is not avaialable or incompletely configured");
 
+       
         var bizMessage = _mapper.Map<BusinessMessage>(model);
         var textBizMessage = _mapper.Map<TextMessage>(model);
 
@@ -243,26 +237,25 @@ public class BusinessMessageService
     
     public async Task<SuccessResponse<bool>> UpdateListMessage(Guid businessMessageId, UpdateBusinessMessageDto<UpdateListMessageDto> model)
     {
-        var checkBizMessageId = await _businessMessageRepo.GetByIdAsync(businessMessageId);
-        if (checkBizMessageId is null)
+        if (model.BusinessId == Guid.Empty || model.Position == 0)
+            throw new RestException(System.Net.HttpStatusCode.BadRequest, ResponseMessages.IncorrectId);
+
+        var businessMesage = await _businessMessageRepo.GetByIdAsync(businessMessageId);
+        if (businessMesage is null)
             throw new RestException(System.Net.HttpStatusCode.BadRequest, ResponseMessages.BusinessMessageNotFound);
 
         var list = await _listMessageRepo.GetByIdAsync(model.MessageTypeObject.Id);
         if (list is null)
             throw new RestException(System.Net.HttpStatusCode.BadRequest, ResponseMessages.BusinessMessageNotFound);
 
-        var checkBizId = await _businessRepo.ExistsAsync(x => x.Id == model.BusinessId);
-        if (!checkBizId)
-            throw new RestException(System.Net.HttpStatusCode.BadRequest, ResponseMessages.IncorrectId);
+        var business = await _businessRepo.Query(x => x.Id == model.BusinessId)
+            .Include(x => x.BusinessMessageSettings).FirstOrDefaultAsync();
+        if (business is null || business?.BusinessMessageSettings is null)
+            throw new RestException(System.Net.HttpStatusCode.BadRequest, "Business not found or business not configured completely");
 
-        var checkBizMessId = await _businessSettingRepo.FirstOrDefault(x => x.BusinessId == model.BusinessId);
-
-        if (/*string.IsNullOrEmpty(model.MessageType) || */model.BusinessId == Guid.Empty || model.Position == 0)
-            throw new RestException(System.Net.HttpStatusCode.BadRequest, ResponseMessages.IncorrectId);
-
-        checkBizMessageId.MessageType = EMessageType.List.ToString();
-        checkBizMessageId.Position = model.Position > 0 ? model.Position : checkBizMessageId.Position;
-        checkBizMessageId.Name = !string.IsNullOrEmpty(model.Name) ? model.Name : checkBizMessageId.Name;
+        businessMesage.MessageType = EMessageType.List.ToString();
+        businessMesage.Position = model.Position > 0 ? model.Position : businessMesage.Position;
+        businessMesage.Name = !string.IsNullOrEmpty(model.Name) ? model.Name : businessMesage.Name;
 
         list.Header = !string.IsNullOrEmpty(model.MessageTypeObject.Header)
          ? model.MessageTypeObject.Header : list.Header;
@@ -273,7 +266,7 @@ public class BusinessMessageService
         list.Body = !string.IsNullOrEmpty(model.MessageTypeObject.Body)
             ? model.MessageTypeObject.Body : list.Body;
 
-        _businessMessageRepo.Update(checkBizMessageId);
+        _businessMessageRepo.Update(businessMesage);
         await _businessMessageRepo.SaveChangesAsync();
 
         _listMessageRepo.Update(list);
@@ -289,32 +282,33 @@ public class BusinessMessageService
 
     public async Task<SuccessResponse<bool>> UpdateTextMessage(Guid businessMessageId, UpdateBusinessMessageDto<UpdateTextMessageDto> model)
     {
-        var checkBizMessageId = await _businessMessageRepo.GetByIdAsync(businessMessageId);
-        if (checkBizMessageId is null)
+
+        if (model.BusinessId == Guid.Empty || model.Position == 0)
+            throw new RestException(System.Net.HttpStatusCode.BadRequest, ResponseMessages.IncorrectId);
+
+        var businessMessage = await _businessMessageRepo.GetByIdAsync(businessMessageId);
+        if (businessMessage is null)
             throw new RestException(System.Net.HttpStatusCode.BadRequest, ResponseMessages.BusinessMessageNotFound);
 
         var text = await _textMessageRepo.GetByIdAsync(model.MessageTypeObject.Id);
         if (text is null)
             throw new RestException(System.Net.HttpStatusCode.BadRequest, ResponseMessages.TextMessageNotFound);
 
-        var checkBizId = await _businessRepo.ExistsAsync(x => x.Id == model.BusinessId);
-        if (!checkBizId)
-            throw new RestException(System.Net.HttpStatusCode.BadRequest, ResponseMessages.BusinessNotFound);
+        var business = await _businessRepo.Query(x => x.Id == model.BusinessId)
+            .Include(x => x.BusinessMessageSettings)?.FirstOrDefaultAsync();
 
-        var checkBizMessId = await _businessSettingRepo.FirstOrDefault(x => x.BusinessId == model.BusinessId);
+        if (business is null || business?.BusinessMessageSettings is null)
+            throw new RestException(System.Net.HttpStatusCode.BadRequest, "Invalid business or business not completely configured");
 
-        if (/*string.IsNullOrEmpty(model.MessageType) || */model.BusinessId == Guid.Empty || model.Position == 0)
-            throw new RestException(System.Net.HttpStatusCode.BadRequest, ResponseMessages.IncorrectId);
-
-        checkBizMessageId.MessageType = EMessageType.Text.ToString();
-        checkBizMessageId.Position = model.Position > 0 ? model.Position : checkBizMessageId.Position;
-        checkBizMessageId.Name = !string.IsNullOrEmpty(model.Name) ? model.Name : checkBizMessageId.Name;
+        businessMessage.MessageType = EMessageType.Text.ToString();
+        businessMessage.Position = model.Position > 0 ? model.Position : businessMessage.Position;
+        businessMessage.Name = !string.IsNullOrEmpty(model.Name) ? model.Name : businessMessage.Name;
 
         text.Body = model.MessageTypeObject.Body;
         text.Footer = model.MessageTypeObject.Footer;
         text.Header = model.MessageTypeObject?.Header;
 
-        _businessMessageRepo.Update(checkBizMessageId);
+        _businessMessageRepo.Update(businessMessage);
         await _businessMessageRepo.SaveChangesAsync();
 
         _textMessageRepo.Update(text);

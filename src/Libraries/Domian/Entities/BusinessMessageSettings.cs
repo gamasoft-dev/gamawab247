@@ -10,8 +10,14 @@ namespace Domain.Entities{
         public string BotName { get; set; }
         public string BotDescription { get; set; }
         public int TestCounter {get; set;}
-        public Guid BusinessId {get; set;}
+       
         public bool IsTest { get; set; }
-        public bool IsWebhookConfigured { get; set; }// If apikey is regstered and business hasn't been registred to "WABABaseUrl/v1/configs/webhook", the a bgTask picks up and congfigures..
+        /// <summary>
+        /// If apikey is regstered and business hasn't been registred to
+        /// "WABABaseUrl/v1/configs/webhook", the a bgTask picks up and congfigures..
+        /// </summary>
+        public bool IsWebhookConfigured { get; set; }
+        public Guid BusinessId { get; set; }
+        public Business Business { get; set; }
     }
 }

@@ -75,8 +75,8 @@ namespace API.Extensions
                 opts.UseNpgsql(configuration.GetConnectionString("DefaultConnection"), x =>
                  {
                      x.MigrationsAssembly("Infrastructure.Data");
-                     x.EnableRetryOnFailure();
                  })
+                .EnableDetailedErrors(true)
                 .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()))
                  .EnableSensitiveDataLogging();
             });
@@ -85,6 +85,11 @@ namespace API.Extensions
         public static void ConfigureRepositoryManager(this IServiceCollection services)
         {
             services.AddRepositories();
+        }
+
+        public static void ConfigureHttpClient(this IServiceCollection services)
+        {
+            services.AddHttpClientInfrastructure();
         }
 
         public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
@@ -121,7 +126,7 @@ namespace API.Extensions
         
         public static void ConfigureMvc(this IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest)
+            services?.AddMvc()?.SetCompatibilityVersion(CompatibilityVersion.Latest)
                 .ConfigureApiBehaviorOptions(o =>
                 {
                     o.InvalidModelStateResponseFactory = context => new ValidationFailedResult(context.ModelState);
@@ -152,7 +157,7 @@ namespace API.Extensions
                 options.Configuration = redisConfig.ToString();
                 options.InstanceName = config.InstanceName;
             });
-            services.AddTransient<ICacheService, CacheService>();
+            services.AddScoped<ICacheService, CacheService>();
         }
 
         public static void ConfigureHangfire(this IServiceCollection services, IConfiguration configuration)
@@ -243,10 +248,10 @@ namespace API.Extensions
         {
             var builder = services.AddIdentityCore<User>(opts =>
             {
-                opts.Password.RequireDigit = true;
+                opts.Password.RequireDigit = false;
                 opts.Password.RequiredLength = 8;
-                opts.Password.RequireLowercase = true;
-                opts.Password.RequireUppercase = true;
+                opts.Password.RequireLowercase = false;
+                opts.Password.RequireUppercase = false;
                 opts.Password.RequireNonAlphanumeric = false;
                 opts.User.RequireUniqueEmail = true;
             }).AddRoles<Role>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();

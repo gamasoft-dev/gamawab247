@@ -16,8 +16,15 @@ namespace Infrastructure
     {
         public static void AddRepositories(this IServiceCollection services)
         {
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserActivityRepository, UserActivityRepository>();
+            services.AddScoped<IMessageLogRepository, MessageLogRepository>();
+            services.AddScoped<IWhatsappUserRepository, WhatsappUserRepository>();
 
+        }
+
+        public static void AddHttpClientInfrastructure(this IServiceCollection services)
+        {
             services.AddHttpClient<IHttpService, HttpService>()
                 .AddPolicyHandler(GetPollyPolicy());
         }

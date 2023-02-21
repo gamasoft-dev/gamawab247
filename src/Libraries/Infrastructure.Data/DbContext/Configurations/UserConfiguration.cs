@@ -8,10 +8,7 @@ namespace Infrastructure.Data.DbContext.Configurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            //builder.HasOne(x => x.Business)
-            //    .WithMany()
-            //    .HasForeignKey(x => x.BusinessId)
-            //    .OnDelete(DeleteBehavior.NoAction);
+
             builder.HasIndex(x => x.Email).IsUnique();
 
             builder.Property(x => x.Email).IsRequired();
@@ -24,8 +21,6 @@ namespace Infrastructure.Data.DbContext.Configurations
             {
                 entity.ToTable(name: "Users");
             });
-
-            builder.ApplyConfigurationsFromAssembly(typeof(UserConfiguration).Assembly);
 
             builder.Entity<Role>(entity =>
             {

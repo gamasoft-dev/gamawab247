@@ -26,7 +26,6 @@ namespace Application.Services.Implementations
             try
             {
                 //you'd already called email template at startegic points why call again here?'
-                //var emailTemplate = _emailTemplateService.GetConfirmEmailTemplate(message, reciepientAddress, subject);
                 var email = new MimeMessage();
                 email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
                 email.To.Add(MailboxAddress.Parse(reciepientAddress));

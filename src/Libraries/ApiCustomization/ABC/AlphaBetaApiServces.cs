@@ -6,7 +6,7 @@ namespace ApiCustomization;
 
 public class AlphaBetaApiServces : IApiContentRetrievalService
 {
-    public string ApiProcessIndentifier => throw new NotImplementedException();
+    public string ApiProcessIndentifier => "ABC_CARD_HOLDER_API_INFO";
 
     private readonly IHttpClientFactory httpClientFactory;
     private readonly AlphaBetaConfig alphaBetaConfig;
@@ -18,7 +18,7 @@ public class AlphaBetaApiServces : IApiContentRetrievalService
         this.alphaBetaConfig = alphaBetaConfig.Value;
     }
 
-    public Task<string> RetrieveContent<TRequest>(TRequest request)
+    public async Task<string> RetrieveContent<TRequest>(TRequest request)
     {
         throw new NotImplementedException();
     }

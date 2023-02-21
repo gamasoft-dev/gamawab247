@@ -1,10 +1,8 @@
-﻿using System.Reflection;
-using Application.Services.Implementations.BusinessMessageImpls;
+﻿using Application.Services.Implementations.BusinessMessageImpls;
 using Application.Services.Interfaces;
 using Autofac;
 using Infrastructure.Repositories.Implementations;
 using Infrastructure.Repositories.Interfaces;
-using Module = Autofac.Module;
 
 namespace Application.Helpers
 {
@@ -16,7 +14,7 @@ namespace Application.Helpers
                 .As(typeof(IRepository<>))
                 .InstancePerLifetimeScope();
             
-            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+            builder.RegisterAssemblyTypes(System.Reflection.Assembly.GetExecutingAssembly())
                 .AsClosedTypesOf(typeof(IBusinessMessageMgtService<,>))
                 .AsImplementedInterfaces();
             

@@ -46,6 +46,13 @@ namespace Application.Services.Implementations
                 WhatsappUserId = this._WhatsappUser.Id,
             };
 
+            // get the partner
+            // get the partner integration details
+            // what is the partnerIndentifier
+
+            // use the indentifier with Factory to get the correct api integration
+            // then call the retrieve content method.
+
             // call the service and add messageLog
             await _messageLogService.CreateMessageLog(messageLog);
             #endregion

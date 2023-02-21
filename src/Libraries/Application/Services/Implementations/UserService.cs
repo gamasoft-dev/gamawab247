@@ -71,7 +71,7 @@ namespace Application.Services.Implementations
             if (string.IsNullOrEmpty(model.Password))
                 throw new RestException(HttpStatusCode.BadGateway, message: ResponseMessages.PasswordCannotBeEmpty);
             
-            //Verify correctness if business id if businessid not null
+            //Verify correctness if business id not null
 
             if(model.BusinessId is not null)
             {
@@ -89,20 +89,29 @@ namespace Application.Services.Implementations
                     roles.Add(role.Name);
             }
 
-            await _userManager.CreateAsync(user, model.Password);
+             async Task Actions() {
+
+                var createUserResult = await _userManager.CreateAsync(user, model.Password);
+
+                if (!createUserResult.Succeeded)
+                    throw new RestException(HttpStatusCode.InternalServerError, string.Join(',', createUserResult.Errors));
+
+                await AddUserToRoles(user, roles);
+
+                var userActivity = new UserActivity
+                {
+                    EventType = "User created",
+                    UserId = user.Id,
+                    ObjectClass = "USER",
+                    Details = "signed up",
+                    ObjectId = user.Id,
+                };
+
+                await _userActivityRepository.AddAsync(userActivity);
+            }
+
+            await _userActivityRepository.BeginTransaction(Actions);
             
-            await AddUserToRoles(user, roles);
-
-            var userActivity = new UserActivity
-            {
-                EventType = "User created",
-                UserId = user.Id,
-                ObjectClass = "USER",
-                Details = "signed up",
-                ObjectId = user.Id
-            };
-
-            await _userActivityRepository.AddAsync(userActivity);
 
             var token = CustomToken.GenerateOtp();
             
@@ -116,12 +125,11 @@ namespace Application.Services.Implementations
                 IsValid = true
             };
             await _tokenRepository.AddAsync(tokenEntity);
+            await _tokenRepository.SaveChangesAsync();
 
             const string title = "Confirm Email Address";
             var message = _emailTemplateService.GetConfirmEmailTemplate(token, user.Email, user.FirstName, title);
-            await _mailService.SendSingleMail(user.Email, message, title);
-
-             await _userActivityRepository.SaveChangesAsync();
+             _=_mailService.SendSingleMail(user.Email, message, title);
 
             var userResponse = _mapper.Map<CreateUserResponse>(user);
 
@@ -167,11 +175,11 @@ namespace Application.Services.Implementations
                 throw new RestException(HttpStatusCode.NotFound, ResponseMessages.WrongEmailOrPassword);
 
             // ReSharper disable once HeapView.BoxingAllocation
-            if (!user.EmailConfirmed || user?.Status?.ToUpper() != EUserStatus.ACTIVE.ToString() || !user.Verified)
-                throw new RestException(HttpStatusCode.NotFound, ResponseMessages.WrongEmailOrPassword);
+            if (user?.Status?.ToUpper() != EUserStatus.ACTIVE.ToString())
+                throw new RestException(HttpStatusCode.NotFound, "User account is not fully verified or activated");
             
-            var isUserValid = await _userManager.CheckPasswordAsync(user, model.Password);
-            if (!isUserValid)
+            var isPasswordValid = await _userManager.CheckPasswordAsync(user, model.Password);
+            if (!isPasswordValid)
                 throw new RestException(HttpStatusCode.NotFound, ResponseMessages.WrongEmailOrPassword);
 
             user.LastLogin = DateTime.UtcNow;

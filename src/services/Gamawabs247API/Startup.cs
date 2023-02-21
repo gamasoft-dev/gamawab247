@@ -36,7 +36,7 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureCors();
-           // services.ConfigureIisIntegration();
+            services.ConfigureIisIntegration();
             services.ConfigureLoggerService();
             services.ConfigureIdentity();
             services.ConfigureSqlContext(Configuration);
@@ -46,6 +46,7 @@ namespace API
             services.ConfigureJwt(Configuration);
             services.AddHttpContextAccessor();
             services.ConfigureRepositoryManager();
+            services.ConfigureHttpClient();
             services.ConfigureIOObjects(Configuration);
             services.AddControllers()
                 .AddXmlDataContractSerializerFormatters();
@@ -63,7 +64,6 @@ namespace API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider, AppDbContext dbContext)
         {
             app.UseDeveloperExceptionPage();
-
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

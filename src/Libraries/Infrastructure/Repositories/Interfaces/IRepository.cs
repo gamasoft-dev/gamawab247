@@ -27,5 +27,7 @@ namespace Infrastructure.Repositories.Interfaces
 		IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> expression);
         Task<TEntity> AddAndReturnValue(TEntity entity);
 
+        Task BeginTransaction(Func<Task> action, bool shouldCommitToDatabase = true);
+
     }
 }
