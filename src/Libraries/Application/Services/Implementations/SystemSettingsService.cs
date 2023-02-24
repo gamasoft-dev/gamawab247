@@ -49,11 +49,10 @@ namespace Application.Services.Implementations
             await _repository.SaveChangesAsync();
 
             var result = await GetSystemSettings();
-            var response = _mapper.Map<SystemSettingsDto>(result);
 
             return new SuccessResponse<SystemSettingsDto>
             {
-                Data = response,
+                Data = result.Data,
                 Message = ResponseMessages.CreationSuccessResponse
             };
         }
@@ -63,7 +62,7 @@ namespace Application.Services.Implementations
             var systensettings = await _repository.FirstOrDefaultNoTracking(x=>x.Id != Guid.Empty);
 
             if (systensettings is null)
-                throw new RestException(HttpStatusCode.BadRequest, "No system systems has been configures");
+                throw new RestException(HttpStatusCode.BadRequest, "No system settings has been configured, Kindly configure general system settings");
 
             var settingDto = _mapper.Map<SystemSettingsDto>(systensettings);
 

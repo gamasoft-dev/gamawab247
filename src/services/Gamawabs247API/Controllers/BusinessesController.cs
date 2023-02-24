@@ -243,7 +243,7 @@ namespace API.Controllers
             try
             {
                 dto.Id = id;
-                await _businessSettingsService.ProcessUpdate(dto);
+                await _businessSettingsService.Update(dto);
 
                 return Ok();
             }

@@ -19,10 +19,10 @@ namespace Application.DTOs.BusinessDtos
 
     public class CreateBusinessSetupDto 
     {
-        public string WebhookUrl { get; set; }
+        internal string WebhookUrl { get; set; }
         public string ApiKey { get; set; }
         public int TestCounter { get; set; }
-        public Guid BusinessId { get; set; }
+        internal Guid BusinessId { get; set; }
         public string BotName { get; set; }
         public string BotDescription { get; set; }
     }
