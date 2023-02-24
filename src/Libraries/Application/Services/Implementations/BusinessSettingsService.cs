@@ -48,22 +48,22 @@ namespace Application.Services.Implementations
         {
             if (dto == null || id == Guid.Empty) throw new RestException(HttpStatusCode.BadRequest, "one/more request parameter were not met");
 
-            var getBusinessById = await _businessService.GetBusinessByBusinessId(id);
+            var business = await _businessService.GetBusinessByBusinessId(id);
 
-            if(getBusinessById is null) throw new RestException(HttpStatusCode.BadRequest, "No such business exist");
+            if(business is null) throw new RestException(HttpStatusCode.BadRequest, "No such business exist");
 
-            var getExistingBotnameOnBizSetup =
+            var botName =
                await _businessMessageSettingsRepository
                .FirstOrDefault(x => x.BotName.Trim().ToLower() == dto.BotName);
 
-            if (getExistingBotnameOnBizSetup != null)
+            if (botName != null)
                 throw new RestException(HttpStatusCode.BadRequest, "Sorry, Business botname already exist for another business.");
 
-            var getExistingBusinessOnBizSetup = 
+            var businessMessageSetting = 
                 await _businessMessageSettingsRepository
                 .FirstOrDefault(x=>x.BusinessId == id || x.BotName.Trim().ToLower() == dto.BotName);
 
-            if(getExistingBusinessOnBizSetup !=null) 
+            if(businessMessageSetting !=null) 
                 throw new RestException(HttpStatusCode.BadRequest, "Business set-up already exist for this business.");
 
 
@@ -76,14 +76,11 @@ namespace Application.Services.Implementations
             await _businessMessageSettingsRepository.AddAsync(model);
             await _businessMessageSettingsRepository.SaveChangesAsync();
 
-            await _webHookRegistrationHelper.RegisterBusinessWebHookUrl(model.WebhookUrl,model.ApiKey);
-
             var businessSetting = await GetById(model.Id);
-            var response = _mapper.Map<BusinessMessageSettings>(businessSetting);
 
             return new SuccessResponse<BusinessMessageSettings>
             {
-                Data = response,
+                Data = businessSetting.Data,
                 Message = ResponseMessages.CreationSuccessResponse
             };
         }
@@ -92,13 +89,13 @@ namespace Application.Services.Implementations
         {
             if (businessGuid == Guid.Empty) throw new RestException(HttpStatusCode.BadRequest, "No business identifier was provided");
 
-            var get = await _businessMessageSettingsRepository.FirstOrDefault(x => x.BusinessId == businessGuid);
-            if (get == null)
+            var businessMessageSetting = await _businessMessageSettingsRepository.FirstOrDefault(x => x.BusinessId == businessGuid);
+            if (businessMessageSetting == null)
                 return new SuccessResponse<BusinessMessageSettings>();
 
             return new SuccessResponse<BusinessMessageSettings>
             {
-                Data = get,
+                Data = businessMessageSetting,
                 Message = ResponseMessages.RetrievalSuccessResponse
             };
         }
@@ -107,12 +104,14 @@ namespace Application.Services.Implementations
         {
             if (id == Guid.Empty) throw new RestException(HttpStatusCode.BadRequest, "No business identifier was provided");
 
-            var get = await _businessMessageSettingsRepository.FirstOrDefault(x => x.Id == id);
-            if (get == null)
-                return new SuccessResponse<BusinessMessageSettings>();
+            var businessSettings = await _businessMessageSettingsRepository.FirstOrDefault(x => x.Id == id);
+
+            if (businessSettings == null)
+                throw new RestException(HttpStatusCode.NotFound, "Business message settings not found for this is");
+
             return new SuccessResponse<BusinessMessageSettings>
             {
-                Data = get,
+                Data = businessSettings,
                 Message = ResponseMessages.RetrievalSuccessResponse
             };
         }
@@ -142,19 +141,20 @@ namespace Application.Services.Implementations
             }
         }
 
-        public async Task<SuccessResponse<bool>> ProcessUpdate(BusinessMessageSettings model)
+        public async Task<SuccessResponse<bool>> Update(BusinessMessageSettings model)
         {
             if (model == null || model.Id == Guid.Empty) throw new RestException(HttpStatusCode.BadRequest, "An error occurred. Bad Request");
 
-            var getBusinessId = await _businessMessageSettingsRepository.FirstOrDefault(x=>x.Id == model.Id);
-            if (getBusinessId == null)
+            var businessMesaageSetting = await _businessMessageSettingsRepository.FirstOrDefault(x=>x.Id == model.Id);
+
+            if (businessMesaageSetting == null)
                 throw new RestException(HttpStatusCode.NotFound, "No business settings found");
 
-            getBusinessId.ApiKey = !string.IsNullOrEmpty(model.ApiKey)? model.ApiKey:getBusinessId.ApiKey;
-            getBusinessId.WebhookUrl = !string.IsNullOrEmpty(model.WebhookUrl) ? model.WebhookUrl: getBusinessId.WebhookUrl;
+            businessMesaageSetting.ApiKey = !string.IsNullOrEmpty(model.ApiKey)? model.ApiKey:businessMesaageSetting.ApiKey;
+            businessMesaageSetting.WebhookUrl = !string.IsNullOrEmpty(model.WebhookUrl) ? model.WebhookUrl: businessMesaageSetting.WebhookUrl;
 
-            _businessMessageSettingsRepository.Update(getBusinessId);
             await _businessMessageSettingsRepository.SaveChangesAsync();
+
             return new SuccessResponse<bool>
             {
                 Data = true,
@@ -166,12 +166,13 @@ namespace Application.Services.Implementations
         {
             if (id == Guid.Empty) throw new RestException(HttpStatusCode.BadRequest, "An error occurred.");
 
-            var getBusinessId = await GetById(id);
-            if (getBusinessId == null) return false;
+            var businessMessageSetting = await _businessMessageSettingsRepository.FirstOrDefault(x=>x.Id == id);
 
-            getBusinessId.Data.TestCounter += 1;
+            if (businessMessageSetting == null)
+                throw new RestException(HttpStatusCode.NotFound, "No business settings found");
 
-            _businessMessageSettingsRepository.Update(getBusinessId.Data);
+            businessMessageSetting.TestCounter += 1;
+
             await _businessMessageSettingsRepository.SaveChangesAsync();
             return true;
         }
