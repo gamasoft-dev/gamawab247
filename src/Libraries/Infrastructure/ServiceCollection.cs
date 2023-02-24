@@ -25,11 +25,18 @@ namespace Infrastructure
         }
 
         public static void AddHttpClientInfrastructure(this IServiceCollection services)
+<<<<<<< HEAD
+        {
+			services.AddTransient<IHttpService, HttpService>();
+            services.AddHttpClient<IHttpService, HttpService>()
+                .AddPolicyHandler(GetPollyPolicy());
+=======
         {
             services.AddScoped<IHttpService, HttpService>();
 
             services.AddHttpClient("GamaWabsAPI")
                     .AddPolicyHandler(GetPollyPolicy("GamaWabsAPI"));
+>>>>>>> develop
 
         }
 
