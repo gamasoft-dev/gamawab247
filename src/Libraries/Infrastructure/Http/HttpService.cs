@@ -36,7 +36,7 @@ namespace Application.Services.Implementations
         {
             try
             {
-                var client = httpClientFactory.CreateClient();
+                var client = httpClientFactory.CreateClient("GamaWabsAPI");
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -67,7 +67,7 @@ namespace Application.Services.Implementations
                         throw new InternalServerException("An error occurred from the api", (int)response.StatusCode);
 
                     else
-                        throw new BadRequestException(await response.Content.ReadAsStringAsync());
+                        throw new BadRequestException(await response?.Content?.ReadAsStringAsync());
                 }
 
             }
@@ -87,7 +87,7 @@ namespace Application.Services.Implementations
         /// <returns></returns>
         public async Task<HttpMessageResponse<TResponse>> Get<TResponse>(string url, RequestHeader  header, IDictionary<string, object> parameters = null)
         {
-            var client = httpClientFactory.CreateClient();
+            var client = httpClientFactory.CreateClient("GamaWabsAPI");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -116,7 +116,7 @@ namespace Application.Services.Implementations
                     throw new InternalServerException("An error occurred from the api", (int)response.StatusCode);
 
                 else
-                    throw new BadRequestException(await response.Content.ReadAsStringAsync());
+                    throw new BadRequestException(await response?.Content.ReadAsStringAsync());
             }
         }
 
