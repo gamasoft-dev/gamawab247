@@ -16,20 +16,14 @@ namespace Application.Helpers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public static HttpContext HttpContext
-        {
-            get { return _httpContextAccessor.HttpContext; }
-        }
-
         public static Guid UserId
         {
             get
             {
-                Guid id;
 
-                var userId = _httpContextAccessor.HttpContext.User.Claims.Where(x => x.Type == ClaimTypeHelper.UserId).FirstOrDefault()?.Value ?? "";
+                var userId = _httpContextAccessor?.HttpContext?.User?.Claims?.Where(x => x.Type?.ToLower() == ClaimTypeHelper.UserId?.ToLower()).FirstOrDefault()?.Value ?? "";
 
-                Guid.TryParse(userId, out id);
+                Guid.TryParse(userId, out Guid id);
 
                 return id;
             }
