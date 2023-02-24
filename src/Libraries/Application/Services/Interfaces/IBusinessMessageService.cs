@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Application.DTOs.CreateDialogDtos;
+using Application.AutofacDI;
 using Application.Helpers;
 
 namespace Application.Services.Interfaces;

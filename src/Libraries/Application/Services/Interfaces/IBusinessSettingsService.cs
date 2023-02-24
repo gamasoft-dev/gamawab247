@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Application.AutofacDI;
 using Application.DTOs;
 using Application.DTOs.BusinessDtos;
 using Application.Helpers;
@@ -17,6 +18,7 @@ namespace Application.Services.Interfaces
         Task<SuccessResponse<BusinessMessageSettings>> GetByBusinessId(Guid businessGuid);
         Task<SuccessResponse<bool>> ProcessUpdate(BusinessMessageSettings model);
         Task<bool> ProcessTestCounter(Guid id);
-        Task<string> GenerateBusinessWebHook(Guid businessId);
+        //Task<string> GetBusinessWebHook(Guid businessId);
+        //Task<string> GetWebhookApiKey();
     }
 }

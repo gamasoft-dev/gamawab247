@@ -1,4 +1,5 @@
 ﻿using System;
+using Application.AutofacDI;
 using Application.Exceptions;
 using Application.Helpers;
 using Application.Services.Interfaces;

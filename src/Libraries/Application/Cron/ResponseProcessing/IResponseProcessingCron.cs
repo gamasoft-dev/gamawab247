@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Application.AutofacDI;
 using Application.Helpers;
 using Domain.Entities;
 

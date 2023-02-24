@@ -1,4 +1,5 @@
 ﻿using Application.Helpers;
+using Application.AutofacDI;
 
 namespace Application.Services.Interfaces.FormProcessing
 {

@@ -1,4 +1,5 @@
 ﻿using Application.DTOs;
+using Application.Helpers;
 using Application.Services.Interfaces;
 using Domain.Common;
 using Microsoft.Extensions.Options;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Helpers
+namespace Application.Services.Implementations
 {
     public class WebHookRegistrationHelper : IWebHookRegistrationHelper
     {
@@ -25,10 +26,11 @@ namespace Application.Helpers
                 throw new RestException(System.Net.HttpStatusCode.BadRequest, "Parameter cannot be empty");
 
             const string endpoint = "v1/configs/webhook";
-            var url = $"{_dialog360Settings.BaseUrl}/{endpoint}";
+			//var url = $"{_dialog360Settings.BaseUrl}/{endpoint}";
+			var url = $"{webHookUrl}/{endpoint}";
 
-            //  retrieve api key from business settings.
-            IDictionary<string, string> dictNew = new Dictionary<string, string>();
+			//  retrieve api key from business settings.
+			IDictionary<string, string> dictNew = new Dictionary<string, string>();
             dictNew.Add(_dialog360Settings?.AuthorizationName, apiKey);
 
             var header = new RequestHeader(dictNew);

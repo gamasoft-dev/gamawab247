@@ -1,4 +1,6 @@
-﻿namespace ApiCustomization.Common
+﻿using Application.Exceptions;
+
+namespace ApiCustomization.Common
 {
     public class ApiContentIntegrationFactory: IApiContentIntegrationFactory
     {

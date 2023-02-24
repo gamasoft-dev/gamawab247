@@ -82,7 +82,7 @@ namespace Gamasoft.Worker.Cron.BusinessConfigs
             };
 
             var httpResult = await _httpService.Post<DialogWebhookConfigDto, DialogWebhookConfigDto>
-                (url: url, header: header, request: configDto);
+                (url, header: header, request: configDto);
 
             return httpResult;
         }

@@ -10,4 +10,11 @@ namespace Application.DTOs
     {
         public string url { get; set; }
     }
+
+	//public class WebhookResponseDto
+	//{
+	//	public T Data { get; set; }
+	//	public int Status { get; set; }
+	//	public string Message { get; set; }
+	//}
 }

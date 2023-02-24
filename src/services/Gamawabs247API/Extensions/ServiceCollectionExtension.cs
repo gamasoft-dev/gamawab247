@@ -186,40 +186,68 @@ namespace API.Extensions
 
         public static void ConfigureSwagger(this IServiceCollection services)
         {
-            services.AddSwaggerGen(c =>
-            {
-                c.OperationFilter<RemoveVersionFromParameter>();
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer",
-                    BearerFormat = "JWT",
-                    In = ParameterLocation.Header,
-                    Description = "JWT Authorization header using the Bearer scheme."
-                });
+			//services.AddSwaggerGen(c =>
+			//{
+			//    c.OperationFilter<RemoveVersionFromParameter>();
+			//    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+			//    {
+			//        Name = "Authorization",
+			//        Type = SecuritySchemeType.ApiKey,
+			//        Scheme = "Bearer",
+			//        BearerFormat = "JWT",
+			//        In = ParameterLocation.Header,
+			//        Description = "JWT Authorization header using the Bearer scheme."
+			//    });
 
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                          new OpenApiSecurityScheme
-                            {
-                                Reference = new OpenApiReference
-                                {
-                                    Type = ReferenceType.SecurityScheme,
-                                    Id = "Bearer"
-                                }
-                            },
-                            new string[] {}
-                    }
-                });
+			//    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+			//    {
+			//        {
+			//              new OpenApiSecurityScheme
+			//                {
+			//                    Reference = new OpenApiReference
+			//                    {
+			//                        Type = ReferenceType.SecurityScheme,
+			//                        Id = "Bearer"
+			//                    }
+			//                },
+			//                new string[] {}
+			//        }
+			//    });
 
-                // TODO: Fix the Docker error on this
-                // var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                // var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                // c.IncludeXmlComments(xmlPath);
-            });
-        }
+			//    // TODO: Fix the Docker error on this
+			//    // var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+			//    // var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+			//    // c.IncludeXmlComments(xmlPath);
+			//});
+			services.AddSwaggerGen(option =>
+			{
+				
+				option.OperationFilter<RemoveVersionFromParameter>();
+				option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+				{
+					In = ParameterLocation.Header,
+					Description = "enter a valid token",
+					Name = "Authorization",
+					Type = SecuritySchemeType.Http,
+					BearerFormat = "JWT",
+					Scheme = "Bearer"
+				});
+				option.AddSecurityRequirement(new OpenApiSecurityRequirement
+				{
+					{
+						new OpenApiSecurityScheme
+						{
+							Reference = new OpenApiReference
+							{
+								Type=ReferenceType.SecurityScheme,
+								Id="Bearer"
+							}
+						},
+						new string[]{}
+					}
+				});
+			});
+		}
 
         public static void ConfigureGlobalization(this IServiceCollection services)
         {

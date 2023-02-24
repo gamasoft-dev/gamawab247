@@ -124,6 +124,7 @@ namespace Application.Services.Implementations
                 throw new RestException(System.Net.HttpStatusCode.NotFound, ResponseMessages.Failed);
             }
             _repositoryIndustry.Remove(industry);
+            await _repositoryIndustry.SaveChangesAsync();
 
             return new SuccessResponse<bool>
             {

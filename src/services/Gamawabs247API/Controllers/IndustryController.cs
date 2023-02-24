@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Application.Helpers;
+using Domain.Entities.Identities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -49,8 +50,9 @@ namespace API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id}", Name = nameof(GetIndustryById))]
+        [HttpGet("{id}", Name = "GetIndustryById")]
         [ProducesResponseType(typeof(SuccessResponse<IndustryDto>),200)]
+        [Authorize]
         public async Task<IActionResult> GetIndustryById(Guid id)
         {
             try
@@ -71,13 +73,13 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(SuccessResponse<IndustryDto>), (int)HttpStatusCode.Created)]
-        [Authorize]//for admin usage
+        [Authorize(Roles = "ADMIN")]//for admin usage
         public async Task<IActionResult> Post([FromBody] CreateIndustryDto dto)
         {
             try
             {
                 var result = await _industryService.CreateIndustry(dto);
-                return CreatedAtAction(nameof(GetIndustryById), new { }, result.Data.Id);
+                return CreatedAtRoute(nameof(GetIndustryById), new { id = result.Data.Id },dto );
             }
             catch (Exception ex)
             {
@@ -95,7 +97,7 @@ namespace API.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(SuccessResponse<IndustryDto>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(SuccessResponse<IndustryDto>), (int)HttpStatusCode.BadRequest)]
-        [Authorize]//for admin usage
+        [Authorize(Roles = "ADMIN")]//for admin usage
         public async Task<IActionResult> Put(Guid id,[FromBody] UpdateIndustryDto dto)
         {
             try
@@ -118,7 +120,7 @@ namespace API.Controllers
         // DELETE api/<IndustryController>/5
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(SuccessResponse<bool>), (int)HttpStatusCode.OK)]
-        [Authorize]//for admin usage
+        [Authorize(Roles = "ADMIN")]//for admin usage
         public async Task<IActionResult> Delete(Guid id)
         {
             try

@@ -1,9 +1,10 @@
 ﻿using Application.DTOs;
-using Application.Helpers;
+using Application.AutofacDI;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Application.Helpers;
 
 namespace Application.Services.Interfaces
 {

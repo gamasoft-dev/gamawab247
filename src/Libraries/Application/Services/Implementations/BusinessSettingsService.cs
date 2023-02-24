@@ -26,11 +26,11 @@ namespace Application.Services.Implementations
         private readonly ISystemSettingsService _systemSettingService;
         private readonly IBusinessService _businessService;
         private readonly IWebHookRegistrationHelper _webHookRegistrationHelper;
-        private SystemSettingsConfig _configuration;
+        private readonly Dialog360Settings _configuration;
 
         public BusinessSettingsService(IRepository<BusinessMessageSettings> businessMessageSettingsRepository,
             ISystemSettingsService systemSettingService,
-            IOptions<SystemSettingsConfig> options,
+            IOptions<Dialog360Settings> options,
             IMapper mapper, ILogger<BusinessSettingsService> logger,
             IBusinessService businessService,
             IWebHookRegistrationHelper webHookRegistrationHelper)
@@ -43,7 +43,7 @@ namespace Application.Services.Implementations
             _businessService = businessService;
             _webHookRegistrationHelper = webHookRegistrationHelper;
         }
-
+         
         public async Task<SuccessResponse<BusinessMessageSettings>> ProcessCreateBusinessSetting(Guid id, CreateBusinessSetupDto dto)
         {
             if (dto == null || id == Guid.Empty) throw new RestException(HttpStatusCode.BadRequest, "one/more request parameter were not met");
@@ -71,7 +71,8 @@ namespace Application.Services.Implementations
             model.BusinessId = id;
 
             // generate business webhook after business addition
-            model.WebhookUrl = await GenerateBusinessWebHook(id);
+            model.WebhookUrl = _configuration.BaseUrl;
+            model.ApiKey = _configuration.AuthorizationName;
 
             await _businessMessageSettingsRepository.AddAsync(model);
             await _businessMessageSettingsRepository.SaveChangesAsync();
@@ -178,18 +179,38 @@ namespace Application.Services.Implementations
 
        // Generate webhook for businesses.
        // TODO: Use app settings to retrieve base url.
-       public async Task<string> GenerateBusinessWebHook(Guid businessId)
-       {
-           var baseWebhook = await _systemSettingService.GetSystemSettings();
+  //     public async Task<string> GetBusinessWebHook(Guid businessId)
+  //     {
+  //          //var baseWebhook = await _systemSettingService.GetSystemSettings();
 
-           if (businessId == Guid.Empty)
-               throw new RestException(HttpStatusCode.Conflict, "The business Id cannot be empty");
+  //          //if (businessId == Guid.Empty)
+  //          //    throw new RestException(HttpStatusCode.Conflict, "The business Id cannot be empty");
 
-           if (baseWebhook is null)
-               throw new RestException(HttpStatusCode.PreconditionFailed, "Base webhook system settings not configured");
+  //          //if (baseWebhook is null)
+  //          //    throw new RestException(HttpStatusCode.PreconditionFailed, "Base webhook system settings not configured");
 
-           var businessWebHook = $"{baseWebhook.Data.BaseWebhook}/{businessId}/message";
-           return businessWebHook;
-       }
-    }
+  //          //var businessWebHook = $"{baseWebhook.Data.BaseWebhook}/{businessId}/message";
+  //          //return businessWebHook;
+  //          var baseWebhook = _configuration.BaseUrl;
+		//	if (businessId == Guid.Empty)
+		//	    throw new RestException(HttpStatusCode.Conflict, "The business Id cannot be empty");
+
+		//	if (baseWebhook is null)
+		//	    throw new RestException(HttpStatusCode.PreconditionFailed, "Base webhook system settings not configured");
+
+		//	var businessWebHook = $"{baseWebhook}/{businessId}/message";
+		//	    return businessWebHook;
+		//}
+
+		//public Task<string> GetWebhookApiKey()
+		//{
+		//	var baseWebhookApiKey = _configuration.AuthorizationName;
+	
+		//	if (baseWebhookApiKey is null)
+		//		throw new RestException(HttpStatusCode.PreconditionFailed, "Base webhook system settings not configured");
+
+			
+		//	return Task.FromResult(baseWebhookApiKey);
+		//}
+	}
 }

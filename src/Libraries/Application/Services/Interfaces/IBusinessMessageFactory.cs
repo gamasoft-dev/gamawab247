@@ -1,5 +1,5 @@
 using Application.DTOs.CreateDialogDtos;
-using Application.Helpers;
+using Application.AutofacDI;
 
 namespace Application.Services.Interfaces;
 

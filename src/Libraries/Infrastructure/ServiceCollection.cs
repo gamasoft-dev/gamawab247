@@ -20,13 +20,16 @@ namespace Infrastructure
             services.AddScoped<IUserActivityRepository, UserActivityRepository>();
             services.AddScoped<IMessageLogRepository, MessageLogRepository>();
             services.AddScoped<IWhatsappUserRepository, WhatsappUserRepository>();
+            
 
         }
 
         public static void AddHttpClientInfrastructure(this IServiceCollection services)
         {
+			services.AddTransient<IHttpService, HttpService>();
             services.AddHttpClient<IHttpService, HttpService>()
                 .AddPolicyHandler(GetPollyPolicy());
+
         }
 
         /// <summary>

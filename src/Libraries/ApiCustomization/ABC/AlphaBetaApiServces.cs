@@ -8,7 +8,9 @@ public class AlphaBetaApiServces : IApiContentRetrievalService
 {
     public string ApiProcessIndentifier => "ABC_CARD_HOLDER_API_INFO";
 
-    private readonly IHttpClientFactory httpClientFactory;
+	public string PartnerApiProcessIndentifier => throw new NotImplementedException();
+
+	private readonly IHttpClientFactory httpClientFactory;
     private readonly AlphaBetaConfig alphaBetaConfig;
 
     public AlphaBetaApiServces(IHttpClientFactory httpClientFactory,

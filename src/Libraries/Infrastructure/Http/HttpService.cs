@@ -15,12 +15,13 @@ namespace Application.Services.Implementations
 {
 	public class HttpService: IHttpService
     {
-        private readonly IHttpClientFactory httpClientFactory;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         public HttpService(IHttpClientFactory httpClientFactory)
         {
-            this.httpClientFactory = httpClientFactory;
+            _httpClientFactory = httpClientFactory;
         }
+   
 
         /// <summary>
         /// Generic post request using restsharp
@@ -36,7 +37,7 @@ namespace Application.Services.Implementations
         {
             try
             {
-                var client = httpClientFactory.CreateClient();
+                var client = _httpClientFactory.CreateClient();
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -87,7 +88,7 @@ namespace Application.Services.Implementations
         /// <returns></returns>
         public async Task<HttpMessageResponse<TResponse>> Get<TResponse>(string url, RequestHeader  header, IDictionary<string, object> parameters = null)
         {
-            var client = httpClientFactory.CreateClient();
+            var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
