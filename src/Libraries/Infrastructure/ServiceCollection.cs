@@ -26,9 +26,10 @@ namespace Infrastructure
 
         public static void AddHttpClientInfrastructure(this IServiceCollection services)
         {
-			services.AddTransient<IHttpService, HttpService>();
-            services.AddHttpClient<IHttpService, HttpService>()
-                .AddPolicyHandler(GetPollyPolicy());
+            services.AddScoped<IHttpService, HttpService>();
+
+            services.AddHttpClient("GamaWabsAPI")
+                    .AddPolicyHandler(GetPollyPolicy("GamaWabsAPI"));
 
         }
 
@@ -36,15 +37,18 @@ namespace Infrastructure
         /// Polly configuration for resilient http calls
         /// </summary>
         /// <returns></returns>
-        private static AsyncRetryPolicy<HttpResponseMessage> GetPollyPolicy()
+        private static AsyncRetryPolicy<HttpResponseMessage> GetPollyPolicy(string name)
         {
             // Create the retry policy we want
-            var retryPolicy = HttpPolicyExtensions
+            return HttpPolicyExtensions
                             .HandleTransientHttpError() // HttpRequestException, 5XX and 408
-                            .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(retryAttempt));
+                            .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(retryAttempt),
+                            onRetryAsync: (dr, ts) =>
+                            {
+                                Console.WriteLine($"Retrying call to api for service name {name}");
+                                return Task.CompletedTask;
+                            } );
 
-            return retryPolicy;
         }
-
     }
 }

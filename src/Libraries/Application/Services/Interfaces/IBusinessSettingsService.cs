@@ -16,7 +16,7 @@ namespace Application.Services.Interfaces
             int? take = int.MaxValue);
         Task DeleteBusinessById(Guid id);
         Task<SuccessResponse<BusinessMessageSettings>> GetByBusinessId(Guid businessGuid);
-        Task<SuccessResponse<bool>> ProcessUpdate(BusinessMessageSettings model);
+        Task<SuccessResponse<bool>> Update(BusinessMessageSettings model);
         Task<bool> ProcessTestCounter(Guid id);
         //Task<string> GetBusinessWebHook(Guid businessId);
         //Task<string> GetWebhookApiKey();

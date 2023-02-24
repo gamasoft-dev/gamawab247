@@ -50,8 +50,8 @@ namespace Application.Services.Implementations
             BusinessDto createdBusinessDto = null;
             try
             {
-                if(businessDto==null || string.IsNullOrEmpty(businessDto.Name) || string.IsNullOrEmpty(businessDto.AvatarUrl))
-                    throw new RestException(HttpStatusCode.BadRequest, ResponseMessages.PayLoadCannotBeNull);
+                if(businessDto==null || string.IsNullOrEmpty(businessDto.Name))
+                    throw new RestException(HttpStatusCode.BadRequest, "Business payload or business name cannot be ");
 
                 //Check for existing business..
                 var getBusiness = await _businessRepository.FirstOrDefault(p=>p.Email == businessDto.BusinessAdminEmail);
@@ -85,7 +85,7 @@ namespace Application.Services.Implementations
                 business.CreatedById = WebHelper.UserId;
                 business.AdminUserId = user.Id;
 
-                var create = _businessRepository.AddAsync(business);
+                await _businessRepository.AddAsync(business);
 
                 createdBusinessDto = _mapper.Map<BusinessDto>(business);
                 createdBusinessDto.AdminFirstName = user?.FirstName;

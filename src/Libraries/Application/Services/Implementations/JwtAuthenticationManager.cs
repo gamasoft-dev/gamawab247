@@ -58,18 +58,18 @@ namespace Application.Services.Implementations
             claims.AddRange(roleClaims);
 
             var nowUtc = DateTimeOffset.UtcNow;
-            var expires = nowUtc.AddMinutes(_jwtConfigSettings.TokenLifespan);
+            var expires = nowUtc.AddHours(_jwtConfigSettings.TokenLifespan);
             var centuryBegins = new DateTime(1970, 1, 1).ToUniversalTime();
             var exp = (long)new TimeSpan(expires.Ticks - centuryBegins.Ticks).TotalSeconds;
             var now = (long)new TimeSpan(nowUtc.Ticks - centuryBegins.Ticks).TotalSeconds;
 
             var payload = new JwtPayload
             {
-                {"Id", user.Id},
+                {"userId", user.Id},
                 {"issuer", _jwtConfigSettings.ValidIssuer},
                 {"iat", now},
                 {"exp", exp},
-                {"unique_name", user.Email},
+                {"unique_name", user.UserName},
                 {"email", user.Email},
                 {"fullName", $"{user.FirstName} {user.LastName}"},
                 {"businessId", user.BusinessId},
