@@ -1,6 +1,7 @@
 ﻿using Application.Helpers;
 using Gamasoft._360WebhookConfig.Middlewares;
 using Gamasoft._360WebhookConfig.ServiceExtension;
+using Infrastructure;
 using Infrastructure.Data.DbContext;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,6 +39,7 @@ namespace Gamasoft._360WebhookConfig
             services.AddHttpContextAccessor();
             services.ConfigureRepositoryManager();
             services.ConfigureIOObjects(Configuration);
+            services.AddHttpClientInfrastructure();
             services.AddControllers()
                 .AddXmlDataContractSerializerFormatters();
             services.ConfigureMvcAndAutomapper();

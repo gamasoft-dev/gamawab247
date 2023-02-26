@@ -29,15 +29,7 @@ namespace Gamasoft.Worker.Cron.BusinessConfigs
             _dialog360Settings = options.Value;
         }
 
-        async void UpdateBusinessSetupConfigStatus(BusinessMessageSettings businessMessageSettings)
-        {
-            if (businessMessageSettings is null)
-                throw new RestException(HttpStatusCode.BadGateway, ResponseMessages.PayLoadCannotBeNull);
-
-            businessMessageSettings.IsWebhookConfigured = true;
-            businessMessageSettings.UpdatedAt = DateTime.UtcNow;
-            await _businessSetup.SaveChangesAsync();
-        }
+        
 
         async Task<List<BusinessMessageSettings>> GetAllUnConfiguredBusinesses()
         {
@@ -52,7 +44,7 @@ namespace Gamasoft.Worker.Cron.BusinessConfigs
             {
                 if (!string.IsNullOrWhiteSpace(item.ApiKey))
                 {
-                    var response = await HttpProcessTo360Dialog(item.BusinessId, item.ApiKey);
+                    var response = await HttpProcessTo360Dialog(item);
                     if (response.Data is not null)
                     {
                         //update the config to true.
@@ -62,7 +54,7 @@ namespace Gamasoft.Worker.Cron.BusinessConfigs
             }
         }
 
-        async Task<HttpMessageResponse<DialogWebhookConfigDto>> HttpProcessTo360Dialog(Guid businessId, string apiKey)
+        async Task<HttpMessageResponse<DialogWebhookConfigDto>> HttpProcessTo360Dialog(BusinessMessageSettings settings)
         {
             if (_dialog360Settings is null)
                 throw new RestException(System.Net.HttpStatusCode.InternalServerError,
@@ -72,19 +64,33 @@ namespace Gamasoft.Worker.Cron.BusinessConfigs
             var url = $"{_dialog360Settings.BaseUrl}/{endpoint}";
 
             IDictionary<string, string> dictNew = new Dictionary<string, string>();
-            dictNew.Add(key: _dialog360Settings?.AuthorizationName, apiKey);
+
+            if (_dialog360Settings is null || string.IsNullOrEmpty(_dialog360Settings?.AuthorizationName))
+                throw new RestException(HttpStatusCode.InternalServerError, "Dialog Settings config not set");
+
+            dictNew.Add(key: _dialog360Settings.AuthorizationName, settings.ApiKey);
 
             var header = new RequestHeader(dictNew);
 
             var configDto = new DialogWebhookConfigDto
             {
-                Url = $"{_systemSettings.AppBaseUrl}/api/v1/business/{businessId}/message"
+                Url = settings?.WebhookUrl
             };
 
             var httpResult = await _httpService.Post<DialogWebhookConfigDto, DialogWebhookConfigDto>
-                (url: url, header: header, request: configDto);
+                (fullUrl: url, header: header, request: configDto);
 
             return httpResult;
+        }
+
+        async void UpdateBusinessSetupConfigStatus(BusinessMessageSettings businessMessageSettings)
+        {
+            if (businessMessageSettings is null)
+                throw new RestException(HttpStatusCode.BadGateway, ResponseMessages.PayLoadCannotBeNull);
+
+            businessMessageSettings.IsWebhookConfigured = true;
+            businessMessageSettings.UpdatedAt = DateTime.UtcNow;
+            await _businessSetup.SaveChangesAsync();
         }
     }
 }

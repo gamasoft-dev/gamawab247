@@ -8,6 +8,7 @@ using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Http;
 using Application.Helpers;
 using Gamasoft.Worker.ServiceExtension;
+using Infrastructure;
 
 namespace Gamasoft.Worker
 {
@@ -39,6 +40,8 @@ namespace Gamasoft.Worker
             services.AddAuthentication();
             services.AddHttpContextAccessor();
             services.ConfigureRepositoryManager();
+            services.AddRepositories();
+            services.AddHttpClientInfrastructure();
             services.ConfigureIOObjects(Configuration);
             services.AddControllers()
                 .AddXmlDataContractSerializerFormatters();
