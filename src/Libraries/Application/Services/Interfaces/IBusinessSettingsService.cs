@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Application.AutofacDI;
 using Application.DTOs;
 using Application.DTOs.BusinessDtos;
 using Application.Helpers;

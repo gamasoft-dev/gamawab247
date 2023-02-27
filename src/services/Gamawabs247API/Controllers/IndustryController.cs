@@ -77,7 +77,7 @@ namespace API.Controllers
             try
             {
                 var result = await _industryService.CreateIndustry(dto);
-                return CreatedAtAction(nameof(GetIndustryById), new { }, result.Data.Id);
+                return CreatedAtAction(nameof(GetIndustryById), new { id = result.Data.Id },dto);
             }
             catch (Exception ex)
             {

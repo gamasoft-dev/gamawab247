@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.AutofacDI;
 using Application.DTOs;
 using Application.Helpers;
 using Microsoft.AspNetCore.Mvc;

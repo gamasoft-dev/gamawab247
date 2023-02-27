@@ -1,6 +1,7 @@
 ﻿using Application.DTOs;
 using Application.Services.Interfaces;
 using Domain.Common;
+using Infrastructure.Http;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;

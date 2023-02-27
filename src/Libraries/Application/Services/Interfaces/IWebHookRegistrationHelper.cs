@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Application.AutofacDI;
+using System.Threading.Tasks;
 
 namespace Application.Helpers
 {

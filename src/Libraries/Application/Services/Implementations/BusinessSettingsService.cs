@@ -15,6 +15,7 @@ using Infrastructure.Repositories.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace Application.Services.Implementations
 {
@@ -81,7 +82,7 @@ namespace Application.Services.Implementations
             return new SuccessResponse<BusinessMessageSettings>
             {
                 Data = businessSetting.Data,
-                Message = ResponseMessages.CreationSuccessResponse
+				Message = ResponseMessages.CreationSuccessResponse
             };
         }
 

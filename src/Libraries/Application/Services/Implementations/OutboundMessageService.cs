@@ -15,6 +15,7 @@ using Domain.Enums;
 using Domain.Entities.FormProcessing;
 using System;
 using Domain.Common;
+using Infrastructure.Http;
 
 // TODO: Complete and resolve errors around message log integration on message sending.
 namespace Application.Services.Implementations

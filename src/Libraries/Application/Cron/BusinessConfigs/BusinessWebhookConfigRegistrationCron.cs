@@ -3,7 +3,7 @@ using Application.Helpers;
 using Application.Services.Interfaces;
 using Domain.Common;
 using Domain.Entities;
-using Domain.Exceptions;
+using Infrastructure.Http;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;

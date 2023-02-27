@@ -3,6 +3,7 @@ using Application.Helpers;
 using Application.Services.Interfaces;
 using Domain.Common;
 using Domain.Entities;
+using Infrastructure.Http;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -78,7 +79,7 @@ namespace Gamasoft.Worker.Cron.BusinessConfigs
             };
 
             var httpResult = await _httpService.Post<DialogWebhookConfigDto, DialogWebhookConfigDto>
-                (fullUrl: url, header: header, request: configDto);
+                (url, header: header, request: configDto);
 
             return httpResult;
         }

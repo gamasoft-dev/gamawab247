@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Application.Services.Implementations;
-using Application.Services.Interfaces;
+using Infrastructure.Http;
 using Infrastructure.Repositories.Implementations;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.Extensions.DependencyInjection;

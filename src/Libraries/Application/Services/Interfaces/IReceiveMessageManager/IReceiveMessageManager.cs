@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Application.AutofacDI;
 using Application.DTOs;
 using Application.DTOs.InboundMessageDto;
 using Application.Helpers;

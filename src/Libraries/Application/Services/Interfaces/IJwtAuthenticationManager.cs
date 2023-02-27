@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Application.AutofacDI;
 using Application.Helpers;
 using Application.Services.Implementations;
 using Domain.Entities.Identities;

@@ -1,4 +1,5 @@
-﻿using Application.Helpers;
+﻿using Application.AutofacDI;
+using Application.Helpers;
 using System.Threading.Tasks;
 
 namespace Application.Cron
@@ -7,4 +8,8 @@ namespace Application.Cron
     {
         Task ProcessGamaSoftBusinessConfigurationTo360();
     }
+
+	//public interface IAutoDependencyService
+	//{
+	//}
 }

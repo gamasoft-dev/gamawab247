@@ -21,7 +21,7 @@ namespace Application.DTOs.BusinessDtos
     {
         internal string WebhookUrl { get; set; }
         public string ApiKey { get; set; }
-        public int TestCounter { get; set; }
+        public int TestCounter { get; set; } = 3;
         internal Guid BusinessId { get; set; }
         public string BotName { get; set; }
         public string BotDescription { get; set; }

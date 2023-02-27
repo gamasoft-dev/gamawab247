@@ -160,7 +160,7 @@ namespace Application.Services.Implementations
             if (string.IsNullOrEmpty(email))
                 throw new RestException(HttpStatusCode.BadRequest, "Validation failed for business owner id");
 
-            var business = await Task.FromResult(_businessRepository.Query(x => x.Email == email));
+            var business =  _businessRepository.Query(x => x.Email == email);
             var businessResponse = _mapper.ProjectTo<BusinessDto>(business);
 
             return new SuccessResponse<IEnumerable<BusinessDto>>
