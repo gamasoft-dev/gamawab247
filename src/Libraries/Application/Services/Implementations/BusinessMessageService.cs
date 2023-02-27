@@ -115,6 +115,7 @@ public class BusinessMessageService
        
         var bizMessage = _mapper.Map<BusinessMessage>(model);
         var textBizMessage = _mapper.Map<TextMessage>(model);
+        textBizMessage.Body = textBizMessage.Body.WordWrapContent();
 
         await _businessMessageRepo.AddAsync(bizMessage);
         textBizMessage.BusinessMessageId = bizMessage.Id;

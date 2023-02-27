@@ -6,16 +6,13 @@ namespace Application.DTOs.CreateDialogDtos;
 public class ListMessageDto : BaseInteractiveDto
 {
     // intentionally hide the inherited member of the base class that is not needed.
-    private ButtonActionDto ButtonAction { get; set; }
-    private int NextMessagePosition { get; set; }
+    private new ButtonActionDto ButtonAction { get; set; }
 }
 
 public class CreateListMessageDto: BaseCreateMessageDto
 {
     // this would hid the ButtonAction member of the base class.
-    private  ButtonActionDto ButtonAction { get; set; }
-    private Guid BusinessMessageId { get; set; }
-    private Guid BusinessId { get; set; }
+    private new ButtonActionDto ButtonAction { get; set; }
 }
 
 #region Value Objects
@@ -28,6 +25,7 @@ public class ListActionDto
 public class SectionDto
 {
     public string Title { get; set; }
+    public string Description { get; set; }
     public List<RowDto> Rows { get; set; }
 }
 

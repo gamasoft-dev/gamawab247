@@ -16,14 +16,6 @@ namespace Application.Mapper.Interactive_Message
                 
             CreateMap<BaseCreateMessageDto, ListMessage>();
             CreateMap<ListMessage, BaseInteractiveDto>().ReverseMap();
-
-            CreateMap<CreateListMessageDto, ListMessage>()
-                .ForMember(dest => dest.BusinessMessageId,
-                    opt => opt.MapFrom(src => src.BusinessMessageId));
-            
-            CreateMap<UpdateListMessageDto, ListMessage>()
-                .ForMember(dest => dest.BusinessMessageId,
-                    opt => opt.MapFrom(src => src.BusinessMessageId)).ReverseMap();
             
             CreateMap<ListMessageDto, ListMessage>().ReverseMap();
 
@@ -41,6 +33,7 @@ namespace Application.Mapper.Interactive_Message
             {
                 dest.Id = Guid.NewGuid().ToString();
                 dest.NextMessagePosition = src.NextBusinessMessagePosition;
+                
             });
             CreateMap<Row, RowDto>().AfterMap((src, dest) =>
             {

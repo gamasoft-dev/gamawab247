@@ -8,7 +8,7 @@ namespace Application.DTOs.OutboundMessageRequests
 {
     
     /// <summary>
-    /// This is the shape of the actual reply button based request sent to facebook.
+    /// This is the shape of the actual reply button base request sent to facebook.
     /// other properties are contained in the interactive base class
     /// </summary>
     public class ReplyButtonMessageRequest: InteractiveMessageBaseDto<ReplyButtonInteractiveDto>,
@@ -50,13 +50,14 @@ namespace Application.DTOs.OutboundMessageRequests
         [JsonPropertyName("id")]
         public string id { get; set; }
         [JsonPropertyName("title")]
+        // this should be a minimum of 2 characters and maximum of 20 characters
         public string title { get; set; }
     }
 
     public class ButtonDto
     {
         [JsonPropertyName("type")]
-        public string type { get; set; }
+        public string type { get; set; } = "button";
         public int NextBusinessMessagePosition { get; set; }
         [JsonPropertyName("reply")]
         public ReplyDto reply { get; set; }
