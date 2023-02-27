@@ -34,15 +34,6 @@ namespace Gamasoft._360WebhookConfig.ServiceExtension
             });
         }
 
-		public static void AddHttpClientInfrastructure(this IServiceCollection services)
-		{
-			services.AddScoped<IHttpService, HttpService>();
-
-			services.AddHttpClient("GamaWabsAPI")
-					.AddPolicyHandler(GetPollyPolicy("GamaWabsAPI"));
-
-		}
-
 		/// <summary>
 		/// Polly configuration for resilient http calls
 		/// </summary>

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Http;
 
-	public class HttpService: IHttpService
+public class HttpService: IHttpService
 {
     private readonly IHttpClientFactory httpClientFactory;
 
