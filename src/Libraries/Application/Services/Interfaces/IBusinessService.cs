@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.AutofacDI;
 using Application.DTOs.BusinessDtos;
 using Application.Helpers;
 using Domain.Entities;

@@ -1,4 +1,5 @@
-﻿using Application.Helpers;
+﻿using Application.AutofacDI;
+using Application.Helpers;
 using System;
 using System.Text.RegularExpressions;
 

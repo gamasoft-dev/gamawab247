@@ -1,3 +1,4 @@
+using Application.AutofacDI;
 using Application.DTOs.CreateDialogDtos;
 using Application.Helpers;
 

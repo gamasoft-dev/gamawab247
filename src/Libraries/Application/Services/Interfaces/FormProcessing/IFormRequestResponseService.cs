@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Application.AutofacDI;
 using Application.Helpers;
 using Domain.Entities.FormProcessing;
 

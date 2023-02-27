@@ -1,3 +1,4 @@
+using Application.AutofacDI;
 using Application.Helpers;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;

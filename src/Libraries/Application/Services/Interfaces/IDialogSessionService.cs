@@ -1,4 +1,5 @@
-﻿using Application.DTOs;
+﻿using Application.AutofacDI;
+using Application.DTOs;
 using Application.Helpers;
 using System;
 using System.Threading.Tasks;

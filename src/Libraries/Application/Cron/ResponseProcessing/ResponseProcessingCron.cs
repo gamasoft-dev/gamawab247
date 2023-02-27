@@ -32,7 +32,7 @@ public class ResponsePreProcessingCron : IResponsePreProcessingCron
     private readonly IUtilService _utilService;
     private readonly IFormRequestResponseService _formRequestResponseService;
     private readonly ISessionManagement _sessionManagement;
-    private readonly Application.Services.Interfaces.FormProcessing.IBusinessFormService _businessFormService;
+    private readonly IBusinessFormService _businessFormService;
     private List<BusinessMessageDto<BaseInteractiveDto>> _followUpMessagesWithContent = new();
     private readonly IDuplicateFIlterHelper _duplicateFIlterHelper;
 

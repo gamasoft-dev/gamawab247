@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Application.DTOs.CreateDialogDtos;
 using Domain.Entities;
 using Domain.Entities.FormProcessing;
+using Application.AutofacDI;
 
 namespace Application.Services.Interfaces
 {

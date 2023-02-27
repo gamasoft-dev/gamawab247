@@ -1,4 +1,5 @@
-﻿using Application.Common.Sessions;
+﻿using Application.AutofacDI;
+using Application.Common.Sessions;
 using Application.Cron.ResponseProcessing;
 using Application.DTOs;
 using Application.Helpers;

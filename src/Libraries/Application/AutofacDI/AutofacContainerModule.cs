@@ -4,7 +4,7 @@ using Autofac;
 using Infrastructure.Repositories.Implementations;
 using Infrastructure.Repositories.Interfaces;
 
-namespace Application.Helpers
+namespace Application.AutofacDI
 {
     public class AutofacContainerModule : Module
     {

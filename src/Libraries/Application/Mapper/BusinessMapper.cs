@@ -37,6 +37,7 @@ namespace Application.Mapper
             
             CreateMap<BusinessMessageSettings, CreateBusinessSetupDto>().ReverseMap();
             CreateMap<dynamic, TextNotificationDto>().ReverseMap();
+
         }
     }
 }
