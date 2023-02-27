@@ -4,6 +4,7 @@ using Application.DTOs.CreateDialogDtos;
 using Application.DTOs.InteractiveMesageDto;
 using Application.DTOs.InteractiveMesageDto.CreateMessageRequestDto;
 using Application.DTOs.OutboundMessageRequests;
+using Application.Helpers;
 using AutoMapper;
 using Domain.Entities.DialogMessageEntitties;
 using Domain.Entities.DialogMessageEntitties.ValueObjects;
@@ -18,7 +19,7 @@ namespace Application.Mapper.Interactive_Message
                 ReplyButtonMessage>().AfterMap((src,
                 dest) =>
             {
-                dest.Body = src?.MessageTypeObject?.Body;
+                dest.Body = src?.MessageTypeObject?.Body.WordWrapContent();
                 dest.Footer = src?.MessageTypeObject?.Footer;
                 dest.Header = src?.MessageTypeObject?.Header;
             });

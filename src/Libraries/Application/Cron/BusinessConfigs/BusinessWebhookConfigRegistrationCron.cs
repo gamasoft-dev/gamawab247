@@ -46,8 +46,7 @@ namespace Application.Cron
 
         async Task<List<BusinessMessageSettings>> GetAllUnConfiguredBusinesses()
         {
-            var businessSetups = await _businessSetup.Query(x => x.IsWebhookConfigured == false).ToListAsync();
-            return businessSetups;
+            return await _businessSetup.Query(x => x.IsWebhookConfigured == false).ToListAsync();    
         }
 
         public async Task ProcessGamaSoftBusinessConfigurationTo360()
@@ -57,34 +56,34 @@ namespace Application.Cron
             {
                 if (!string.IsNullOrWhiteSpace(businessMessageSetting.ApiKey))
                 {
-                    var response = await HttpProcessTo360Dialog(businessMessageSetting.BusinessId, businessMessageSetting.ApiKey);
+                    var response = await HttpProcessTo360Dialog(businessMessageSetting);
                     if (response.Data is not null)
                     {
                         //update the config to true.
-                        businessMessageSetting.WebhookUrl = response?.Data?.Url;
                         UpdateBusinessSetupConfigStatus(businessMessageSetting);
                     }
                 }
             }
         }
 
-        async Task<HttpMessageResponse<DialogWebhookConfigDto>> HttpProcessTo360Dialog(Guid businessId, string apiKey)
+        async Task<HttpMessageResponse<DialogWebhookConfigDto>> HttpProcessTo360Dialog(BusinessMessageSettings settings)
         {
-            if (_dialog360Settings is null)
-                throw new RestException(System.Net.HttpStatusCode.InternalServerError,
-                    "The enviroment variable for 360Dialog could not be retrieved from settings");
+            if (_dialog360Settings is null || string.IsNullOrEmpty(_dialog360Settings.AuthorizationName) ||
+                string.IsNullOrEmpty(_dialog360Settings.BaseUrl))
+                throw new BgBusinessConfigException("The enviroment variable for 360Dialog could not be retrieved or incorrectly configured." +
+                    " Make sure it has baseUrl, AuthorizationName keys and values");
 
             const string endpoint = "v1/configs/webhook";
             var url = $"{_dialog360Settings.BaseUrl}/{endpoint}";
 
             IDictionary<string, string> dictNew = new Dictionary<string, string>();
-            dictNew.Add(_dialog360Settings?.AuthorizationName, apiKey);
+            dictNew.Add(_dialog360Settings.AuthorizationName, settings.ApiKey);
 
             var header = new RequestHeader(dictNew);
 
             var configDto = new DialogWebhookConfigDto
             {
-                Url = $"{_systemSettings.AppBaseUrl}/api/v1/business/{businessId}/message"
+                Url = settings.WebhookUrl
             };
 
             var httpResult = await _httpService.Post<DialogWebhookConfigDto, DialogWebhookConfigDto>

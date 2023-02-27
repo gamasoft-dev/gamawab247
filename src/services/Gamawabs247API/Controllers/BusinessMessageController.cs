@@ -4,6 +4,7 @@ using Application.Helpers.InboundMessageHelper;
 using Application.Services.Interfaces;
 using AutoMapper;
 using Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -44,6 +45,13 @@ namespace API.Controllers
             _userService = userService;
         }
 
+        /// <summary>
+        /// This is the endpoint that receives messages from whatsapp api. (callback url per business)
+        /// This receives all the messages irrespective of the message type.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
         [HttpPost("{id}/message")]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.Created)]
         public async Task<IActionResult> ProcessMessage([FromRoute] Guid id, [FromBody] dynamic message)

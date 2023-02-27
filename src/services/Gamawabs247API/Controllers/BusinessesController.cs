@@ -17,6 +17,7 @@ using Domain.Enums;
 namespace API.Controllers
 {
     [ApiController]
+    [Authorize]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/business")]
     public partial class BusinessesController : ControllerBase
@@ -167,7 +168,6 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpPost("{id}/business-setup")]
         [ProducesResponseType(typeof(SuccessResponse<string>), 201)]
-        [ProducesResponseType(typeof(SuccessResponse<string>), 500)]
         [Authorize(Roles = "SUPERADMIN, ADMIN")]
         public async Task<IActionResult> CreateBusinessMessageSetup(Guid id, CreateBusinessSetupDto dto)
         {

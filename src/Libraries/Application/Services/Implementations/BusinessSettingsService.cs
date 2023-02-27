@@ -178,19 +178,17 @@ namespace Application.Services.Implementations
             return true;
         }
 
-       // Generate webhook for businesses.
-       // TODO: Use app settings to retrieve base url.
        public async Task<string> GenerateBusinessWebHook(Guid businessId)
        {
-           var baseWebhook = await _systemSettingService.GetSystemSettings();
+           var settings = await _systemSettingService.GetSystemSettings();
 
            if (businessId == Guid.Empty)
                throw new RestException(HttpStatusCode.Conflict, "The business Id cannot be empty");
 
-           if (baseWebhook is null)
+           if (settings is null)
                throw new RestException(HttpStatusCode.PreconditionFailed, "Base webhook system settings not configured");
 
-           var businessWebHook = $"{baseWebhook.Data.BaseWebhook}/{businessId}/message";
+           var businessWebHook = $"{settings.Data.BaseWebhook}/api/v1/business/{businessId}/message";
            return businessWebHook;
        }
     }

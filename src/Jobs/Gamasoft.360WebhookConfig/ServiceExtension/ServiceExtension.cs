@@ -76,10 +76,6 @@ namespace Gamasoft._360WebhookConfig.ServiceExtension
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
             });
-
-
-            //services.AddSingleton<IValidationLocalizerService, ValidationLocalizerService>();
-            //services.AddSingleton<IRestErrorLocalizerService, RestErrorLocalizerService>();
         }
 
         public static void ConfigureIisIntegration(this IServiceCollection services)
