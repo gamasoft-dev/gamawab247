@@ -7,6 +7,8 @@ namespace Application.DTOs.CreateDialogDtos
         public string Header { get; set; }
         public string Body { get; set; }
         public string Footer { get; set; }
+        public string KeyResponses { get; set; }
+        public bool IsResponsePermitted { get; set; }
 
         public int NextMessagePosition { get; set; }
     }
@@ -14,9 +16,9 @@ namespace Application.DTOs.CreateDialogDtos
     public class TextMessageDto: BaseInteractiveDto
     {
         // hide the members below.
-        private string ButtonMessage { get; set; }
-        private ListActionDto ListAction { get; set; }
-        public ButtonActionDto ButtonAction { get; set; }
+        private new ListActionDto ListAction { get; set; }
+       // public  string KeyResponses { get; set; }
+        private new ButtonActionDto ButtonAction { get; set; }
     }
 
     public class UpdateTextMessageDto: CreateTextMessageDto

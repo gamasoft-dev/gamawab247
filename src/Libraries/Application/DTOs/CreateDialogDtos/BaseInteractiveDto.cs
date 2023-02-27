@@ -15,12 +15,14 @@ public class BaseInteractiveDto
     /// <summary>
     /// Message associated with a button of a list
     /// </summary>
-    public virtual string ButtonMessage { get; set; }
     public virtual ListActionDto ListAction { get; set; }
     
     // text based interactive properties
-    internal string KeyResponses { get; set; }
-    internal bool IsResponsePermitted { get; set; }
-    public  virtual ButtonActionDto ButtonAction { get; set; }
+    internal virtual string KeyResponses { get; set; }
+    internal virtual bool IsResponsePermitted { get; set; }
+    /// <summary>
+    /// Message associated with a button of a list
+    /// </summary>
+    public virtual ButtonActionDto ButtonAction { get; set; }
     public virtual int NextMessagePosition { get; set; }
 }

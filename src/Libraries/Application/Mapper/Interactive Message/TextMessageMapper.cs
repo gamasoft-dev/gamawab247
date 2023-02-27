@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Application.DTOs.CreateDialogDtos;
 using Domain.Entities.DialogMessageEntitties;
+using Application.Helpers;
 
 namespace Application.Mapper.Interactive_Message
 {
@@ -30,8 +31,8 @@ namespace Application.Mapper.Interactive_Message
                 TextMessage>().AfterMap((src,
                 dest) =>
             {
-                dest.Body = src?.MessageTypeObject?.Body;
-                dest.Footer = src?.MessageTypeObject?.Footer;
+                dest.Body = src?.MessageTypeObject?.Body?.WordWrapContent();
+                dest.Footer = src?.MessageTypeObject?.Footer?.WordWrapContent();
                 dest.Header = src?.MessageTypeObject?.Header;
                 dest.NextMessagePosition = src?.MessageTypeObject?.NextMessagePosition ?? 0;
             });
@@ -40,20 +41,18 @@ namespace Application.Mapper.Interactive_Message
                 TextMessage>().AfterMap((src,
                 dest) =>
             {
-                dest.Body = src?.MessageTypeObject?.Body;
-                dest.Footer = src?.MessageTypeObject?.Footer;
+                dest.Body = src?.MessageTypeObject?.Body.WordWrapContent();
+                dest.Footer = src?.MessageTypeObject?.Footer.WordWrapContent();
                 dest.Header = src?.MessageTypeObject?.Header;
-                dest.NextMessagePosition = src?.MessageTypeObject?.NextMessagePosition ?? 0;
             });
             
             CreateMap<BaseCreateMessageDto,
                 TextMessage>().AfterMap((src,
                 dest) =>
             {
-                dest.Body = src?.Body;
+                dest.Body = src?.Body.WordWrapContent();
                 dest.Footer = src?.Footer;
                 dest.Header = src?.Header;
-                dest.NextMessagePosition = src?.NextMessagePosition ?? 0;
             });
         }
     }
