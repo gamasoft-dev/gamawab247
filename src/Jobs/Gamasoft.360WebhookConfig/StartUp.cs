@@ -51,8 +51,6 @@ namespace Gamasoft._360WebhookConfig
             };
 
             services.AddHostedService<Worker>();
-            //  services.AddHostedService<FormProcessorBgTask>();
-            services.AddHttpClientInfrastructure();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

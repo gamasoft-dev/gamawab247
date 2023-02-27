@@ -3,6 +3,7 @@ using Application.Helpers;
 using Application.Services.Interfaces;
 using Domain.Common;
 using Domain.Entities;
+using Domain.Exceptions;
 using Infrastructure.Http;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -54,14 +55,22 @@ namespace Application.Cron
             var businessMessageSettings = await GetAllUnConfiguredBusinesses();
             foreach (var businessMessageSetting in businessMessageSettings)
             {
-                if (!string.IsNullOrWhiteSpace(businessMessageSetting.ApiKey))
+                try
                 {
-                    var response = await HttpProcessTo360Dialog(businessMessageSetting);
-                    if (response.Data is not null)
+                    if (!string.IsNullOrWhiteSpace(businessMessageSetting.ApiKey))
                     {
-                        //update the config to true.
-                        UpdateBusinessSetupConfigStatus(businessMessageSetting);
+                        var response = await HttpProcessTo360Dialog(businessMessageSetting);
+                        if (response.Data is not null)
+                        {
+                            //update the config to true.
+                            UpdateBusinessSetupConfigStatus(businessMessageSetting);
+                        }
                     }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    continue;
                 }
             }
         }
@@ -85,9 +94,16 @@ namespace Application.Cron
             {
                 Url = settings.WebhookUrl
             };
-
-            var httpResult = await _httpService.Post<DialogWebhookConfigDto, DialogWebhookConfigDto>
-                (fullUrl: url, header: header, request: configDto);
+            HttpMessageResponse<DialogWebhookConfigDto> httpResult = null;
+            try
+            {
+               httpResult  = await _httpService.Post<DialogWebhookConfigDto, DialogWebhookConfigDto>
+                    (fullUrl: url, header: header, request: configDto);
+            }
+            catch (Exception ex)
+            {
+                throw new BgBusinessConfigException("An error occurred whilst making post call to 360Dialog to register webhook", ex);
+            }
 
             return httpResult;
         }
