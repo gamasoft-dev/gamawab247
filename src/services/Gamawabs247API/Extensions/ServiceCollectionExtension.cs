@@ -150,7 +150,7 @@ namespace API.Extensions
                     AbortOnConnectFail = false,
                     ConnectTimeout = 200000,
                     ConnectRetry = 10,
-                    Ssl = true,
+                    Ssl = false,
                     SslProtocols = System.Security.Authentication.SslProtocols.Tls12,
                     Password = config.Auth
                 };
