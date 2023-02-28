@@ -53,6 +53,7 @@ namespace API.Controllers
         /// <param name="message"></param>
         /// <returns></returns>
         [HttpPost("{id}/message")]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.Created)]
         public async Task<IActionResult> ProcessMessage([FromRoute] Guid id, [FromBody] dynamic message)
         {
