@@ -32,7 +32,7 @@ namespace BillProcessorAPI.Helpers
 
             foreach (var header in headers)
             {
-                httpClient.DefaultRequestHeaders.Add(name: header.Key, $"Bearer {config[header.Value]}");
+                httpClient.DefaultRequestHeaders.Add(name: header.Key, config[header.Value]);
             }
 
             return await httpClient.PostAsync(url, content);
