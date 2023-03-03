@@ -20,16 +20,18 @@ public class AplhaBetaBillHolderRetrievalService : IApiContentRetrievalService
     private readonly IPartnerService partnerService;
     private readonly IRepository<PartnerIntegrationDetails> partnerIntegrationRepo;
     private readonly IApiCustomizationUtil customizationUtil;
+    private readonly AlphaBetaConfig alphaBetaConfig;
 
     public AplhaBetaBillHolderRetrievalService(IHttpService httpService,
         IPartnerService partnerService,
         IRepository<PartnerIntegrationDetails> partnerIntegrationRepo,
-        IApiCustomizationUtil customizationUtil)
+        IApiCustomizationUtil customizationUtil, IOptions<AlphaBetaConfig> options)
     {
         this.httpService = httpService;
         this.partnerService = partnerService;
         this.partnerIntegrationRepo = partnerIntegrationRepo;
         this.customizationUtil = customizationUtil;
+        this.alphaBetaConfig = options.Value;
     }
 
     public async Task<string> RetrieveContent<TRequest>(string waId, TRequest request)
@@ -42,41 +44,10 @@ public class AplhaBetaBillHolderRetrievalService : IApiContentRetrievalService
         if (partnerConfigDetail is null)
             throw new BackgroundException($"No partner integration detail could be found base on this processor key {PartnerContentProcessorKey}");
 
-        var config = GetBetaConfig(partnerConfigDetail);
         // make call to api cald holder infor
 
 
         return billHolerSummaryInfo;
     }
-
-
-
-
-    // TODO: Create and Retrieve from a custom configSettings.json
-    private AlphaBetaConfig GetBetaConfig(PartnerIntegrationDetails partnerConfig)
-    {
-        if (partnerConfig is null)
-            throw new BackgroundException($"Partner details could not be found on the {PartnerContentProcessorKey} API-Partner-processor");
-
-        AlphaBetaConfig alphaBetaConfig = new AlphaBetaConfig();
-
-        alphaBetaConfig.BaseUrl = partnerConfig?.Configs?.FirstOrDefault(x => x.Key?.ToLower() == nameof(AlphaBetaConfig.BaseUrl).ToLower())?.Key;
-        if(alphaBetaConfig.BaseUrl is null)
-            throw new BackgroundException($"Partner details Base Url is empty on the {PartnerContentProcessorKey} API-Partner-processor");
-
-
-        alphaBetaConfig.ClientKey = partnerConfig?.Configs?.FirstOrDefault(x => x.Key?.ToLower() == nameof(AlphaBetaConfig.ClientKey).ToLower())?.Key;
-        if (alphaBetaConfig.ClientKey is null)
-            throw new BackgroundException($"Partner details Base Url is empty on the {PartnerContentProcessorKey} API-Partner-processor");
-
-
-        alphaBetaConfig.HolderVerificationEndpoint = partnerConfig?.Configs?.FirstOrDefault(x => x.Key?.ToLower() == nameof(AlphaBetaConfig.HolderVerificationEndpoint).ToLower())?.Key;
-        if (alphaBetaConfig.HolderVerificationEndpoint is null)
-            throw new BackgroundException($"Partner details Base Url is empty on the {PartnerContentProcessorKey} API-Partner-processor");
-
-        return alphaBetaConfig;
-
-    }
-
 }
 
