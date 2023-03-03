@@ -46,7 +46,7 @@ namespace ApiCustomization.ABC
             if (string.IsNullOrEmpty(billCode))
                 throw new BackgroundException($"User {waId} bill code not found");
 
-            return $"{alphaBetaConfig.BillCodePaymentPageLink}/{billCode}";
+            return $"{alphaBetaConfig.BillCodePaymentPageLink}/{billCode}/{waId}";
         }
     }
 }
