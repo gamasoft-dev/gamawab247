@@ -23,13 +23,13 @@ public class AplhaBetaBillHolderRetrievalService : IApiContentRetrievalService
         IPartnerService partnerService,
         IRepository<PartnerIntegrationDetails> partnerIntegrationRepo,
         IApiCustomizationUtil customizationUtil,
-        AlphaBetaConfig alphaBetaConfig)
+        IOptions<AlphaBetaConfig> options)
     {
         this.httpService = httpService;
         this.partnerService = partnerService;
         this.partnerIntegrationRepo = partnerIntegrationRepo;
         this.customizationUtil = customizationUtil;
-        this.alphaBetaConfig = alphaBetaConfig;
+        this.alphaBetaConfig = options.Value;
     }
 
     public async Task<string> RetrieveContent<TRequest>(string waId, TRequest request)
