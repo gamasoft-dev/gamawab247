@@ -9,7 +9,7 @@ using Microsoft.Extensions.Options;
 
 namespace ApiCustomization;
 
-public class AlphaBetaApiServces : IApiContentRetrievalService
+public class AplhaBetaBillHolderRetrievalService : IApiContentRetrievalService
 {
     public string PartnerContentProcessorKey => "ABC_CARD_HOLDER_API_INFO";
 
@@ -19,7 +19,7 @@ public class AlphaBetaApiServces : IApiContentRetrievalService
     private readonly IApiCustomizationUtil customizationUtil;
     private readonly AlphaBetaConfig alphaBetaConfig;
 
-    public AlphaBetaApiServces(IHttpService httpService,
+    public AplhaBetaBillHolderRetrievalService(IHttpService httpService,
         IPartnerService partnerService,
         IRepository<PartnerIntegrationDetails> partnerIntegrationRepo,
         IApiCustomizationUtil customizationUtil,
