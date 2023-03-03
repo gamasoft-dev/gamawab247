@@ -22,6 +22,22 @@ namespace Application.DTOs.BusinessDtos
         public List<BusinessFormResponseDto> ResponseProperty { get; set; }
     }
 
+    public class CreateBusinessFormDto
+    {
+        public EUrlMethodType UrlMethodType { get; set; } = EUrlMethodType.POST;
+        public string SubmissionUrl { get; set; }
+        public Guid BusinessId { get; set; }
+        public Guid? BusinessConversationId { get; set; }
+
+        /// <summary>
+        /// MessageType = Text, interactive{Button, list}
+        /// </summary>
+        /// <example>Button</example>
+        public EMessageType MessageType { get; set; } = EMessageType.Text;
+
+        public List<FormElement> FormProperty { get; set; }
+    }
+
     public class BusinessFormHeaderDto: KeyValueObj
     {
     }

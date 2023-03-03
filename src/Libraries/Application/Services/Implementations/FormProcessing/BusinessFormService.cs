@@ -34,7 +34,7 @@ namespace Application.Services.Implementations.FormProcessing
             _businessService = businessService;
         }
 
-        public async Task<SuccessResponse<BusinessFormDto>> CreateBusinessForm(BusinessFormDto model)
+        public async Task<SuccessResponse<BusinessFormDto>> CreateBusinessForm(CreateBusinessFormDto model)
         {
             if (model is null)
                 throw new RestException(HttpStatusCode.BadRequest, "One/More parameter could not be validated");

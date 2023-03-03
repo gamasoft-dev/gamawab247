@@ -29,7 +29,7 @@ namespace API.Controllers
 
         [HttpPost()]
         [ProducesResponseType(typeof(SuccessResponse<BusinessFormDto>), (int)HttpStatusCode.Created)]
-        public async Task<IActionResult> CreateBusinessForm(BusinessFormDto businessFormDto)
+        public async Task<IActionResult> CreateBusinessForm(CreateBusinessFormDto businessFormDto)
         {
             var create = await _businessFormService.CreateBusinessForm(businessFormDto);
             return Ok(create);

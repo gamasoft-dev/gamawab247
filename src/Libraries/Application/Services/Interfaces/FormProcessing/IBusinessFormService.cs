@@ -12,7 +12,7 @@ namespace Application.Services.Interfaces.FormProcessing
 {
     public interface IBusinessFormService : IAutoDependencyService
     {
-        Task<SuccessResponse<BusinessFormDto>> CreateBusinessForm(BusinessFormDto model);
+        Task<SuccessResponse<BusinessFormDto>> CreateBusinessForm(CreateBusinessFormDto model);
         Task<PagedResponse<IEnumerable<BusinessForm>>> GetAllBusinessFormByUserId(string search,
             string name, ResourceParameter parameter, IUrlHelper urlHelper);
         Task<SuccessResponse<BusinessForm>> GetBusinessFormByBusinessId(Guid businessId);

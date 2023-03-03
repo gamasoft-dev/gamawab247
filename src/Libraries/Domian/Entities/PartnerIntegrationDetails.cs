@@ -21,9 +21,6 @@ namespace Domain.Entities
         [Column(TypeName = "jsonb")]
         public List<KeyValueObj> Parameters { get; set; }
 
-        [Column(TypeName = "jsonb")]
-        public List<KeyValueObj> Configs { get; set; }
-
 		public string FullUrl { get; set; }
 		public string MetaData { get; set; }
 
