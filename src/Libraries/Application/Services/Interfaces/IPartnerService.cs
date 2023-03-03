@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.AutofacDI;
 using Application.DTOs.PartnerContentDtos;
 using Application.Helpers;
 using Domain.Entities;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Services.Interfaces
 {
@@ -11,13 +13,14 @@ namespace Application.Services.Interfaces
 	{
 		Task<SuccessResponse<PartnerDto>> Create(CreatePartnerDto model);
 
-        Task<SuccessResponse<PartnerDto>> Update(UpdatePartnerDto model);
+        Task<SuccessResponse<PartnerDto>> Update(Guid id, UpdatePartnerDto model);
 
         Task<SuccessResponse<PartnerDto>> GetById(Guid id);
 
-        Task<SuccessResponse<PartnerDto>> GetAll(int skip, int take);
+        Task<PagedResponse<IEnumerable<PartnerDto>>> GetAll(ResourceParameter parameter,
+            string endPointName, IUrlHelper url);
 
-        Task<SuccessResponse<PartnerDto>> Delete(Guid id);
+        Task<SuccessResponse<bool>> Delete(Guid id);
     }
 }
 

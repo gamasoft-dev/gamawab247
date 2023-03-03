@@ -59,6 +59,6 @@
     <Folder Include="Services\Implementations\FormProcessing\Validations\" />
     <Folder Include="Services\Implementations\FormProcessing\CompletionProcesses\" />
     <Folder Include="DTOs\PartnerContentDtos\" />
-    <Folder Include="Services\Implementations\PartnerDetails\" />
+    <Folder Include="Services\Implementations\PartnerContentRetrival\" />
   </ItemGroup>
 </Project>
