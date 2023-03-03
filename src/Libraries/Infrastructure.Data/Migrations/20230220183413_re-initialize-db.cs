@@ -456,7 +456,7 @@ namespace Infrastructure.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     BusinessConversationId = table.Column<Guid>(type: "uuid", nullable: true),
                     FormElements = table.Column<List<FormElement>>(type: "jsonb", nullable: true),
-                    Headers = table.Column<List<FormHeader>>(type: "jsonb", nullable: true),
+                    Headers = table.Column<List<KeyValueObj>>(type: "jsonb", nullable: true),
                     ResponseKvps = table.Column<List<FormResponseKvp>>(type: "jsonb", nullable: true),
                     IsFormToBeSubmittedToUrl = table.Column<bool>(type: "boolean", nullable: false),
                     SubmissionUrl = table.Column<string>(type: "text", nullable: true),

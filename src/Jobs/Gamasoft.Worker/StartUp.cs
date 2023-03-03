@@ -20,6 +20,7 @@ namespace Gamasoft.Worker
             var builder = new ConfigurationBuilder()
                 .SetBasePath(hostingEnvironment.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("customizations.Config.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{hostingEnvironment.EnvironmentName}.json", reloadOnChange: true,
                     optional: true)
                 //.AddUserSecrets(Assembly.GetAssembly(typeof(Startup)))

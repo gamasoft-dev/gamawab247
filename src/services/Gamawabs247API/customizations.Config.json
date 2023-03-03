@@ -1,0 +1,8 @@
+﻿{
+    "alphaBetaConfig": {
+        "HolderVerificationEndpoint": "",
+        "ClientKey": "",
+        "LinkGeneratorUserParamKey": "",
+        "BillCodePaymentPageLink": ""
+    }
+}

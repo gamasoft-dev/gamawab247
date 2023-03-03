@@ -22,7 +22,7 @@ namespace Application.DTOs.BusinessDtos
         public List<BusinessFormResponseDto> ResponseProperty { get; set; }
     }
 
-    public class BusinessFormHeaderDto: FormHeader
+    public class BusinessFormHeaderDto: KeyValueObj
     {
     }
 

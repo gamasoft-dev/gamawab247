@@ -1,4 +1,7 @@
 ﻿using System;
+using ApiCustomization.ABC;
+using Application.DTOs;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ApiCustomization
@@ -9,9 +12,15 @@ namespace ApiCustomization
         /// Utilize this to register other application services that do not utilize a scoped lifetime
         /// </summary>
         /// <param name="services"></param>
-        public static void AddApiCustomizationService(this IServiceCollection services)
+        public static void ConfigureApiCustomizationService(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddHttpClient();
+            ApiCustomizationIOObject(services, configuration);
+        }
+
+        private static void ApiCustomizationIOObject(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<AlphaBetaConfig>(configuration.GetSection(nameof(AlphaBetaConfig)));
+
         }
     }
 }

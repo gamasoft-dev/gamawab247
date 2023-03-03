@@ -11,7 +11,7 @@ namespace Domain.Entities.FormProcessing.ValueObjects
     {
         public SessionFormDetail()
         {
-            UserData = new Dictionary<string, object>();
+            UserData = new Dictionary<string, string>();
         }
         public Guid BusinessFormId { get; set; }
         public int CurrentElementId { get; set; }
@@ -34,7 +34,7 @@ namespace Domain.Entities.FormProcessing.ValueObjects
         /// </summary>
         public string Payload { get; set; }
         public BusinessForm BusinessForm { set; get; }
-        public IDictionary<string, object> UserData { get; set; }
+        public IDictionary<string, string> UserData { get; set; }
     }
 }
 

@@ -20,13 +20,10 @@ namespace Domain.Entities.FormProcessing.ValueObjects
         public string ValidationProcessorKey { get; set; }
         public string Label { get; set; } = "Enter Bill Code";
 
-        public bool RequiresPartnerCallForNextResponse { get; set; }
-
-        public Guid? PartnerIntegrationId { get; set; }
-
-        public static implicit operator string(FormElement v)
-        {
-            return v.Id.ToString();
-        }
+        /// <summary>
+        /// This denotes that the next response after this input will be generated or retrieved from
+        /// an integration or local implementation.
+        /// </summary>
+        public Guid? NextResponsePartnerContentIntegrationId { get; set; }
     }
 }

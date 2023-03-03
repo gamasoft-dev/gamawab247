@@ -94,5 +94,6 @@ namespace Infrastructure.Data.DbContext
         public DbSet<FormRequestResponse> FormRequestResponses { get; set; }
         public DbSet<BusinessFormConlusionConfig> BusinessFormConlusionConfigs { get; set; }
         public DbSet<Partner> Partners { get; set; }
+        public DbSet<PartnerIntegrationDetails> PartnerIntegrationDetails { get; set; }
     }
 }

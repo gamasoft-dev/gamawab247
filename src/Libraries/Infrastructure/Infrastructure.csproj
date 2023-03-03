@@ -10,12 +10,14 @@
 
   <ItemGroup>
     <None Remove="Newtonsoft.Json" />
+    <None Remove="Cache\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\.editorconfig" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Http\" />
+    <Folder Include="Cache\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />

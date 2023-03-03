@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Application.Services.Interfaces
 {
+    /// <summary>
+    /// TODO: Move Service and implementation to cache-service
+    /// </summary>
     public interface ICacheService
     {
         Task AddToCacheAsync<T>(string key, T payload);
