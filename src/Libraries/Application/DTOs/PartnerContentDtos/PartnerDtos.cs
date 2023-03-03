@@ -22,7 +22,6 @@ namespace Application.DTOs.PartnerContentDtos
 
     public class UpdatePartnerDto: CreatePartnerDto
     {
-        public Guid Id { get; set; }
     }
 }
 
