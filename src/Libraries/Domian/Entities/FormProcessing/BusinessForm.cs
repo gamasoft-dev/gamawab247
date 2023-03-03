@@ -20,6 +20,7 @@ namespace Domain.Entities.FormProcessing
         public List<FormElement> FormElements { get; set; }
         [Column(TypeName = "jsonb")]
         public List<KeyValueObj> Headers { get; set; }
+
         [Column(TypeName = "jsonb")]
         public List<FormResponseKvp> ResponseKvps { get; set; }
 
@@ -39,7 +40,9 @@ namespace Domain.Entities.FormProcessing
 
         public int Counter { get; set; }
         public bool IsRequestSuccessful { get; set; }
+
         public ICollection<UserFormData> UserFormData { get; set; }
+
         public Guid BusinessId { get; set; }
         public Business Business { get; set; }
 
