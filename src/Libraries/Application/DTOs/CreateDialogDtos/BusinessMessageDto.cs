@@ -26,11 +26,18 @@ public class CreateBusinessMessageDto<T>
     /// This is the parent of the message this message follow. This is optional.
     /// </summary>
     public Guid? FollowParentMessageId { get; set; }
-    
+
+    /// <summary>
+    /// This means that the content of this business message would be retrieved from an
+    /// external integration (local funciton or external api)
+    /// When this value is set it would be likely that the InteractiveMessageId will be empty
+    /// </summary>
+    public Guid? ExternalContentRetrievalId { get; set; }
+
     /// <summary>
     /// This is the object of the specific type of message that needs to be created
     /// </summary>
-    public T MessageTypeObject { get; set; }
+    public T? MessageTypeObject { get; set; }
 }
 
 /// <summary>
@@ -55,6 +62,7 @@ public class BusinessMessageDto<T>
     public T MessageTypeObject { get; set; }
     public bool HasFollowUpMessage { get; set; }
     public Guid? FollowParentMessageId { get; set; }
+    public Guid? ExternalContentRetrievalId { get; set; }
     public bool ShouldTriggerFormProcessing { get; set; }
     public Guid? BusinessFormId { get; set; }
 }

@@ -35,6 +35,15 @@ namespace Domain.Entities.DialogMessageEntitties
         // This represents the Id of either a list of button message related to this business message
         public Guid? InteractiveMessageId { get; set; }
 
+        /// <summary>
+        /// This means that the content of this business message would be retrieved from an
+        /// external integration (local funciton or external api)
+        /// When this value is set it would be likely that the InteractiveMessageId will be empty
+        /// </summary>
+        public Guid? ExternalContentRetrievalId { get; set; }
+
+        public PartnerIntegrationDetails ExternalContentRetrieval { get; set; }
+
         // navigation properties
         public BusinessConversation BusinessConversation { get; set; }
         public Business Business { get; set; }

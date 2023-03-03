@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Infrastructure.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
+using ApiCustomization;
 
 namespace API
 {
@@ -22,6 +23,7 @@ namespace API
             var builder = new ConfigurationBuilder()
                 .SetBasePath(hostingEnvironment.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("customizations.Config.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{hostingEnvironment.EnvironmentName}.json", reloadOnChange: true,
                     optional: true)
                 //.AddUserSecrets(Assembly.GetAssembly(typeof(Startup)))
@@ -48,6 +50,7 @@ namespace API
             services.ConfigureRepositoryManager();
             services.ConfigureHttpClient();
             services.ConfigureIOObjects(Configuration);
+            services.ConfigureApiCustomizationService(Configuration);
             services.AddControllers()
                 .AddXmlDataContractSerializerFormatters();
             services.ConfigureSwagger();

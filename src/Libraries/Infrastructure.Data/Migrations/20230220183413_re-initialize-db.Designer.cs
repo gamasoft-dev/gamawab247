@@ -388,7 +388,7 @@ namespace Infrastructure.Data.Migrations
                     b.Property<List<FormElement>>("FormElements")
                         .HasColumnType("jsonb");
 
-                    b.Property<List<FormHeader>>("Headers")
+                    b.Property<List<KeyValueObj>>("Headers")
                         .HasColumnType("jsonb");
 
                     b.Property<bool>("IsFormToBeSubmittedToUrl")

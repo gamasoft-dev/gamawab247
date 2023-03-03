@@ -19,16 +19,6 @@ public class CreateListValidator : AbstractValidator<CreateBusinessMessageDto<Cr
     }
 }
 
-public class ListRowDtoValidator : AbstractValidator<RowDto>
-{
-    public ListRowDtoValidator()
-    {
-        RuleFor(x => x.NextBusinessMessagePosition).NotEmpty().GreaterThan(0).WithMessage("Provide the next message postion for this list option");
-        RuleFor(x => x.Description).Length(0, 72).WithMessage("List option desction message cannot be more than 72 characters");
-        RuleFor(x => x.Title).Length(0, 24).WithMessage("List option title message cannot be more than 24 characters");
-
-    }
-}
 
 public class ListSectionValidator : AbstractValidator<SectionDto>
 {
@@ -39,5 +29,16 @@ public class ListSectionValidator : AbstractValidator<SectionDto>
         RuleFor(x => x.Description).Length(0, 72).WithMessage("List Section description cannot exceed 72 characters");
 
         RuleForEach(x => x.Rows).SetValidator(new ListRowDtoValidator());
+    }
+}
+
+public class ListRowDtoValidator : AbstractValidator<RowDto>
+{
+    public ListRowDtoValidator()
+    {
+        RuleFor(x => x.NextBusinessMessagePosition).NotEmpty().GreaterThan(0).WithMessage("Provide the next message postion for this list option");
+        RuleFor(x => x.Description).Length(0, 72).WithMessage("List option desction message cannot be more than 72 characters");
+        RuleFor(x => x.Title).Length(0, 24).WithMessage("List option title message cannot be more than 24 characters");
+
     }
 }

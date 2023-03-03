@@ -47,6 +47,8 @@
     <None Remove="Cron\FormProcessing\" />
     <None Remove="Services\Implementations\FormProcessing\Validations\" />
     <None Remove="Services\Implementations\FormProcessing\CompletionProcesses\" />
+    <None Remove="DTOs\PartnerContentDtos\" />
+    <None Remove="Services\Implementations\PartnerDetails\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\" />
@@ -56,5 +58,7 @@
     <Folder Include="Cron\FormProcessing\" />
     <Folder Include="Services\Implementations\FormProcessing\Validations\" />
     <Folder Include="Services\Implementations\FormProcessing\CompletionProcesses\" />
+    <Folder Include="DTOs\PartnerContentDtos\" />
+    <Folder Include="Services\Implementations\PartnerDetails\" />
   </ItemGroup>
 </Project>

@@ -7,6 +7,8 @@ namespace ApiCustomization.ABC
 	{
 		public string HolderVerificationEndpoint { get; set; }
 		public string ClientKey { get; set; }
+        public string LinkGeneratorUserParamKey { get; set; }
+		public string BillCodePaymentPageLink { get; set; }
 	}
 }
 

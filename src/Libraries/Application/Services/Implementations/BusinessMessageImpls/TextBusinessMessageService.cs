@@ -79,15 +79,21 @@ public class TextBusinessMessageService:
         
         var bizMessage = _mapper.Map<BusinessMessage>(model);
         bizMessage.MessageType = EMessageType.Text.ToString();
-        var textMessage = _mapper.Map<TextMessage>(model.MessageTypeObject);
         bizMessage.BusinessId = model.BusinessId;
 
         await _businessMessageRepo.AddAsync(bizMessage);
-        textMessage.BusinessMessageId = bizMessage.Id;
-        await _textMessageRepo.AddAsync(textMessage);
-        bizMessage.InteractiveMessageId = textMessage.Id;
-        
-        await _textMessageRepo.SaveChangesAsync();
+
+        if (model?.MessageTypeObject != null)
+        {
+            var textMessage = _mapper.Map<TextMessage>(model.MessageTypeObject);
+            textMessage.BusinessMessageId = bizMessage.Id;
+            await _textMessageRepo.AddAsync(textMessage);
+
+            bizMessage.InteractiveMessageId = textMessage.Id;
+
+        }
+
+        await _businessMessageRepo.SaveChangesAsync();
 
         BusinessMessageDto<BaseInteractiveDto> businessMessage = await RetrieveBusinessMessageById(bizMessage.Id);
 

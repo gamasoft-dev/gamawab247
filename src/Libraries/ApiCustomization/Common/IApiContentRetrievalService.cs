@@ -5,9 +5,16 @@ namespace ApiCustomization.Common
     // any provider ERP/ CMS etc that the system interacts with to retrieve content or post content to is a partner
     public interface IApiContentRetrievalService
 	{
-		public string PartnerApiProcessIndentifier { get; }
+		public string PartnerContentProcessorKey { get; }
 
-		public Task<string> RetrieveContent<TRequest>(TRequest request);
+		/// <summary>
+		/// Use this method to retrieve api customization content
+		/// </summary>
+		/// <typeparam name="TRequest"></typeparam>
+		/// <param name="waId">user phone number</param>
+		/// <param name="request"> generic payload </param>
+		/// <returns></returns>
+		public Task<string> RetrieveContent<TRequest>(string waId, TRequest request);
 	}
 }
 

@@ -216,12 +216,12 @@ public class ResponsePreProcessingCron : IResponsePreProcessingCron
 
                 if (interactiveMessage is not null && inboundMessage.MsgOptionId  is not null)
                 {
-                    var (response, isTriggerForm) = await _businessMessageFactory
+                    var (response, isTriggerForm)  = await _businessMessageFactory
                         .GetBusinessMessageImpl(businessMessage.MessageType)
                         .GetNextBusinessMessageByOptionId(interactiveMessage, businessMessage.BusinessId,
                             inboundMessage.MsgOptionId, businessMessage.BusinessFormId);
 
-                   // resolvedBusinessMessage = nextBusinessMessage.response?.Data;
+                    resolvedBusinessMessage = response?.Data;
                 }
             }
         }

@@ -19,7 +19,7 @@ namespace Domain.Entities.FormProcessing
         [Column(TypeName = "jsonb")]
         public List<FormElement> FormElements { get; set; }
         [Column(TypeName = "jsonb")]
-        public List<FormHeader> Headers { get; set; }
+        public List<KeyValueObj> Headers { get; set; }
         [Column(TypeName = "jsonb")]
         public List<FormResponseKvp> ResponseKvps { get; set; }
 
