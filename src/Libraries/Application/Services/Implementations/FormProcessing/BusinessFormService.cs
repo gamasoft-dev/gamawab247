@@ -48,9 +48,9 @@ namespace Application.Services.Implementations.FormProcessing
                 throw new RestException(HttpStatusCode.NotFound, "Error: No business exist with id exist");
 
             //check if convo exists
-            var conversation = await _businessMessageRepo.FirstOrDefault(x => x.Id == model.BusinessConversationId);
-            if (conversation is null)
-                throw new RestException(HttpStatusCode.NotFound, "Error: No business conversation exist with id exist");
+            //var conversation = await _businessMessageRepo.FirstOrDefault(x => x.Id == model.BusinessConversationId);
+            //if (conversation is null)
+            //    throw new RestException(HttpStatusCode.NotFound, "Error: No business conversation exist with id exist");
 
             var businessFormMap = _mapper.Map<BusinessForm>(model);
 
