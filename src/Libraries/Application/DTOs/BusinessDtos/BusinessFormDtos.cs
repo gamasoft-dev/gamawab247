@@ -17,7 +17,7 @@ namespace Application.DTOs.BusinessDtos
         /// </summary>
         /// <example>Button</example>
         public EMessageType MessageType { get; set; }
-        public List<CreateBusinessFormFormElementDto> FormProperty { get; set; }
+        public List<CreateBusinessFormFormElementDto> FormElements { get; set; }
         public List<BusinessFormHeaderDto> AuthHeaderElement { get; set; }
         public List<BusinessFormResponseDto> ResponseProperty { get; set; }
     }
@@ -35,7 +35,7 @@ namespace Application.DTOs.BusinessDtos
         /// <example>Button</example>
         public EMessageType MessageType { get; set; } = EMessageType.Text;
 
-        public List<FormElement> FormProperty { get; set; }
+        public List<FormElement> FormElements { get; set; }
     }
 
     public class BusinessFormHeaderDto: KeyValueObj
