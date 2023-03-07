@@ -27,7 +27,7 @@ namespace API.Controllers
             _businessFormService = businessFormService;
         }
 
-        [HttpPost()]
+        [HttpPost]
         [ProducesResponseType(typeof(SuccessResponse<BusinessFormDto>), (int)HttpStatusCode.Created)]
         public async Task<IActionResult> CreateBusinessForm(CreateBusinessFormDto businessFormDto)
         {
@@ -43,7 +43,7 @@ namespace API.Controllers
             return Ok();
         }
 
-        [HttpGet()]
+        [HttpGet("{id}")]
         [ProducesResponseType(typeof(SuccessResponse<BusinessFormDto>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> BusinessFormById(Guid id)
         {
@@ -51,19 +51,19 @@ namespace API.Controllers
             return Ok(get);
         }
 
-        [HttpGet("get-form-by-businessid/{businessId}")]
-        [ProducesResponseType(typeof(SuccessResponse<BusinessForm>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> BusinessFormByBusinessId(Guid businessId)
-        {
-            var get = await _businessFormService.GetBusinessFormByBusinessId(businessId);
-            return Ok(get);
-        }
+        //[HttpGet("business/{id}")]
+        //[ProducesResponseType(typeof(SuccessResponse<BusinessForm>), (int)HttpStatusCode.OK)]
+        //public async Task<IActionResult> BusinessFormByBusinessId(Guid id)
+        //{
+        //    var get = await _businessFormService.GetBusinessFormByBusinessId(id);
+        //    return Ok(get);
+        //}
 
-        [HttpGet("get-all-business-forms")]
+        [HttpGet]
         [ProducesResponseType(typeof(PagedResponse<IEnumerable<BusinessForm>>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetAllBusinessFormById(string search, string name, [FromQuery]ResourceParameter parameter)
+        public async Task<IActionResult> GetAllBusinessFormById(Guid id, string search, string name, [FromQuery]ResourceParameter parameter)
         {
-            var getAll = await _businessFormService.GetAllBusinessFormByUserId(search, nameof(BusinessForm), parameter, Url);
+            var getAll = await _businessFormService.GetAllByBusinessId( id, search, nameof(BusinessForm), parameter, Url);
             return Ok(getAll);
         }
     }
