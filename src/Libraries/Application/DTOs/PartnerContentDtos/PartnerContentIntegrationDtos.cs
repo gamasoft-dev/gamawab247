@@ -46,7 +46,6 @@ namespace Application.DTOs.PartnerContentDtos
 
     public class UpdatePartnerContentIntegrationDto: CreatePartnerContentIntegrationDto
     {
-        public Guid Id { get; set; }
     }
 }
 

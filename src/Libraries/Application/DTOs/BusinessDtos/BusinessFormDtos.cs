@@ -17,7 +17,7 @@ namespace Application.DTOs.BusinessDtos
         /// </summary>
         /// <example>Button</example>
         public EMessageType MessageType { get; set; }
-        public List<CreateBusinessFormFormElementDto> FormElements { get; set; }
+        public List<FormElement> FormElements { get; set; }
         public List<BusinessFormHeaderDto> AuthHeaderElement { get; set; }
         public List<BusinessFormResponseDto> ResponseProperty { get; set; }
     }
@@ -48,6 +48,7 @@ namespace Application.DTOs.BusinessDtos
 
     public class CreateBusinessFormFormElementDto
     {
+        public Guid Id { get; set; }
         public string Key { get; set; }
         public EDataType KeyDataType { get; set; }
         public bool IsValidationRequired { get; set; }

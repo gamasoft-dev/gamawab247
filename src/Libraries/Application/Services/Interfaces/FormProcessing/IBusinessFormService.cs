@@ -13,13 +13,11 @@ namespace Application.Services.Interfaces.FormProcessing
     public interface IBusinessFormService : IAutoDependencyService
     {
         Task<SuccessResponse<BusinessFormDto>> CreateBusinessForm(CreateBusinessFormDto model);
-        Task<PagedResponse<IEnumerable<BusinessForm>>> GetAllBusinessFormByUserId(string search,
-            string name, ResourceParameter parameter, IUrlHelper urlHelper);
-        Task<SuccessResponse<BusinessForm>> GetBusinessFormByBusinessId(Guid businessId);
+        Task<SuccessResponse<bool>> UpdateBusinessForm(Guid id, UpdateBusinessFormDto model);
         Task<SuccessResponse<BusinessFormDto>> GetBusinessFormById(Guid id);
-        Task UpdateBusinessForm(Guid id, UpdateBusinessFormDto model);
+        Task<PagedResponse<IEnumerable<BusinessFormDto>>> GetAllByBusinessId(Guid businessId, string search,
+            string name, ResourceParameter parameter, IUrlHelper urlHelper);
+        //Task<SuccessResponse<BusinessForm>> GetBusinessFormByBusinessId(Guid businessId);
         internal Task<BusinessForm> GetBusinessFormFisrtOrDefault(Expression<Func<BusinessForm, bool>> expression);
-        Task Update(BusinessForm formElement);
-        //Task<BusinessForm> Create(BusinessForm formElement);
     }
 }

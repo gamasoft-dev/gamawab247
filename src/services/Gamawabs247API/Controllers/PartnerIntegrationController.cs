@@ -27,6 +27,60 @@ namespace Gamawabs247API.Controllers
             _partnerIntegrationService = partnerIntegrationService;
         }
 
+
+        [HttpPost]
+        [ProducesResponseType(typeof(SuccessResponse<PartnerContentIntegrationDto>), (int)HttpStatusCode.Created)]
+        [Authorize]//for admin usage
+        public async Task<IActionResult> CreatePartnerIntegration([FromBody] CreatePartnerContentIntegrationDto dto)
+        {
+            try
+            {
+                var result = await _partnerIntegrationService.Create(dto);
+                return CreatedAtAction(nameof(GetPartnerIntegrationById), new { id = result.Data.Id }, dto);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(ex.Message, ex);
+                throw;
+            }
+        }
+
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(SuccessResponse<PartnerContentIntegrationDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(SuccessResponse<PartnerContentIntegrationDto>), (int)HttpStatusCode.BadRequest)]
+        [Authorize]//for admin usage
+        public async Task<IActionResult> Put([FromRoute] Guid id, [FromBody] UpdatePartnerContentIntegrationDto dto)
+        {
+            try
+            {
+                var update = await _partnerIntegrationService.Update(id, dto);
+                return Ok(update);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(ex.Message, ex);
+                throw;
+            }
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(SuccessResponse<bool>), (int)HttpStatusCode.OK)]
+        [Authorize]//for admin usage
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            try
+            {
+                await _partnerIntegrationService.Delete(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(ex.Message, ex);
+                throw;
+            }
+        }
+
         [HttpGet(Name = nameof(GetAllPartnerIntegrations))]
         [ProducesResponseType(typeof(IEnumerable<PartnerContentIntegrationDto>), 200)]
         [Authorize]
@@ -54,58 +108,6 @@ namespace Gamawabs247API.Controllers
             catch (Exception e)
             {
                 _logger.LogCritical(e.Message, e);
-                throw;
-            }
-        }
-
-        [HttpPost]
-        [ProducesResponseType(typeof(SuccessResponse<PartnerContentIntegrationDto>), (int)HttpStatusCode.Created)]
-        [Authorize]//for admin usage
-        public async Task<IActionResult> CreatePartnerIntegration([FromBody] CreatePartnerContentIntegrationDto dto)
-        {
-            try
-            {
-                var result = await _partnerIntegrationService.Create(dto);
-                return CreatedAtAction(nameof(GetPartnerIntegrationById), new { id = result.Data.Id }, dto);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogCritical(ex.Message, ex);
-                throw;
-            }
-        }
-
-        [HttpPut("{id}")]
-        [ProducesResponseType(typeof(SuccessResponse<PartnerContentIntegrationDto>), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(SuccessResponse<PartnerContentIntegrationDto>), (int)HttpStatusCode.BadRequest)]
-        [Authorize]//for admin usage
-        public async Task<IActionResult> Put([FromQuery] Guid id, [FromBody] UpdatePartnerContentIntegrationDto dto)
-        {
-            try
-            {
-                var update = await _partnerIntegrationService.Update(id,dto);
-                return Ok(update);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogCritical(ex.Message, ex);
-                throw;
-            }
-        }
-
-        [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(SuccessResponse<bool>), (int)HttpStatusCode.OK)]
-        [Authorize]//for admin usage
-        public async Task<IActionResult> Delete(Guid id)
-        {
-            try
-            {
-                await _partnerIntegrationService.Delete(id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogCritical(ex.Message, ex);
                 throw;
             }
         }

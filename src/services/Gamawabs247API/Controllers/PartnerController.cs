@@ -27,37 +27,7 @@ namespace Gamawabs247API.Controllers
             _partnerService = partnerService;
         }
 
-        [HttpGet(Name = nameof(GetAllPartners))]
-        [ProducesResponseType(typeof(IEnumerable<PartnerDto>), 200)]
-        [Authorize]
-        public async Task<IActionResult> GetAllPartners([FromQuery] ResourceParameter parameter)
-        {
-            try
-            {
-                return Ok(await _partnerService.GetAll(parameter, nameof(GetAllPartners), Url));
-            }
-            catch (Exception e)
-            {
-                _logger.LogCritical(e.Message, e);
-                throw;
-            }
-        }
-
-        [HttpGet("{id}", Name = nameof(GetPartnerById))]
-        [ProducesResponseType(typeof(SuccessResponse<PartnerDto>), 200)]
-        public async Task<IActionResult> GetPartnerById(Guid id)
-        {
-            try
-            {
-                return Ok(await _partnerService.GetById(id));
-            }
-            catch (Exception e)
-            {
-                _logger.LogCritical(e.Message, e);
-                throw;
-            }
-        }
-
+       
         [HttpPost]
         [ProducesResponseType(typeof(SuccessResponse<PartnerDto>), (int)HttpStatusCode.Created)]
         [Authorize]//for admin usage
@@ -109,5 +79,37 @@ namespace Gamawabs247API.Controllers
                 throw;
             }
         }
+
+        [HttpGet(Name = nameof(GetAllPartners))]
+        [ProducesResponseType(typeof(IEnumerable<PartnerDto>), 200)]
+        [Authorize]
+        public async Task<IActionResult> GetAllPartners([FromQuery] ResourceParameter parameter)
+        {
+            try
+            {
+                return Ok(await _partnerService.GetAll(parameter, nameof(GetAllPartners), Url));
+            }
+            catch (Exception e)
+            {
+                _logger.LogCritical(e.Message, e);
+                throw;
+            }
+        }
+
+        [HttpGet("{id}", Name = nameof(GetPartnerById))]
+        [ProducesResponseType(typeof(SuccessResponse<PartnerDto>), 200)]
+        public async Task<IActionResult> GetPartnerById(Guid id)
+        {
+            try
+            {
+                return Ok(await _partnerService.GetById(id));
+            }
+            catch (Exception e)
+            {
+                _logger.LogCritical(e.Message, e);
+                throw;
+            }
+        }
+
     }
 }

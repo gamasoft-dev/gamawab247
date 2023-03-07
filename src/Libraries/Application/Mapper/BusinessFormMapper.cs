@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.BusinessDtos;
 using AutoMapper;
 using Domain.Entities.FormProcessing;
+using Domain.Entities.FormProcessing.ValueObjects;
 
 namespace Application.Mapper
 {
@@ -27,6 +28,11 @@ namespace Application.Mapper
                .ForMember(dest => dest.ResponseKvps, mapTo => mapTo.MapFrom(src => src.ResponseProperty));
 
             CreateMap<BusinessForm, CreateBusinessFormDto>().ReverseMap();
+            CreateMap<BusinessForm, UpdateBusinessFormDto>().ReverseMap();
+            CreateMap<KeyValueObj, BusinessFormHeaderDto>().ReverseMap();
+            CreateMap<FormResponseKvp, BusinessFormHeaderDto>().ReverseMap();
+            //CreateMap<FormResponseKvp, BusinessFormHeaderDto>().ReverseMap();
+            //CreateMap<BusinessForm, BusinessFormDto>().ReverseMap();
         }
     }
 }
