@@ -21,6 +21,7 @@ namespace Domain.Entities.FormProcessing
         public bool IsSummaryMessage { get; set; }
         public Guid BusinessId { get; set; }
         public BusinessForm BusinessForm { get; set; }
+        public string FollowUpPartnerContentIntegrationKey { get; set; }
 
         //public override bool Equals(object obj)
         //{

@@ -39,7 +39,7 @@ namespace Domain.Entities.FormProcessing
         public int UrlMethodType { get; set; } = (int)EUrlMethodType.POST;
 
         public int Counter { get; set; }
-        public bool IsRequestSuccessful { get; set; }
+        public bool IsSummaryOfFormMessagesRequired { get; set; }
 
         public ICollection<UserFormData> UserFormData { get; set; }
 

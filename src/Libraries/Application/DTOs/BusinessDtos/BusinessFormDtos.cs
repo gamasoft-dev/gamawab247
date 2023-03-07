@@ -68,7 +68,7 @@ namespace Application.DTOs.BusinessDtos
         /// </summary>
         /// <example>Button</example>
         public EMessageType MessageType { get; set; }
-        public List<UpdateFormElementDto> FormProperty { get; set; }
+        public List<UpdateFormElementDto> FormProperties { get; set; }
         public List<BusinessFormHeaderDto> AuthHeaderElement { get; set; }
         public List<BusinessFormResponseDto> ResponseProperty { get; set; }
     }

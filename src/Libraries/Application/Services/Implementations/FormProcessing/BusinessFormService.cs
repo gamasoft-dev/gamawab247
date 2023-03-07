@@ -79,10 +79,14 @@ namespace Application.Services.Implementations.FormProcessing
 
             var businessFormMap = _mapper.Map<BusinessForm>(model);
 
-            for (int i = 1; i < businessFormMap.FormElements.Count; i++)//to auto handle form indexes accordingly
+            if (model.FormProperties.Any())
             {
-                businessFormMap.FormElements[i].Id = i;
+                for (int i = 1; i < businessFormMap.FormElements.Count; i++)//to auto handle form indexes accordingly
+                {
+                    businessFormMap.FormElements[i].Id = i;
+                }
             }
+            
 
             get.UpdatedAt = DateTime.UtcNow;
             get.Headers = businessFormMap.Headers;

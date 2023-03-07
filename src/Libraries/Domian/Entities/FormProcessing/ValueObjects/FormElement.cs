@@ -29,5 +29,7 @@ namespace Domain.Entities.FormProcessing.ValueObjects
         /// an integration or local implementation using.
         /// </summary>
         public string PartnerContentProcessorKey { get; set; }
+
+        public bool IsLastFormElement { get; set; } = false;
     }
 }
