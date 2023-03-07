@@ -21,9 +21,6 @@ namespace Domain.Entities.FormProcessing
         [Column(TypeName = "jsonb")]
         public List<KeyValueObj> Headers { get; set; }
 
-        [Column(TypeName = "jsonb")]
-        public List<FormResponseKvp> ResponseKvps { get; set; }
-
         // Use this to determine how and where to submission this form when collated completely.
         public bool IsFormToBeSubmittedToUrl { get; set; }
 

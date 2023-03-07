@@ -90,7 +90,6 @@ namespace Application.Services.Implementations.FormProcessing
 
             get.UpdatedAt = DateTime.UtcNow;
             get.Headers = businessFormMap.Headers;
-            get.ResponseKvps = businessFormMap.ResponseKvps;
             get.FormElements = businessFormMap.FormElements;
             get.UrlMethodType = businessFormMap.UrlMethodType;
             get.SubmissionUrl = businessFormMap.SubmissionUrl;

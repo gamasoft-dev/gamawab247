@@ -14,8 +14,7 @@ namespace Application.Mapper
                 .ForMember(dest => dest.UrlMethodType, mapTo => mapTo.MapFrom(src => src.UrlMethodType))
                 .ForMember(dest => dest.SubmissionUrl, mapTo => mapTo.MapFrom(src => src.SubmissionUrl))
                 .ForMember(dest => dest.AuthHeaderElement, mapTo => mapTo.MapFrom(src => src.Headers))
-                .ForMember(dest => dest.BusinessId, mapTo => mapTo.MapFrom(src => src.BusinessId))
-                .ForMember(dest => dest.ResponseProperty, mapTo => mapTo.MapFrom(src => src.ResponseKvps));
+                .ForMember(dest => dest.BusinessId, mapTo => mapTo.MapFrom(src => src.BusinessId));
 
             CreateMap<BusinessFormDto, BusinessForm>()
                .ForMember(dest => dest.BusinessConversationId, mapTo => mapTo.MapFrom(src => src.BusinessConversationId))
@@ -23,8 +22,7 @@ namespace Application.Mapper
                .ForMember(dest => dest.UrlMethodType, mapTo => mapTo.MapFrom(src => src.UrlMethodType))
                .ForMember(dest => dest.SubmissionUrl, mapTo => mapTo.MapFrom(src => src.SubmissionUrl))
                .ForMember(dest => dest.Headers, mapTo => mapTo.MapFrom(src => src.AuthHeaderElement))
-               .ForMember(dest => dest.BusinessId, mapTo => mapTo.MapFrom(src => src.BusinessId))
-               .ForMember(dest => dest.ResponseKvps, mapTo => mapTo.MapFrom(src => src.ResponseProperty));
+               .ForMember(dest => dest.BusinessId, mapTo => mapTo.MapFrom(src => src.BusinessId));
 
             CreateMap<BusinessForm, CreateBusinessFormDto>().ReverseMap();
         }
