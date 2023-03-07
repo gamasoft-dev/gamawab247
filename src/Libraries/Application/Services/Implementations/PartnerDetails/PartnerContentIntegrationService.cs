@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Services.Implementations.PartnerDetails
 {
-	public class PartnerContentIntegrationService: IPartnerContentIntegrationDetailsService
+    public class PartnerContentIntegrationService : IPartnerContentIntegrationDetailsService
     {
         private readonly IRepository<PartnerIntegrationDetails> _integrationRepo;
         private readonly IRepository<Partner> _partnerRepo;
@@ -46,14 +46,15 @@ namespace Application.Services.Implementations.PartnerDetails
 
         public async Task<SuccessResponse<bool>> Delete(Guid id)
         {
-            var getIntegrationdetails = await _integrationRepo.GetByIdAsync(id);
+            if (id == Guid.Empty)
+                throw new RestException(System.Net.HttpStatusCode.BadRequest, "id cannot be empty");
 
-            if (getIntegrationdetails is null)
-                throw new RestException(System.Net.HttpStatusCode.NotFound, "Invalid id, not partner content integration details found");
+            var partnerIntegrationdetails = await _integrationRepo.GetByIdAsync(id);
 
+            if (partnerIntegrationdetails == null)
+                throw new RestException(System.Net.HttpStatusCode.NotFound, "partner integraton details not found");
 
-            _integrationRepo.Remove(getIntegrationdetails);
-
+            _integrationRepo.Remove(partnerIntegrationdetails);
             await _integrationRepo.SaveChangesAsync();
 
             return new SuccessResponse<bool>
@@ -113,7 +114,7 @@ namespace Application.Services.Implementations.PartnerDetails
         {
 
             var partnerIntegration = await _integrationRepo.GetByIdAsync(id)
-                ?? throw new RestException(System.Net.HttpStatusCode.NotFound, ResponseMessages.Failed);
+                ?? throw new RestException(System.Net.HttpStatusCode.NotFound, "Invalid id: partner integration details not found");
 
             partnerIntegration.Parameters = model.Parameters;
 

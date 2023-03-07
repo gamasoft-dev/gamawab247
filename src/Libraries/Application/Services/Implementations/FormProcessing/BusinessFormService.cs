@@ -3,12 +3,14 @@ using Application.Helpers;
 using Application.Services.Interfaces;
 using Application.Services.Interfaces.FormProcessing;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Domain.Common;
 using Domain.Entities.DialogMessageEntitties;
 using Domain.Entities.FormProcessing;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +41,7 @@ namespace Application.Services.Implementations.FormProcessing
             if (model is null)
                 throw new RestException(HttpStatusCode.BadRequest, "One/More parameter could not be validated");
 
-            if (model.BusinessConversationId == Guid.Empty || model.BusinessId == Guid.Empty)
+            if (model.BusinessId == Guid.Empty)
                 throw new RestException(HttpStatusCode.BadRequest, "Business Id or Conversation Id failed to validate");
 
             //Check if business exist.
@@ -47,11 +49,7 @@ namespace Application.Services.Implementations.FormProcessing
             if (business is null)
                 throw new RestException(HttpStatusCode.NotFound, "Error: No business exist with id exist");
 
-            //check if convo exists
-            //var conversation = await _businessMessageRepo.FirstOrDefault(x => x.Id == model.BusinessConversationId);
-            //if (conversation is null)
-            //    throw new RestException(HttpStatusCode.NotFound, "Error: No business conversation exist with id exist");
-
+            
             var businessFormMap = _mapper.Map<BusinessForm>(model);
 
             await _businessFormRepo.AddAsync(businessFormMap);
@@ -67,35 +65,39 @@ namespace Application.Services.Implementations.FormProcessing
             };
         }
 
-        public async Task UpdateBusinessForm(Guid id, UpdateBusinessFormDto model)
+        public async Task<SuccessResponse<bool>> UpdateBusinessForm(Guid id, UpdateBusinessFormDto model)
         {
             if (id == Guid.Empty || model is null)
                 throw new RestException(HttpStatusCode.BadRequest, "Failed to validate parameter");
 
-            var get = await _businessFormRepo.FirstOrDefault(x => x.Id == id);
-            if (get is null)
+            var businessForm = await _businessFormRepo.FirstOrDefault(x => x.Id == id);
+            if (businessForm is null)
                 throw new RestException(HttpStatusCode.NotFound, "Error: No business form exist with id exist");
 
 
             var businessFormMap = _mapper.Map<BusinessForm>(model);
 
-            if (model.FormProperties.Any())
-            {
-                for (int i = 1; i < businessFormMap.FormElements.Count; i++)//to auto handle form indexes accordingly
-                {
-                    businessFormMap.FormElements[i].Id = i;
-                }
-            }
-            
 
-            get.UpdatedAt = DateTime.UtcNow;
-            get.Headers = businessFormMap.Headers;
-            get.FormElements = businessFormMap.FormElements;
-            get.UrlMethodType = businessFormMap.UrlMethodType;
-            get.SubmissionUrl = businessFormMap.SubmissionUrl;
+            //validation
+            //for (int i = 1; i < businessFormMap.FormElements.Count; i++)//to auto handle form indexes accordingly
+            //{
+            //    businessFormMap.FormElements[i].Id = i;
+            //}
 
-            _businessFormRepo.Update(get);
+            businessForm.UpdatedAt = DateTime.UtcNow;
+            businessForm.Headers = businessFormMap.Headers;
+            businessForm.ResponseKvps = businessFormMap.ResponseKvps;
+            businessForm.FormElements = businessFormMap.FormElements;
+            businessForm.UrlMethodType = businessFormMap.UrlMethodType;
+            businessForm.SubmissionUrl = businessFormMap.SubmissionUrl;
+
+            _businessFormRepo.Update(businessForm);
             await _businessFormRepo.SaveChangesAsync();
+            return new SuccessResponse<bool>
+            {
+                Data = true,
+                Message = ResponseMessages.UpdateResponse
+            };
         }
 
         public async Task<SuccessResponse<BusinessFormDto>> GetBusinessFormById(Guid id)
@@ -103,11 +105,11 @@ namespace Application.Services.Implementations.FormProcessing
             if (id == Guid.Empty)
                 throw new RestException(HttpStatusCode.BadRequest, "Failed to validate parameter");
 
-            var get = await _businessFormRepo.FirstOrDefault(x => x.Id == id);
-            if (get is null)
+            var businessForm = await _businessFormRepo.FirstOrDefault(x => x.Id == id);
+            if (businessForm is null)
                 throw new RestException(HttpStatusCode.NotFound, "Error: No business form exist with id exist");
 
-            var response = _mapper.Map<BusinessFormDto>(get);
+            var response = _mapper.Map<BusinessFormDto>(businessForm);
 
             return new SuccessResponse<BusinessFormDto>
             {
@@ -117,28 +119,10 @@ namespace Application.Services.Implementations.FormProcessing
             };
         }
 
-        public async Task<SuccessResponse<BusinessForm>> GetBusinessFormByBusinessId(Guid businessId)
-        {
-            if (businessId == Guid.Empty)
-                throw new RestException(HttpStatusCode.BadRequest, "Failed to validate parameter");
-
-            var get = await _businessFormRepo.FirstOrDefault(x => x.BusinessId == businessId);
-            if (get is null)
-                throw new RestException(HttpStatusCode.NotFound, "Error: No business form " +
-                    "exist with this specified business-id exist");
-
-            return new SuccessResponse<BusinessForm>
-            {
-                Data = get,
-                Success = true,
-                Message = "Successfully retrieved"
-            };
-        }
-
-        public async Task<PagedResponse<IEnumerable<BusinessForm>>> GetAllBusinessFormByUserId(string search,
+        public async Task<PagedResponse<IEnumerable<BusinessFormDto>>> GetAllByBusinessId(Guid businessId, string search,
             string name, ResourceParameter parameter, IUrlHelper urlHelper)
         {
-            var query = await _businessFormRepo.FindAsync(x => x.CreatedById == WebHelper.UserId &&
+            var query =  _businessFormRepo.Query(x => x.BusinessId == businessId &&
                                 (string.IsNullOrWhiteSpace(search)
                                 || x.SubmissionUrl.Trim().ToLower().Contains(search.Trim().ToLower())
                                 || x.BusinessConversationId.ToString() == search
@@ -148,12 +132,14 @@ namespace Application.Services.Implementations.FormProcessing
                                 || (x.CreatedAt >= parameter.StartDate && x.CreatedAt <= parameter.EndDate)
                                 || (x.UpdatedAt >= parameter.StartDate && x.UpdatedAt <= parameter.EndDate)));
 
-            var pagedList = await PagedList<BusinessForm>.CreateAsync
-                (query.AsQueryable(), parameter.PageNumber, parameter.PageSize, parameter.Sort);
+            var queryProjection = query.ProjectTo<BusinessFormDto>(_mapper.ConfigurationProvider);
 
-            var page = PageUtility<BusinessForm>.CreateResourcePageUrl(parameter, name, pagedList, urlHelper);
+            var pagedList = await PagedList<BusinessFormDto>.CreateAsync(queryProjection, parameter.PageNumber, parameter.PageSize, parameter.Sort);
+            
 
-            return new PagedResponse<IEnumerable<BusinessForm>>
+            var page = PageUtility<BusinessFormDto>.CreateResourcePageUrl(parameter, name, pagedList, urlHelper);
+           
+            return new PagedResponse<IEnumerable<BusinessFormDto>>
             {
                 Message = ResponseMessages.RetrievalSuccessResponse,
                 Data = pagedList,
@@ -167,22 +153,9 @@ namespace Application.Services.Implementations.FormProcessing
         public async Task<BusinessForm> GetBusinessFormFisrtOrDefault(Expression<Func<BusinessForm, bool>> expression)
         {
             var iquery = _businessFormRepo.Query(expression).Include(x => x.Business);
+            //var mappedIquery = _mapper.Map<IIncludableQueryable<BusinessFormDto, BusinessDto>>(iquery);
             return await iquery.FirstOrDefaultAsync();
         }
 
-        public async Task Update(BusinessForm formElement)
-        {
-            var model = _businessFormRepo.GetByIdAsync(formElement.Id);
-            if (model is null)
-                throw new ArgumentNullException(nameof(formElement));
-
-            _businessFormRepo.Update(formElement);
-            await _businessFormRepo.SaveChangesAsync();
-        }
-
-        //public Task<BusinessForm> Create(BusinessForm formElement)
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
 }
