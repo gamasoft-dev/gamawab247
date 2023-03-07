@@ -21,9 +21,6 @@ namespace Domain.Entities.FormProcessing
         [Column(TypeName = "jsonb")]
         public List<KeyValueObj> Headers { get; set; }
 
-        [Column(TypeName = "jsonb")]
-        public List<FormResponseKvp> ResponseKvps { get; set; }
-
         // Use this to determine how and where to submission this form when collated completely.
         public bool IsFormToBeSubmittedToUrl { get; set; }
 
@@ -39,7 +36,7 @@ namespace Domain.Entities.FormProcessing
         public int UrlMethodType { get; set; } = (int)EUrlMethodType.POST;
 
         public int Counter { get; set; }
-        public bool IsRequestSuccessful { get; set; }
+        public bool IsSummaryOfFormMessagesRequired { get; set; }
 
         public ICollection<UserFormData> UserFormData { get; set; }
 

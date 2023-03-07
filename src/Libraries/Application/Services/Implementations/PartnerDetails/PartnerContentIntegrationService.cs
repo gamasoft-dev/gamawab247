@@ -16,18 +16,21 @@ namespace Application.Services.Implementations.PartnerDetails
     public class PartnerContentIntegrationService : IPartnerContentIntegrationDetailsService
     {
         private readonly IRepository<PartnerIntegrationDetails> _integrationRepo;
+        private readonly IRepository<Partner> _partnerRepo;
         private readonly IMapper _mapper;
-        public PartnerContentIntegrationService(IRepository<PartnerIntegrationDetails> integrationRepo, IMapper mapper)
+        public PartnerContentIntegrationService(IRepository<PartnerIntegrationDetails> integrationRepo,
+            IMapper mapper, IRepository<Partner> partnerRepo)
         {
             _integrationRepo = integrationRepo;
+            _partnerRepo = partnerRepo;
             _mapper = mapper;
         }
 
         public async Task<SuccessResponse<PartnerContentIntegrationDto>>
             Create(CreatePartnerContentIntegrationDto model)
         {
-            if (model.PartnerId == Guid.Empty)
-                throw new RestException(System.Net.HttpStatusCode.BadRequest, ResponseMessages.Failed);
+            if (!await _partnerRepo.ExistsAsync(x => x.Id == model.PartnerId))
+                throw new RestException(System.Net.HttpStatusCode.BadRequest, "Invalid partner Id, Partner not very");
 
             var partnerIntegration = _mapper.Map<PartnerIntegrationDetails>(model);
             await _integrationRepo.AddAsync(partnerIntegration);
@@ -89,9 +92,15 @@ namespace Application.Services.Implementations.PartnerDetails
         {
             if (id == Guid.Empty)
                 throw new RestException(System.Net.HttpStatusCode.BadRequest, ResponseMessages.Failed);
+
+            if (!await _integrationRepo.ExistsAsync(x => x.Id == id))
+                throw new RestException(System.Net.HttpStatusCode.NotFound, "Invalid partner content intgeration id, partner content integration not found");
+
             PartnerIntegrationDetails partner = await _integrationRepo.GetByIdAsync(id)
                 ?? throw new RestException(System.Net.HttpStatusCode.NotFound, ResponseMessages.Failed);
+
             PartnerContentIntegrationDto partnerDto = _mapper.Map<PartnerContentIntegrationDto>(partner);
+
             return new SuccessResponse<PartnerContentIntegrationDto>
             {
                 Data = partnerDto,

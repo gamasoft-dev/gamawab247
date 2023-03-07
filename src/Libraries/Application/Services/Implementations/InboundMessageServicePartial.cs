@@ -54,6 +54,7 @@ namespace Application.Services.Implementations
             // then call the retrieve content method.
 
             // call the service and add messageLog
+
             await _messageLogService.CreateMessageLog(messageLog);
             #endregion
 
@@ -259,8 +260,12 @@ namespace Application.Services.Implementations
                 }
 
 
-                BusinessForm businessForm = session.SessionFormDetails.BusinessForm;
-                FormElement nextElement = businessForm?.FormElements?.FirstOrDefault(
+                BusinessForm sessionBusinessForm = session.SessionFormDetails.BusinessForm;
+
+                FormElement currentElement = sessionBusinessForm?.FormElements?.FirstOrDefault(
+                    x => x.Key == session?.SessionFormDetails?.CurrentFormElement);
+
+                FormElement nextElement = sessionBusinessForm?.FormElements?.FirstOrDefault(
                     x => x.Key == session?.SessionFormDetails?.NextFormElement);
 
                 var receivedResponse = new FormRequestResponse
@@ -270,10 +275,11 @@ namespace Application.Services.Implementations
                     BusinessFormId = session.SessionFormDetails.BusinessFormId,
                     BusinessId = session.BusinessId,
                     Direction = EMessageDirection.Inbound.ToString(),
-                    FormElement = session.SessionFormDetails?.CurrentFormElement,
+                    FormElement = currentElement?.Key,
                     MessageType = EMessageType.Text.ToString(),
                     Status = EResponseProcessingStatus.Recieved.ToString(),
                     Message = messageLog.MessageBody,
+                    FollowUpPartnerContentIntegrationKey = currentElement?.PartnerContentProcessorKey
                 };
                 formRequestResponses.Add(receivedResponse);
 
@@ -311,6 +317,8 @@ namespace Application.Services.Implementations
                         MessageType = EMessageType.Text.ToString(),
                         Status = EResponseProcessingStatus.Pending.ToString(),
                         Message = nextElement?.Label ?? nextElement.Key,
+                        FollowUpPartnerContentIntegrationKey = currentElement?.PartnerContentProcessorKey
+
                     };
 
                     formRequestResponses.Add(nextFormRequest);
@@ -323,7 +331,7 @@ namespace Application.Services.Implementations
                     session.SessionFormDetails.CurrentFormElement = nextElement?.Key;
                     session.SessionFormDetails.CurrentElementId = currentId;
                     session.SessionFormDetails.IsFormCompleted = currentId == session?.SessionFormDetails?.LastElementId;
-                    session.SessionFormDetails.NextFormElement = businessForm.FormElements.FirstOrDefault(x => x.Id == (currentId + 1))?.Key;
+                    session.SessionFormDetails.NextFormElement = sessionBusinessForm.FormElements.FirstOrDefault(x => x.Id == (currentId + 1))?.Key;
                     session.SessionFormDetails.IsFormQuestionSent = false;
 
                     session.SessionFormDetails.Payload += $"{messageLog.MessageBody} {Environment.NewLine}";
@@ -347,10 +355,10 @@ namespace Application.Services.Implementations
                     session.SessionFormDetails.Payload += $"{messageLog.MessageBody}";
                     var formSummaryMessage = new FormRequestResponse
                     {
-                        FormElement = businessForm.FormElements?.LastOrDefault()?.Key,
+                        FormElement = sessionBusinessForm.FormElements?.LastOrDefault()?.Key,
                         To = messageLog.From,
                         From = messageLog.To,
-                        BusinessFormId = businessForm.Id,
+                        BusinessFormId = sessionBusinessForm.Id,
                         BusinessId = session.BusinessId,
                         Direction = EMessageDirection.Outbound.ToString(),
                         IsSummaryMessage = true,
