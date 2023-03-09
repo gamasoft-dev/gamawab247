@@ -11,6 +11,7 @@ using Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+using Org.BouncyCastle.Math.EC.Rfc7748;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -79,6 +80,7 @@ namespace Application.Services.Implementations.FormProcessing
 
 
             //validation
+            
             //for (int i = 1; i < businessFormMap.FormElements.Count; i++)//to auto handle form indexes accordingly
             //{
             //    businessFormMap.FormElements[i].Id = i;
@@ -86,7 +88,6 @@ namespace Application.Services.Implementations.FormProcessing
 
             businessForm.UpdatedAt = DateTime.UtcNow;
             businessForm.Headers = businessFormMap.Headers;
-            businessForm.ResponseKvps = businessFormMap.ResponseKvps;
             businessForm.FormElements = businessFormMap.FormElements;
             businessForm.UrlMethodType = businessFormMap.UrlMethodType;
             businessForm.SubmissionUrl = businessFormMap.SubmissionUrl;
@@ -153,7 +154,6 @@ namespace Application.Services.Implementations.FormProcessing
         public async Task<BusinessForm> GetBusinessFormFisrtOrDefault(Expression<Func<BusinessForm, bool>> expression)
         {
             var iquery = _businessFormRepo.Query(expression).Include(x => x.Business);
-            //var mappedIquery = _mapper.Map<IIncludableQueryable<BusinessFormDto, BusinessDto>>(iquery);
             return await iquery.FirstOrDefaultAsync();
         }
 
