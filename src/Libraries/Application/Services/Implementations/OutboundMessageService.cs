@@ -252,13 +252,18 @@ namespace Application.Services.Implementations
             if (_dialog360Settings is null)
                 throw new RestException(System.Net.HttpStatusCode.InternalServerError,
                     "The environment variable for 360Dialog could not be retrieved from settings");
-            
-            var msgBody = model.Position == 1
+
+            var msgBody = model.Position == (int)ESystemMessagePosition.Initial
                 ? BusinessSettingsUtility.GetFirstMessage(
                     businessSettings.Data.BotName, businessSettings.Data.BotDescription, inboundMessage.WhatsUserName)
                 : model?.MessageTypeObject?.Body;
 
-            
+            if(model.Position == (int)ESystemMessagePosition.Welcome_Back)
+            {
+                msgBody = msgBody.Replace("{{name}}", inboundMessage.WhatsUserName);
+            }
+
+
             if (model.MessageTypeObject is not null)
             {
                 var replyTextMessageRequest = new TextMessageRequestDto()

@@ -2,6 +2,7 @@ using Application.Common.Sessions;
 using Application.DTOs;
 using Application.DTOs.CreateDialogDtos;
 using Application.Helpers;
+using Application.Services.Implementations;
 using Application.Services.Interfaces;
 using Application.Services.Interfaces.FormProcessing;
 using AutoMapper;
@@ -13,10 +14,12 @@ using Domain.Enums;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace Application.Cron.ResponseProcessing;
 
@@ -33,6 +36,8 @@ public class ResponsePreProcessingCron : IResponsePreProcessingCron
     private readonly IFormRequestResponseService _formRequestResponseService;
     private readonly ISessionManagement _sessionManagement;
     private readonly IBusinessFormService _businessFormService;
+    
+
     private List<BusinessMessageDto<BaseInteractiveDto>> _followUpMessagesWithContent = new();
     private readonly IDuplicateFIlterHelper _duplicateFIlterHelper;
 
@@ -48,7 +53,8 @@ public class ResponsePreProcessingCron : IResponsePreProcessingCron
         //  IMessagePositionPhraseMapService messagePositionPhraseMapService,
         IUtilService utilService,
         IFormRequestResponseService formRequestResponseService,
-        IDuplicateFIlterHelper duplicateFIlterHelper)
+        IDuplicateFIlterHelper duplicateFIlterHelper
+        )
     {
         _inboundMessageRepo = inboundMessageRepo;
         _outboundMessageRepo = outboundMessageRepo;
@@ -62,11 +68,13 @@ public class ResponsePreProcessingCron : IResponsePreProcessingCron
         _businessFormService = businessFormService;
         _formRequestResponseService = formRequestResponseService;
         _duplicateFIlterHelper = duplicateFIlterHelper;
+   
     }
 
     public async Task InitiateMessageProcessing()
     {
         var now = DateTime.UtcNow;
+       
 
         // get the list of pending inbound messages for processing.
         var pendingInbounds = await _inboundMessageRepo.Query(
@@ -167,13 +175,27 @@ public class ResponsePreProcessingCron : IResponsePreProcessingCron
         List<BusinessMessageDto<BaseInteractiveDto>> allMessages = new();
         // bool isFormTriggered = false; //this is to ensure respective buttons are click to initiate a form for user instead of always beings triggered whenever option command is run.
 
-        if (!inboundMessage.CanUseNLPMapping && sendFirstOrDefaultBusinessMessage)
+        var now = DateTime.UtcNow;
+        DateTime? lastGreetingMessageTime = await _outboundMessageRepo.Query(x => x.BusinessId == inboundMessage.BusinessId && x.RecipientWhatsappId == inboundMessage.Wa_Id)
+            .OrderByDescending(x => x.CreatedAt)
+            .Select(x => x.UpdatedAt)
+            .FirstOrDefaultAsync();
+
+        if (now - lastGreetingMessageTime >= TimeSpan.FromHours(24) && !inboundMessage.CanUseNLPMapping 
+            && sendFirstOrDefaultBusinessMessage)
         {
             // get the businessMessage for this business at position 1 and send
             resolvedBusinessMessage = await _businessMessageRepo.FirstOrDefault(x =>
                x.BusinessId == inboundMessage.BusinessId
                && x.Position == 1);
         }
+        else
+        {
+            resolvedBusinessMessage = await _businessMessageRepo.FirstOrDefault(x =>
+               x.BusinessId == inboundMessage.BusinessId
+               && x.Position == 200);
+        }
+
         // when inboundMessage.CanUseNLPMapping == true.
 
         #region
@@ -411,5 +433,14 @@ public class ResponsePreProcessingCron : IResponsePreProcessingCron
             Message = currentFormElement.Label ?? currentFormElement.Key
         };
         await _formRequestResponseService.Create(formRequest);
+    }
+
+    private void GreetUser(object sender, ElapsedEventArgs e, BusinessMessage resolvedBusinessMessage, InboundMessage inboundMessage)
+    {
+        var now = DateTime.UtcNow;
+        if (now.Hour == 0 && now.Minute == 0 && now.Second == 0)
+            resolvedBusinessMessage = _businessMessageRepo.FirstOrDefault(x =>
+              x.BusinessId == inboundMessage.BusinessId
+              && x.Position == 1).Result;
     }
 }

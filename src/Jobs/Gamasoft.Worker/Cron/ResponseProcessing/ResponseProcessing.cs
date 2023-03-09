@@ -160,13 +160,27 @@ public class ResponsePreProcessing : IResponsePreProcessing
         BusinessMessageDto<BaseInteractiveDto> resolveMessageDto = new();
         List<BusinessMessageDto<BaseInteractiveDto>> allMessages = new();
 
-        if (sendFirstOrDefaultBusinessMessage)
+        var now = DateTime.UtcNow;
+        DateTime? lastGreetingMessageTime = await _outboundMessageRepo.Query(x => x.BusinessId == inboundMessage.BusinessId && x.RecipientWhatsappId == inboundMessage.Wa_Id)
+            .OrderByDescending(x => x.UpdatedAt)
+            .Select(x => x.UpdatedAt)
+            .FirstOrDefaultAsync();
+
+        if ( now - lastGreetingMessageTime >= TimeSpan.FromHours(24) && sendFirstOrDefaultBusinessMessage)
         {
             // get the businessMessage for this business at position 1 and send
-             resolvedBusinessMessage = await _businessMessageRepo.FirstOrDefault(x =>
-                x.BusinessId == inboundMessage.BusinessId
-                && x.Position == 1);
+            resolvedBusinessMessage = await _businessMessageRepo.FirstOrDefault(x =>
+               x.BusinessId == inboundMessage.BusinessId
+               && x.Position == 1);
         }
+        else
+        {
+            resolvedBusinessMessage = await _businessMessageRepo.FirstOrDefault(x =>
+               x.BusinessId == inboundMessage.BusinessId
+               && x.Position == 10);
+        }
+
+       
         
         if (outboundMessage is not null && businessMessage is not null)
         {
