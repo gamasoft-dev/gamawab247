@@ -5,7 +5,7 @@ namespace BillProcessorAPI.Services.Interfaces
 {
 	public interface IBillService
 	{
-		Task<SuccessResponse<BillPayerInfoDto>> ReferenceVerification(BillReferenceRequestDto model);
-		Task<SuccessResponse<BillPaymentVerificationResponseDto>> PaymentVerification(BillPaymentVerificationRequestDto model);
+		Task<SuccessResponse<BillReferenceResponseDto>> ReferenceVerification(BillRequestDto model);
+		Task<SuccessResponse<BillPaymentVerificationResponseDto>> PaymentVerification(BillRequestDto model);
 	}
 }

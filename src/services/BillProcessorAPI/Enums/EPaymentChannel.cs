@@ -1,6 +1,6 @@
 ﻿namespace BillProcessorAPI.Enums
 {
-    public enum EPaymentChannel
+    public enum EPaymentChannel : int
     {
         AgentNetwork = 1,
         CardWeb,

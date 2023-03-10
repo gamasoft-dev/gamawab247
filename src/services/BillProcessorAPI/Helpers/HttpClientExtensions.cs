@@ -1,13 +1,16 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using BillProcessorAPI.Dtos;
+using BillProcessorAPI.Helpers.Revpay;
+using Microsoft.Extensions.Options;
 
 namespace BillProcessorAPI.Helpers
 {
     public static class HttpClientExtensions
     {
         private const string Authorization = "Authorization";
-
+       
         public static async Task<T> ReadContentAs<T>(this HttpResponseMessage response)
         {
             if (!response.IsSuccessStatusCode)
@@ -18,24 +21,21 @@ namespace BillProcessorAPI.Helpers
             return JsonSerializer.Deserialize<T>(dataAsString);
         }
 
-        public static async Task<HttpResponseMessage> PostAsJson<T>(
+        public static async Task<HttpResponseMessage> PostAsJson(
             this HttpClient httpClient, 
-            string url, 
-            T? data, 
-            IConfiguration config,
-            IDictionary<string, string> headers)
+            string Baseurl, string relativeUrl,
+            AbcRequestPayload data)
         {
+   
             httpClient.DefaultRequestHeaders.Clear();
+            httpClient.BaseAddress = new Uri(Baseurl);
             var dataAsString = JsonSerializer.Serialize(data);
-            var content = new StringContent(dataAsString, Encoding.UTF8);
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            var content = new StringContent(dataAsString, Encoding.UTF8, "application/json");
 
-            foreach (var header in headers)
-            {
-                httpClient.DefaultRequestHeaders.Add(name: header.Key, config[header.Value]);
-            }
-
-            return await httpClient.PostAsync(url, content);
+            var request = new HttpRequestMessage(HttpMethod.Post, relativeUrl);
+            request.Content = content;
+            
+            return await httpClient.SendAsync(request);
         }
 
         public static Task<HttpResponseMessage> GetAsJson(this HttpClient httpClient, string url, IConfiguration config)
