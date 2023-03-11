@@ -2,6 +2,7 @@ using Infrastructure.Sessions;
 using Application.DTOs;
 using Application.DTOs.CreateDialogDtos;
 using Application.Helpers;
+using Application.Services.Implementations;
 using Application.Services.Interfaces;
 using Application.Services.Interfaces.FormProcessing;
 using AutoMapper;
@@ -13,6 +14,7 @@ using Domain.Enums;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +36,8 @@ public class ResponsePreProcessingCron : IResponsePreProcessingCron
     private readonly IFormRequestResponseService _formRequestResponseService;
     private readonly ISessionManagement _sessionManagement;
     private readonly IBusinessFormService _businessFormService;
+    
+
     private List<BusinessMessageDto<BaseInteractiveDto>> _followUpMessagesWithContent = new();
     private readonly IApiContentIntegrationManager _apiContentIntegrationManager;
 
@@ -66,6 +70,7 @@ public class ResponsePreProcessingCron : IResponsePreProcessingCron
     public async Task InitiateMessageProcessing()
     {
         var now = DateTime.UtcNow;
+       
 
         // get the list of pending inbound messages for processing.
         var pendingInbounds = await _inboundMessageRepo.Query(
@@ -160,13 +165,28 @@ public class ResponsePreProcessingCron : IResponsePreProcessingCron
         List<BusinessMessageDto<BaseInteractiveDto>> allMessages = new();
         BaseInteractiveDto interactiveMessage = null;
 
-        if (!inboundMsg.CanUseNLPMapping && sendFirstOrDefaultMsg)
+        var now = DateTime.UtcNow;
+        DateTime? lastGreetingMessageTime = await _outboundMessageRepo.Query(x => x.BusinessId == inboundMessage.BusinessId && x.RecipientWhatsappId == inboundMessage.Wa_Id)
+            .OrderByDescending(x => x.CreatedAt)
+            .Select(x => x.UpdatedAt)
+            .FirstOrDefaultAsync();
+
+        if (now - lastGreetingMessageTime >= TimeSpan.FromHours(24) && !inboundMessage.CanUseNLPMapping 
+            && sendFirstOrDefaultMsg)
         {
             // get the businessMessage for this business at position 1 and send
             nextBusinessMessageToSend = await _businessMessageRepo.FirstOrDefault(x =>
                x.BusinessId == inboundMsg.BusinessId
                && x.Position == 1);
         }
+        else
+        {
+            resolvedBusinessMessage = await _businessMessageRepo.FirstOrDefault(x =>
+               x.BusinessId == inboundMessage.BusinessId
+               && x.Position == 200);
+        }
+
+        // when inboundMessage.CanUseNLPMapping == true.
 
         #region
 
@@ -464,5 +484,12 @@ public class ResponsePreProcessingCron : IResponsePreProcessingCron
             ShouldTriggerFormProcessing = model.ShouldTriggerFormProcessing,
             BusinessConversationId = model.BusinessConversationId
         };
+    private void GreetUser(object sender, ElapsedEventArgs e, BusinessMessage resolvedBusinessMessage, InboundMessage inboundMessage)
+    {
+        var now = DateTime.UtcNow;
+        if (now.Hour == 0 && now.Minute == 0 && now.Second == 0)
+            resolvedBusinessMessage = _businessMessageRepo.FirstOrDefault(x =>
+              x.BusinessId == inboundMessage.BusinessId
+              && x.Position == 1).Result;
     }
 }

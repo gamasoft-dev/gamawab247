@@ -12,6 +12,7 @@ using Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+using Org.BouncyCastle.Math.EC.Rfc7748;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -146,7 +147,6 @@ namespace Application.Services.Implementations.FormProcessing
         public async Task<BusinessForm> GetBusinessFormFisrtOrDefault(Expression<Func<BusinessForm, bool>> expression)
         {
             var iquery = _businessFormRepo.Query(expression).Include(x => x.Business);
-            //var mappedIquery = _mapper.Map<IIncludableQueryable<BusinessFormDto, BusinessDto>>(iquery);
             return await iquery.FirstOrDefaultAsync();
         }
 

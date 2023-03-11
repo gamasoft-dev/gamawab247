@@ -20,14 +20,14 @@ namespace BillProcessorAPI.Controllers
 		}
 
 		[HttpPost("reference-verification")]
-		public async Task<IActionResult> ReferenceVerification(BillReferenceRequestDto model)
+		public async Task<IActionResult> ReferenceVerification(BillRequestDto model)
 		{
 			var response = await _revpay.ReferenceVerification(model);
 			return Ok(response);
 		}
 
-		[HttpPost("payment-veification")]
-		public async Task<IActionResult> PaymentVerification(BillPaymentVerificationRequestDto model)
+		[HttpPost("payment-verification")]
+		public async Task<IActionResult> PaymentVerification(BillRequestDto model)
 		{
 			var response = await _revpay.PaymentVerification(model);
 			return Ok(response);

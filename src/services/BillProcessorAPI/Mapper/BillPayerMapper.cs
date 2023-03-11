@@ -9,7 +9,8 @@ namespace BillProcessorAPI.Mapper
 		public BillPayerMapper()
 		{
 			CreateMap<BillPayerInfo, BillPayerInfoDto>().ReverseMap();
-			CreateMap<BillPayerInfo, BillReferenceRequestDto>().ReverseMap();
+			CreateMap<BillPayerInfo, BillRequestDto>().ReverseMap();
+			CreateMap<BillPayerInfo, BillReferenceResponseDto>().ReverseMap();
 		}
 	}
 }
