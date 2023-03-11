@@ -68,7 +68,7 @@ namespace Application.Services.Implementations
             await _formRequestResponseRepository.SaveChangesAsync();
         }
 
-        public async Task Create(ICollection<FormRequestResponse> formRequestResponses)
+        public async Task Create(List<FormRequestResponse> formRequestResponses)
         {
             await _formRequestResponseRepository.AddRangeAsync(formRequestResponses);
             await _formRequestResponseRepository.SaveChangesAsync();

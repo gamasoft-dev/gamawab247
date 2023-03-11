@@ -51,14 +51,6 @@ namespace API.Controllers
             return Ok(get);
         }
 
-        //[HttpGet("business/{id}")]
-        //[ProducesResponseType(typeof(SuccessResponse<BusinessForm>), (int)HttpStatusCode.OK)]
-        //public async Task<IActionResult> BusinessFormByBusinessId(Guid id)
-        //{
-        //    var get = await _businessFormService.GetBusinessFormByBusinessId(id);
-        //    return Ok(get);
-        //}
-
         [HttpGet]
         [ProducesResponseType(typeof(PagedResponse<IEnumerable<BusinessForm>>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllBusinessFormById(Guid id, string search, string name, [FromQuery]ResourceParameter parameter)

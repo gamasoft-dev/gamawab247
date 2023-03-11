@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Application.AutofacDI;
-using Application.DTOs;
-using Application.Helpers;
-using Application.Services.Interfaces;
 using Domain.Entities;
 using Domain.Entities.FormProcessing;
 using Domain.Entities.FormProcessing.ValueObjects;
 using Domain.Enums;
+using Infrastructure.Cache;
 
-namespace Application.Common.Sessions
+namespace Infrastructure.Sessions
 {
     public class SessionManagement: ISessionManagement
     {
@@ -67,7 +64,14 @@ namespace Application.Common.Sessions
 
         public async Task<DialogSession> GetByWaId(string waId)
         {
-            return await _cacheService.ReadFromCacheAsync<DialogSession>(waId);
+            try
+            {
+                return await _cacheService.ReadFromCacheAsync<DialogSession>(waId);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public async Task Update(string waId, DialogSession model)
@@ -91,16 +95,5 @@ namespace Application.Common.Sessions
         {
             await _cacheService.AddToCacheAsync(waId, model);
         }
-    }
-
-    public interface ISessionManagement: IAutoDependencyService
-    {
-        Task Update(string  waId, DialogSession dialogSession);
-        Task<DialogSession> GetByWaId(string waId);
-        Task<DialogSession> CreateNewSession(string waId, string messageId, string userName, Business business,
-            DateTime? messageTime = null,
-            ESessionState? eSessionState = null, SessionFormDetail sessionFormDetail = null, Guid? businessFormId = null);
-
-        Task RemoveUserSession(string key);
     }
 }

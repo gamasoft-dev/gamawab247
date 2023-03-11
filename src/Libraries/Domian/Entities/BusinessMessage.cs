@@ -40,9 +40,8 @@ namespace Domain.Entities.DialogMessageEntitties
         /// external integration (local funciton or external api)
         /// When this value is set it would be likely that the InteractiveMessageId will be empty
         /// </summary>
-        public Guid? ExternalContentRetrievalId { get; set; }
-
-        public PartnerIntegrationDetails ExternalContentRetrieval { get; set; }
+        public bool ShouldRetrieveContentAtRuntime { get; set; }
+        public string ContentRetrievalProcessorKey { get; set; }
 
         // navigation properties
         public BusinessConversation BusinessConversation { get; set; }

@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\ApiCustomization\ApiCustomization.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,8 +39,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Common\" />
-    <None Remove="Common\Sessions\" />
     <None Remove="Services\Interfaces\FormProcessing\" />
     <None Remove="Services\Implementations\FormProcessing\" />
     <None Remove="Exceptions\" />
@@ -51,8 +49,6 @@
     <None Remove="Services\Implementations\PartnerDetails\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Common\" />
-    <Folder Include="Common\Sessions\" />
     <Folder Include="Services\Implementations\FormProcessing\" />
     <Folder Include="Exceptions\" />
     <Folder Include="Cron\FormProcessing\" />

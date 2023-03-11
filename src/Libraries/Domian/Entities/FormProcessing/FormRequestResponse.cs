@@ -23,16 +23,17 @@ namespace Domain.Entities.FormProcessing
         public BusinessForm BusinessForm { get; set; }
         public string FollowUpPartnerContentIntegrationKey { get; set; }
 
-        //public override bool Equals(object obj)
-        //{
-        //    return obj is FormRequestResponse response &&
-        //           Id.Equals(response.Id);
-        //}
 
-        //public override int GetHashCode()
-        //{
-        //    return HashCode.Combine(Id);
-        //}
+        public override bool Equals(object obj)
+        {
+            return obj is FormRequestResponse response &&
+                   Id.Equals(response.Id);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id);
+        }
     }
 }
 

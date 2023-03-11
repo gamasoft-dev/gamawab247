@@ -7,6 +7,7 @@ using AutoMapper.QueryableExtensions;
 using Domain.Common;
 using Domain.Entities.DialogMessageEntitties;
 using Domain.Entities.FormProcessing;
+using Domain.Entities.FormProcessing.ValueObjects;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -41,25 +42,26 @@ namespace Application.Services.Implementations.FormProcessing
             if (model is null)
                 throw new RestException(HttpStatusCode.BadRequest, "One/More parameter could not be validated");
 
-            if (model.BusinessId == Guid.Empty)
-                throw new RestException(HttpStatusCode.BadRequest, "Business Id or Conversation Id failed to validate");
-
             //Check if business exist.
             var business = await _businessService.GetBusinessByBusinessId(model.BusinessId);
+
             if (business is null)
                 throw new RestException(HttpStatusCode.NotFound, "Error: No business exist with id exist");
 
-            
-            var businessFormMap = _mapper.Map<BusinessForm>(model);
+            // validate form
+            await ValidateBusinessForm(model);
 
-            await _businessFormRepo.AddAsync(businessFormMap);
+
+            var businessForm = _mapper.Map<BusinessForm>(model);
+
+            await _businessFormRepo.AddAsync(businessForm);
             await _businessFormRepo.SaveChangesAsync();
             
-            var response = _mapper.Map<BusinessFormDto>(businessFormMap);
+            var businessFormDto = _mapper.Map<BusinessFormDto>(businessForm);
 
             return new SuccessResponse<BusinessFormDto>
             {
-                Data = response,
+                Data = businessFormDto,
                 Message = "Successfully processed",
                 Success = true
             };
@@ -67,32 +69,23 @@ namespace Application.Services.Implementations.FormProcessing
 
         public async Task<SuccessResponse<bool>> UpdateBusinessForm(Guid id, UpdateBusinessFormDto model)
         {
-            if (id == Guid.Empty || model is null)
-                throw new RestException(HttpStatusCode.BadRequest, "Failed to validate parameter");
+            if (model is null)
+                throw new RestException(HttpStatusCode.BadRequest, "model is null");
 
+            model.Id = id;
             var businessForm = await _businessFormRepo.FirstOrDefault(x => x.Id == id);
             if (businessForm is null)
-                throw new RestException(HttpStatusCode.NotFound, "Error: No business form exist with id exist");
+                throw new RestException(HttpStatusCode.NotFound, "Error: No business form exist with this id");
 
+            // validate form
+            await ValidateBusinessForm(model);
 
-            var businessFormMap = _mapper.Map<BusinessForm>(model);
-
-
-            //validation
-            //for (int i = 1; i < businessFormMap.FormElements.Count; i++)//to auto handle form indexes accordingly
-            //{
-            //    businessFormMap.FormElements[i].Id = i;
-            //}
+            var businessFormMap = _mapper.Map(model, businessForm);
 
             businessForm.UpdatedAt = DateTime.UtcNow;
-            businessForm.Headers = businessFormMap.Headers;
-            businessForm.ResponseKvps = businessFormMap.ResponseKvps;
-            businessForm.FormElements = businessFormMap.FormElements;
-            businessForm.UrlMethodType = businessFormMap.UrlMethodType;
-            businessForm.SubmissionUrl = businessFormMap.SubmissionUrl;
 
-            _businessFormRepo.Update(businessForm);
             await _businessFormRepo.SaveChangesAsync();
+
             return new SuccessResponse<bool>
             {
                 Data = true,
@@ -155,6 +148,76 @@ namespace Application.Services.Implementations.FormProcessing
             var iquery = _businessFormRepo.Query(expression).Include(x => x.Business);
             //var mappedIquery = _mapper.Map<IIncludableQueryable<BusinessFormDto, BusinessDto>>(iquery);
             return await iquery.FirstOrDefaultAsync();
+        }
+
+
+
+
+        private async Task ValidateBusinessForm(CreateBusinessFormDto model)
+        {
+            if (model.ConclusionBusinessMessageId.HasValue)
+            {
+                var conclusionBusinessMessage = await _businessMessageRepo
+                    .GetByIdAsync(id: model.ConclusionBusinessMessageId.Value);
+
+                if (conclusionBusinessMessage is null)
+                    throw new RestException(HttpStatusCode.BadRequest, "Conclusive business messsage doesnt exist. Invalid ConclusionBusinessMessageId");
+            }
+
+            List<FormElement> validFormElements = new ();
+            HashSet<FormElement> formElements = new HashSet<FormElement>(model.FormElements);
+
+            if (model.FormElements.Count != formElements.Count)
+                throw new RestException(HttpStatusCode.BadRequest, "No two form elements should have same Position or key values");
+
+            var lastFormElement = model.FormElements.Where(x => x.IsLastFormElement);
+
+            if (lastFormElement.Count() > 1)
+                throw new RestException(HttpStatusCode.BadRequest,"You cannot have more than one last form Element configured");
+
+            // for each of the form elements
+
+            foreach (var formElement in model.FormElements)
+            {
+                if(formElement.ShouldRetrieveContentExternally &&
+                   string.IsNullOrEmpty(formElement.PartnerContentProcessorKey))
+                {
+                    throw new RestException(HttpStatusCode.BadRequest, $"{formElement.Key} If the ShouldRetrieveContentExternally  is true, " +
+                        $"then the PartnerContentProcessorKey cannot be null");
+                }
+
+                if (!string.IsNullOrEmpty(formElement.Label) &&
+                    (!string.IsNullOrEmpty(formElement.PartnerContentProcessorKey)
+                    || formElement.ShouldRetrieveContentExternally))
+                {
+                    throw new RestException(HttpStatusCode.BadRequest, $"The {formElement.Key} form element has a value for its label property" +
+                       $"therefore the ShouldRetrieveContentExternally should be false and PartnerContentProcessorKey should be empty");
+                }
+
+                if (formElement.FollowUpMessageId.HasValue)
+                {
+                    // validate that this is a valid business message
+                    var followUpMessage = await _businessMessageRepo
+                    .GetByIdAsync(id: formElement.FollowUpMessageId.Value);
+
+                    if (followUpMessage is null)
+                        throw new RestException(HttpStatusCode.BadRequest, $"Invalid folllowUp message configured for form element {formElement.Key}. Invalid Id");
+
+                }
+                if (!formElement.IsLastFormElement)
+                {
+                    var nextFormElement = formElements.FirstOrDefault(x => x.Position == formElement.NextFormElementPosition);
+
+                    if (formElement.NextFormElementPosition == 0)
+                        throw new RestException(HttpStatusCode.BadRequest, $"NextFormElementPosition value is compulsory for form elements that are not set as lastFormElement and cannot be set to 0");
+
+
+                    if (nextFormElement is null || nextFormElement.Equals(formElement))
+                        throw new RestException(HttpStatusCode.BadRequest, $"Invalid NextFormElementPoistion value for form element: {formElement.Key}");
+
+                }
+
+            }
         }
 
     }

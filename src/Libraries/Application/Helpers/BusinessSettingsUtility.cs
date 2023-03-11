@@ -20,7 +20,7 @@ namespace Application.Helpers
             botDescription = botDescription ?? "Virtual Assistant";
             
             string initMessage = $"{GetGreeting()} {whatsappUserName}, \n \n" +
-                                 $"My name is {botName}, I am your {botDescription}";
+                                 $"My name is {botName}, {botDescription}";
             return initMessage;
         }
 

@@ -7,6 +7,8 @@ using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Http;
 using Application.Helpers;
 using FormProcessingWorker.Middleware;
+using ApiCustomization;
+using Infrastructure;
 
 namespace FormProcessingWorker
 {
@@ -44,6 +46,9 @@ namespace FormProcessingWorker
                 .AddXmlDataContractSerializerFormatters();
             services.ConfigureMvcAndAutomapper();
             services.ConfigureGlobalization();
+            services.ConfigureApiCustomizationService(Configuration);
+            services.AddRepositories();
+            services.AddHttpClientInfrastructure();
             services.ConfigureIdentity();
 
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using Application.DTOs.InboundMessageDto;
 using Domain.Enums;
 using Newtonsoft.Json;
-using Application.Common.Sessions;
+using Infrastructure.Sessions;
 using Application.Services.Interfaces.FormProcessing;
 using Application.Cron.ResponseProcessing;
 

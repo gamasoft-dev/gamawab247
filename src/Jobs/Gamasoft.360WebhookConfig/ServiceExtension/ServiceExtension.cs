@@ -4,6 +4,7 @@ using Application.Services.Implementations;
 using Application.Services.Interfaces;
 using Domain.Entities.Identities;
 using Infrastructure;
+using Infrastructure.Cache;
 using Infrastructure.Data.DbContext;
 using Infrastructure.Data.DbContext.DbAuditFilters;
 using Infrastructure.Http;
@@ -134,8 +135,9 @@ namespace Gamasoft._360WebhookConfig.ServiceExtension
                 options.Configuration = redisConfig.ToString();
                 options.InstanceName = config.InstanceName;
             });
-            services.AddTransient<ICacheService, CacheService>();
+            services.AddScoped<ICacheService, CacheService>();
         }
+
 
         public static void ConfigureHangfire(this IServiceCollection services, IConfiguration configuration)
         {

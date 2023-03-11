@@ -1,18 +1,12 @@
 ﻿using System;
+using Domain.Enums;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using Domain.Common;
-using Domain.Entities.DialogMessageEntitties;
-using Domain.Entities.FormProcessing.ValueObjects;
-using Domain.Enums;
 
-namespace Domain.Entities.FormProcessing
+namespace Domain.Entities.FormProcessing.ValueObjects
 {
-    /// <summary>
-    /// This entity holds information about a form processing for a business
-    /// </summary>
-    public class BusinessForm: AuditableEntity
-    {
+	public class BusinessFormVM
+	{
         public Guid Id { get; set; }
         public Guid? BusinessConversationId { get; set; }
 
@@ -37,18 +31,24 @@ namespace Domain.Entities.FormProcessing
 
         public bool IsSummaryOfFormMessagesRequired { get; set; }
 
-        public ICollection<UserFormData> UserFormData { get; set; }
-
         public Guid BusinessId { get; set; }
-        public Business Business { get; set; }
-
-        /// <summary>
-        /// This is the business nessage that is sent after summary form message has been sent
-        /// This is optional. especially if the process ends at the summary message.
-        /// </summary>
         public Guid? ConclusionBusinessMessageId { get; set; }
-        public BusinessMessage ConclusionBusinessMessage{ get; set; }
-     
+
+        public BusinessFormVM MapBusinessFormToVM(BusinessForm model) {
+            return new BusinessFormVM
+            {
+                Id = model.Id,
+                BusinessConversationId = model.BusinessConversationId,
+                FormElements = model.FormElements,
+                Headers = model.Headers,
+                IsFormToBeSubmittedToUrl = model.IsFormToBeSubmittedToUrl,
+                SubmissionUrl = model.SubmissionUrl,
+                UrlMethodType = model.UrlMethodType,
+                IsSummaryOfFormMessagesRequired = model.IsSummaryOfFormMessagesRequired,
+                BusinessId = model.BusinessId,
+                ConclusionBusinessMessageId = model.ConclusionBusinessMessageId
+            };
+        }
     }
 }
 

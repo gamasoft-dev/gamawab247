@@ -14,18 +14,20 @@ namespace Domain.Entities.FormProcessing.ValueObjects
             UserData = new Dictionary<string, string>();
         }
         public Guid BusinessFormId { get; set; }
-        public int CurrentElementId { get; set; }
-        public string CurrentFormElement { get; set; }
-        public string NextFormElement { get; set; }
-        public bool IsValidationRequired { get; set; }
-        public bool IsFormQuestionSent { get; set; }
-        public string ValidationError { get; set; }
-        public bool IsFormCompleted { get; set; }
-        public int LastElementId { get; set; }
 
-        public string ValidationProcessorKey { get; set; }
-        public bool IsValueConfirmed { get; set; }
-        public EDataType CurrentFormElementType { get; set; }
+        public FormElement NextFormElement { get; set; }
+
+        public FormElement CurrentFormElement { get; set; }
+
+        public bool IsFormQuestionSent { get; set; }
+
+        public bool IsFormResponseRecieved { get; set; }
+
+        public string CurrentValidationError { get; set; }
+
+        public bool IsCurrentValueConfirmed { get; set; }
+
+        public bool IsFormCompleted { get; set; }
 
         /// <summary>
         /// This is a string of all request and response of the user in format
@@ -33,7 +35,9 @@ namespace Domain.Entities.FormProcessing.ValueObjects
         /// Element2: UserData2 etc
         /// </summary>
         public string Payload { get; set; }
-        public BusinessForm BusinessForm { set; get; }
+
+        public BusinessFormVM BusinessForm { set; get; }
+
         public IDictionary<string, string> UserData { get; set; }
     }
 }

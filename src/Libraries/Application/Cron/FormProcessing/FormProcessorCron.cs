@@ -2,7 +2,8 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Application.Common.Sessions;
+using Infrastructure.Sessions;
+using Infrastructure.Cache;
 using Application.Exceptions;
 using Application.Helpers;
 using Application.Services.Implementations.FormProcessing;
@@ -11,9 +12,11 @@ using Application.Services.Interfaces.FormProcessing;
 using Domain.Entities;
 using Domain.Entities.DialogMessageEntitties;
 using Domain.Entities.FormProcessing;
+using Domain.Entities.FormProcessing.ValueObjects;
 using Domain.Enums;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.Extensions.Logging;
+using ApiCustomization.Common;
 
 namespace Application.Services.Cron
 {
@@ -27,15 +30,19 @@ namespace Application.Services.Cron
         private readonly IOutboundMesageService _outboundMesageService;
         private readonly IDuplicateFIlterHelper _duplicateFIlterHelper;
         private readonly IFormConclusionMgtService _formConclusionMgtService;
+        private readonly IApiContentIntegrationManager apiContentIntegrationFactory;
+        private readonly IRepository<InboundMessage> inboundMessageRepo;
 
         public FormProcessorCron(IFormRequestResponseService formRequesResponseService,
            IRepository<BusinessForm> businessFormRepo,
+           IApiContentIntegrationManager apiContentIntegrationFactory,
            ISessionManagement sessionManagement,
            ILogger<FormProcessorCron> logger,
            IRepository<BusinessMessage> businessMessageRepo,
            IOutboundMesageService outboundMesageService,
            IDuplicateFIlterHelper duplicateFIlterHelper,
-           IFormConclusionMgtService formConclusionMgtService)
+           IFormConclusionMgtService formConclusionMgtService,
+           IRepository<InboundMessage> inboundMessageRepo)
         {
             _formRequesResponseService = formRequesResponseService;
             _businessFormRepo = businessFormRepo;
@@ -45,6 +52,8 @@ namespace Application.Services.Cron
             _outboundMesageService = outboundMesageService;
             _duplicateFIlterHelper = duplicateFIlterHelper;
             _businessMessageRepo = businessMessageRepo;
+            this.apiContentIntegrationFactory = apiContentIntegrationFactory;
+            this.inboundMessageRepo = inboundMessageRepo;
         }
 
         public async Task DoWork()
@@ -57,7 +66,6 @@ namespace Application.Services.Cron
                 && x.Direction == EMessageDirection.Outbound.ToString());
 
                 var formRequests = _formRequesResponseService.GetAll(func, 0, 20, true);
-                bool shouldPerformSessionFinalUpdate = false;
 
                 if (formRequests.Any())
                 {
@@ -67,6 +75,9 @@ namespace Application.Services.Cron
                         item.UpdatedAt = DateTime.UtcNow;
                         await _formRequesResponseService.Update(item);
                         DialogSession dialogSession = await _sessionManagement.GetByWaId(item.To.Trim());
+                        FormElement newCurrentFormElement = null;
+                        FormElement nextFormElement = null; 
+
 
                         try
                         {
@@ -80,73 +91,136 @@ namespace Application.Services.Cron
                                 throw new FormBgProcessorException(item.ErrorMessage, item.Status);
                             }
 
-                            if ((dialogSession.SessionState == ESessionState.FORMCONVOABOUTTOSTART
-                                || dialogSession.SessionState == ESessionState.FORMCONVORUNNING))
+                            if(dialogSession.SessionState != ESessionState.FORMCONVOABOUTTOSTART
+                                && dialogSession.SessionState != ESessionState.FORMCONVORUNNING)
                             {
-                                var currentFormElement = item?.BusinessForm.FormElements.FirstOrDefault(x => x.Key == item.FormElement);
+                                throw new FormBgProcessorException("The user's dialog is not in a form processing state. Reference dialog session",
+                               EResponseProcessingStatus.InValidSessionState.ToString());
+                            }
 
-                                if(currentFormElement is null)
+                          
+                            newCurrentFormElement = dialogSession.SessionFormDetails
+                                                        ?.BusinessForm?.FormElements
+                                                        ?.FirstOrDefault(x => x.Key == item.FormElement);
+
+                            dialogSession.SessionState = ESessionState.FORMCONVORUNNING;
+
+                            if (newCurrentFormElement is null)
+                            {
+                                item.Status = EResponseProcessingStatus.Failed.ToString();
+                                item.ErrorMessage = $"Form Configuration Error : Could not retrieve the form request with name {item.FormElement} from the business form record";
+                                throw new FormBgProcessorException(item.ErrorMessage, item.Status);
+                            }
+
+                            if (newCurrentFormElement.ShouldRetrieveContentExternally)
+                            {
+                                // use the indentifier with Factory to get the correct api integration
+
+                                var integrationResponseBody = await apiContentIntegrationFactory
+                                    .RetrieveContent<string>(newCurrentFormElement.PartnerContentProcessorKey,
+                                    item.To, newCurrentFormElement.Key);
+
+                                if (string.IsNullOrEmpty(integrationResponseBody))
+                                    throw new FormBgProcessorException($"Could not retrieve content from integration processor {newCurrentFormElement.PartnerContentProcessorKey}",
+                                        "Unable to retrieve content from partner at the moment, pls try again, send *cancel* to restart menu");
+
+                                // after which set the message body as the result of the partintegration call
+                                item.Message = integrationResponseBody;
+                            }
+
+                            bool isSent = false; int count = 1;
+                            while (!isSent && count <= 2)
+                            {
+
+                                if (!item.IsValidationResponse)
                                 {
-                                    item.Status = EResponseProcessingStatus.Failed.ToString();
-                                    item.ErrorMessage = $"Form Configuration Error : Could not retrieve the form request with name {item.FormElement} from the business form record";
-                                    throw new FormBgProcessorException(item.ErrorMessage, item.Status);
+                                    dialogSession.SessionState = ESessionState.FORMCONVORUNNING;
+                                    dialogSession.SessionFormDetails.IsFormQuestionSent = true;
+
+                                    dialogSession.SessionFormDetails.IsFormResponseRecieved = false;
+
+                                    if(newCurrentFormElement.RequireUserInputResponse)
+                                        dialogSession.SessionFormDetails.Payload += $"* {newCurrentFormElement.Label}: ";
+
+                                    dialogSession.UpdatedAt = DateTime.Now;
+
                                 }
 
-                                bool isSent = false; int count = 1;
-                                while (!isSent && count <= 2)
+                                var sendMessageResult = await _outboundMesageService.HttpSendTextMessage(model: item, wa_Id: item.To);
+                                isSent = sendMessageResult.Data;
+                                count++;
+
+                                item.Status = EResponseProcessingStatus.Sent.ToString();
+                            }
+
+                            if (dialogSession.SessionFormDetails.IsFormResponseRecieved)
+                            {
+                                // set the new current and next form elements
+                                dialogSession.SessionFormDetails.CurrentFormElement = newCurrentFormElement;
+
+                                if (!newCurrentFormElement.IsLastFormElement)
                                 {
-                                    if (!item.IsValidationResponse)
-                                    {
-                                        dialogSession.SessionState = ESessionState.FORMCONVORUNNING;
-                                        dialogSession.SessionFormDetails.IsFormQuestionSent = true;
-                                        dialogSession.SessionFormDetails.Payload += $"{Environment.NewLine} {currentFormElement.Id}" +
-                                            $" {currentFormElement.Label}: ";
-                                        dialogSession.SessionFormDetails.IsValidationRequired = currentFormElement.IsValidationRequired;
-                                        dialogSession.UpdatedAt = DateTime.Now;
+                                    nextFormElement = dialogSession
+                                                        ?.SessionFormDetails
+                                                        ?.BusinessForm.FormElements
+                                                        ?.FirstOrDefault(x => x.Position == newCurrentFormElement.NextFormElementPosition);
 
-                                    }
-
-                                    // get the partner
-                                    // get the partner integration details
-                                    // what is the partnerIndentifier
-
-                                    // use the indentifier with Factory to get the correct api integration
-                                    // then call the retrieve content method.
-
-                                    var sendMessageResult = await _outboundMesageService.HttpSendTextMessage(model: item, wa_Id: item.To);
-                                    isSent = sendMessageResult.Data;
-                                    count++;
-                                }
-
-                                if (isSent)
-                                {
-                                    await _sessionManagement.Update(waId: item.To, dialogSession: dialogSession);
-                                    item.Status = EResponseProcessingStatus.Sent.ToString();
+                                    dialogSession.SessionFormDetails.NextFormElement = nextFormElement;
                                 }
                                 else
                                 {
-                                    item.Status = EResponseProcessingStatus.Failed.ToString();
-                                    item.ErrorMessage = $"HttpError: Could not send form request with label : {currentFormElement.Label}";
-                                    throw new FormBgProcessorException(item.ErrorMessage, item.Status);
+                                    dialogSession.SessionState = ESessionState.PLAINCONVERSATION;
                                 }
 
-                                if (dialogSession.SessionFormDetails.IsFormCompleted && item.IsSummaryMessage)
-                                {
-                                    item.ErrorMessage = "Form completed. Summary message sent";
-                                    item.Status = EResponseProcessingStatus.ProcessCompleted.ToString();
-                                    dialogSession.SessionState = ESessionState.FORMCONVERSATIONCOMPLETED;
-
-                                    // save an inbound at this point of the business message that conclude a form.
-                                    shouldPerformSessionFinalUpdate = true;
-                                    throw new FormBgProcessorException(item.ErrorMessage, item.Status);
-
-                                }
                             }
-                            else
+
+
+                            if (newCurrentFormElement.FollowUpMessageId.HasValue)
                             {
-                                throw new FormBgProcessorException("The user's dialog is not in a form processing state. Reference dialog session",
-                                    EResponseProcessingStatus.InValidSessionState.ToString());
+                                // create an inbound message and flag as
+                                var inboundMsg = new InboundMessage
+                                {
+                                    BusinessIdMessageId = newCurrentFormElement.FollowUpMessageId,
+                                    BusinessId = item.BusinessId,
+                                    Body = item.Message,
+                                    From = item.To,
+                                    To = item.From,
+                                    ResponseProcessingStatus = EResponseProcessingStatus.Pending.ToString(),
+                                    IsFirstMessageSent = false,
+                                    Type = "text",
+                                    Wa_Id = item.From
+                                };
+
+                                await inboundMessageRepo.AddAsync(inboundMsg);
                             }
+                            // update session details
+                            await _sessionManagement.Update(waId: item.To, dialogSession: dialogSession);
+                            await inboundMessageRepo.SaveChangesAsync();
+
+                            if (!isSent)
+                            {
+                                item.Status = EResponseProcessingStatus.Failed.ToString();
+                                item.ErrorMessage = $"HttpError: Could not send form request with label : {newCurrentFormElement.Label}";
+                                throw new FormBgProcessorException(item.ErrorMessage, item.Status);
+                            }
+
+                            if (item.IsSummaryMessage)
+                            {
+                                item.ErrorMessage = "Form completed. Summary message sent";
+                                item.Status = EResponseProcessingStatus.ProcessCompleted.ToString();
+                                dialogSession.SessionState = ESessionState.FORMCONVERSATIONCOMPLETED;
+
+                                // save an inbound at this point of the business message that conclude a form.
+                                throw new FormBgProcessorException(item.ErrorMessage, item.Status);
+
+                            }
+
+                            if(!item.IsValidationResponse && newCurrentFormElement.IsLastFormElement)
+                            {
+                                // update session state back to plain conversation
+                                dialogSession.SessionState = ESessionState.PLAINCONVERSATION;
+                            }
+                            
                         }
                         catch (FormBgProcessorException e)
                         {
@@ -170,8 +244,7 @@ namespace Application.Services.Cron
                             item.ErrorMessage = item.ErrorMessage;
                             await _formRequesResponseService.Update(item);
 
-                            if(shouldPerformSessionFinalUpdate)
-                                await _sessionManagement.Update(waId: item.To, dialogSession: dialogSession);
+                            await _sessionManagement.Update(waId: item.To, dialogSession: dialogSession);
 
                             if(dialogSession.SessionState == ESessionState.FORMCONVERSATIONCOMPLETED)
                             {
