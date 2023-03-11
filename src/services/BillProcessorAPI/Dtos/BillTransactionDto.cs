@@ -3,10 +3,11 @@
 	
 	public class BillPaymentVerificationResponseDto
 	{
-		public string Receipt { get; set; }
-		public string Status { get; set; }
-		public string StatusMessage { get; set; }
-	}
+        public string receipt { get; set; }
+        public string amountpaid { get; set; }
+        public string status { get; set; }
+        public string statusmessage { get; set; }
+    }
 
 	public class BillPaymentVerificationRequestDto
 	{

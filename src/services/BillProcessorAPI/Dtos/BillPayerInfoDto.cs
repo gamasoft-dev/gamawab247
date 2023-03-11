@@ -1,8 +1,10 @@
-﻿namespace BillProcessorAPI.Dtos
+﻿using Newtonsoft.Json;
+
+namespace BillProcessorAPI.Dtos
 {
 	public class BillPayerInfoDto
 	{
-		public string AmountDue { get; set; }
+		public decimal AmountDue { get; set; }
 		public string Status { get; set; }
 		public string CreditAccount { get; set; }
 		public string PayerName { get; set; }
@@ -15,14 +17,47 @@
 		public string Currency { get; set; }
 		public string AcctCloseDate { get; set; }
 		public string ReadOnly { get; set; }
-		public string MinAmount { get; set; }
-		public string MaxAmount { get; set; }
+		public decimal MinAmount { get; set; }
+		public decimal MaxAmount { get; set; }
 	}
 
-	public class BillReferenceRequestDto
+	public class BillReferenceResponseDto
+    {
+        public string AmountDue { get; set; }
+        public string Status { get; set; }
+        public string CreditAccount { get; set; }
+        public string PayerName { get; set; }
+        public string AgencyCode { get; set; }
+        public string RevenueCode { get; set; }
+        public string OraAgencyRev { get; set; }
+        public string State { get; set; }
+        public string StatusMessage { get; set; }
+        public string Pid { get; set; }
+        public string Currency { get; set; }
+        public string AcctCloseDate { get; set; }
+        public string ReadOnly { get; set; }
+        public string MinAmount { get; set; }
+        public string MaxAmount { get; set; }
+        public string PaymentFlag { get; set; }
+        public string CbnCode { get; set; }
+        public string AgencyName { get; set; }
+        public string RevName { get; set; }
+        public string AccountInfoResponseData { get; set; }
+        public string AccountInfoRequestData { get; set; }
+    }
+
+	public class BillRequestDto
 	{
-		public string BillCode { get; set; }
-		public string PhoneNumber { get; set; }
-	}
+		public string Webguid { get; set; }
+    }
+
+    public class AbcRequestPayload
+    {
+        public string Webguid { get; set; }
+        public string State { get; set; }
+        public string Hash { get; set; }
+        public string ClientId { get; set; }
+        public string Type { get; set; }
+    }
 
 }

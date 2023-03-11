@@ -11,6 +11,9 @@
         public string State { get; set; }
         public string WebGuid { get; set; }
         public string ClientId { get; set; }
+        public string Currency { get; set; }
+        public string Type { get; set; }
+
     }
 
 
