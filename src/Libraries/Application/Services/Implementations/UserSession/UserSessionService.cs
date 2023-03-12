@@ -1,5 +1,5 @@
 ﻿using Application.AutofacDI;
-using Application.Common.Sessions;
+using Infrastructure.Sessions;
 using Application.Cron.ResponseProcessing;
 using Application.DTOs;
 using Application.Helpers;

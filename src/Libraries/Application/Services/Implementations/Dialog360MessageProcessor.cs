@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Application.DTOs.InboundMessageDto;
 using Newtonsoft.Json;
 using Application.Exceptions;
-using Application.Common.Sessions;
+using Infrastructure.Sessions;
 using Domain.Entities;
 using System.Linq;
 
@@ -66,7 +66,7 @@ namespace Application.Services.Implementations
 
                 var status = JsonConvert.DeserializeObject<WhatsAppStatusDto>(request.ToString());
                 if(status is not null && status?.statuses != null)
-                    throw new ProcessCancellationException("Not a valid inbound message");
+                    throw new ProcessCancellationException("This is a message status notification, not a message");
 
                 // remove this is session and validatoin middle ware is being used.
                 _360MessageDto requestPayload = GetDialo360Message(request.ToString());
@@ -80,7 +80,7 @@ namespace Application.Services.Implementations
                     throw new ProcessCancellationException("Session was ended by user by typing the end keyword");
                 }
 
-                if ((DateTime.Now - messageTime) >= TimeSpan.FromMinutes(30))
+                if ((DateTime.Now - messageTime) >= TimeSpan.FromMinutes(10))
                     throw new ProcessCancellationException("Message is redundant, coming in a later time than 10mins");
 
                 if (session is null)

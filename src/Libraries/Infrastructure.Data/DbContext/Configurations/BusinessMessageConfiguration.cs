@@ -16,6 +16,8 @@ namespace Infrastructure.Data.DbContext.Configurations
             builder.HasIndex(x => x.MessageType);
             builder.HasIndex(x => x.Name);
 
+            builder.HasIndex(x => new {x.BusinessId , x.Position });
+
             builder.HasOne(x => x.BusinessForm)
                 .WithMany()
                 .HasForeignKey(x => x.BusinessFormId)
@@ -27,13 +29,14 @@ namespace Infrastructure.Data.DbContext.Configurations
     {
         public void Configure(EntityTypeBuilder<OutboundMessage> builder)
         {
-            builder.HasIndex(x => x.RecipientWhatsappId);
-            builder.HasIndex(x => x.WhatsAppMessageId);
             builder.HasIndex(x => x.From);
             builder.HasIndex(x => x.Type);
             builder.HasIndex(x => x.RecipientWhatsappId);
             builder.HasIndex(x => x.CreatedAt);
             builder.HasIndex(x => x.BusinessId);
+
+            builder.HasIndex(x => new { x.WhatsAppMessageId, x.RecipientWhatsappId, x.CreatedAt });
+
         }
     }
 
@@ -42,14 +45,11 @@ namespace Infrastructure.Data.DbContext.Configurations
         public void Configure(EntityTypeBuilder<InboundMessage> builder)
         {
             builder.HasIndex(x => x.Wa_Id);
-            builder.HasIndex(x => x.WhatsAppMessageId);
-            builder.HasIndex(x => x.From);
             builder.HasIndex(x => x.MsgOptionId);
             builder.HasIndex(x => x.ContextMessageId);
-            builder.HasIndex(x => x.WhatsAppId);
-            builder.HasIndex(x => x.Type);
-            builder.HasIndex(x => x.CreatedAt);
-            builder.HasIndex(x => x.BusinessId);
+            builder.HasIndex(x => x.BusinessIdMessageId);
+
+            builder.HasIndex(x => new { x.ResponseProcessingStatus, x.CreatedAt});
         }
     }
 }

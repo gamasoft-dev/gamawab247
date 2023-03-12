@@ -14,7 +14,7 @@ namespace Application.Services.Interfaces.FormProcessing
         IEnumerable<FormRequestResponse> GetAll(Expression<Func<FormRequestResponse, bool>> func, int skip, int take, bool includeBusinessForm = true);
         Task Update(FormRequestResponse formElement);
         Task Delete(Guid id);
-        Task Create(ICollection<FormRequestResponse> formRequestResponses);
+        Task Create(List<FormRequestResponse> formRequestResponses);
         Task Create(FormRequestResponse formRequest);
         Task Update(IEnumerable<FormRequestResponse> formElement);
     }

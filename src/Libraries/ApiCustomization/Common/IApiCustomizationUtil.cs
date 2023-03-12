@@ -1,14 +1,13 @@
 ﻿using System;
-using Application.AutofacDI;
-using Application.Common.Sessions;
+using Infrastructure.Sessions;
 using Domain.Entities.FormProcessing.ValueObjects;
 using Domain.Exceptions;
 
 namespace ApiCustomization.Common
 {
-	public interface IApiCustomizationUtil: IAutoDependencyService
+	public interface IApiCustomizationUtil
 	{
-        Task<string> GetArgumentValue(KeyValueObj argumentObj, string phoneNumber, string processorKey);
+        Task<string> GetArgumentValueFromSession(KeyValueObj argumentObj, string phoneNumber, string processorKey);
 
     }
 
@@ -21,7 +20,7 @@ namespace ApiCustomization.Common
             this.sessionManagement = sessionManagement;
         }
 
-        public async Task<string> GetArgumentValue(KeyValueObj argumentObj, string phoneNumber, string processorKey)
+        public async Task<string> GetArgumentValueFromSession(KeyValueObj argumentObj, string phoneNumber, string processorKey)
         {
             if (argumentObj is null)
                 throw new BackgroundException($"The argument object cannot be null, this happened on the Customization for {processorKey}");
@@ -32,11 +31,11 @@ namespace ApiCustomization.Common
             if (argumentObj.IsValueResolvedAtRuntime)
             {
                 var session = await sessionManagement.GetByWaId(phoneNumber);
-                string formElementValue = string.Empty;
+                string? formElementValue = null;
 
-                var argValueAttempt = session.SessionFormDetails?.UserData?.TryGetValue(argumentObj.Key, out formElementValue);
+                var argValueAttempt = session.SessionFormDetails?.UserData?.TryGetValue(argumentObj.Key, out  formElementValue);
 
-                if (argValueAttempt is null || !argValueAttempt.Value || formElementValue is null)
+                if (argValueAttempt is null || formElementValue is null)
                     throw new BackgroundException($"Error deserializing argument value from session cache, no value was found for the session key {argumentObj.Key}");
 
                 return formElementValue;

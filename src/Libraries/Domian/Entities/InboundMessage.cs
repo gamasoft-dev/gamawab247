@@ -31,5 +31,10 @@ namespace Domain.Entities
 
         public string WhatsAppId { get; set; }
         public string ErrorMessage { get; set; }
+
+        /// <summary>
+        /// This is an optional value of business message Id that can be used to directly retrieve a message to send
+        /// </summary>
+        public Guid? BusinessIdMessageId { get; set; }
     }
 }

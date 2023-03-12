@@ -7,6 +7,7 @@ using Domain.Entities.FormProcessing.ValueObjects;
 using Infrastructure.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -15,9 +16,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230309130246_removal-of-counter-column-on-business-form")]
+    partial class removalofcountercolumnonbusinessform
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -180,13 +182,13 @@ namespace Infrastructure.Data.Migrations
                     b.Property<Guid>("BusinessId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("ContentRetrievalProcessorKey")
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("CreatedById")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ExternalContentRetrievalId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("FollowParentMessageId")
@@ -211,9 +213,6 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("RecipientType")
                         .HasColumnType("text");
 
-                    b.Property<bool>("ShouldRetrieveContentAtRuntime")
-                        .HasColumnType("boolean");
-
                     b.Property<bool>("ShouldTriggerFormProcessing")
                         .HasColumnType("boolean");
 
@@ -227,13 +226,15 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("BusinessFormId");
 
+                    b.HasIndex("BusinessId");
+
+                    b.HasIndex("ExternalContentRetrievalId");
+
                     b.HasIndex("MessageType");
 
                     b.HasIndex("Name");
 
                     b.HasIndex("Position");
-
-                    b.HasIndex("BusinessId", "Position");
 
                     b.ToTable("BusinessMessages");
                 });
@@ -900,15 +901,23 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BusinessIdMessageId");
+                    b.HasIndex("BusinessId");
 
                     b.HasIndex("ContextMessageId");
 
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("From");
+
                     b.HasIndex("MsgOptionId");
+
+                    b.HasIndex("Type");
 
                     b.HasIndex("Wa_Id");
 
-                    b.HasIndex("ResponseProcessingStatus", "CreatedAt");
+                    b.HasIndex("WhatsAppId");
+
+                    b.HasIndex("WhatsAppMessageId");
 
                     b.ToTable("InboundMessages");
                 });
@@ -1062,7 +1071,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("Type");
 
-                    b.HasIndex("WhatsAppMessageId", "RecipientWhatsappId", "CreatedAt");
+                    b.HasIndex("WhatsAppMessageId");
 
                     b.ToTable("OutboundMessages");
                 });
@@ -1283,11 +1292,17 @@ namespace Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entities.PartnerIntegrationDetails", "ExternalContentRetrieval")
+                        .WithMany()
+                        .HasForeignKey("ExternalContentRetrievalId");
+
                     b.Navigation("Business");
 
                     b.Navigation("BusinessConversation");
 
                     b.Navigation("BusinessForm");
+
+                    b.Navigation("ExternalContentRetrieval");
                 });
 
             modelBuilder.Entity("Domain.Entities.DialogMessageEntitties.ListMessage", b =>

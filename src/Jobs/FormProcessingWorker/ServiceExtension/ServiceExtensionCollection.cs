@@ -6,6 +6,7 @@ using Application.Services.Implementations;
 using Application.Services.Interfaces;
 using Domain.Entities.Identities;
 using Infrastructure;
+using Infrastructure.Cache;
 using Infrastructure.Data.DbContext;
 using Infrastructure.Data.DbContext.DbAuditFilters;
 using Microsoft.AspNetCore.Builder;
@@ -113,9 +114,9 @@ namespace FormProcessingWorker
                 {
                     EndPoints = { { config.Server, config.Port } },
                     AbortOnConnectFail = false,
-                    ConnectTimeout = 200000,
-                    ConnectRetry = 10,
-                    Ssl = true,
+                    ConnectTimeout = 5000,
+                    ConnectRetry = 3,
+                    Ssl = false,
                     SslProtocols = System.Security.Authentication.SslProtocols.Tls12,
                     Password = config.Auth
                 };

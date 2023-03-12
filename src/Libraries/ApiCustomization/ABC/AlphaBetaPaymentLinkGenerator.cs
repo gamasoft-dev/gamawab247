@@ -41,12 +41,16 @@ namespace ApiCustomization.ABC
                 throw new BackgroundException($"No partner integration detail could be found base on this processor key {PartnerContentProcessorKey}");
 
             var argumentKvpObj = partnerConfigDetail?.Parameters?.FirstOrDefault(x => x.Key?.ToLower() == alphaBetaConfig.LinkGeneratorUserParamKey?.ToLower());
-            var billCode = await customizationUtil.GetArgumentValue(argumentKvpObj, waId, PartnerContentProcessorKey);
+            if (argumentKvpObj is null)
+                throw new BackgroundException($"No value found in the Paramters property for this PaartnerContentDeatil for key {PartnerContentProcessorKey}");
+
+            var billCode = await customizationUtil.GetArgumentValueFromSession(argumentKvpObj, waId, PartnerContentProcessorKey);
 
             if (string.IsNullOrEmpty(billCode))
                 throw new BackgroundException($"User {waId} bill code not found");
 
-            return $"{alphaBetaConfig.BillCodePaymentPageLink}/{billCode}/{waId}";
+            var endPointDetails = $"?billPaymentCode={billCode}&phoneNumber={waId}";
+            return $"{alphaBetaConfig.BillCodePaymentPageLink}{endPointDetails}";
         }
     }
 }

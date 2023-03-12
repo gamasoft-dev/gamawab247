@@ -238,9 +238,8 @@ namespace Application.Services.Implementations
         private async Task ReceiveFormResponse(CreateMessageLogDto messageLog, DialogSession session)
         {
             bool shouldSaveRequest = true;
-            HashSet<FormRequestResponse> formRequestResponses = new();
+            List<FormRequestResponse> formRequestResponses = new();
             string waId = messageLog.From;
-
 
             try
             {
@@ -259,14 +258,14 @@ namespace Application.Services.Implementations
                       "Therefore processing this may break the flow", (int)HttpStatusCode.Continue);
                 }
 
+                BusinessFormVM sessionBusinessForm = session.SessionFormDetails.BusinessForm;
 
-                BusinessForm sessionBusinessForm = session.SessionFormDetails.BusinessForm;
+                FormElement currentElement = session?.SessionFormDetails?.CurrentFormElement;
+                if (currentElement is null)
+                    throw new FormConfigurationException("There is not current element configured to recieve this input. " +
+                        "Check that session has value for currentFormElement", false);
 
-                FormElement currentElement = sessionBusinessForm?.FormElements?.FirstOrDefault(
-                    x => x.Key == session?.SessionFormDetails?.CurrentFormElement);
-
-                FormElement nextElement = sessionBusinessForm?.FormElements?.FirstOrDefault(
-                    x => x.Key == session?.SessionFormDetails?.NextFormElement);
+                FormElement nextElement = session?.SessionFormDetails?.NextFormElement;
 
                 var receivedResponse = new FormRequestResponse
                 {
@@ -281,18 +280,23 @@ namespace Application.Services.Implementations
                     Message = messageLog.MessageBody,
                     FollowUpPartnerContentIntegrationKey = currentElement?.PartnerContentProcessorKey
                 };
+
+                // save recieved form response 
                 formRequestResponses.Add(receivedResponse);
 
-                // check if validationKey is present for this form element where in input was made
-                if (!string.IsNullOrEmpty(session.SessionFormDetails.ValidationProcessorKey)
-                    && session.SessionFormDetails.IsValidationRequired)
+             
+                // check if validationKey is present for this form element where in input was receieved
+                if (!string.IsNullOrEmpty(currentElement.ValidationProcessorKey)
+                    && currentElement.IsValidationRequired)
                 {
-                    session.SessionFormDetails.IsValueConfirmed = false;
+                    session.SessionFormDetails.IsCurrentValueConfirmed = false;
 
                     try
                     {
-                        _formValidationStrategyService.ValidateInput(session.SessionFormDetails.ValidationProcessorKey,
-                      messageLog.MessageBody, session.SessionFormDetails.CurrentFormElement);
+                        _formValidationStrategyService.ValidateInput(currentElement.ValidationProcessorKey,
+                      messageLog.MessageBody, currentElement.Key);
+
+                        session.SessionFormDetails.IsCurrentValueConfirmed = true;
                     }
                     catch (FormInputValidationException e)
                     {
@@ -304,7 +308,10 @@ namespace Application.Services.Implementations
                     }
                 }
 
-                if (!string.IsNullOrEmpty(session?.SessionFormDetails?.NextFormElement))
+                session.SessionFormDetails.IsFormResponseRecieved = true;
+                session.SessionFormDetails.Payload += $"{messageLog.MessageBody} {Environment.NewLine}";
+
+                if (nextElement is not null)
                 {
                     var nextFormRequest = new FormRequestResponse
                     {
@@ -313,77 +320,42 @@ namespace Application.Services.Implementations
                         BusinessFormId = session.SessionFormDetails.BusinessFormId,
                         BusinessId = session.BusinessId,
                         Direction = EMessageDirection.Outbound.ToString(),
-                        FormElement = session.SessionFormDetails?.NextFormElement,
+                        FormElement = nextElement.Key,
                         MessageType = EMessageType.Text.ToString(),
                         Status = EResponseProcessingStatus.Pending.ToString(),
-                        Message = nextElement?.Label ?? nextElement.Key,
-                        FollowUpPartnerContentIntegrationKey = currentElement?.PartnerContentProcessorKey
-
+                        Message = nextElement?.Label,
+                        FollowUpPartnerContentIntegrationKey = nextElement?.PartnerContentProcessorKey
                     };
 
                     formRequestResponses.Add(nextFormRequest);
 
-                    // new currentId would be id of the former next element
-                    var currentId = nextElement.Id;
-
-                    // Update the current element to become the current next element
-                    // while the next element would become the current next element plus one;
-                    session.SessionFormDetails.CurrentFormElement = nextElement?.Key;
-                    session.SessionFormDetails.CurrentElementId = currentId;
-                    session.SessionFormDetails.IsFormCompleted = currentId == session?.SessionFormDetails?.LastElementId;
-                    session.SessionFormDetails.NextFormElement = sessionBusinessForm.FormElements.FirstOrDefault(x => x.Id == (currentId + 1))?.Key;
-                    session.SessionFormDetails.IsFormQuestionSent = false;
-
-                    session.SessionFormDetails.Payload += $"{messageLog.MessageBody} {Environment.NewLine}";
-                    session.SessionFormDetails.IsValueConfirmed = true;
+                    session.SessionFormDetails.IsCurrentValueConfirmed = true;
                 }
 
-                if (!string.IsNullOrEmpty(session.SessionFormDetails?.CurrentFormElement))
+                if (!session.SessionFormDetails.UserData.ContainsKey(currentElement.Key))
                 {
-                    if (!session.SessionFormDetails.UserData
-                        .ContainsKey(session.SessionFormDetails.CurrentFormElement))
-                    {
-                        session.SessionFormDetails.UserData.Add(
-                        session.SessionFormDetails.CurrentFormElement, messageLog.MessageBody);
-                    }
-
+                    session.SessionFormDetails.UserData.Add(currentElement.Key, messageLog.MessageBody);
                 }
 
-                if (session.SessionFormDetails.CurrentElementId == session.SessionFormDetails.LastElementId)
-                {
-                    // save a completion message which should be linked to a continuity message.
-                    session.SessionFormDetails.Payload += $"{messageLog.MessageBody}";
-                    var formSummaryMessage = new FormRequestResponse
-                    {
-                        FormElement = sessionBusinessForm.FormElements?.LastOrDefault()?.Key,
-                        To = messageLog.From,
-                        From = messageLog.To,
-                        BusinessFormId = sessionBusinessForm.Id,
-                        BusinessId = session.BusinessId,
-                        Direction = EMessageDirection.Outbound.ToString(),
-                        IsSummaryMessage = true,
-                        Message = $"Summary of details: {session.SessionFormDetails.Payload}",
-                        Status = EResponseProcessingStatus.Pending.ToString(),
-                    };
-
-                    formRequestResponses.Add(formSummaryMessage);
-                }
             }
             catch (FormConfigurationException wx)
             {
-                formRequestResponses.Add(new FormRequestResponse
+                if (wx.SendPromptMessageToUser)
                 {
-                    To = messageLog.From,
-                    IsValidationResponse = true,
-                    From = messageLog.To,
-                    BusinessFormId = session.SessionFormDetails.BusinessFormId,
-                    BusinessId = session.BusinessId,
-                    Direction = EMessageDirection.Outbound.ToString(),
-                    FormElement = session.SessionFormDetails?.CurrentFormElement,
-                    MessageType = EMessageType.Text.ToString(),
-                    Status = EResponseProcessingStatus.Pending.ToString(),
-                    Message = wx.Message
-                });
+                    formRequestResponses.Add(new FormRequestResponse
+                    {
+                        To = messageLog.From,
+                        IsValidationResponse = true,
+                        From = messageLog.To,
+                        BusinessFormId = session.SessionFormDetails.BusinessFormId,
+                        BusinessId = session.BusinessId,
+                        Direction = EMessageDirection.Outbound.ToString(),
+                        FormElement = session.SessionFormDetails?.CurrentFormElement.Key,
+                        MessageType = EMessageType.Text.ToString(),
+                        Status = EResponseProcessingStatus.Pending.ToString(),
+                        Message = wx.Message
+                    });
+                }
             }
             catch (ProcessCancellationException ex)
             {
@@ -399,7 +371,7 @@ namespace Application.Services.Implementations
                     BusinessFormId = session.SessionFormDetails.BusinessFormId,
                     BusinessId = session.BusinessId,
                     Direction = EMessageDirection.Outbound.ToString(),
-                    FormElement = session.SessionFormDetails?.CurrentFormElement,
+                    FormElement = session.SessionFormDetails?.CurrentFormElement?.Key,
                     MessageType = EMessageType.Text.ToString(),
                     Status = EResponseProcessingStatus.Pending.ToString(),
                     Message = fx.Message,
@@ -412,11 +384,11 @@ namespace Application.Services.Implementations
             }
             finally
             {
+                await _sessionManagement.Update(waId: waId, session);
 
                 if (shouldSaveRequest)
                     await _formRequestResponseService.Create(formRequestResponses);
 
-                await _sessionManagement.Update(waId: waId, session);
             }
         }
     }

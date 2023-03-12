@@ -1,6 +1,5 @@
 using Application.Cron.ResponseProcessing;
 using Application.DTOs;
-using Gamasoft.Worker.Cron.ResponseProcessing;
 using Microsoft.Extensions.Options;
 using static System.DateTime;
 

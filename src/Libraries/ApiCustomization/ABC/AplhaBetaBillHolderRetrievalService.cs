@@ -1,6 +1,5 @@
 ﻿using ApiCustomization.ABC;
 using ApiCustomization.Common;
-using Application.Services.Interfaces;
 using Domain.Entities;
 using Domain.Exceptions;
 using Infrastructure.Http;
@@ -14,19 +13,19 @@ public class AplhaBetaBillHolderRetrievalService : IApiContentRetrievalService
     public string PartnerContentProcessorKey => "ABC_CARD_HOLDER_API_INFO";
 
     private readonly IHttpService httpService;
-    private readonly IPartnerService partnerService;
+    private readonly IRepository<Partner> partnerrRepository;
     private readonly IRepository<PartnerIntegrationDetails> partnerIntegrationRepo;
     private readonly IApiCustomizationUtil customizationUtil;
     private readonly AlphaBetaConfig alphaBetaConfig;
 
     public AplhaBetaBillHolderRetrievalService(IHttpService httpService,
-        IPartnerService partnerService,
+        IRepository<Partner> partnerrRepository,
         IRepository<PartnerIntegrationDetails> partnerIntegrationRepo,
         IApiCustomizationUtil customizationUtil,
         IOptions<AlphaBetaConfig> options)
     {
         this.httpService = httpService;
-        this.partnerService = partnerService;
+        this.partnerrRepository = partnerrRepository;
         this.partnerIntegrationRepo = partnerIntegrationRepo;
         this.customizationUtil = customizationUtil;
         this.alphaBetaConfig = options.Value;

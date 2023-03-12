@@ -5,7 +5,6 @@ using System.Text;
 using API.Configurations;
 using API.Middlewares;
 using Application.AuditServices;
-using Application.Common.Sessions;
 using Application.DTOs;
 using Application.Services.Implementations;
 using Application.Services.Interfaces;
@@ -14,6 +13,7 @@ using Domain.Entities.Identities;
 using Domain.ViewModels;
 using FluentValidation.AspNetCore;
 using Infrastructure;
+using Infrastructure.Cache;
 using Infrastructure.Data.DbContext;
 using Infrastructure.Data.DbContext.DbAuditFilters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -157,7 +157,7 @@ namespace API.Extensions
                 options.Configuration = redisConfig.ToString();
                 options.InstanceName = config.InstanceName;
             });
-            services.AddScoped<ICacheService, CacheService>();
+            services.AddSingleton<ICacheService, CacheService>();
         }
 
         public static void ConfigureHangfire(this IServiceCollection services, IConfiguration configuration)

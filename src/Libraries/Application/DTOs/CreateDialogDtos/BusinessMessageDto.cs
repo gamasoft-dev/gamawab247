@@ -62,7 +62,10 @@ public class BusinessMessageDto<T>
     public T MessageTypeObject { get; set; }
     public bool HasFollowUpMessage { get; set; }
     public Guid? FollowParentMessageId { get; set; }
-    public Guid? ExternalContentRetrievalId { get; set; }
+
+    public string ContentRetrievalProcessorKey { get; set; }
+    public bool ShouldRetrieveContentAtRuntime { get; set; }
+
     public bool ShouldTriggerFormProcessing { get; set; }
     public Guid? BusinessFormId { get; set; }
 }

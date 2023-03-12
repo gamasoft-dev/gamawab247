@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.DTOs
+namespace Infrastructure.Cache
 {
     public class RedisCacheConfig
     {
@@ -13,6 +13,6 @@ namespace Application.DTOs
         public int Port { get; set; }
         public double CacheExpirationTime { get; set; }
         public string Env { get; set; }
-        public string? Auth { get; set; }
+        public string Auth { get; set; }
     }
 }

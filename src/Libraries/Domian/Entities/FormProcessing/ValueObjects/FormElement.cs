@@ -1,13 +1,15 @@
 ﻿using Domain.Enums;
 using System;
+using System.Collections.Generic;
+
 namespace Domain.Entities.FormProcessing.ValueObjects
 {
     /// <summary>
     /// This is for the form 
     /// </summary>
-    public class FormElement
+    public class FormElement : IEquatable<FormElement>
     {
-        public int Id { get; set; }
+        public int Position { get; set; }
         public string Key { get; set; }
         /// <summary>
         /// This relates to the EKeyDataType enum
@@ -44,5 +46,42 @@ namespace Domain.Entities.FormProcessing.ValueObjects
         /// Set to true if this element is the last element of the form.
         /// </summary>
         public bool IsLastFormElement { get; set; } = false;
+
+        public Guid? FollowUpMessageId { get; set; }
+
+        public bool RequireUserInputResponse { get; set; }
+
+        public int NextFormElementPosition { get; set; } 
+
+        #region Get and Equal Impl
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as FormElement);
+        }
+
+        public bool Equals(FormElement other)
+        {
+            return other is not null &&
+                   Position == other.Position ||
+                   Key == other.Key;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Position, Key);
+        }
+
+        public static bool operator ==(FormElement left, FormElement right)
+        {
+            return EqualityComparer<FormElement>.Default.Equals(left, right);
+        }
+
+        public static bool operator !=(FormElement left, FormElement right)
+        {
+            return !(left == right);
+        }
+
+        #endregion
     }
 }

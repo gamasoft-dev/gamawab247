@@ -1,5 +1,4 @@
-﻿using Application.DTOs;
-using Application.Services.Interfaces;
+﻿
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -7,7 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
 
-namespace Application.Services.Implementations
+namespace Infrastructure.Cache
 {
     public class CacheService : ICacheService
     {

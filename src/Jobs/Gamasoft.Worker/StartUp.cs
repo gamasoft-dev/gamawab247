@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Application.Helpers;
 using Gamasoft.Worker.ServiceExtension;
 using Infrastructure;
+using ApiCustomization;
 
 namespace Gamasoft.Worker
 {
@@ -41,6 +42,7 @@ namespace Gamasoft.Worker
             services.AddAuthentication();
             services.AddHttpContextAccessor();
             services.ConfigureRepositoryManager();
+            services.ConfigureApiCustomizationService(Configuration);
             services.AddRepositories();
             services.AddHttpClientInfrastructure();
             services.ConfigureIOObjects(Configuration);

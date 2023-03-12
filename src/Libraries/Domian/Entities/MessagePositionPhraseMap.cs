@@ -14,7 +14,7 @@ namespace Domain.Entities
         public Guid? BusinessConversationId { get; set; }
 
         /// <summary>
-        /// Note that words and phrases saved into this column must follow structure or key and value map.
+        /// Note that words and phrases saved into this column must follow structure of key and value map.
         /// Using : as the separator between the key and value e.g hello:2
         /// Note: key is the word or phrase while value is the position.
         /// </summary>

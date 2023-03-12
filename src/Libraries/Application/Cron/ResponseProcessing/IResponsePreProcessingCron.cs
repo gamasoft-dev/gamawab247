@@ -14,6 +14,6 @@ namespace Application.Cron.ResponseProcessing
     {
         Task InitiateMessageProcessing();
 
-        Task SendUnResolvedMessage(InboundMessage inboundMessage, string Message);
+        //Task SendUnResolvedMessage(InboundMessage inboundMessage, string Message);
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Services.Interfaces
+namespace Infrastructure.Cache
 {
     /// <summary>
     /// TODO: Move Service and implementation to cache-service
