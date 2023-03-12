@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BillProcessorAPI.Migrations
 {
     [DbContext(typeof(BillProcessorDbContext))]
-    [Migration("20230310121619_updateBillPayerInfoEntity")]
-    partial class updateBillPayerInfoEntity
+    [Migration("20230312100350_updateBillProcessor")]
+    partial class updateBillProcessor
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -81,8 +81,8 @@ namespace BillProcessorAPI.Migrations
                     b.Property<string>("AgencyName")
                         .HasColumnType("text");
 
-                    b.Property<string>("AmountDue")
-                        .HasColumnType("text");
+                    b.Property<decimal>("AmountDue")
+                        .HasColumnType("numeric");
 
                     b.Property<string>("CbnCode")
                         .HasColumnType("text");
@@ -140,7 +140,7 @@ namespace BillProcessorAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("BillPayers");
                 });
 
             modelBuilder.Entity("BillProcessorAPI.Entities.BillTransaction", b =>
