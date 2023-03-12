@@ -78,8 +78,8 @@ namespace BillProcessorAPI.Migrations
                     b.Property<string>("AgencyName")
                         .HasColumnType("text");
 
-                    b.Property<string>("AmountDue")
-                        .HasColumnType("text");
+                    b.Property<decimal>("AmountDue")
+                        .HasColumnType("numeric");
 
                     b.Property<string>("CbnCode")
                         .HasColumnType("text");
@@ -137,7 +137,7 @@ namespace BillProcessorAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("BillPayers");
                 });
 
             modelBuilder.Entity("BillProcessorAPI.Entities.BillTransaction", b =>
