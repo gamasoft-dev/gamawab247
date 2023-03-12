@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ApiCustomization.Common;
+using System.Timers;
 
 namespace Application.Cron.ResponseProcessing;
 
@@ -166,12 +167,12 @@ public class ResponsePreProcessingCron : IResponsePreProcessingCron
         BaseInteractiveDto interactiveMessage = null;
 
         var now = DateTime.UtcNow;
-        DateTime? lastGreetingMessageTime = await _outboundMessageRepo.Query(x => x.BusinessId == inboundMessage.BusinessId && x.RecipientWhatsappId == inboundMessage.Wa_Id)
+        DateTime? lastGreetingMessageTime = await _outboundMessageRepo.Query(x => x.BusinessId == inboundMsg.BusinessId && x.RecipientWhatsappId == inboundMsg.Wa_Id)
             .OrderByDescending(x => x.CreatedAt)
             .Select(x => x.UpdatedAt)
             .FirstOrDefaultAsync();
 
-        if (now - lastGreetingMessageTime >= TimeSpan.FromHours(24) && !inboundMessage.CanUseNLPMapping 
+        if (now - lastGreetingMessageTime >= TimeSpan.FromHours(24) && !inboundMsg.CanUseNLPMapping 
             && sendFirstOrDefaultMsg)
         {
             // get the businessMessage for this business at position 1 and send
@@ -181,8 +182,8 @@ public class ResponsePreProcessingCron : IResponsePreProcessingCron
         }
         else
         {
-            resolvedBusinessMessage = await _businessMessageRepo.FirstOrDefault(x =>
-               x.BusinessId == inboundMessage.BusinessId
+            nextBusinessMessageToSend = await _businessMessageRepo.FirstOrDefault(x =>
+               x.BusinessId == inboundMsg.BusinessId
                && x.Position == 200);
         }
 
@@ -484,6 +485,9 @@ public class ResponsePreProcessingCron : IResponsePreProcessingCron
             ShouldTriggerFormProcessing = model.ShouldTriggerFormProcessing,
             BusinessConversationId = model.BusinessConversationId
         };
+    }
+
+
     private void GreetUser(object sender, ElapsedEventArgs e, BusinessMessage resolvedBusinessMessage, InboundMessage inboundMessage)
     {
         var now = DateTime.UtcNow;
