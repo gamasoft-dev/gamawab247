@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Infrastructure.Data.DbContext.DbAuditFilters;
 using Domain.Entities.DialogMessageEntitties;
 using Domain.Entities.FormProcessing;
+using Domain.Entities.RequestAndComplaints;
 
 namespace Infrastructure.Data.DbContext
 {
@@ -95,5 +96,6 @@ namespace Infrastructure.Data.DbContext
         public DbSet<BusinessFormConlusionConfig> BusinessFormConlusionConfigs { get; set; }
         public DbSet<Partner> Partners { get; set; }
         public DbSet<PartnerIntegrationDetails> PartnerIntegrationDetails { get; set; }
+        public DbSet<RequestAndComplaint> RequestAndComplaints { get; set; }
     }
 }
