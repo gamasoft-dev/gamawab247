@@ -9,6 +9,7 @@ using BillProcessorAPI.Services.Interfaces;
 using Domain.Common;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using System;
 using System.Net;
 
 namespace BillProcessorAPI.Services.Implementations
@@ -64,6 +65,9 @@ namespace BillProcessorAPI.Services.Implementations
 
 					var mappedResponse = _mapper.Map<BillPayerInfo>(revPayRes);
 
+					if (mappedResponse.PayerName == null && mappedResponse.Status == null)
+						throw new RestException(HttpStatusCode.NotFound, "Record not found for the bill-code provided");
+                 
 					// biller information response data
 					mappedResponse.AccountInfoResponseData = JsonConvert.SerializeObject(revPayRes);
 
@@ -117,6 +121,7 @@ namespace BillProcessorAPI.Services.Implementations
 				var revPayRes = JsonConvert.DeserializeObject<BillPaymentVerificationResponseDto>(revPayJsonResponse);
 
 				var billTransaction = _mapper.Map<BillTransaction>(revPayRes);
+
 				// bill-transaction response data
 				billTransaction.PaymentInfoResponseData = revPayJsonResponse;
 				//bill-transaction  request data
@@ -130,7 +135,7 @@ namespace BillProcessorAPI.Services.Implementations
 					Message = "Data retrieved successfully"
 				};
 			}
-			throw new RestException(System.Net.HttpStatusCode.BadRequest, "Invalid Request, unable to verify the status of this transaction");
+			throw new RestException(System.Net.HttpStatusCode.BadRequest, "Invalid Request: unable to verify the status of this transaction");
 		}
 
 	}
