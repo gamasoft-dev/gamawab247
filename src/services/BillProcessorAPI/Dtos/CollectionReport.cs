@@ -1,6 +1,6 @@
 ﻿namespace BillProcessorAPI.Dtos
 {
-	public class CollectionReport
+	public record CollectionReport
 	{
 		public string BillCode { get; set; }
 		public string PropertyPin { get; set; }

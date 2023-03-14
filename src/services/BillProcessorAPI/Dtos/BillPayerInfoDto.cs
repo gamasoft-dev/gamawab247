@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace BillProcessorAPI.Dtos
 {
-	public class BillPayerInfoDto
+	public record BillPayerInfoDto
 	{
 		public decimal AmountDue { get; set; }
 		public string Status { get; set; }
@@ -21,7 +22,7 @@ namespace BillProcessorAPI.Dtos
 		public decimal MaxAmount { get; set; }
 	}
 
-	public class BillReferenceResponseDto
+	public record BillReferenceResponseDto
     {
         public string AmountDue { get; set; }
         public string Status { get; set; }
@@ -46,12 +47,13 @@ namespace BillProcessorAPI.Dtos
         public string AccountInfoRequestData { get; set; }
     }
 
-	public class BillRequestDto
+	public record BillRequestDto
 	{
-		public string Webguid { get; set; }
+        [JsonPropertyName("billPaymentCode")]
+		public string BillPaymentCode { get; set; }
     }
 
-    public class AbcRequestPayload
+    public record AbcRequestPayload
     {
         public string Webguid { get; set; }
         public string State { get; set; }

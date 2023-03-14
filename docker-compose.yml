@@ -7,6 +7,12 @@ services:
       context: .
       dockerfile: src/services/Gamawabs247API/Dockerfile
 
+  responseprocessingjob:
+    image: ${DOCKER_REGISTRY}responseprocessingjob
+
+  formprocessingjob:
+    image: ${DOCKER_REGISTRY}formprocessingjob
+
   billprocessorapi:
     image: ${DOCKER_REGISTRY-}billprocessorapi
     build:

@@ -1,6 +1,7 @@
 ﻿using System;
 using ApiCustomization.Common;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Exceptions;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.Extensions.Options;
@@ -22,7 +23,8 @@ namespace ApiCustomization.ABC
             alphaBetaConfig = options.Value;
 		}
 
-        public string PartnerContentProcessorKey => "ALPHA_BETA_PAYMENT_LINK_GENERATOR";
+        public string PartnerContentProcessorKey => EExternalPartnerContentProcessorKey
+            .ALPHA_BETA_PAYMENT_LINK_GENERATOR.ToString();
 
         /// <summary>
         /// In this implementation the Tquest is string being the billcode of the user
