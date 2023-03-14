@@ -9,6 +9,8 @@ namespace ApiCustomization.ABC
 		public string ClientKey { get; set; }
         public string LinkGeneratorUserParamKey { get; set; }
 		public string BillCodePaymentPageLink { get; set; }
+		public bool IsMockRequest { get; set; }
+		//public string  MyProperty { get; set; }
 	}
 }
 

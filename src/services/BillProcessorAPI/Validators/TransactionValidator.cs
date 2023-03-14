@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace BillProcessorAPI.Validators
 {
-    public class TransactionValidator : AbstractValidator<TransactionVerificationInputDto>
+    public class TransactionValidator: AbstractValidator<TransactionVerificationInputDto>
     {
         public TransactionValidator()
         {

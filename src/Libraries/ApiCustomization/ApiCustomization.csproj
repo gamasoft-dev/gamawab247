@@ -3,18 +3,20 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+<!--    <Nullable>enable</Nullable>-->
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="ABC\" />
     <None Remove="Common\" />
     <None Remove="BambooHR\" />
+    <None Remove="ABC\Dtos\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ABC\" />
     <Folder Include="Common\" />
     <Folder Include="BambooHR\" />
+    <Folder Include="ABC\Dtos\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />

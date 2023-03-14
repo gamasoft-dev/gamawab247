@@ -26,7 +26,6 @@ namespace API
                 .AddJsonFile("customizations.Config.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{hostingEnvironment.EnvironmentName}.json", reloadOnChange: true,
                     optional: true)
-                //.AddUserSecrets(Assembly.GetAssembly(typeof(Startup)))
                 .AddEnvironmentVariables();
             
             Configuration = builder.Build();

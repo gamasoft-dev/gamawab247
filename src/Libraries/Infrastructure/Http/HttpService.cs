@@ -3,11 +3,13 @@ using Domain.Exceptions;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Http;
@@ -93,6 +95,9 @@ public class HttpService: IHttpService
         // add header paramters
         AddHeaderParams(client, header);
 
+        // add paramters
+        url = AddParameter(url, parameters);
+
         var response = await client.GetAsync(url);
         var responseString = await response.Content.ReadAsStringAsync();
 
@@ -115,7 +120,7 @@ public class HttpService: IHttpService
                 throw new InternalServerException("An error occurred from the api", (int)response.StatusCode);
 
             else
-                throw new BadRequestException(await response?.Content.ReadAsStringAsync());
+                throw new BadRequestException(await response?.Content.ReadAsStringAsync(), (int)response.StatusCode);
         }
     }
 
@@ -136,7 +141,33 @@ public class HttpService: IHttpService
         }
     }
 
-    
+
+    private string AddParameter(string url, IDictionary<string, object> paramters)
+    {
+        if (string.IsNullOrEmpty(url))
+            throw new ArgumentNullException("url cannot benull");
+
+        string urlParam = "";
+        StringBuilder urlParamBuilder = new StringBuilder(urlParam);
+
+        if (paramters is not null && paramters.Any()) {
+            urlParamBuilder = urlParamBuilder.Append("?");
+
+            foreach (var item in paramters)
+            {
+                urlParamBuilder.Append($"{item.Key}=");
+                urlParamBuilder.Append(item.Value);
+                urlParamBuilder.Append("&");
+            }
+
+            urlParam = urlParam.Length > 0
+                    ? urlParam.Substring(0, url.Length - 1)
+                    : urlParam;
+        }
+
+        return url+urlParam;
+    }
+
     private string SerialJsonToString<T>(T objectBody) where T : class
     {
         return JsonConvert.SerializeObject(objectBody);
