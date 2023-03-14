@@ -7,6 +7,7 @@ namespace Application.DTOs
 {
 	public class RequestAndComplaintDto
 	{
+        public Guid Id { get; set; }
         /// <summary>
         /// This is either user whatsapp username or phonenumber, instgram username etc
         /// </summary>
@@ -33,7 +34,7 @@ namespace Application.DTOs
 
         public DateTime? ResolutionDate { get; set; }
 
-        public string ResolutionStatus { get; set; }
+        internal string ResolutionStatus { get; set; }
 
         public Guid? TreatedById { get; set; }
 
@@ -78,7 +79,7 @@ namespace Application.DTOs
 
     public class UpdateRequestAndComplaintDto: CreateRequestAndComplaintDto
     {
-        public string Response { get; set; }
+        public List<string> Response { get; set; }
     }
 }
 
