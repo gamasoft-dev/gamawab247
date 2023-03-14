@@ -17,7 +17,7 @@ services:
     volumes:
       - ~/.aspnet/https:/root/.aspnet/https:ro
       - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
-      - ~/root/.aspnet/DataProtection-Keys:ro
+      # - ~/root/.aspnet/DataProtection-Keys:ro
   
   billprocessorapi:
     image: ${DOCKER_REGISTRY-}billprocessorapi
@@ -35,7 +35,7 @@ services:
     volumes:
       - ~/.aspnet/https:/root/.aspnet/https:ro
       - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
-      - ~/root/.aspnet/DataProtection-Keys:ro
+      # - ~/root/.aspnet/DataProtection-Keys:ro
 
   responseprocessingjob:
     image: ${DOCKER_REGISTRY-}responseprocessingjob
