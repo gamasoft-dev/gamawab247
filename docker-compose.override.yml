@@ -44,7 +44,7 @@ services:
       dockerfile: src/Jobs/Gamasoft.Worker/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+;http://+
+      - ASPNETCORE_URLS=http://+:80
     ports:
       - "8030:80"
     volumes:
