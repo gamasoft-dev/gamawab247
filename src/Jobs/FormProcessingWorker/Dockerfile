@@ -7,6 +7,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["src/Jobs/FormProcessingWorker/FormProcessingWorker.csproj", "src/Jobs/FormProcessingWorker/"]
 COPY ["src/Libraries/Application/Application.csproj", "src/Libraries/Application/"]
+COPY ["src/Libraries/ApiCustomization/ApiCustomization.csproj", "src/Libraries/ApiCustomization/"]
 COPY ["src/Libraries/Infrastructure/Infrastructure.csproj", "src/Libraries/Infrastructure/"]
 COPY ["src/Libraries/Infrastructure.Data/Infrastructure.Data.csproj", "src/Libraries/Infrastructure.Data/"]
 COPY ["src/Libraries/Domian/Domain.csproj", "src/Libraries/Domian/"]
