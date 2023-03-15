@@ -106,7 +106,7 @@ namespace Infrastructure.Repositories.Implementations
 
 		public virtual IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> expression)
 		{
-            return  _context.Set<TEntity>().AsQueryable().Where(expression);
+            return expression == null ? _context.Set<TEntity>().AsQueryable() : _context.Set<TEntity>().AsQueryable().Where(expression);
 		}
 
         public async Task<TEntity> AddAndReturnValue(TEntity entity)

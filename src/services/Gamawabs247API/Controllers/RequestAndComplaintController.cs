@@ -21,7 +21,7 @@ namespace Gamawabs247API.Controllers
     public class RequestAndComplaintController : ControllerBase
     {
         private readonly IRequestAndComplaintService _requestAndComplaintService;
-        private readonly ILogger<PartnerController> _logger;
+        private readonly ILogger<RequestAndComplaintController> _logger;
         public RequestAndComplaintController(IRequestAndComplaintService requestAndComplaintService)
         {
             _requestAndComplaintService = requestAndComplaintService;
@@ -49,7 +49,7 @@ namespace Gamawabs247API.Controllers
         [ProducesResponseType(typeof(SuccessResponse<RequestAndComplaintDto>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(SuccessResponse<RequestAndComplaintDto>), (int)HttpStatusCode.BadRequest)]
         [Authorize]//for admin usage
-        public async Task<IActionResult> Put([FromQuery] Guid id, [FromBody] UpdateRequestAndComplaintDto model)
+        public async Task<IActionResult> Put([FromRoute] Guid id, [FromBody] UpdateRequestAndComplaintDto model)
         {
             try
             {
@@ -99,11 +99,11 @@ namespace Gamawabs247API.Controllers
         [HttpGet("business/{id}",Name = nameof(GetAllRequestAndComplaintByBusinessId))]
         [ProducesResponseType(typeof(IEnumerable<RequestAndComplaintDto>), 200)]
         [Authorize]
-        public async Task<IActionResult> GetAllRequestAndComplaintByBusinessId([FromRoute] Guid businessId,[FromQuery] ResourceParameter parameter)
+        public async Task<IActionResult> GetAllRequestAndComplaintByBusinessId([FromRoute] Guid id,[FromQuery] ResourceParameter parameter)
         {
             try
             {
-                return Ok(await _requestAndComplaintService.GetAllRequestAndComplaintByBusinessId(businessId, parameter, nameof(GetAllRequestAndComplaint), Url));
+                return Ok(await _requestAndComplaintService.GetAllRequestAndComplaintByBusinessId(id, parameter, nameof(GetAllRequestAndComplaint), Url));
             }
             catch (Exception e)
             {
@@ -129,11 +129,11 @@ namespace Gamawabs247API.Controllers
 
         [HttpGet("ticket/{id}", Name = nameof(GetRequestOrComplaintByTicketId))]
         [ProducesResponseType(typeof(SuccessResponse<RequestAndComplaintDto>), 200)]
-        public async Task<IActionResult> GetRequestOrComplaintByTicketId([FromRoute] string ticketId)
+        public async Task<IActionResult> GetRequestOrComplaintByTicketId([FromRoute] string id)
         {
             try
             {
-                return Ok(await _requestAndComplaintService.GetRequestAndComplaintByTicketId(ticketId));
+                return Ok(await _requestAndComplaintService.GetRequestAndComplaintByTicketId(id));
             }
             catch (Exception e)
             {
