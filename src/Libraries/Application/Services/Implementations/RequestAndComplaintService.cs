@@ -36,7 +36,7 @@ namespace Application.Services.Implementations
                 throw new RestException(System.Net.HttpStatusCode.BadRequest, "Detail cannot be null: Please provide a detailed description for your request od complaint");
 
             RequestAndComplaint requestOrComplaint = _mapper.Map<RequestAndComplaint>(model);
-            requestOrComplaint.TicketId = requestOrComplaint.GenerateTicketId();
+            requestOrComplaint.TicketId = RequestAndComplaint.GenerateTicketId();
 
             await _requestAndComplaintRepo.AddAsync(requestOrComplaint);
             await _requestAndComplaintRepo.SaveChangesAsync();
