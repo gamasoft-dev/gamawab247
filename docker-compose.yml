@@ -7,12 +7,6 @@ services:
       context: .
       dockerfile: src/services/Gamawabs247API/Dockerfile
 
-  responseprocessingjob:
-    image: ${DOCKER_REGISTRY}responseprocessingjob
-
-  formprocessingjob:
-    image: ${DOCKER_REGISTRY}formprocessingjob
-
   billprocessorapi:
     image: ${DOCKER_REGISTRY-}billprocessorapi
     build:
@@ -25,14 +19,14 @@ services:
   gamawabsredis:
     image: redis:6.2-alpine
 
-  formprocessingworker:
+  formprocessingjob:
     image: ${DOCKER_REGISTRY-}formprocessingworker
     build:
       context: .
       dockerfile: src/Jobs/FormProcessingWorker/Dockerfile
 
-  gamasoft.worker:
-    image: ${DOCKER_REGISTRY-}gamasoft
+  responseprocessingjob:
+    image: ${DOCKER_REGISTRY-}responseprocessingjob
     build:
       context: .
       dockerfile: src/Jobs/Gamasoft.Worker/Dockerfile

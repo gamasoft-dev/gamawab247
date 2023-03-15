@@ -86,12 +86,3 @@ services:
     ports:
       - "6379:6379"
 
-  formprocessingworker:
-    environment:
-      - DOTNET_ENVIRONMENT=Development
-
-
-  gamasoft.worker:
-    environment:
-      - DOTNET_ENVIRONMENT=Development
-
