@@ -26,7 +26,7 @@ services:
       dockerfile: src/services/BillProcessorAPI/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_URLS=https://+;http://+
     ports:
       - "8020:80"
     depends_on:
@@ -44,7 +44,7 @@ services:
       dockerfile: src/Jobs/Gamasoft.Worker/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_URLS=https://+;http://+
     ports:
       - "8030:80"
     volumes:
@@ -80,9 +80,9 @@ services:
 
   gamawabsredis:
     restart: unless-stopped
-    command: redis-server /usr/local/etc/redis/redis.conf
+    command: redis-server ../usr/local/etc/redis/redis.conf
     volumes:
-      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./docker/redis/redis.conf:../usr/local/etc/redis/redis.conf
     ports:
       - "6379:6379"
 
