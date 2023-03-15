@@ -43,7 +43,7 @@ namespace Domain.Entities.RequestAndComplaints
 		public User TreatedBy { get; set; }
 
 		//TODO: Implement a unique 16 digit alphanumeric generator for ticketId
-		public string GenerateTicketId() {
+		public static string GenerateTicketId() {
 
 			return "";
 		}

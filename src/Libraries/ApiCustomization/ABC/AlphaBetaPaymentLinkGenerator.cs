@@ -34,7 +34,7 @@ namespace ApiCustomization.ABC
         /// <param name="request"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<string> RetrieveContent<TRequest>(string waId, TRequest request)
+        public async Task<string> RetrieveContent<TRequest>(Guid businessId, string waId, TRequest request)
         {
             var partnerConfigDetail = await partnerIntegrationRepo
                 .FirstOrDefault(x => x.PartnerContentProcessorKey.ToLower() == PartnerContentProcessorKey.ToLower());

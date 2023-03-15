@@ -117,7 +117,7 @@ namespace Application.Services.Cron
                                 // use the indentifier with Factory to get the correct api integration
 
                                 var integrationResponseBody = await apiContentIntegrationFactory
-                                    .RetrieveContent<string>(newCurrentFormElement.PartnerContentProcessorKey,
+                                    .RetrieveContent<string>(item.BusinessId, newCurrentFormElement.PartnerContentProcessorKey,
                                     item.To, newCurrentFormElement.Key);
 
                                 if (string.IsNullOrEmpty(integrationResponseBody))

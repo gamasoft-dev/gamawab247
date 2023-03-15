@@ -14,7 +14,7 @@ namespace ApiCustomization.Common
 		/// <param name="waId">user phone number</param>
 		/// <param name="request"> generic payload </param>
 		/// <returns></returns>
-		public Task<string> RetrieveContent<TRequest>(string waId, TRequest request);
+		public Task<string> RetrieveContent<TRequest>(Guid businessId, string waId, TRequest request);
 	}
 }
 
