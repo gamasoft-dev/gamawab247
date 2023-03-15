@@ -1,6 +1,7 @@
 ﻿using System;
 using ApiCustomization.ABC;
 using ApiCustomization.Common;
+using ApiCustomization.RequestAndComplaints;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -21,6 +22,8 @@ namespace ApiCustomization
             services.AddSingleton<IApiContentIntegrationManager, ApiContentIntegrationManager>();
 
             services.AddScoped<IApiContentRetrievalService, AlphaBetaPaymentLinkGenerator>();
+            services.AddScoped<IApiContentRetrievalService, UserRequestProcessor>();
+            services.AddScoped<IApiContentRetrievalService, UserComplaintProcessor>();
             services.AddScoped<IApiContentRetrievalService, AplhaBetaBillHolderRetrievalService>();
             
         }

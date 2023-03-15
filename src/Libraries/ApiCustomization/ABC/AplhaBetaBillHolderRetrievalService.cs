@@ -37,7 +37,7 @@ public class AplhaBetaBillHolderRetrievalService : IApiContentRetrievalService
         this.alphaBetaConfig = options.Value;
     }
 
-    public async Task<string> RetrieveContent<TRequest>(string waId, TRequest request)
+    public async Task<string> RetrieveContent<TRequest>(Guid businessId, string waId, TRequest request)
     {
         var billHolerSummaryInfo = string.Empty;
         var partnerConfigDetail = await partnerIntegrationRepo

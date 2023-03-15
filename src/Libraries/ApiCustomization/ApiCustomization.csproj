@@ -9,14 +9,14 @@
   <ItemGroup>
     <None Remove="ABC\" />
     <None Remove="Common\" />
-    <None Remove="BambooHR\" />
     <None Remove="ABC\Dtos\" />
+    <None Remove="RequestAndComplaint\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ABC\" />
     <Folder Include="Common\" />
-    <Folder Include="BambooHR\" />
     <Folder Include="ABC\Dtos\" />
+    <Folder Include="RequestAndComplaint\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />

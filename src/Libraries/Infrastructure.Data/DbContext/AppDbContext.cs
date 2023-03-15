@@ -97,5 +97,6 @@ namespace Infrastructure.Data.DbContext
         public DbSet<Partner> Partners { get; set; }
         public DbSet<PartnerIntegrationDetails> PartnerIntegrationDetails { get; set; }
         public DbSet<RequestAndComplaint> RequestAndComplaints { get; set; }
+        public DbSet<RequestAndComplaintConfig> RequestAndComplaintConfigs { get; set; }
     }
 }
