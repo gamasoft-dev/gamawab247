@@ -31,7 +31,7 @@ namespace ApiCustomization.Common
             if (argumentObj.IsValueResolvedAtRuntime)
             {
                 var session = await sessionManagement.GetByWaId(phoneNumber);
-                string? formElementValue = null;
+                string formElementValue = null;
 
                 var argValueAttempt = session.SessionFormDetails?.UserData?.TryGetValue(argumentObj.Key, out  formElementValue);
 

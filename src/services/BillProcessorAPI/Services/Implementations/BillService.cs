@@ -20,10 +20,15 @@ namespace BillProcessorAPI.Services.Implementations
 		private readonly HttpClient _httpClient;
 		private readonly IBillPayerRepository _billPayerRepo;
 		private readonly IRepository<BillTransaction> _billTransactions;
-		private RevpayOptions RevpayOptions { get; }
+		private readonly RevpayOptions RevpayOptions;
 		private readonly IMapper _mapper;
 
-		public BillService(IBillPayerRepository billPayerRepo, IOptions<RevpayOptions> options, IMapper mapper, IRepository<BillTransaction> billTransactions, HttpClient httpClient, IConfiguration config)
+		public BillService(IBillPayerRepository billPayerRepo,
+			IOptions<RevpayOptions> options,
+			IMapper mapper,
+			IRepository<BillTransaction> billTransactions,
+			HttpClient httpClient,
+			IConfiguration config)
 		{
 			_billPayerRepo = billPayerRepo;
 			RevpayOptions = options.Value;
@@ -34,10 +39,10 @@ namespace BillProcessorAPI.Services.Implementations
 			_config = config;
 		}
 
-		public async Task<SuccessResponse<BillReferenceResponseDto>> ReferenceVerification(BillRequestDto model)
+		public async Task<SuccessResponse<BillReferenceResponseDto>> ReferenceVerification(string billPaymentCode)
 		{
 
-			if (model == null)
+			if (string.IsNullOrEmpty(billPaymentCode))
 			{
 				throw new RestException(HttpStatusCode.BadRequest, ResponseMessages.Failed);
 			}
@@ -48,21 +53,21 @@ namespace BillProcessorAPI.Services.Implementations
 
 			var payload = new AbcRequestPayload
 			{
-				Webguid = model.Webguid,
+				Webguid = billPaymentCode,
 				State = RevpayOptions.State,
-				Hash = RevpayConfig.HashForReferenceVerification(RevpayOptions.Key, model.Webguid, RevpayOptions.State),
+				Hash = RevpayConfig.HashForReferenceVerification(RevpayOptions.Key, billPaymentCode, RevpayOptions.State),
 				ClientId = RevpayOptions.ClientId,
 				Type = RevpayOptions.Type
 			};
 
 			try
 			{
-				var httpResponse = await HttpClientExtensions.PostAsJson(_httpClient, RevpayOptions.BaseUrl, RevpayOptions.ReferenceVerification, payload);
+				var httpResponse = await HttpClientExtensions.PostAsJson(_httpClient, RevpayOptions.BaseUrl,
+					RevpayOptions.ReferenceVerification, payload);
 
 				if (httpResponse.IsSuccessStatusCode)
 				{
 					var revPayRes = await httpResponse.ReadContentAs<BillReferenceResponseDto>();
-
 					var mappedResponse = _mapper.Map<BillPayerInfo>(revPayRes);
 
 					if (mappedResponse.PayerName == null && mappedResponse.Status == null)
@@ -92,10 +97,10 @@ namespace BillProcessorAPI.Services.Implementations
 			}
 		}
 
-		public async Task<SuccessResponse<BillPaymentVerificationResponseDto>> PaymentVerification(BillRequestDto model)
+		public async Task<SuccessResponse<BillPaymentVerificationResponseDto>> PaymentVerification(string billPaymentCode)
 		{
 
-			if (model == null)
+			if (string.IsNullOrEmpty(billPaymentCode))
 			{
 				throw new RestException(HttpStatusCode.BadRequest, ResponseMessages.Failed);
 			}
@@ -106,9 +111,9 @@ namespace BillProcessorAPI.Services.Implementations
 
 			var payload = new AbcRequestPayload
 			{
-				Webguid = model.Webguid,
+				Webguid = billPaymentCode,
 				State = RevpayOptions.State,
-				Hash = RevpayConfig.HashForPaymentValidation(RevpayOptions.Key, model.Webguid),
+				Hash = RevpayConfig.HashForPaymentValidation(RevpayOptions.Key, billPaymentCode),
 				ClientId = RevpayOptions.ClientId,
 				Type = RevpayOptions.Type
 			};
@@ -124,8 +129,9 @@ namespace BillProcessorAPI.Services.Implementations
 
 				// bill-transaction response data
 				billTransaction.PaymentInfoResponseData = revPayJsonResponse;
+
 				//bill-transaction  request data
-				billTransaction.PaymentInfoRequestData = JsonConvert.SerializeObject(model);
+				billTransaction.PaymentInfoRequestData = JsonConvert.SerializeObject(payload);
 
 				await _billTransactions.SaveChangesAsync();
 

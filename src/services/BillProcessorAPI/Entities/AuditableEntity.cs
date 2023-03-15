@@ -1,4 +1,4 @@
-﻿using Domain.Common;
+﻿
 
 namespace BillProcessorAPI.Entities
 {

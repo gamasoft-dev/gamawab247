@@ -7,6 +7,7 @@ using Domain.Entities.FormProcessing.ValueObjects;
 using Infrastructure.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -15,9 +16,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230315023519_business-message-setting-extra-info")]
+    partial class businessmessagesettingextrainfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1311,20 +1313,8 @@ namespace Infrastructure.Data.Migrations
                     b.Property<Guid?>("BusinessId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("DetailKey")
-                        .HasColumnType("text");
-
                     b.Property<bool>("RequireWebHookNotification")
                         .HasColumnType("boolean");
-
-                    b.Property<string>("SubjectKey")
-                        .HasColumnType("text");
-
-                    b.Property<int>("TimeInHoursOfComplaintResolution")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TimeInHoursOfRequestResolution")
-                        .HasColumnType("integer");
 
                     b.Property<string>("WebHookUrl")
                         .HasColumnType("text");

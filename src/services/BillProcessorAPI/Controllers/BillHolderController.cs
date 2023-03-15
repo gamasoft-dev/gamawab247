@@ -3,6 +3,7 @@ using BillProcessorAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace BillProcessorAPI.Controllers
 {
@@ -19,17 +20,21 @@ namespace BillProcessorAPI.Controllers
 			_revpay = revpay;
 		}
 
-		[HttpGet("reference-verification")]
-		public async Task<IActionResult> ReferenceVerification([FromQuery] BillRequestDto model)
+		[HttpGet("reference-verification/{billPaymentCode}")]
+        [ProducesResponseType(typeof(BillReferenceResponseDto), 200)]
+        [SwaggerOperation(Summary = "Endpoint to get bill payer reference")]
+        public async Task<IActionResult> ReferenceVerification([FromRoute] string billPaymentCode)
 		{
-			var response = await _revpay.ReferenceVerification(model);
+			var response = await _revpay.ReferenceVerification(billPaymentCode);
 			return Ok(response);
 		}
 
-		[HttpGet("payment-verification")]
-		public async Task<IActionResult> PaymentVerification([FromQuery] BillRequestDto model)
+		[HttpGet("payment-verification/{billPaymentCode}")]
+        [ProducesResponseType(typeof(BillPaymentVerificationResponseDto), 200)]
+        [SwaggerOperation(Summary = "Endpoint to get verify bill payment")]
+        public async Task<IActionResult> PaymentVerification([FromRoute] string billPaymentCode)
 		{
-			var response = await _revpay.PaymentVerification(model);
+			var response = await _revpay.PaymentVerification(billPaymentCode);
 			return Ok(response);
 		}
 	}

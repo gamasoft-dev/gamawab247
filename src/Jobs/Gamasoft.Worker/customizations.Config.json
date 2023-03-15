@@ -3,6 +3,6 @@
         "HolderVerificationEndpoint": "",
         "ClientKey": "",
         "LinkGeneratorUserParamKey": "billPaymentCode",
-        "BillCodePaymentPageLink": "https://gamasoft-lucweb.vercel.app/bill-payment"
+        "BillCodePaymentPageLink": "https://gamasoft-lucweb.vercel.app/bill-payment?Webguid=35454"
     }
 }

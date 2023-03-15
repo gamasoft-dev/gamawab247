@@ -9,6 +9,7 @@ namespace Domain.Entities{
         public string ApiKey {get; set;}
         public string BotName { get; set; }
         public string BotDescription { get; set; }
+        public string ExtraInfo { get; set; }
         public int TestCounter {get; set;}
        
         public bool IsTest { get; set; }

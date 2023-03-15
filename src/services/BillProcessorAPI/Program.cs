@@ -3,41 +3,52 @@ using BillProcessorAPI.Data;
 using BillProcessorAPI.Extensions;
 using BillProcessorAPI.Helpers;
 using BillProcessorAPI.Helpers.Revpay;
+using BillProcessorAPI.Middlewares;
 using BillProcessorAPI.Services.Implementations;
 using BillProcessorAPI.Services.Interfaces;
 using BillProcessorAPI.Validators;
 using FluentValidation;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddClientDbContext(builder.Configuration);
-builder.Services.AddControllers();
+builder.Services.ConfigureMvc();
+builder.Services.AddControllers()
+    .AddJsonOptions(options=> {
+        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+    });
+//builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddValidatorsFromAssemblyContaining<TransactionValidator>();
 builder.Services.Configure<BillTransactionSettings>(builder.Configuration.GetSection("BillTransactionSettings"));
 builder.Services.Configure<RevpayOptions>(builder.Configuration.GetSection("RevpayConfig"));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.ConfigureHttpPollyExtension();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.EnableAnnotations();
 });
+
 builder.Services.ConfigService(builder.Configuration);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI();
+
+JsonConvert.DefaultSettings = () => new JsonSerializerSettings
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    ContractResolver = new CamelCasePropertyNamesContractResolver()
+};
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseErrorHandler();
 
 app.MapControllers();
 

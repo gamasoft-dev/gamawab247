@@ -25,12 +25,12 @@ namespace ApiCustomization.Common
 			return concreteImpl;
         }
 
-        public async Task<string> RetrieveContent<TRequest>(string partnerContentProcessorKey,
+        public async Task<string> RetrieveContent<TRequest>(Guid businessId, string partnerContentProcessorKey,
             string waId, TRequest request)
         {
             var concreteImpl = GetConcreteIntegrationImpl(partnerContentProcessorKey);
 
-            return await concreteImpl.RetrieveContent<TRequest>(waId, request);
+            return await concreteImpl.RetrieveContent<TRequest>(businessId, waId, request);
         }
     }
 }

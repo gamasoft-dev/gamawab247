@@ -51,18 +51,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Libraries\Application\Application.csproj">
-      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\ApiCustomization\ApiCustomization.csproj">
-      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
-    </ProjectReference>
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Remove="Controllers\IndustryConversationFlowController.cs" />
     <Compile Remove="Controllers\BusinessConversationFlowController.cs" />
     <Compile Remove="Controllers\MessageRequestController.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Libraries\Application\Application.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
