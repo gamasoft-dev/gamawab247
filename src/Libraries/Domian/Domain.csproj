@@ -17,6 +17,5 @@
   <Folder Include="Entities\FormProcessing\" />
   <Folder Include="Entities\FormProcessing\ValueObjects\" />
   <Folder Include="Exceptions\" />
-  <Folder Include="Entities\RequestAndComplaint\" />
 </ItemGroup>
 </Project>
