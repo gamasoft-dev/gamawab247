@@ -258,6 +258,8 @@ namespace Application.Services.Implementations
                     businessSettings.Data.BotName, businessSettings.Data.BotDescription, inboundMessage.WhatsUserName)
                 : model?.MessageTypeObject?.Body;
 
+            msgBody += $"{Environment.NewLine}{businessSettings.Data?.ExtraInfo}";
+
             if(model.Position == (int)ESystemMessagePosition.Welcome_Back)
             {
                 msgBody = msgBody.Replace("{{name}}", inboundMessage.WhatsUserName);

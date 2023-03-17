@@ -66,6 +66,7 @@ namespace API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider, AppDbContext dbContext)
         {
             app.UseDeveloperExceptionPage();
+            //app.UseHsts();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
