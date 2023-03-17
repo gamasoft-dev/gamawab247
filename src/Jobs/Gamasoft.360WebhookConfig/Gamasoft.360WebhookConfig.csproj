@@ -20,4 +20,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\Application\Application.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="BusinessConfigs\IBusinessWebhookConfig.cs" />
+    <Compile Remove="BusinessConfigs\BusinessWebhookConfig.cs" />
+  </ItemGroup>
 </Project>
