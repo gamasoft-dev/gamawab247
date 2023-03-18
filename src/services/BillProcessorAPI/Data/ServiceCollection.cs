@@ -29,6 +29,7 @@ namespace BillProcessorAPI.Data
         public static void ConfigService(this IServiceCollection services, IConfiguration config)
         {
             services.AddScoped<IBillService, BillService>();
+            services.AddScoped<ILoggerManager, LoggerManager>();
             services.AddScoped<IPayThruService, PayThruService>();
 			var revpaySection = config.GetSection("RevpayConfig");
 			services.Configure<RevpayOptions>(revpaySection);
@@ -36,6 +37,7 @@ namespace BillProcessorAPI.Data
             services.AddScoped<IBillPayerRepository, BillPayerRepository>();
 			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IHttpService, HttpService>();
-		}
+            
+        }
     }
 }

@@ -1,6 +1,8 @@
-﻿namespace BillProcessorAPI.Services.Interfaces
+﻿using Application.AutofacDI;
+
+namespace BillProcessorAPI.Services.Interfaces
 {
-    public interface ILoggerManager
+    public interface ILoggerManager :IAutoDependencyService
     {
         void LogInfo(string message);
         void LogWarn(string message);

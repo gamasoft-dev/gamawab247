@@ -11,13 +11,8 @@ namespace BillProcessorAPI.Controllers
 
 	public partial class PaymentController : ControllerBase
 	{
-		private readonly IPayThruService _paythruService;
-		public PaymentController(IPayThruService paythruService)
-		{
-            _paythruService = paythruService;
-		}
 
-		[HttpPost("/paythru")]
+        [HttpPost("/paythru")]
         [ProducesResponseType(typeof(PaythruPaymentResponseDto), 200)]
         [SwaggerOperation(Summary = "Endpoint to create a payment transaction with paythru")]
         public async Task<IActionResult> CreateTransaction(int amount, string billCode)
