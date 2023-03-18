@@ -9,20 +9,16 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace BillProcessorAPI.Controllers
 {
 
-    [ApiController]
-	[ApiVersion("1.0")]
-	[Route("v1/paythru")]
-	[Produces("application/json")]
-	public class PaythruPaymentController : ControllerBase
+	public partial class PaymentController : ControllerBase
 	{
 		private readonly IPayThruService _paythruService;
-		public PaythruPaymentController(IPayThruService paythruService)
+		public PaymentController(IPayThruService paythruService)
 		{
             _paythruService = paythruService;
 		}
 
-		[HttpPost]
-        [ProducesResponseType(typeof(PayThruPaymentRequestDto), 200)]
+		[HttpPost("/paythru")]
+        [ProducesResponseType(typeof(PaythruPaymentResponseDto), 200)]
         [SwaggerOperation(Summary = "Endpoint to create a payment transaction with paythru")]
         public async Task<IActionResult> CreateTransaction(int amount, string billCode)
 		{
@@ -30,7 +26,7 @@ namespace BillProcessorAPI.Controllers
 			return Ok(response);
 		}
 
-		[HttpGet("payment-verification")]
+		[HttpGet("/paythru/verification")]
 		[ProducesResponseType(typeof(PaymentVerificationResponseDto), 200)]
 		[SwaggerOperation(Summary = "Endpoint to verify paythru payment")]
 		public async Task<IActionResult> PaymentVerification([FromRoute] NotificationRequestWrapper model)
