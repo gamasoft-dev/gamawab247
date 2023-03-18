@@ -7,12 +7,6 @@ namespace BillProcessorAPI.Controllers
 {
     public partial class PaymentController : ControllerBase
     {
-        //private readonly TransactionService _transactionService;
-        //public PaymentController(TransactionService transactionService, Services.Interfaces.IPayThruService paythruService)
-        //{
-        //    _transactionService = transactionService;
-        //    this._paythruService = paythruService;
-        //}
 
         [HttpPost("/flutterwave")]
         [ProducesResponseType(typeof(object), 200)]

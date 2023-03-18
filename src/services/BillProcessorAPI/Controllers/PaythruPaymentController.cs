@@ -11,12 +11,6 @@ namespace BillProcessorAPI.Controllers
 
 	public partial class PaymentController : ControllerBase
 	{
-		//private readonly IPayThruService _paythruService;
-  //      public PaymentController(IPayThruService paythruService, Services.Implementations.TransactionService transactionService)
-  //      {
-  //          _paythruService = paythruService;
-  //          this._transactionService = transactionService;
-  //      }
 
         [HttpPost("/paythru")]
         [ProducesResponseType(typeof(PaythruPaymentResponseDto), 200)]
