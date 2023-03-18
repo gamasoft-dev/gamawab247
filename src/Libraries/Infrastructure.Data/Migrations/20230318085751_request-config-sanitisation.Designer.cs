@@ -16,8 +16,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230318021814_migration-action-name")]
-    partial class migrationactionname
+    [Migration("20230318085751_request-config-sanitisation")]
+    partial class requestconfigsanitisation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1113,10 +1113,6 @@ namespace Infrastructure.Data.Migrations
                     b.Property<Guid?>("CreatedById")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("FullUrl")
                         .HasColumnType("text");
 
@@ -1143,8 +1139,6 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("PartnerId");
 
                     b.ToTable("PartnerIntegrationDetails");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("PartnerIntegrationDetails");
                 });
 
             modelBuilder.Entity("Domain.Entities.RequestAndComplaints.RequestAndComplaint", b =>
@@ -1161,6 +1155,12 @@ namespace Infrastructure.Data.Migrations
 
                     b.Property<string>("Channel")
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("CreatedById")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("CustomerId")
                         .HasColumnType("text");
@@ -1189,11 +1189,70 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.HasKey("Id");
 
                     b.HasIndex("TreatedById");
 
                     b.ToTable("RequestAndComplaints");
+                });
+
+            modelBuilder.Entity("Domain.Entities.RequestAndComplaints.RequestAndComplaintConfig", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("BusinessId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("CreatedById")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("DetailKey")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FullUrl")
+                        .HasColumnType("text");
+
+                    b.Property<List<KeyValueObj>>("Headers")
+                        .HasColumnType("jsonb");
+
+                    b.Property<string>("MetaData")
+                        .HasColumnType("text");
+
+                    b.Property<List<KeyValueObj>>("Parameters")
+                        .HasColumnType("jsonb");
+
+                    b.Property<string>("PartnerContentProcessorKey")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("RequireWebHookNotification")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("SubjectKey")
+                        .HasColumnType("text");
+
+                    b.Property<int>("TimeInHoursOfComplaintResolution")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TimeInHoursOfRequestResolution")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("WebHookUrl")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RequestAndComplaintConfigs");
                 });
 
             modelBuilder.Entity("Domain.Entities.SystemSettings", b =>
@@ -1295,34 +1354,6 @@ namespace Infrastructure.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("WhatsappUsers");
-                });
-
-            modelBuilder.Entity("Domain.Entities.RequestAndComplaints.RequestAndComplaintConfig", b =>
-                {
-                    b.HasBaseType("Domain.Entities.PartnerIntegrationDetails");
-
-                    b.Property<Guid?>("BusinessId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("DetailKey")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("RequireWebHookNotification")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("SubjectKey")
-                        .HasColumnType("text");
-
-                    b.Property<int>("TimeInHoursOfComplaintResolution")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TimeInHoursOfRequestResolution")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("WebHookUrl")
-                        .HasColumnType("text");
-
-                    b.HasDiscriminator().HasValue("RequestAndComplaintConfig");
                 });
 
             modelBuilder.Entity("Domain.Entities.Business", b =>

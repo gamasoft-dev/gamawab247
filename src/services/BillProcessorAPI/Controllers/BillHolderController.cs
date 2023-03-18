@@ -1,4 +1,5 @@
-﻿using BillProcessorAPI.Dtos;
+﻿using Application.Helpers;
+using BillProcessorAPI.Dtos;
 using BillProcessorAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -21,7 +22,7 @@ namespace BillProcessorAPI.Controllers
 		}
 
 		[HttpGet("reference-verification/{billPaymentCode}")]
-        [ProducesResponseType(typeof(BillReferenceResponseDto), 200)]
+        [ProducesResponseType(typeof(SuccessResponse<BillReferenceResponseDto>), 200)]
         [SwaggerOperation(Summary = "Endpoint to get bill payer reference")]
         public async Task<IActionResult> ReferenceVerification([FromRoute] string billPaymentCode)
 		{
@@ -30,7 +31,7 @@ namespace BillProcessorAPI.Controllers
 		}
 
 		[HttpGet("payment-verification/{billPaymentCode}")]
-        [ProducesResponseType(typeof(BillPaymentVerificationResponseDto), 200)]
+        [ProducesResponseType(typeof(SuccessResponse<BillPaymentVerificationResponseDto>), 200)]
         [SwaggerOperation(Summary = "Endpoint to get verify bill payment")]
         public async Task<IActionResult> PaymentVerification([FromRoute] string billPaymentCode)
 		{

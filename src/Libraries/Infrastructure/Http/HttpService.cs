@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Http;
@@ -103,7 +104,8 @@ public class HttpService: IHttpService
 
         if (response.IsSuccessStatusCode)
         {
-            var result = JsonConvert.DeserializeObject<TResponse>(responseString);
+            var camelSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+            var result = JsonConvert.DeserializeObject<TResponse>(responseString, camelSettings);
             return new HttpMessageResponse<TResponse>
             {
                 Data = result,
@@ -147,25 +149,26 @@ public class HttpService: IHttpService
         if (string.IsNullOrEmpty(url))
             throw new ArgumentNullException("url cannot benull");
 
-        string urlParam = "";
-        StringBuilder urlParamBuilder = new StringBuilder(urlParam);
+        if (paramters is null || !paramters.Any())
+            return url;
+
+        StringBuilder urlParamBuilder = new StringBuilder("");
 
         if (paramters is not null && paramters.Any()) {
-            urlParamBuilder = urlParamBuilder.Append("?");
+            urlParamBuilder = urlParamBuilder.Append('?');
 
             foreach (var item in paramters)
             {
                 urlParamBuilder.Append($"{item.Key}=");
                 urlParamBuilder.Append(item.Value);
-                urlParamBuilder.Append("&");
+                urlParamBuilder.Append('&');
             }
 
-            urlParam = urlParam.Length > 0
-                    ? urlParam.Substring(0, url.Length - 1)
-                    : urlParam;
+            if (urlParamBuilder.Length > 1)
+                urlParamBuilder.Remove(urlParamBuilder.Length - 1, 1);
         }
 
-        return url+urlParam;
+        return url.TrimEnd('/')+urlParamBuilder.ToString();
     }
 
     private string SerialJsonToString<T>(T objectBody) where T : class

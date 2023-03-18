@@ -461,7 +461,7 @@ public class ResponsePreProcessingCron : IResponsePreProcessingCron
     /// <returns></returns>
     private async Task<BusinessMessageDto<BaseInteractiveDto>> GetExternalContentAndReturnBusinessMsg(BusinessMessage model, string waId)
     {
-        string contentRetrieved = await _apiContentIntegrationManager.RetrieveContent<string>(
+        var contentRetrieved = await _apiContentIntegrationManager.RetrieveContent<string>(
             model.BusinessId, model.ContentRetrievalProcessorKey, waId, "");
 
         return new BusinessMessageDto<BaseInteractiveDto>()
@@ -477,7 +477,7 @@ public class ResponsePreProcessingCron : IResponsePreProcessingCron
             Position = model.Position,
             MessageTypeObject = new BaseInteractiveDto
             {
-                Body = contentRetrieved,
+                Body = contentRetrieved?.Response,
                 BusinessMessageId = model.Id,
             },
             BusinessId = model.BusinessId,

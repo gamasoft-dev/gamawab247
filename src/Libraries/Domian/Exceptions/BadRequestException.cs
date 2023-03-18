@@ -6,7 +6,7 @@ namespace Domain.Exceptions
         public BadRequestException(String message, Exception innerException = null) : base(message, innerException)
         {
             if (String.IsNullOrEmpty(message))
-                message = "An error occurred whilst processing this request, Verify request data and try again";
+                message = "Bad request error, Verify request data and try again";
 
             base.StatusCode = 400;
         }
@@ -14,10 +14,12 @@ namespace Domain.Exceptions
         public BadRequestException(String message, int statusErrorCode, Exception innerException = null) : base(message, innerException)
         {
             if (String.IsNullOrEmpty(message))
-                message = "An error occurred whilst processing this request, Verify request data and try again";
+                message = "Bad request, Verify request data and try again";
 
             if (statusErrorCode == 0)
                 this.StatusCode = 400;
+            else
+                this.StatusCode = statusErrorCode;
 
         }
     }

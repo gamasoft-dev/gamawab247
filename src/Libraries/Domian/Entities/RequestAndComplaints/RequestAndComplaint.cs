@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Common;
 using Domain.Entities.Identities;
 using Domain.Enums;
 
 namespace Domain.Entities.RequestAndComplaints
 {
-    public class RequestAndComplaint
+    public class RequestAndComplaint: AuditableEntity
     {
         public Guid Id { get; set; }
 
@@ -23,6 +25,7 @@ namespace Domain.Entities.RequestAndComplaints
 
         public string Detail { get; set; }
 
+        [Column(TypeName = "jsonb")]
         public List<string> Responses { get; set; }
 
         /// <summary>
@@ -47,7 +50,6 @@ namespace Domain.Entities.RequestAndComplaints
         //TODO: Implement a unique 16 digit alphanumeric generator for ticketId
         public static string GenerateTicketId()
         {
-
             Random random = new Random();
             const string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
