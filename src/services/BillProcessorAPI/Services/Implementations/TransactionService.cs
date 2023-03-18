@@ -43,7 +43,7 @@ namespace BillProcessorAPI.Services.Implementations
 
         public async Task<SuccessResponse<TransactionVerificationResponseDto>> VerifyBillTransactionAsync(TransactionVerificationInputDto input)
         {
-            var billTransaction = await _billTransactionRepository.FirstOrDefault(x => x.SystemReference == input.TransactionReference);
+            var billTransaction = await _billTransactionRepository.FirstOrDefault(x => x.TransactionReference == input.TransactionReference);
             if (billTransaction is null)
             {
                 _logger.LogInfo($"{nameof(VerifyBillTransactionAsync)} REQUEST => {JsonConvert.SerializeObject(input)}");

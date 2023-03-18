@@ -2,6 +2,7 @@ using Autofac.Core;
 using BillProcessorAPI.Data;
 using BillProcessorAPI.Extensions;
 using BillProcessorAPI.Helpers;
+using BillProcessorAPI.Helpers.Paythru;
 using BillProcessorAPI.Helpers.Revpay;
 using BillProcessorAPI.Middlewares;
 using BillProcessorAPI.Services.Implementations;
@@ -24,6 +25,7 @@ builder.Services.AddControllers()
 builder.Services.AddValidatorsFromAssemblyContaining<TransactionValidator>();
 builder.Services.Configure<BillTransactionSettings>(builder.Configuration.GetSection("BillTransactionSettings"));
 builder.Services.Configure<RevpayOptions>(builder.Configuration.GetSection("RevpayConfig"));
+builder.Services.Configure<PaythruOptions>(builder.Configuration.GetSection("PaythruOptions"));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.ConfigureHttpPollyExtension();
 builder.Services.AddEndpointsApiExplorer();
