@@ -2,6 +2,7 @@ using Autofac.Core;
 using BillProcessorAPI.Data;
 using BillProcessorAPI.Extensions;
 using BillProcessorAPI.Helpers;
+using BillProcessorAPI.Helpers.Paythru;
 using BillProcessorAPI.Helpers.Revpay;
 using BillProcessorAPI.Middlewares;
 using BillProcessorAPI.Services.Implementations;
@@ -24,9 +25,17 @@ builder.Services.AddControllers()
 builder.Services.AddValidatorsFromAssemblyContaining<TransactionValidator>();
 builder.Services.Configure<BillTransactionSettings>(builder.Configuration.GetSection("BillTransactionSettings"));
 builder.Services.Configure<RevpayOptions>(builder.Configuration.GetSection("RevpayConfig"));
+builder.Services.Configure<PaythruOptions>(builder.Configuration.GetSection("PaythruOptions"));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.ConfigureHttpPollyExtension();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddCors(opts =>
+{
+    opts.AddPolicy("CorsPolicy", builder =>
+    {
+        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    });
+});
 builder.Services.AddSwaggerGen(c =>
 {
     c.EnableAnnotations();
@@ -44,12 +53,20 @@ JsonConvert.DefaultSettings = () => new JsonSerializerSettings
     ContractResolver = new CamelCasePropertyNamesContractResolver()
 };
 
+
 app.UseHttpsRedirection();
+
+app.UseCors("CorsPolicy");
+app.UseRouting();
+
 
 app.UseAuthorization();
 
 app.UseErrorHandler();
 
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 app.Run();

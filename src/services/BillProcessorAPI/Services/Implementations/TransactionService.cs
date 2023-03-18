@@ -13,7 +13,7 @@ namespace BillProcessorAPI.Services.Implementations
 {
     public class TransactionService : ITransactionService
     {
-        private readonly IBillTransactionRepository _billTransactionRepository;
+        private readonly IRepository<BillTransaction> _billTransactionRepository;
         private readonly IRepository<BillPayerInfo> _billPayerRepository;
         private readonly IRepository<BillCharge> _billChargeRepository;
         private readonly ILoggerManager _logger;
@@ -22,7 +22,7 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IMapper _mapper;
         private BillTransactionSettings BillTransactionSettings { get; }
         public TransactionService(
-            IBillTransactionRepository billTransactionRepository,
+            IRepository<BillTransaction> billTransactionRepository,
             ILoggerManager logger,
             IOptions<BillTransactionSettings> settings,
             IConfiguration configuration,
@@ -43,7 +43,7 @@ namespace BillProcessorAPI.Services.Implementations
 
         public async Task<SuccessResponse<TransactionVerificationResponseDto>> VerifyBillTransactionAsync(TransactionVerificationInputDto input)
         {
-            var billTransaction = await _billTransactionRepository.FirstOrDefault(x => x.SystemReference == input.TransactionReference);
+            var billTransaction = await _billTransactionRepository.FirstOrDefault(x => x.TransactionReference == input.TransactionReference);
             if (billTransaction is null)
             {
                 _logger.LogInfo($"{nameof(VerifyBillTransactionAsync)} REQUEST => {JsonConvert.SerializeObject(input)}");
