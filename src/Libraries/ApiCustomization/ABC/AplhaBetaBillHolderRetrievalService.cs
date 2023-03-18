@@ -43,7 +43,7 @@ public class AplhaBetaBillHolderRetrievalService : IApiContentRetrievalService
         var partnerConfigDetail = await partnerIntegrationRepo
             .FirstOrDefault(x => x.PartnerContentProcessorKey.ToLower() == PartnerContentProcessorKey.ToLower());
 
-        var argumentKvpObj = partnerConfigDetail?.Parameters?.FirstOrDefault(x => x.Key?.ToLower() == alphaBetaConfig.BillCodePaymentPageLink?.ToLower());
+        var argumentKvpObj = partnerConfigDetail?.Parameters?.FirstOrDefault(x => x.Key?.ToLower() == alphaBetaConfig.LinkGeneratorUserParamKey?.ToLower());
         if (argumentKvpObj is null)
             throw new BackgroundException($"No value found in the Paramters property for this PaartnerContentDeatil for key {PartnerContentProcessorKey}");
 

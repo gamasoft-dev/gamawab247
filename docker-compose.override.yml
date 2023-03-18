@@ -9,9 +9,6 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+
-      # - ASPNETCORE_HTTPS_PORT=8001
-      # - ASPNETCORE_Kestrel__Certificates__Default__Password=GAMAWABS123456789@*@gama
-      # - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
 
     ports:
       - "8000:80"
@@ -23,7 +20,6 @@ services:
       - ~/.aspnet/https:/root/.aspnet/https:ro
       - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
       - ~/.aspnet/https:/https/
-      # - ~/root/.aspnet/DataProtection-Keys:ro
   
   billprocessorapi:
     image: ${DOCKER_REGISTRY-}billprocessorapi
@@ -33,9 +29,6 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+
-      # - ASPNETCORE_HTTPS_PORT=8021
-      # - ASPNETCORE_Kestrel__Certificates__Default__Password=GAMAWABS123456789@*@gama
-      # - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
     ports:
       - "8020:80"
       - "8021:443"
@@ -46,7 +39,6 @@ services:
       - ~/.aspnet/https:/root/.aspnet/https:ro
       - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
       - ~/.aspnet/https:/https/
-      # - ~/root/.aspnet/DataProtection-Keys:ro
 
   responseprocessingjob:
     image: ${DOCKER_REGISTRY-}responseprocessingjob

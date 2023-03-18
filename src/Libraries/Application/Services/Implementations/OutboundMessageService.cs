@@ -255,10 +255,8 @@ namespace Application.Services.Implementations
 
             var msgBody = model.Position == (int)ESystemMessagePosition.Initial
                 ? BusinessSettingsUtility.GetFirstMessage(
-                    businessSettings.Data.BotName, businessSettings.Data.BotDescription, inboundMessage.WhatsUserName)
+                    businessSettings.Data.BotName, businessSettings.Data.BotDescription, inboundMessage.WhatsUserName) + $"{Environment.NewLine}{businessSettings.Data?.ExtraInfo}"
                 : model?.MessageTypeObject?.Body;
-
-            msgBody += $"{Environment.NewLine}{businessSettings.Data?.ExtraInfo}";
 
             if(model.Position == (int)ESystemMessagePosition.Welcome_Back)
             {
