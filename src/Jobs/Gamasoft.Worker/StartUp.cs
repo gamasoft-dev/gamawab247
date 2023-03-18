@@ -10,6 +10,7 @@ using Application.Helpers;
 using Gamasoft.Worker.ServiceExtension;
 using Infrastructure;
 using ApiCustomization;
+using System.Text.Json;
 
 namespace Gamasoft.Worker
 {
@@ -46,8 +47,9 @@ namespace Gamasoft.Worker
             services.AddRepositories();
             services.AddHttpClientInfrastructure();
             services.ConfigureIOObjects(Configuration);
-            services.AddControllers()
-                .AddXmlDataContractSerializerFormatters();
+            services.AddControllers().AddJsonOptions(options => {
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            }).AddXmlDataContractSerializerFormatters();
             services.ConfigureMvcAndAutomapper();
             services.ConfigureGlobalization();
             services.ConfigureIdentity();

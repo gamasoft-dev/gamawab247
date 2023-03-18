@@ -9,6 +9,7 @@ using Application.Helpers;
 using FormProcessingWorker.Middleware;
 using ApiCustomization;
 using Infrastructure;
+using System.Text.Json;
 
 namespace FormProcessingWorker
 {
@@ -42,8 +43,9 @@ namespace FormProcessingWorker
             services.AddHttpContextAccessor();
             services.ConfigureRepositoryManager();
             services.ConfigureIOObjects(Configuration);
-            services.AddControllers()
-                .AddXmlDataContractSerializerFormatters();
+            services.AddControllers().AddJsonOptions(options => {
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            }).AddXmlDataContractSerializerFormatters();
             services.ConfigureMvcAndAutomapper();
             services.ConfigureGlobalization();
             services.ConfigureApiCustomizationService(Configuration);

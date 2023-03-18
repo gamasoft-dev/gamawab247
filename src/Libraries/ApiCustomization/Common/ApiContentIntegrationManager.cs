@@ -1,14 +1,18 @@
 ﻿using System.Threading;
+using Infrastructure.Sessions;
 
 namespace ApiCustomization.Common
 {
     public class ApiContentIntegrationManager: IApiContentIntegrationManager
     {
-		public ICollection<IApiContentRetrievalService> apiContentRetrievalServices;
+		private ICollection<IApiContentRetrievalService> apiContentRetrievalServices;
+        private ISessionManagement sessionManagement;
 
-		public ApiContentIntegrationManager(ICollection<IApiContentRetrievalService> apiContentRetrievalServices)
+		public ApiContentIntegrationManager(ICollection<IApiContentRetrievalService> apiContentRetrievalServices,
+            ISessionManagement sessionManagement)
 		{
 			this.apiContentRetrievalServices = apiContentRetrievalServices;
+            this.sessionManagement = sessionManagement;
 		}
 
 		private IApiContentRetrievalService GetConcreteIntegrationImpl(string partnerContentProcessorKey)
@@ -25,12 +29,21 @@ namespace ApiCustomization.Common
 			return concreteImpl;
         }
 
-        public async Task<string> RetrieveContent<TRequest>(Guid businessId, string partnerContentProcessorKey,
+        public async Task<RetrieveContentResponse> RetrieveContent<TRequest>(Guid businessId, string partnerContentProcessorKey,
             string waId, TRequest request)
         {
             var concreteImpl = GetConcreteIntegrationImpl(partnerContentProcessorKey);
 
-            return await concreteImpl.RetrieveContent<TRequest>(businessId, waId, request);
+            var result = await concreteImpl.RetrieveContent<TRequest>(businessId, waId, request);
+            //if the session new updated is not null. Update the user session state to the new state
+            if (result.UpdatedSessionState != null && !result.IsSuccessful)
+            {
+                var session = await sessionManagement.GetByWaId(waId);
+                session.SessionState = result.UpdatedSessionState.Value;
+                await sessionManagement.Update(waId, session);
+            }
+
+            return result;
         }
     }
 }

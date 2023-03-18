@@ -37,7 +37,7 @@ public class AplhaBetaBillHolderRetrievalService : IApiContentRetrievalService
         this.alphaBetaConfig = options.Value;
     }
 
-    public async Task<string> RetrieveContent<TRequest>(Guid businessId, string waId, TRequest request)
+    public async Task<RetrieveContentResponse> RetrieveContent<TRequest>(Guid businessId, string waId, TRequest request)
     {
         var billHolerSummaryInfo = string.Empty;
         var partnerConfigDetail = await partnerIntegrationRepo
@@ -57,51 +57,80 @@ public class AplhaBetaBillHolderRetrievalService : IApiContentRetrievalService
             await MakeApiCallToAbc(billPaymentCode: billPaymentCode);
     }
 
-    private static string DemoBillPaymentUserInfo()
+    private RetrieveContentResponse DemoBillPaymentUserInfo()
     {
-        return "Record found!\n Here is the Transaction Summary\n  Tax Payer: Chris Yakubu\n Property PIN: N-1234587\n Bill No.: 1234567890\n Amount: NGN24,250.00";
+        return new RetrieveContentResponse
+        {
+            IsSuccessful = false,
+            Response = "Record found!\n Here is the Transaction Summary\n  Tax Payer: Chris Yakubu\n Property PIN: N-1234587\n Bill No.: 1234567890\n Amount: NGN24,250.00"
+        };
 
     }
 
-    private async Task<string> MakeApiCallToAbc(string billPaymentCode) {
+    private async Task<RetrieveContentResponse> MakeApiCallToAbc(string billPaymentCode) {
 
-        var url = $"{alphaBetaConfig.BaseUrl}/{alphaBetaConfig.HolderVerificationEndpoint}";
+        var url = $"{alphaBetaConfig.BaseUrl}/{alphaBetaConfig.HolderVerificationEndpoint}/{billPaymentCode}";
 
-        IDictionary<string, object> parameter = new Dictionary<string, object>();
-        parameter.Add("billPaymentCode", billPaymentCode);
-        HttpMessageResponse<BillReferenceResponse> httpResult = null;
+        HttpMessageResponse<CustomizationSuccessResponse<BillReferenceResponse>> httpResult = null;
+        var message = "";
+        var success = true; 
+        ESessionState? updatedSession = null;
 
         try
         {
-            httpResult = await httpService.Get<BillReferenceResponse>(url: url, parameters: parameter, header: null);
+            httpResult = await httpService.Get<CustomizationSuccessResponse<BillReferenceResponse>>
+                (url: url, parameters: null, header: null);
 
             if (httpResult is null || httpResult.Data is null)
                 throw new BadRequestException("Response is empty, record not found", (int)HttpStatusCode.BadRequest);
+
+            message = ProcessResponse(httpResult.Data);
         }
         catch (BadRequestException ex)
         {
             if (ex.StatusCode == 400 || ex.StatusCode == 404) {
-                return $"User info not found, kindly verify your billPaymentCode and try again," +
+                 message = $"User info not found, kindly verify your billPaymentCode and try again." +
                     $"{Environment.NewLine}" +
-                    " You can type 'end' to restart a session/process";
+                    " You can type 'end' to restart the session";
             }
+
+            success = false;
         }
-        catch (InternalServerException e)
+        catch (InternalServerException)
         {
-            return $"User info could not be verified, kindly verify your billPaymentCode and try again," +
+            message = $"User info could not be verified, kindly verify your billPaymentCode and try again." +
                 $"{Environment.NewLine}" +
-                " Also you can contact admin for assistance, You can type 'end' to restart a session";
+                $"You can contact admin for assistance." +
+                $" {Environment.NewLine} You can type 'end' to restart the session";
+
+            success = false;
+            updatedSession = ESessionState.PLAINCONVERSATION;
             
         }
 
-        return ProcessResponse(httpResult.Data);
+        return new RetrieveContentResponse
+        {
+            IsSuccessful = success,
+            Response = message,
+            UpdatedSessionState = updatedSession,
+            DisContinueProcess = !success
+        };
     }
 
-    private string ProcessResponse(BillReferenceResponse model) {
-        return $"Tax Payer: {model.PayerName} \n" +
-            $"Property PIN: {model.Pid} \n" +
-            $"Bill No: {model.OraAgencyRev} \n" +
-            $"Amount: {model.AmountDue} \n";
+    private string ProcessResponse(CustomizationSuccessResponse<BillReferenceResponse> response) {
+
+        if(response is null || response?.Data is null)
+            throw new BadRequestException("Empty result, Bill Payer info not found", 400);
+
+        var model = response.Data;
+
+        if (model is null || string.IsNullOrEmpty(model.payerName) || string.IsNullOrEmpty(model.pid))
+            throw new BadRequestException("Empty result, Bill Payer info not found", 400);
+
+        return $"Tax Payer: {model.payerName} \n" +
+            $"Property PIN: {model.pid} \n" +
+            $"Bill No: {model.oraAgencyRev} \n" +
+            $"Amount: {model.amountDue} \n";
     }
 }
 
