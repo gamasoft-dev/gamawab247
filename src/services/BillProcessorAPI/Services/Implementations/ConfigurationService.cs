@@ -2,10 +2,12 @@
 using BillProcessorAPI.Dtos;
 using BillProcessorAPI.Entities;
 using BillProcessorAPI.Helpers;
+using BillProcessorAPI.Helpers.Revpay;
 using BillProcessorAPI.Repositories.Interfaces;
 using BillProcessorAPI.Services.Interfaces;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System.Net;
 
 namespace BillProcessorAPI.Services.Implementations
@@ -16,26 +18,30 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IRepository<Business> _businessRepository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
+        private readonly RevpayOptions _options;
 
         public ConfigurationService(
             IRepository<BillCharge> billChargeRepository,
             ILoggerManager logger,
             IMapper mapper,
-            IRepository<Business> businessRepository)
+            IRepository<Business> businessRepository,
+            IOptions<RevpayOptions> options)
         {
             _billChargeRepository = billChargeRepository;
             _logger = logger;
             _mapper = mapper;
             _businessRepository = businessRepository;
+            _options = options.Value;
         }
 
-        public SuccessResponse<ChargesResponseDto> CalculateBillChargesOnAmount(ChargesInputDto input)
+        public SuccessResponse<ChargesResponseDto> CalculateBillChargesOnAmount(LucChargesInputDto input)
         {
-            var charge = CalculateAmountCharge(input);
+            var charge = CalculateAmountCharge(input, _options);
 
             var result = _mapper.Map<ChargesResponseDto>(input);
 
             result.AmountCharge = charge;
+            
 
             return new SuccessResponse<ChargesResponseDto>
             {
@@ -85,19 +91,19 @@ namespace BillProcessorAPI.Services.Implementations
             };
         }
 
-        private static int CalculateAmountCharge(ChargesInputDto input)
+        private static int CalculateAmountCharge(LucChargesInputDto input, RevpayOptions options)
         {
-            var charge = (Math.Round((decimal)input.PercentageCharge, 2) / 100) * input.Amount;
+            var charge = (Math.Round((decimal)options.Percentage, 2) / 100) * input.Amount;
             var chargeAmount = Math.Round(charge, 0);
 
-            if (chargeAmount <= input.MinChargeAmount)
-                return (int)input.MinChargeAmount;
+            if (chargeAmount <= options.MinCharge)
+                return (int)options.MinCharge;
 
-            if (chargeAmount > input.MinChargeAmount && chargeAmount < input.MaxChargeAmount)
+            if (chargeAmount > options.MinCharge && chargeAmount < options.MaxCharge)
                 return (int)chargeAmount;
 
-            if (chargeAmount >= input.MaxChargeAmount)
-                return (int)input.MaxChargeAmount;
+            if (chargeAmount >= options.MaxCharge)
+                return (int)options.MaxCharge;
 
             return default;
         }

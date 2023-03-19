@@ -24,7 +24,7 @@ namespace BillProcessorAPI.Controllers
 		[HttpGet("/paythru/verification")]
 		[ProducesResponseType(typeof(PaymentVerificationResponseDto), 200)]
 		[SwaggerOperation(Summary = "Endpoint to verify paythru payment")]
-		public async Task<IActionResult> PaymentVerification([FromRoute] NotificationRequestWrapper model)
+		public async Task<IActionResult> PaymentVerification([FromQuery] NotificationRequestWrapper model)
 		{
 			var response = await _paythruService.VerifyPayment(model);
 			return Ok(response);

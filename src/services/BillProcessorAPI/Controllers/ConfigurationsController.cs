@@ -13,8 +13,7 @@ namespace BillProcessorAPI.Controllers
     {
         private readonly IConfigurationService _configurationService;
 
-        public ConfigurationsController(
-            IConfigurationService configurationService)
+        public ConfigurationsController(IConfigurationService configurationService)
         {
             _configurationService = configurationService;
         }
@@ -22,7 +21,7 @@ namespace BillProcessorAPI.Controllers
         [HttpPost("calculate-charge")]
         [ProducesResponseType(typeof(ChargesResponseDto), 200)]
         [SwaggerOperation(Summary = "Endpoint to calculate charges on payable bill amount")]
-        public IActionResult CalculateBillChargesOnAmount(ChargesInputDto input)
+        public IActionResult CalculateBillChargesOnAmount(LucChargesInputDto input)
         {
             var response = _configurationService.CalculateBillChargesOnAmount(input);
             return Ok(response);

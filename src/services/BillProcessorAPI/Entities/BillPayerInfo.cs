@@ -23,6 +23,7 @@
         public string CbnCode { get; set; }
         public string AgencyName { get; set; }
         public string RevName { get; set; }
+        public string PhoneNumber { get; set; }
         public string AccountInfoResponseData { get; set; }
         public string AccountInfoRequestData { get; set; }
 
