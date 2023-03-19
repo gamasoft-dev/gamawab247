@@ -1,27 +1,28 @@
 ﻿using System;
 namespace ApiCustomization.ABC.Dtos
 {
-	public class BillReferenceResponse
+    
+	public record BillReferenceResponse
 	{
-        public string AmountDue { get; set; }
-        public string Status { get; set; }
-        public string CreditAccount { get; set; }
-        public string PayerName { get; set; }
-        public string AgencyCode { get; set; }
-        public string RevenueCode { get; set; }
-        public string OraAgencyRev { get; set; }
-        public string State { get; set; }
-        public string StatusMessage { get; set; }
-        public string Pid { get; set; }
-        public string Currency { get; set; }
-        public string AcctCloseDate { get; set; }
-        public string ReadOnly { get; set; }
-        public string MinAmount { get; set; }
-        public string MaxAmount { get; set; }
-        public string PaymentFlag { get; set; }
-        public string CbnCode { get; set; }
-        public string AgencyName { get; set; }
-        public string RevName { get; set; }
+        public string amountDue { get; set; }
+        public string status { get; set; }
+        public string creditAccount { get; set; }
+        public string payerName { get; set; }
+        public string agencyCode { get; set; }
+        public string revenueCode { get; set; }
+        public string oraAgencyRev { get; set; }
+        public string state { get; set; }
+        public string statusMessage { get; set; }
+        public string pid { get; set; }
+        public string currency { get; set; }
+        public string acctCloseDate { get; set; }
+        public string readOnly { get; set; }
+        public string minAmount { get; set; }
+        public string maxAmount { get; set; }
+        public string paymentFlag { get; set; }
+        public string cbnCode { get; set; }
+        public string agencyName { get; set; }
+        public string revName { get; set; }
     }
 }
 

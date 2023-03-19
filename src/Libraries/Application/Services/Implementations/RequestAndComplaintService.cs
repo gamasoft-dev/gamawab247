@@ -14,6 +14,7 @@ using Domain.Entities;
 using Domain.Entities.RequestAndComplaints;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Meta = Application.Helpers.Meta;
 
 namespace Application.Services.Implementations
@@ -23,7 +24,7 @@ namespace Application.Services.Implementations
         private readonly IRepository<RequestAndComplaint> _requestAndComplaintRepo;
         private readonly IMapper _mapper;
 
-        public RequestAndComplaintService(IRepository<RequestAndComplaint> requestAndComplaintRepo,IMapper mapper)
+        public RequestAndComplaintService(IRepository<RequestAndComplaint> requestAndComplaintRepo, IMapper mapper)
         {
             _requestAndComplaintRepo = requestAndComplaintRepo;
             _mapper = mapper;
@@ -33,7 +34,7 @@ namespace Application.Services.Implementations
         {
             if (string.IsNullOrEmpty(model.Detail))
                 throw new RestException(System.Net.HttpStatusCode.BadRequest, "Detail cannot be null: Please provide a detailed description for your request od complaint");
-            
+
             RequestAndComplaint requestOrComplaint = _mapper.Map<RequestAndComplaint>(model);
             requestOrComplaint.TicketId = RequestAndComplaint.GenerateTicketId();
 
@@ -50,13 +51,14 @@ namespace Application.Services.Implementations
 
         public async Task<SuccessResponse<bool>> DeleteRequestAndComplaint(Guid id)
         {
-            if (id != Guid.Empty)
-            {
-                var requestOrComplaint = await _requestAndComplaintRepo.GetByIdAsync(id);
+            if (id == Guid.Empty)
+                throw new RestException(System.Net.HttpStatusCode.BadRequest, "id cannot be null");
 
-                if (requestOrComplaint != null)
-                    _requestAndComplaintRepo.Remove(requestOrComplaint);
-            }
+            var requestOrComplaint = await _requestAndComplaintRepo.GetByIdAsync(id)
+                ?? throw new RestException(System.Net.HttpStatusCode.NotFound, "Record not found for the id provided");
+
+            _requestAndComplaintRepo.Remove(requestOrComplaint);
+
             await _requestAndComplaintRepo.SaveChangesAsync();
 
             return new SuccessResponse<bool>
@@ -69,10 +71,9 @@ namespace Application.Services.Implementations
         public async Task<PagedResponse<IEnumerable<RequestAndComplaintDto>>> GetAllRequestAndComplaint(ResourceParameter parameter, string endPointName, IUrlHelper url)
         {
             var queryable = _requestAndComplaintRepo
-                 .Query(x => string.IsNullOrEmpty(parameter.Search)
-                             || x.Subject.ToLower().Contains(parameter.Search.ToLower()));
-            if (queryable == null)
-                throw new RestException(System.Net.HttpStatusCode.BadRequest, ResponseMessages.Failed);
+                  .Query(x => string.IsNullOrEmpty(parameter.Search)
+                              || x.Subject.ToLower().Contains(parameter.Search.ToLower()) || 
+                              x.ResolutionStatus.ToLower().Contains(parameter.Search.ToLower()));
 
             var queryProjection = queryable.ProjectTo<RequestAndComplaintDto>(_mapper.ConfigurationProvider);
 
@@ -121,8 +122,12 @@ namespace Application.Services.Implementations
             if (id == Guid.Empty)
                 throw new RestException(System.Net.HttpStatusCode.BadRequest, "id cannot be null");
 
-            RequestAndComplaint requestOrComplaint = await _requestAndComplaintRepo.GetByIdAsync(id)
-                ?? throw new RestException(System.Net.HttpStatusCode.NotFound, "No record was found for the id provided");
+            RequestAndComplaint requestOrComplaint = await _requestAndComplaintRepo.GetByIdAsync(id);
+            if (requestOrComplaint == null)
+                return new SuccessResponse<RequestAndComplaintDto>
+                {
+                    Message = "No record was found for the id provided"
+                };
 
             RequestAndComplaintDto requestAndComplaintDtDto = _mapper.Map<RequestAndComplaintDto>(requestOrComplaint);
             return new SuccessResponse<RequestAndComplaintDto>
@@ -137,8 +142,12 @@ namespace Application.Services.Implementations
             if (string.IsNullOrEmpty(ticketId))
                 throw new RestException(System.Net.HttpStatusCode.BadRequest, "Please enter a valid ticket number");
 
-            RequestAndComplaint requestOrComplaint = await _requestAndComplaintRepo.FirstOrDefault(x => x.TicketId == ticketId)
-                ?? throw new RestException(System.Net.HttpStatusCode.NotFound, "No record was found for this ticket");
+            RequestAndComplaint requestOrComplaint = await _requestAndComplaintRepo.FirstOrDefault(x => x.TicketId == ticketId);
+            if (requestOrComplaint == null)
+                return new SuccessResponse<RequestAndComplaintDto>
+                {
+                    Message = "No record was found for the id provided"
+                };
 
             RequestAndComplaintDto requestAndComplaintDtDto = _mapper.Map<RequestAndComplaintDto>(requestOrComplaint);
             return new SuccessResponse<RequestAndComplaintDto>
@@ -156,7 +165,7 @@ namespace Application.Services.Implementations
             var requestORComplaint = await _requestAndComplaintRepo.GetByIdAsync(id)
                 ?? throw new RestException(System.Net.HttpStatusCode.NotFound, ResponseMessages.Failed);
 
-            requestORComplaint.ResolutionStatus= model.ResolutionStatus;
+            requestORComplaint.ResolutionStatus = model.ResolutionStatus;
             requestORComplaint.ResolutionDate = DateTime.UtcNow;
             requestORComplaint.Responses = model.Response;
             requestORComplaint.TicketId = model.TicketId;
@@ -166,7 +175,7 @@ namespace Application.Services.Implementations
             _requestAndComplaintRepo.Update(requestORComplaint);
             await _requestAndComplaintRepo.SaveChangesAsync();
 
-            RequestAndComplaintDto requestAndComplainResponse  = _mapper.Map<RequestAndComplaintDto>(requestORComplaint);
+            RequestAndComplaintDto requestAndComplainResponse = _mapper.Map<RequestAndComplaintDto>(requestORComplaint);
             return new SuccessResponse<RequestAndComplaintDto>
             {
                 Data = requestAndComplainResponse,

@@ -3,7 +3,7 @@
     public interface IApiContentIntegrationManager
 	{
 		
-        public Task<string> RetrieveContent<TRequest>(Guid businessID, string partnerContentProcessorKey,
+        public Task<RetrieveContentResponse> RetrieveContent<TRequest>(Guid businessID, string partnerContentProcessorKey,
             string waId, TRequest request);
 
     }

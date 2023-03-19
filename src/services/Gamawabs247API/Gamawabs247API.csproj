@@ -10,12 +10,12 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>obj\Debug\net6.0\net6.0\net6.0\net6.0\net6.0\net6.0</OutputPath>
+    <WarningLevel>4</WarningLevel>
     <NoWarn>1701;1702;1591</NoWarn>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'IIS Express' " />
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'API' " />
   <ItemGroup>
     <EmbeddedResource Remove="Installers\**" />
     <None Remove="Installers\**" />

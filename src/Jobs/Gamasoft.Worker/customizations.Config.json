@@ -1,8 +1,11 @@
 ﻿{
     "alphaBetaConfig": {
-        "HolderVerificationEndpoint": "",
-        "ClientKey": "",
-        "LinkGeneratorUserParamKey": "billPaymentCode",
-        "BillCodePaymentPageLink": "https://gamasoft-lucweb.vercel.app/bill-payment?Webguid=35454"
+        "holderVerificationEndpoint": "v1/abc/reference-verification",
+        "clientKey": "",
+        "linkGeneratorUserParamKey": "billPaymentCode",
+        "billCodePaymentPageLink": "https://gamasoft-lucweb.vercel.app/bill-payment",
+        "baseUrl": "https://gamasoftltd.com.ng",
+        "isMockRequest": false
+
     }
 }

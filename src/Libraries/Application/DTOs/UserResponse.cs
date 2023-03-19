@@ -54,7 +54,7 @@ namespace Application.DTOs
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public Guid? BusinessId { get; set; }
-        public string? BusinessName { get; set; }
+        public string BusinessName { get; set; }
     }
     public class RefreshTokenResponse
     {

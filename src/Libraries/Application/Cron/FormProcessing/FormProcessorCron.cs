@@ -76,7 +76,8 @@ namespace Application.Services.Cron
                         await _formRequesResponseService.Update(item);
                         DialogSession dialogSession = await _sessionManagement.GetByWaId(item.To.Trim());
                         FormElement newCurrentFormElement = null;
-                        FormElement nextFormElement = null; 
+                        FormElement nextFormElement = null;
+                        RetrieveContentResponse integrationResponseBody = null;
 
 
                         try
@@ -88,14 +89,14 @@ namespace Application.Services.Cron
                                 item.Status = EResponseProcessingStatus.SessionExpired.ToString();
                                 item.ErrorMessage = $"Could not retrieve session details for the user with phone: {item.To}";
 
-                                throw new FormBgProcessorException(item.ErrorMessage, item.Status);
+                                throw new FormBgProcessorException(item.ErrorMessage, item.Status, null);
                             }
 
                             if(dialogSession.SessionState != ESessionState.FORMCONVOABOUTTOSTART
                                 && dialogSession.SessionState != ESessionState.FORMCONVORUNNING)
                             {
                                 throw new FormBgProcessorException("The user's dialog is not in a form processing state. Reference dialog session",
-                               EResponseProcessingStatus.InValidSessionState.ToString());
+                               EResponseProcessingStatus.InValidSessionState.ToString(), null);
                             }
 
                           
@@ -109,23 +110,23 @@ namespace Application.Services.Cron
                             {
                                 item.Status = EResponseProcessingStatus.Failed.ToString();
                                 item.ErrorMessage = $"Form Configuration Error : Could not retrieve the form request with name {item.FormElement} from the business form record";
-                                throw new FormBgProcessorException(item.ErrorMessage, item.Status);
+                                throw new FormBgProcessorException(item.ErrorMessage, item.Status, ESessionState.PLAINCONVERSATION);
                             }
 
                             if (newCurrentFormElement.ShouldRetrieveContentExternally)
                             {
                                 // use the indentifier with Factory to get the correct api integration
 
-                                var integrationResponseBody = await apiContentIntegrationFactory
+                                integrationResponseBody = await apiContentIntegrationFactory
                                     .RetrieveContent<string>(item.BusinessId, newCurrentFormElement.PartnerContentProcessorKey,
                                     item.To, newCurrentFormElement.Key);
 
-                                if (string.IsNullOrEmpty(integrationResponseBody))
+                                if (!integrationResponseBody.IsSuccessful && string.IsNullOrEmpty(integrationResponseBody?.Response))
                                     throw new FormBgProcessorException($"Could not retrieve content from integration processor {newCurrentFormElement.PartnerContentProcessorKey}",
-                                        "Unable to retrieve content from partner at the moment, pls try again, send *cancel* to restart menu");
+                                        "Unable to retrieve content from partner at the moment, pls try again, send *cancel* to restart menu", ESessionState.PLAINCONVERSATION);
 
                                 // after which set the message body as the result of the partintegration call
-                                item.Message = integrationResponseBody;
+                                item.Message = integrationResponseBody?.Response;
                             }
 
                             bool isSent = false; int count = 1;
@@ -152,6 +153,11 @@ namespace Application.Services.Cron
 
                                 item.Status = EResponseProcessingStatus.Sent.ToString();
                             }
+
+                            // after message has been sent, confirm that response
+                            if(integrationResponseBody is not null && integrationResponseBody.DisContinueProcess)
+                                throw new FormBgProcessorException($"Could not retrieve content from integration processor {newCurrentFormElement.PartnerContentProcessorKey}",
+                                        "Process has been discontinue from send any folllowup message or conclusive message", ESessionState.PLAINCONVERSATION);
 
                             if (dialogSession.SessionFormDetails.IsFormResponseRecieved)
                             {
@@ -201,7 +207,7 @@ namespace Application.Services.Cron
                             {
                                 item.Status = EResponseProcessingStatus.Failed.ToString();
                                 item.ErrorMessage = $"HttpError: Could not send form request with label : {newCurrentFormElement.Label}";
-                                throw new FormBgProcessorException(item.ErrorMessage, item.Status);
+                                throw new FormBgProcessorException(item.ErrorMessage, item.Status, ESessionState.PLAINCONVERSATION);
                             }
 
                             if (item.IsSummaryMessage)
@@ -211,7 +217,7 @@ namespace Application.Services.Cron
                                 dialogSession.SessionState = ESessionState.FORMCONVERSATIONCOMPLETED;
 
                                 // save an inbound at this point of the business message that conclude a form.
-                                throw new FormBgProcessorException(item.ErrorMessage, item.Status);
+                                throw new FormBgProcessorException(item.ErrorMessage, item.Status, ESessionState.PLAINCONVERSATION);
 
                             }
 
@@ -228,12 +234,18 @@ namespace Application.Services.Cron
                                 e.FormProcessingStatus : EResponseProcessingStatus.Failed.ToString();
 
                             item.ErrorMessage = e.Message;
+
+                            if (e.NewSessionState is not null)
+                                dialogSession.SessionState = e.NewSessionState.Value;
+                                
                             
                         }
                         catch (Exception e)
                         {
                             item.Status = EResponseProcessingStatus.Failed.ToString();
                             item.ErrorMessage = e.Message;
+
+                            dialogSession.SessionState = ESessionState.PLAINCONVERSATION;
 
                         }
                         finally

@@ -26,7 +26,7 @@ namespace ApiCustomization.RequestAndComplaints
         public string PartnerContentProcessorKey => EExternalPartnerContentProcessorKey
             .USER_COMPLAINT_PROCESSOR.ToString();
 
-        public async Task<string> RetrieveContent<TRequest>(Guid businessId, string waId, TRequest request)
+        public async Task<RetrieveContentResponse> RetrieveContent<TRequest>(Guid businessId, string waId, TRequest request)
         {
             try
             {
@@ -53,6 +53,7 @@ namespace ApiCustomization.RequestAndComplaints
                 };
 
                 await requestRepository.AddAsync(userRequest);
+                await requestRepository.SaveChangesAsync();
 
                 return SuccessResponseOnComplaint(userRequest.TicketId, session.UserName, requestConfig.TimeInHoursOfRequestResolution);
 
@@ -95,19 +96,30 @@ namespace ApiCustomization.RequestAndComplaints
             return responses;
         }
 
-        private static string SuccessResponseOnComplaint(string ticketId, string userName, int resolutionTime)
+        private RetrieveContentResponse SuccessResponseOnComplaint(string ticketId, string userName, int resolutionTime)
         {
 
             var slaResolutionTime = resolutionTime == 0 ? "promptly" : $"in {resolutionTime} hours";
-            return $"Dear {userName}, \n your Complaint has been recieved and will be attended to {slaResolutionTime}. " +
+            var message = $"Dear {userName}, \n your Complaint has been recieved and will be attended to {slaResolutionTime}. " +
                 $" \n Your ticketId for tracking of this complaint is: {ticketId}";
 
+            return new RetrieveContentResponse
+            {
+                IsSuccessful = true,
+                Response = message,
+                UpdatedSessionState = null
+            };
         }
 
-        private static string ErrorResponseOnComplaint(string waId)
+        private RetrieveContentResponse ErrorResponseOnComplaint(string waId)
         {
-            return $"There was an issue whilst lodging and processing your complaint, \n Kindly restart the process of complaint submission, \n Your feedback matter to us";
-
+            var message = $"There was an issue whilst lodging and processing your complaint, \n Kindly restart the process of complaint submission, \n Your feedback matter to us";
+            return new RetrieveContentResponse
+            {
+                IsSuccessful = false,
+                Response = message,
+                UpdatedSessionState = ESessionState.PLAINCONVERSATION
+            };
         }
     }
 }

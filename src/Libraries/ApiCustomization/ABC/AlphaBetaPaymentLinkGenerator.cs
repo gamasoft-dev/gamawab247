@@ -34,7 +34,7 @@ namespace ApiCustomization.ABC
         /// <param name="request"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<string> RetrieveContent<TRequest>(Guid businessId, string waId, TRequest request)
+        public async Task<RetrieveContentResponse> RetrieveContent<TRequest>(Guid businessId, string waId, TRequest request)
         {
             var partnerConfigDetail = await partnerIntegrationRepo
                 .FirstOrDefault(x => x.PartnerContentProcessorKey.ToLower() == PartnerContentProcessorKey.ToLower());
@@ -52,7 +52,13 @@ namespace ApiCustomization.ABC
                 throw new BackgroundException($"User {waId} bill code not found");
 
             var endPointDetails = $"?billPaymentCode={billCode}&phoneNumber={waId}";
-            return $"{alphaBetaConfig.BillCodePaymentPageLink}{endPointDetails}";
+            var message = $"{alphaBetaConfig.BillCodePaymentPageLink}{endPointDetails}";
+
+            return new RetrieveContentResponse
+            {
+                IsSuccessful = true,
+                Response = message,
+            };
         }
     }
 }
