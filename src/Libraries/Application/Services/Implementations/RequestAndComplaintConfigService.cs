@@ -10,6 +10,7 @@ using Application.Services.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.Common;
+using Domain.Entities;
 using Domain.Entities.RequestAndComplaints;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -19,11 +20,13 @@ namespace Application.Services.Implementations
     public class RequestAndComplaintConfigService : IRequestAndComplaintConfigService
     {
         private readonly IRepository<RequestAndComplaintConfig> _requestAndComplaintConfigRepo;
+        private readonly IRepository<Business> _businessRepo;
         private readonly IMapper _mapper;
-        public RequestAndComplaintConfigService(IRepository<RequestAndComplaintConfig> requestAndComplaintRepo, IMapper mapper)
+        public RequestAndComplaintConfigService(IRepository<RequestAndComplaintConfig> requestAndComplaintRepo, IMapper mapper, IRepository<Business> businessRepo)
         {
             _requestAndComplaintConfigRepo = requestAndComplaintRepo;
             _mapper = mapper;
+            _businessRepo = businessRepo;
         }
 
         public async Task<SuccessResponse<RequestAndComplaintConfigDto>> CreateRequestAndComplaintConfig(CreateRequestAndComplaintConfigDto model)
@@ -31,6 +34,11 @@ namespace Application.Services.Implementations
             if (model == null)
                 throw new RestException(System.Net.HttpStatusCode.BadRequest, "Detail cannot be null: Please provide a detailed description for your request od complaint");
 
+            //confirm the business exist
+            var business = _businessRepo.Exists(x => x.Id == model.BusinessId);
+            if (!business)
+                throw new RestException(System.Net.HttpStatusCode.NotFound, "Invalid request: no business found for the provided business id");
+            
             RequestAndComplaintConfig requestOrComplaintConfig = _mapper.Map<RequestAndComplaintConfig>(model);
 
             await _requestAndComplaintConfigRepo.AddAsync(requestOrComplaintConfig);
