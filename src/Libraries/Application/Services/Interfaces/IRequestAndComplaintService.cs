@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Application.AutofacDI;
-using Application.DTOs;
 using Application.DTOs.PartnerContentDtos;
+using Application.DTOs.RequestAndComplaintDtos;
 using Application.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
