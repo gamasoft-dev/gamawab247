@@ -7,11 +7,11 @@ services:
       context: .
       dockerfile: src/services/Gamawabs247API/Dockerfile
 
-  # billprocessorapi:
-  #   image: ${DOCKER_REGISTRY-}billprocessorapi
-  #   build:
-  #     context: .
-  #     dockerfile: src/services/BillProcessorAPI/Dockerfile
+  billprocessorapi:
+    image: ${DOCKER_REGISTRY-}billprocessorapi
+    build:
+      context: .
+      dockerfile: src/services/BillProcessorAPI/Dockerfile
   
   gamawabsdb:
     image: postgres:15.1-alpine
@@ -19,21 +19,22 @@ services:
   gamawabsredis:
     image: redis:6.2-alpine
 
-  # formprocessingjob:
-  #   image: ${DOCKER_REGISTRY-}formprocessingworker
-  #   build:
-  #     context: .
-  #     dockerfile: src/Jobs/FormProcessingWorker/Dockerfile
+  formprocessingjob:
+    image: ${DOCKER_REGISTRY-}formprocessingworker
+    build:
+      context: .
+      dockerfile: src/Jobs/FormProcessingWorker/Dockerfile
 
-  # responseprocessingjob:
-  #   image: ${DOCKER_REGISTRY-}responseprocessingjob
-  #   build:
-  #     context: .
-  #     dockerfile: src/Jobs/Gamasoft.Worker/Dockerfile
+  responseprocessingjob:
+    image: ${DOCKER_REGISTRY-}responseprocessingjob
+    build:
+      context: .
+      dockerfile: src/Jobs/Gamasoft.Worker/Dockerfile
 
 volumes:
   gamawabs_data:
   postgresql_data:
+  redis_data:
 
 
 

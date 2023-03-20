@@ -68,7 +68,7 @@ public class ResponsePreProcessingCron : IResponsePreProcessingCron
         _apiContentIntegrationManager = apiContentIntegrationManager;
     }
 
-    public async Task InitiateMessageProcessing()
+    public async Task                  InitiateMessageProcessing()
     {
         var now = DateTime.UtcNow;
        

@@ -221,7 +221,8 @@ namespace Application.Services.Cron
 
                             }
 
-                            if(!item.IsValidationResponse && newCurrentFormElement.IsLastFormElement)
+                            //TODO: Verify it does not affect existing flow.
+                            if(!item.IsValidationResponse && newCurrentFormElement.IsLastFormElement && !newCurrentFormElement.RequireUserInputResponse)
                             {
                                 // update session state back to plain conversation
                                 dialogSession.SessionState = ESessionState.PLAINCONVERSATION;

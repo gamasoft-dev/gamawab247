@@ -30,7 +30,7 @@ namespace ApiCustomization.RequestAndComplaints
         {
             try
             {
-                var requestConfig = await requestConfigRepo.FirstOrDefaultNoTracking(x => x.BusinessId == businessId && x.PartnerContentProcessorKey == PartnerContentProcessorKey);
+                var requestConfig = await requestConfigRepo.FirstOrDefaultNoTracking(x => x.BusinessId == businessId);
 
                 if (requestConfig is null) throw new BackgroundException($"There no configured Request Config for this business with id => {businessId}");
 
@@ -46,7 +46,7 @@ namespace ApiCustomization.RequestAndComplaints
                     CallBackUrl = requestConfig.WebHookUrl,
                     Channel = "Whatsapp",
                     CustomerId = waId,
-                    Subject = userSessionResponse.subject,
+                    Subject = userSessionResponse.subject ?? "",
                     Detail = userSessionResponse.detail,
                     TicketId = RequestAndComplaint.GenerateTicketId(),
                     Type = ERequestComplaintType.Complaint,
@@ -76,11 +76,7 @@ namespace ApiCustomization.RequestAndComplaints
 
             var argValueAttempt = session.SessionFormDetails?.UserData?.TryGetValue(userRequestPropertyKey, out formElementValue);
 
-            if (argValueAttempt is null || formElementValue is null)
-                throw new BackgroundException($"Error deserializing RequestAndComplaint retrieving value from cache," +
-                    $" no value was found in this session with key {userRequestPropertyKey} in the userData collection");
-
-            responses.subject = formElementValue;
+            if (argValueAttempt is null || formElementValue is null) responses.subject = formElementValue;
 
             // value for the request detail.
             userRequestPropertyKey = EERequestComplaintPropertyKeys.Detail.ToString();
@@ -100,8 +96,8 @@ namespace ApiCustomization.RequestAndComplaints
         {
 
             var slaResolutionTime = resolutionTime == 0 ? "promptly" : $"in {resolutionTime} hours";
-            var message = $"Dear {userName}, \n your Complaint has been recieved and will be attended to {slaResolutionTime}. " +
-                $" \n Your ticketId for tracking of this complaint is: {ticketId}";
+            var message = $"Compliant lodged with ID - {ticketId}." +
+                $" \n \n Our LUC Support agent will respond to you shortly";
 
             return new RetrieveContentResponse
             {

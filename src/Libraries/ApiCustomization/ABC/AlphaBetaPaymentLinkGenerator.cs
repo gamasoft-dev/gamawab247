@@ -51,7 +51,7 @@ namespace ApiCustomization.ABC
             if (string.IsNullOrEmpty(billCode))
                 throw new BackgroundException($"User {waId} bill code not found");
 
-            var endPointDetails = $"?billPaymentCode={billCode}&phoneNumber={waId}";
+            var endPointDetails = $"?billCode={billCode}&phoneNumber={waId}";
             var message = $"{alphaBetaConfig.BillCodePaymentPageLink}{endPointDetails}";
 
             return new RetrieveContentResponse
