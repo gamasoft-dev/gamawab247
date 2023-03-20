@@ -145,20 +145,9 @@ namespace Application.Services.Implementations
             var requestORComplaintConfig = await _requestAndComplaintConfigRepo.GetByIdAsync(id)
                 ?? throw new RestException(System.Net.HttpStatusCode.NotFound, ResponseMessages.Failed);
 
-            requestORComplaintConfig.TimeInHoursOfRequestResolution = model.TimeInHoursOfRequestResolution;
-            requestORComplaintConfig.TimeInHoursOfComplaintResolution = model.TimeInHoursOfComplaintResolution;
-            requestORComplaintConfig.Parameters = model.Parameters;
-            requestORComplaintConfig.MetaData = model.MetaData;
-            requestORComplaintConfig.Headers = model.Headers;
-            requestORComplaintConfig.DetailKey = model.DetailKey;
-            requestORComplaintConfig.FullUrl = model.FullUrl;
-            requestORComplaintConfig.WebHookUrl = model.WebHookUrl;
-            requestORComplaintConfig.SubjectKey = model.SubjectKey;
-            requestORComplaintConfig.RequireWebHookNotification = model.RequireWebHookNotification;
-            requestORComplaintConfig.PartnerContentProcessorKey = model.PartnerContentProcessorKey;
-      
-
-            _requestAndComplaintConfigRepo.Update(requestORComplaintConfig);
+            var updateRequestOrComplaintConfigMap = _mapper.Map(model, requestORComplaintConfig);
+           
+            _requestAndComplaintConfigRepo.Update(updateRequestOrComplaintConfigMap);
             await _requestAndComplaintConfigRepo.SaveChangesAsync();
 
             RequestAndComplaintConfigDto requestAndComplaintConfigResponse = _mapper.Map<RequestAndComplaintConfigDto>(requestORComplaintConfig);

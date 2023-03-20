@@ -5,6 +5,7 @@
         public Guid Id { get; set; }
         public string PayerName { get; set; }
         public string billCode { get; set; }
+        public string PhoneNumber { get; set; }
         public decimal AmountDue { get; set; }
         public string Status { get; set; }
         public string CreditAccount { get; set; }
