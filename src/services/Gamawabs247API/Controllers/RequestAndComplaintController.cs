@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Entities;
 using Microsoft.Extensions.Logging;
-using Application.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using System.Net;
 using Application.DTOs.PartnerContentDtos;
+using Application.DTOs.RequestAndComplaintDtos;
 
 namespace Gamawabs247API.Controllers
 {

@@ -39,7 +39,7 @@ namespace BillProcessorAPI.Services.Implementations
 			_config = config;
 		}
 
-		public async Task<SuccessResponse<BillReferenceResponseDto>> ReferenceVerification(string billPaymentCode)
+		public async Task<SuccessResponse<BillReferenceResponseDto>> ReferenceVerification(string phone, string billPaymentCode)
 		{
 
 			if (string.IsNullOrEmpty(billPaymentCode))
@@ -76,6 +76,8 @@ namespace BillProcessorAPI.Services.Implementations
 					// biller information response data
 					mappedResponse.AccountInfoResponseData = JsonConvert.SerializeObject(revPayRes);
 					mappedResponse.billCode = billPaymentCode;
+					mappedResponse.PhoneNumber = phone;
+					
 
 					//bill-payer information request data
 					mappedResponse.AccountInfoRequestData = JsonConvert.SerializeObject(payload);

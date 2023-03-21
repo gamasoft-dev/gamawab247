@@ -3,10 +3,10 @@ using Domain.Entities.Identities;
 using Domain.Enums;
 using System.Collections.Generic;
 
-namespace Application.DTOs
+namespace Application.DTOs.RequestAndComplaintDtos
 {
-	public class RequestAndComplaintDto
-	{
+    public class RequestAndComplaintDto
+    {
         public Guid Id { get; set; }
         /// <summary>
         /// This is either user whatsapp username or phonenumber, instgram username etc
@@ -42,7 +42,8 @@ namespace Application.DTOs
 
     }
 
-    public class CreateRequestAndComplaintDto {
+    public class CreateRequestAndComplaintDto
+    {
 
         public CreateRequestAndComplaintDto()
         {
@@ -77,7 +78,7 @@ namespace Application.DTOs
 
     }
 
-    public class UpdateRequestAndComplaintDto: CreateRequestAndComplaintDto
+    public class UpdateRequestAndComplaintDto : CreateRequestAndComplaintDto
     {
         public List<string> Response { get; set; }
     }
