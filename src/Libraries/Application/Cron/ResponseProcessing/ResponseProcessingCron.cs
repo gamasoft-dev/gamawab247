@@ -161,7 +161,7 @@ public class ResponsePreProcessingCron : IResponsePreProcessingCron
         OutboundMessage outboundMsg = null,
         BusinessMessage outboundBusinessMsg = null,
         bool sendFirstOrDefaultMsg = false,
-        DialogSession session = nu)
+        DialogSession session = null)
     {
         BusinessMessage nextBusinessMessageToSend = null;
         List<BusinessMessageDto<BaseInteractiveDto>> allMessages = new();
