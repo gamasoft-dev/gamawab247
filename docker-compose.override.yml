@@ -86,6 +86,7 @@ services:
     command: redis-server /../../usr/local/etc/redis/redis.conf
     volumes:
       - ./docker/redis/redis.conf:/../../usr/local/etc/redis/redis.conf
+      - redis_data:/data
     ports:
       - "6379:6379"
 

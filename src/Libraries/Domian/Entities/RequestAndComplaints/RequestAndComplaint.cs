@@ -26,7 +26,7 @@ namespace Domain.Entities.RequestAndComplaints
         public string Detail { get; set; }
 
         [Column(TypeName = "jsonb")]
-        public List<string> Responses { get; set; }
+        public RequestAndComplaintResponsList ResponsList { get; set; }
 
         /// <summary>
         /// This is the complaint or request unique identifier. This is generated for every ticker raised

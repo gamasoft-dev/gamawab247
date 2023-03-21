@@ -77,6 +77,8 @@ namespace BillProcessorAPI.Services.Implementations
 					// biller information response data
 					mappedResponse.AccountInfoResponseData = JsonConvert.SerializeObject(revPayRes);
 					mappedResponse.billCode = billPaymentCode;
+					mappedResponse.PhoneNumber = phone;
+					
 
 					//bill-payer information request data
 					mappedResponse.AccountInfoRequestData = JsonConvert.SerializeObject(payload);

@@ -191,6 +191,7 @@ namespace API.Controllers
         private CreateBusinessMessageDto<BaseCreateMessageDto> ConvertToBaseCreateDto(
             CreateBusinessMessageDto<CreateTextMessageDto> model)
         {
+            
             var resultDto = _mapper.Map<CreateBusinessMessageDto<BaseCreateMessageDto>>(model);
             return resultDto;
         }

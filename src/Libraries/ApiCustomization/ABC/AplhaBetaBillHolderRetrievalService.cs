@@ -127,7 +127,10 @@ public class AplhaBetaBillHolderRetrievalService : IApiContentRetrievalService
         if (model is null || string.IsNullOrEmpty(model.payerName) || string.IsNullOrEmpty(model.pid))
             throw new BadRequestException("Empty result, Bill Payer info not found", 400);
 
-        return $"Tax Payer: {model.payerName} \n" +
+        return
+            $"*Record found!* \n \n" +
+            $"Here is the transaction summary \n" +
+            $"Tax Payer: {model.payerName} \n" +
             $"Property PIN: {model.pid} \n" +
             $"Bill No: {model.oraAgencyRev} \n" +
             $"Amount: {model.amountDue} \n";
