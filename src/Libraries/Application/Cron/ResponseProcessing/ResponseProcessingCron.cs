@@ -161,26 +161,26 @@ public class ResponsePreProcessingCron : IResponsePreProcessingCron
         OutboundMessage outboundMsg = null,
         BusinessMessage outboundBusinessMsg = null,
         bool sendFirstOrDefaultMsg = false,
-        DialogSession session = null)
+        DialogSession session = nu)
     {
         BusinessMessage nextBusinessMessageToSend = null;
         List<BusinessMessageDto<BaseInteractiveDto>> allMessages = new();
         BaseInteractiveDto interactiveMessage = null;
 
         var now = DateTime.UtcNow;
-        DateTime? lastMessageSentOut = await _outboundMessageRepo.Query(x => x.BusinessId == inboundMsg.BusinessId && x.RecipientWhatsappId == inboundMsg.Wa_Id)
+        DateTime? lastGreetingMessageTime = await _outboundMessageRepo.Query(x => x.BusinessId == inboundMsg.BusinessId && x.RecipientWhatsappId == inboundMsg.Wa_Id)
             .OrderByDescending(x => x.CreatedAt)
             .Select(x => x.UpdatedAt)
             .FirstOrDefaultAsync();
 
-        if (now - lastMessageSentOut <= TimeSpan.FromMinutes(29) && !inboundMsg.CanUseNLPMapping
-            && sendFirstOrDefaultMsg)
-        {
-            nextBusinessMessageToSend = await _businessMessageRepo.FirstOrDefault(x =>
-              x.BusinessId == inboundMsg.BusinessId
-              && x.Position == 2);
-        }
-        else if (now - lastMessageSentOut >= TimeSpan.FromMinutes(30) && !inboundMsg.CanUseNLPMapping 
+        //if (now - lastGreetingMessageTime <= TimeSpan.FromMinutes(29) && !inboundMsg.CanUseNLPMapping
+        //    && sendFirstOrDefaultMsg)
+        //{
+        //    nextBusinessMessageToSend = await _businessMessageRepo.FirstOrDefault(x =>
+        //      x.BusinessId == inboundMsg.BusinessId
+        //      && x.Position == 2);
+        //}
+        if (now - lastGreetingMessageTime >= TimeSpan.FromHours(6) && !inboundMsg.CanUseNLPMapping 
             && sendFirstOrDefaultMsg)
         {
             // get the businessMessage for this business at position 1 and send
