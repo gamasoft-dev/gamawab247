@@ -21,19 +21,19 @@ namespace BillProcessorAPI.Controllers
 			_revpay = revpay;
 		}
 
-		[HttpGet("reference-verification/{phone}/{billPaymentCode}")]
-        [ProducesResponseType(typeof(SuccessResponse<BillReferenceResponseDto>), 200)]
-        [SwaggerOperation(Summary = "Endpoint to get bill payer reference")]
-        public async Task<IActionResult> ReferenceVerification([FromRoute] string phone, string billPaymentCode)
+		[HttpGet("reference-verification/{billPaymentCode}")]
+        	[ProducesResponseType(typeof(SuccessResponse<BillReferenceResponseDto>), 200)]
+        	[SwaggerOperation(Summary = "Endpoint to get bill payer reference")]
+        	public async Task<IActionResult> ReferenceVerification([FromRoute] string billPaymentCode,[FromQuery] string phone)
 		{
 			var response = await _revpay.ReferenceVerification(phone, billPaymentCode);
 			return Ok(response);
 		}
 
 		[HttpGet("payment-verification/{billPaymentCode}")]
-        [ProducesResponseType(typeof(SuccessResponse<BillPaymentVerificationResponseDto>), 200)]
-        [SwaggerOperation(Summary = "Endpoint to get verify bill payment")]
-        public async Task<IActionResult> PaymentVerification([FromRoute]string billPaymentCode)
+        	[ProducesResponseType(typeof(SuccessResponse<BillPaymentVerificationResponseDto>), 200)]
+        	[SwaggerOperation(Summary = "Endpoint to get verify bill payment")]
+        	public async Task<IActionResult> PaymentVerification([FromRoute]string billPaymentCode)
 		{
 			var response = await _revpay.PaymentVerification(billPaymentCode);
 			return Ok(response);

@@ -16,6 +16,10 @@ namespace BillProcessorAPI.Dtos
     {
         public decimal Amount { get; set; }
     }
+    public record LucChargesInputDto
+    {
+        public decimal Amount { get; set; }
+    }
 
     public record ChargesResponseDto
     {
