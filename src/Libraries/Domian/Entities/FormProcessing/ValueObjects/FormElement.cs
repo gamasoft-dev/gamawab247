@@ -51,7 +51,12 @@ namespace Domain.Entities.FormProcessing.ValueObjects
 
         public bool RequireUserInputResponse { get; set; }
 
-        public int NextFormElementPosition { get; set; } 
+        public int NextFormElementPosition { get; set; }
+
+        /// <summary>
+        /// This is the maximum retry for this input on validation failure.
+        /// </summary>
+        public int RetryMaxCount { get; set; }
 
         #region Get and Equal Impl
 

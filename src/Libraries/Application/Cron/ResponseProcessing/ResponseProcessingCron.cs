@@ -68,7 +68,7 @@ public class ResponsePreProcessingCron : IResponsePreProcessingCron
         _apiContentIntegrationManager = apiContentIntegrationManager;
     }
 
-    public async Task                  InitiateMessageProcessing()
+    public async Task InitiateMessageProcessing()
     {
         var now = DateTime.UtcNow;
        
@@ -160,19 +160,27 @@ public class ResponsePreProcessingCron : IResponsePreProcessingCron
     private async Task ResolveNextMessage(InboundMessage inboundMsg,
         OutboundMessage outboundMsg = null,
         BusinessMessage outboundBusinessMsg = null,
-        bool sendFirstOrDefaultMsg = false)
+        bool sendFirstOrDefaultMsg = false,
+        DialogSession session = null)
     {
         BusinessMessage nextBusinessMessageToSend = null;
         List<BusinessMessageDto<BaseInteractiveDto>> allMessages = new();
         BaseInteractiveDto interactiveMessage = null;
 
         var now = DateTime.UtcNow;
-        DateTime? lastGreetingMessageTime = await _outboundMessageRepo.Query(x => x.BusinessId == inboundMsg.BusinessId && x.RecipientWhatsappId == inboundMsg.Wa_Id)
+        DateTime? lastMessageSentOut = await _outboundMessageRepo.Query(x => x.BusinessId == inboundMsg.BusinessId && x.RecipientWhatsappId == inboundMsg.Wa_Id)
             .OrderByDescending(x => x.CreatedAt)
             .Select(x => x.UpdatedAt)
             .FirstOrDefaultAsync();
 
-        if (now - lastGreetingMessageTime >= TimeSpan.FromHours(24) && !inboundMsg.CanUseNLPMapping 
+        if (now - lastMessageSentOut <= TimeSpan.FromMinutes(29) && !inboundMsg.CanUseNLPMapping
+            && sendFirstOrDefaultMsg)
+        {
+            nextBusinessMessageToSend = await _businessMessageRepo.FirstOrDefault(x =>
+              x.BusinessId == inboundMsg.BusinessId
+              && x.Position == 2);
+        }
+        else if (now - lastMessageSentOut >= TimeSpan.FromMinutes(30) && !inboundMsg.CanUseNLPMapping 
             && sendFirstOrDefaultMsg)
         {
             // get the businessMessage for this business at position 1 and send
@@ -187,35 +195,6 @@ public class ResponsePreProcessingCron : IResponsePreProcessingCron
                && x.Position == 200);
         }
 
-        // when inboundMessage.CanUseNLPMapping == true.
-
-        #region
-
-        // Detect the language.
-        // If language is not english based on response from language detector api
-        // Note inbound language.
-        // inteprete language to english for further processing.
-        // Check the messagepostion phrases mapper.
-        // -- extract the intent section of the message using pre-built message intent extraction function.
-        // 
-        // Does it contain key intent phrases of the user sent message
-        // If it does, get the position and  use it to retrieve business message for that position
-        // Pass message to the message to be sent method.
-
-        //if (inboundMessage.CanUseNLPMapping)
-        //{
-        //    var utteranceIntents = await _utilService.IntentExtractor(inboundMessage.Body);
-        //    var wordMappingsResult = await _messagePositionPhraseMapService.GetMessagePositionByPhrase(utteranceIntents,
-        //        businessConversationId: null, businessId: inboundMessage.BusinessId);
-
-        //    if(wordMappingsResult.Data > 0)
-        //    {
-        //       // get message for business at position returned.
-        //    }
-        //}
-
-
-        #endregion
 
         if (outboundMsg is not null && outboundBusinessMsg is not null)
         {
@@ -267,6 +246,7 @@ public class ResponsePreProcessingCron : IResponsePreProcessingCron
 
                 allMessages.Add(message);
             }
+
             if (nextBusinessMessageToSend.FollowParentMessageId.HasValue)
             {
                 await GetFollowUpMessage(nextBusinessMessageToSend.FollowParentMessageId.Value, inboundMsg.Wa_Id);

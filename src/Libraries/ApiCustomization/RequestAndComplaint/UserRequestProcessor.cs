@@ -72,17 +72,9 @@ namespace ApiCustomization.RequestAndComplaints
             string formElementValue = null;
             (string subject, string detail) responses = new ();
 
-            string userRequestPropertyKey = EERequestComplaintPropertyKeys.Subject.ToString();
+            string userRequestPropertyKey = "request-detail";
 
             var argValueAttempt = session.SessionFormDetails?.UserData?.TryGetValue(userRequestPropertyKey, out formElementValue);
-
-            if (argValueAttempt is null || formElementValue is null)
-                responses.subject = formElementValue;
-
-            // value for the request detail.
-            userRequestPropertyKey = EERequestComplaintPropertyKeys.Detail.ToString();
-
-            argValueAttempt = session.SessionFormDetails?.UserData?.TryGetValue(userRequestPropertyKey, out formElementValue);
 
             if (argValueAttempt is null || formElementValue is null)
                 throw new BackgroundException($"No detail for the request was found in this user's session to lodge. {waId}" +
@@ -96,8 +88,8 @@ namespace ApiCustomization.RequestAndComplaints
         private RetrieveContentResponse SuccessResponseOnRequest(string ticketId, string userName, int resolutionTime) {
 
             var slaResolutionTime = resolutionTime == 0 ? "promptly" : $"in {resolutionTime} hours";
-            var message = $"Request recieved with ID - {ticketId}." +
-                $" \n \n Our LUC Support agent will respond to you shortly";
+            var message = $"Request recieved with ID - *{ticketId}*." +
+                $" \n \nOur LUC Support agent will respond to you shortly";
 
             return new RetrieveContentResponse
             {

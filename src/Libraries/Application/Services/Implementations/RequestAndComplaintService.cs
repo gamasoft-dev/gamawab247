@@ -167,7 +167,6 @@ namespace Application.Services.Implementations
 
             requestORComplaint.ResolutionStatus = model.ResolutionStatus;
             requestORComplaint.ResolutionDate = DateTime.UtcNow;
-            requestORComplaint.Responses = model.Response;
             requestORComplaint.TicketId = model.TicketId;
             requestORComplaint.CallBackUrl = model.CallBackUrl;
             requestORComplaint.Detail = model.Detail;

@@ -72,16 +72,9 @@ namespace ApiCustomization.RequestAndComplaints
             string formElementValue = null;
             (string subject, string detail) responses = new();
 
-            string userRequestPropertyKey = EERequestComplaintPropertyKeys.Subject.ToString();
+            string userRequestPropertyKey = "complaint-detail";
 
             var argValueAttempt = session.SessionFormDetails?.UserData?.TryGetValue(userRequestPropertyKey, out formElementValue);
-
-            if (argValueAttempt is null || formElementValue is null) responses.subject = formElementValue;
-
-            // value for the request detail.
-            userRequestPropertyKey = EERequestComplaintPropertyKeys.Detail.ToString();
-
-            argValueAttempt = session.SessionFormDetails?.UserData?.TryGetValue(userRequestPropertyKey, out formElementValue);
 
             if (argValueAttempt is null || formElementValue is null)
                 throw new BackgroundException($"Error deserializing RequestAndComplaint retrieving value from cache," +
@@ -96,8 +89,8 @@ namespace ApiCustomization.RequestAndComplaints
         {
 
             var slaResolutionTime = resolutionTime == 0 ? "promptly" : $"in {resolutionTime} hours";
-            var message = $"Compliant lodged with ID - {ticketId}." +
-                $" \n \n Our LUC Support agent will respond to you shortly";
+            var message = $"Compliant lodged with ID - *{ticketId}*." +
+                $" \n \nOur LUC Support agent will respond to you shortly";
 
             return new RetrieveContentResponse
             {
@@ -109,7 +102,7 @@ namespace ApiCustomization.RequestAndComplaints
 
         private RetrieveContentResponse ErrorResponseOnComplaint(string waId)
         {
-            var message = $"There was an issue whilst lodging and processing your complaint, \n Kindly restart the process of complaint submission, \n Your feedback matter to us";
+            var message = $"There was an issue whilst lodging and processing your complaint, \nKindly restart the process of complaint submission, \nYour feedback matter to us";
             return new RetrieveContentResponse
             {
                 IsSuccessful = false,

@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using Domain.Entities.DialogMessageEntitties.ValueObjects;
 using Domain.Entities.FormProcessing;
 using Domain.Entities.FormProcessing.ValueObjects;
-using Domain.Entities.RequestAndComplaints;
 using Infrastructure.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -16,9 +16,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230321070327_requests_responses_removal011")]
+    partial class requests_responses_removal011
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1140,64 +1141,6 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("PartnerIntegrationDetails");
                 });
 
-            modelBuilder.Entity("Domain.Entities.RequestAndComplaints.RequestAndComplaint", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("BusinessId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CallBackUrl")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Channel")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("CreatedById")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CustomerId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Detail")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("ResolutionDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("ResolutionStatus")
-                        .HasColumnType("text");
-
-                    b.Property<RequestAndComplaintResponsList>("ResponsList")
-                        .HasColumnType("jsonb");
-
-                    b.Property<string>("Subject")
-                        .HasColumnType("text");
-
-                    b.Property<string>("TicketId")
-                        .HasColumnType("text");
-
-                    b.Property<Guid?>("TreatedById")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TreatedById");
-
-                    b.ToTable("RequestAndComplaints");
-                });
-
             modelBuilder.Entity("Domain.Entities.RequestAndComplaints.RequestAndComplaintConfig", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1589,15 +1532,6 @@ namespace Infrastructure.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Partner");
-                });
-
-            modelBuilder.Entity("Domain.Entities.RequestAndComplaints.RequestAndComplaint", b =>
-                {
-                    b.HasOne("Domain.Entities.Identities.User", "TreatedBy")
-                        .WithMany()
-                        .HasForeignKey("TreatedById");
-
-                    b.Navigation("TreatedBy");
                 });
 
             modelBuilder.Entity("Domain.Entities.Token", b =>

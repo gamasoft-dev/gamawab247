@@ -11,10 +11,12 @@
   <None Remove="Entities\FormProcessing\" />
   <None Remove="Entities\FormProcessing\ValueObjects\" />
   <None Remove="Exceptions\" />
+  <None Remove="Entities\RequestAndComplaints\ValueObjects\" />
 </ItemGroup>
 <ItemGroup>
   <Folder Include="Entities\FormProcessing\" />
   <Folder Include="Entities\FormProcessing\ValueObjects\" />
   <Folder Include="Exceptions\" />
+  <Folder Include="Entities\RequestAndComplaints\ValueObjects\" />
 </ItemGroup>
 </Project>
