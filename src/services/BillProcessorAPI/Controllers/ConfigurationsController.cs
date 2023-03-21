@@ -7,7 +7,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace BillProcessorAPI.Controllers
 {
-    [Route("api/charge")]
+    [Route("api/v1/charge")]
     [ApiController]
     public class ConfigurationsController : ControllerBase
     {
