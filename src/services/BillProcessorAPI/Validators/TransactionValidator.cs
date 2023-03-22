@@ -39,13 +39,7 @@ namespace BillProcessorAPI.Validators
     {
         public ChargesInputValidator()
         {
-            RuleFor(x => x.ChannelModel).NotEmpty();
-            RuleFor(x => x.MaxChargeAmount).NotEmpty();
-            RuleFor(x => x.MinChargeAmount).NotEmpty();
             RuleFor(x => x.Amount).NotEmpty();
-            RuleFor(x => x.PercentageCharge)
-                .GreaterThan(0)
-                .LessThanOrEqualTo(100);
         }
     }
 }

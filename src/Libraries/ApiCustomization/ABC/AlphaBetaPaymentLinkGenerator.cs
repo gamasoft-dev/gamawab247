@@ -1,9 +1,11 @@
 ﻿using System;
 using ApiCustomization.Common;
+using Domain.Common.ShortLink;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Exceptions;
 using Infrastructure.Repositories.Interfaces;
+using Infrastructure.ShortLink;
 using Microsoft.Extensions.Options;
 
 namespace ApiCustomization.ABC
@@ -13,21 +15,24 @@ namespace ApiCustomization.ABC
         private readonly IApiCustomizationUtil customizationUtil;
         private readonly IRepository<PartnerIntegrationDetails> partnerIntegrationRepo;
         private readonly AlphaBetaConfig alphaBetaConfig;
+        private readonly ICutlyService _cutlyService;
 
         public AlphaBetaPaymentLinkGenerator(IApiCustomizationUtil customizationUtil,
             IRepository<PartnerIntegrationDetails> partnerIntegrationRepo,
-            IOptions<AlphaBetaConfig> options)
-		{
+            IOptions<AlphaBetaConfig> options,
+            ICutlyService cutlyService)
+        {
             this.customizationUtil = customizationUtil;
             this.partnerIntegrationRepo = partnerIntegrationRepo;
             alphaBetaConfig = options.Value;
-		}
+            _cutlyService = cutlyService;
+        }
 
         public string PartnerContentProcessorKey => EExternalPartnerContentProcessorKey
             .ALPHA_BETA_PAYMENT_LINK_GENERATOR.ToString();
 
         /// <summary>
-        /// In this implementation the Tquest is string being the billcode of the user
+        /// In this implementation the TRequest is string being the billcode of the user
         /// </summary>
         /// <typeparam name="TRequest"></typeparam>
         /// <param name="waId"></param>
@@ -53,11 +58,13 @@ namespace ApiCustomization.ABC
 
             var endPointDetails = $"?billCode={billCode}&phoneNumber={waId}";
             var message = $"{alphaBetaConfig.BillCodePaymentPageLink}{endPointDetails}";
+            var shortLink = _cutlyService.ShortLink(message);
+
 
             return new RetrieveContentResponse
             {
                 IsSuccessful = true,
-                Response = message,
+                Response = shortLink,
             };
         }
     }

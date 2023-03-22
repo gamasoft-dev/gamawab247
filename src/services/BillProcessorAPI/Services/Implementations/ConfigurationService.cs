@@ -20,8 +20,7 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IMapper _mapper;
         private readonly RevpayOptions _options;
 
-        public ConfigurationService(
-            IRepository<BillCharge> billChargeRepository,
+        public ConfigurationService(IRepository<BillCharge> billChargeRepository,
             ILoggerManager logger,
             IMapper mapper,
             IRepository<Business> businessRepository,
@@ -34,7 +33,7 @@ namespace BillProcessorAPI.Services.Implementations
             _options = options.Value;
         }
 
-        public SuccessResponse<ChargesResponseDto> CalculateBillChargesOnAmount(LucChargesInputDto input)
+        public SuccessResponse<ChargesResponseDto> CalculateBillChargesOnAmount(ChargesInputDto input)
         {
             var charge = CalculateAmountCharge(input, _options);
 
@@ -91,19 +90,19 @@ namespace BillProcessorAPI.Services.Implementations
             };
         }
 
-        private static int CalculateAmountCharge(LucChargesInputDto input, RevpayOptions options)
+        private static decimal CalculateAmountCharge(ChargesInputDto input, RevpayOptions options)
         {
             var charge = (Math.Round((decimal)options.Percentage, 2) / 100) * input.Amount;
-            var chargeAmount = Math.Round(charge, 0);
+            var chargeAmount = Math.Round(charge, 2);
 
             if (chargeAmount <= options.MinCharge)
-                return (int)options.MinCharge;
+                return options.MinCharge;
 
-            if (chargeAmount > options.MinCharge && chargeAmount < options.MaxCharge)
-                return (int)chargeAmount;
+            if (chargeAmount > options.MinCharge && chargeAmount < options.MaximumCharge)
+                return chargeAmount;
 
-            if (chargeAmount >= options.MaxCharge)
-                return (int)options.MaxCharge;
+            if (chargeAmount >= options.MaximumCharge)
+                return options.MaximumCharge;
 
             return default;
         }

@@ -21,7 +21,7 @@ namespace BillProcessorAPI.Controllers
         [HttpPost("/luc/calculate")]
         [ProducesResponseType(typeof(ChargesResponseDto), 200)]
         [SwaggerOperation(Summary = "Endpoint to calculate charges on payable bill amount")]
-        public IActionResult CalculateBillChargesOnAmount(LucChargesInputDto input)
+        public IActionResult CalculateBillChargesOnAmount(ChargesInputDto input)
         {
             var response = _configurationService.CalculateBillChargesOnAmount(input);
             return Ok(response);

@@ -6,6 +6,7 @@ using Infrastructure.Http;
 using Infrastructure.Repositories.Implementations;
 using Infrastructure.Repositories.Interfaces;
 using Infrastructure.Sessions;
+using Infrastructure.ShortLink;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using Polly.Extensions.Http;
@@ -15,13 +16,15 @@ namespace Infrastructure
 {
     public static class ServiceCollection
     {
-        public static void AddRepositories(this IServiceCollection services)
+        public static void AddInfrastructureServices(this IServiceCollection services)
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserActivityRepository, UserActivityRepository>();
             services.AddScoped<IMessageLogRepository, MessageLogRepository>();
             services.AddScoped<IWhatsappUserRepository, WhatsappUserRepository>();
             services.AddScoped<ISessionManagement, SessionManagement>();
+            services.AddScoped<ICutlyService, CutlyService>();
+
 
         }
 

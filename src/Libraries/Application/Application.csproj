@@ -49,6 +49,7 @@
     <None Remove="Services\Implementations\PartnerDetails\" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Helpers\ShortLink\" />
     <Folder Include="Services\Implementations\FormProcessing\" />
     <Folder Include="Exceptions\" />
     <Folder Include="Cron\FormProcessing\" />

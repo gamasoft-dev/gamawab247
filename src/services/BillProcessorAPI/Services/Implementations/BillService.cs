@@ -23,23 +23,23 @@ namespace BillProcessorAPI.Services.Implementations
 		private readonly RevpayOptions RevpayOptions;
 		private readonly IMapper _mapper;
 
-		public BillService(IBillPayerRepository billPayerRepo,
-			IOptions<RevpayOptions> options,
-			IMapper mapper,
-			IRepository<BillTransaction> billTransactions,
-			HttpClient httpClient,
-			IConfiguration config)
-		{
-			_billPayerRepo = billPayerRepo;
-			RevpayOptions = options.Value;
-			_mapper = mapper;
+        public BillService(IBillPayerRepository billPayerRepo,
+            IOptions<RevpayOptions> options,
+            IMapper mapper,
+            IRepository<BillTransaction> billTransactions,
+            HttpClient httpClient,
+            IConfiguration config)
+        {
+            _billPayerRepo = billPayerRepo;
+            RevpayOptions = options.Value;
+            _mapper = mapper;
 
-			_billTransactions = billTransactions;
-			_httpClient = httpClient;
-			_config = config;
-		}
+            _billTransactions = billTransactions;
+            _httpClient = httpClient;
+            _config = config;
+        }
 
-		public async Task<SuccessResponse<BillReferenceResponseDto>> ReferenceVerification(string phone, string billPaymentCode)
+        public async Task<SuccessResponse<BillReferenceResponseDto>> ReferenceVerification(string phone, string billPaymentCode)
 		{
 
 			if (string.IsNullOrEmpty(billPaymentCode))
@@ -59,6 +59,8 @@ namespace BillProcessorAPI.Services.Implementations
 				ClientId = RevpayOptions.ClientId,
 				Type = RevpayOptions.Type
 			};
+
+			
 
 			try
 			{

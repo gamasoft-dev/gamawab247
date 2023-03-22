@@ -84,7 +84,7 @@ namespace API.Extensions
 
         public static void ConfigureRepositoryManager(this IServiceCollection services)
         {
-            services.AddRepositories();
+            services.AddInfrastructureServices();
         }
 
         public static void ConfigureHttpClient(this IServiceCollection services)

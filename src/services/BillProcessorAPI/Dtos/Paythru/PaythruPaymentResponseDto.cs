@@ -8,6 +8,7 @@
         public object splitPayResult { get; set; }
         public object emvCode { get; set; }
         public int code { get; set; }
+        public decimal systemCharge { get; set; }
         public string message { get; set; }
         public object data { get; set; }
         public bool successful { get; set; }

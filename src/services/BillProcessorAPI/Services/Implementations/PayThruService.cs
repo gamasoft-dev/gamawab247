@@ -28,13 +28,16 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IRepository<BillTransaction> _billTransactionsRepo;
         private readonly PaythruOptions PaythruOptions;
         private readonly IHttpService _httpService;
-        public PayThruService(IRepository<BillPayerInfo> billPayerRepo, IRepository<BillTransaction> billTransactions, IOptions<PaythruOptions> paythruOptions, IHttpService httpService)
+        private readonly IConfigurationService _configService;
+
+        public PayThruService(IRepository<BillPayerInfo> billPayerRepo, IRepository<BillTransaction> billTransactions, IOptions<PaythruOptions> paythruOptions, IHttpService httpService, IConfigurationService configService)
         {
 
             _billPayerRepo = billPayerRepo;
             _billTransactionsRepo = billTransactions;
             PaythruOptions = paythruOptions.Value;
             _httpService = httpService;
+            _configService = configService;
         }
         public async Task<SuccessResponse<PaythruPaymentResponseDto>> CreatePayment(int amount, string billCode)
         {
@@ -76,6 +79,7 @@ namespace BillProcessorAPI.Services.Implementations
                     Password = PaythruConfig.HashForPaythruLoginPassword(PaythruOptions.Secret, unixTime)
                 };
 
+
                 // header parameter for login and token generation
                 IDictionary<string, string> loginDict = new Dictionary<string, string>();
                 loginDict.Add(key: "timestamp", unixTime);
@@ -111,6 +115,15 @@ namespace BillProcessorAPI.Services.Implementations
 
                     await _billTransactionsRepo.AddAsync(billTransaction);
                     await _billTransactionsRepo.SaveChangesAsync();
+
+                    var chargeModel = new ChargesInputDto
+                    {
+                        Channel = "Paythru",
+                        Amount = paymentCreationPayload.amount
+                    };
+
+                    var systemChargeCalculation = _configService.CalculateBillChargesOnAmount(chargeModel);
+                    createTransactionResponse.Data.systemCharge = systemChargeCalculation.Data.AmountCharge;
 
                     return new SuccessResponse<PaythruPaymentResponseDto>
                     {
