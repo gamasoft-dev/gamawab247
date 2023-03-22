@@ -1,11 +1,11 @@
 ﻿using System;
 using ApiCustomization.Common;
-using ApiCustomization.ShortLinkService;
 using Domain.Common.ShortLink;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Exceptions;
 using Infrastructure.Repositories.Interfaces;
+using Infrastructure.ShortLink;
 using Microsoft.Extensions.Options;
 
 namespace ApiCustomization.ABC

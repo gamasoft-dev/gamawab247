@@ -6,13 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 using Domain.Common;
-using Domain.Common.ShortLink;
+using Domain.Common.ShortLink.ValueObjects;
 using Domain.Exceptions;
 using Infrastructure.Http;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
-namespace ApiCustomization.ShortLinkService
+namespace Infrastructure.ShortLink
 {
     public class CutlyService : ICutlyService
     {
@@ -31,7 +31,7 @@ namespace ApiCustomization.ShortLinkService
             {
                 IDictionary<string, string> dictNew = new Dictionary<string, string>();
                 var header = new RequestHeader(dictNew);
-                var shortLink = "";
+                var shortLink = link;
 
                 var cutlyResponse = _httpService.Post<CutlyResponse, string>(fullUrl, header, link);
                 if (cutlyResponse.Result.Status == 200)

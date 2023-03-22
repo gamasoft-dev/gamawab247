@@ -44,7 +44,7 @@ namespace Gamasoft.Worker
             services.AddHttpContextAccessor();
             services.ConfigureRepositoryManager();
             services.ConfigureApiCustomizationService(Configuration);
-            services.AddRepositories();
+            services.AddInfrastructureServices();
             services.AddHttpClientInfrastructure();
             services.ConfigureIOObjects(Configuration);
             services.AddControllers().AddJsonOptions(options => {

@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Common.ShortLink
+namespace Domain.Common.ShortLink.ValueObjects
 {
     public class CutlyResponse
     {
         public CutlyObj Url { get; set; }
-        
+
     }
     public class CutlyObj
     {

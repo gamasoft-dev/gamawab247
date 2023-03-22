@@ -2,6 +2,7 @@
 using Application.DTOs;
 using Application.Services.Implementations;
 using Application.Services.Interfaces;
+using Domain.Common.ShortLink.ValueObjects;
 using Domain.Entities.Identities;
 using Infrastructure;
 using Infrastructure.Cache;
@@ -86,6 +87,7 @@ namespace Gamasoft._360WebhookConfig.ServiceExtension
             services.Configure<MailSettings>(configuration.GetSection("MailSettings"));
             services.Configure<SystemSettingsConfig>(configuration.GetSection("Config"));
             services.Configure<Dialog360Settings>(configuration.GetSection("Dialog360Setting"));
+            services.Configure<CutlyOptions>(configuration.GetSection("CutlyOptions"));
             services.Configure<Domain.ViewModels.JwtConfigSettings>(configuration.GetSection("JwtSettings"));
             services.Configure<RedisCacheConfig>(configuration.GetSection("RedisCacheConfig"));
         }
@@ -106,7 +108,7 @@ namespace Gamasoft._360WebhookConfig.ServiceExtension
 
         public static void ConfigureRepositoryManager(this IServiceCollection services)
         {
-            services.AddRepositories();
+            services.AddInfrastructureServices();
         }
 
 

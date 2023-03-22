@@ -49,7 +49,7 @@ namespace FormProcessingWorker
             services.ConfigureMvcAndAutomapper();
             services.ConfigureGlobalization();
             services.ConfigureApiCustomizationService(Configuration);
-            services.AddRepositories();
+            services.AddInfrastructureServices();
             services.AddHttpClientInfrastructure();
             services.ConfigureIdentity();
 

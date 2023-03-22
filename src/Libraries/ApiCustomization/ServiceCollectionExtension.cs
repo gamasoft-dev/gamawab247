@@ -2,14 +2,13 @@
 using ApiCustomization.ABC;
 using ApiCustomization.Common;
 using ApiCustomization.RequestAndComplaints;
-using ApiCustomization.ShortLinkService;
-using Domain.Common.ShortLink;
+using Domain.Common.ShortLink.ValueObjects;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ApiCustomization
 {
-	public static class ServiceCollectionExtension
+    public static class ServiceCollectionExtension
 	{
         /// <summary>
         /// Utilize this to register other application services that do not utilize a scoped lifetime
@@ -27,7 +26,6 @@ namespace ApiCustomization
             services.AddScoped<IApiContentRetrievalService, UserRequestProcessor>();
             services.AddScoped<IApiContentRetrievalService, UserComplaintProcessor>();
             services.AddScoped<IApiContentRetrievalService, AplhaBetaBillHolderRetrievalService>();
-            services.AddScoped<ICutlyService,CutlyService>();
             
         }
 
