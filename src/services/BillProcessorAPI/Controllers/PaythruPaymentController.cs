@@ -21,10 +21,10 @@ namespace BillProcessorAPI.Controllers
 			return Ok(response);
 		}
 
-		[HttpGet("/paythru/verification")]
+		[HttpPost("/paythru/notify")]
 		[ProducesResponseType(typeof(PaymentVerificationResponseDto), 200)]
 		[SwaggerOperation(Summary = "Endpoint to verify paythru payment")]
-		public async Task<IActionResult> PaymentVerification([FromRoute] NotificationRequestWrapper model)
+		public async Task<IActionResult> PaymentVerification([FromBody] NotificationRequestWrapper model)
 		{
 			var response = await _paythruService.VerifyPayment(model);
 			return Ok(response);

@@ -69,6 +69,7 @@ namespace BillProcessorAPI.Services.Implementations
 				{
 					var revPayRes = await httpResponse.ReadContentAs<BillReferenceResponseDto>();
 					var mappedResponse = _mapper.Map<BillPayerInfo>(revPayRes);
+					mappedResponse.PhoneNumber = phone;
 
 					if (mappedResponse.PayerName == null && mappedResponse.Status == null)
 						throw new RestException(HttpStatusCode.NotFound, "Record not found for the bill-code provided");

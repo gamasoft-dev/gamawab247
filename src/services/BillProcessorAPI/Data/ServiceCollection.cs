@@ -31,6 +31,9 @@ namespace BillProcessorAPI.Data
             services.AddScoped<IBillService, BillService>();
             services.AddScoped<ILoggerManager, LoggerManager>();
             services.AddScoped<IPayThruService, PayThruService>();
+            services.AddScoped<IConfigurationService, ConfigurationService>();
+            services.AddScoped<ITransactionService, TransactionService>();
+
 			var revpaySection = config.GetSection("RevpayConfig");
 			services.Configure<RevpayOptions>(revpaySection);
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));

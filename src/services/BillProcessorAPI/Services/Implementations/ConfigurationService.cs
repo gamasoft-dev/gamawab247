@@ -33,13 +33,14 @@ namespace BillProcessorAPI.Services.Implementations
             _options = options.Value;
         }
 
-        public SuccessResponse<ChargesResponseDto> CalculateBillChargesOnAmount(ChargesInputDto input)
+        public SuccessResponse<ChargesResponseDto> CalculateBillChargesOnAmount(LucChargesInputDto input)
         {
             var charge = CalculateAmountCharge(input, _options);
 
             var result = _mapper.Map<ChargesResponseDto>(input);
 
             result.AmountCharge = charge;
+            
 
             return new SuccessResponse<ChargesResponseDto>
             {
@@ -89,7 +90,7 @@ namespace BillProcessorAPI.Services.Implementations
             };
         }
 
-        private static decimal CalculateAmountCharge(ChargesInputDto input, RevpayOptions options)
+        private static int CalculateAmountCharge(ChargesInputDto input)
         {
             var charge = (Math.Round((decimal)options.Percentage, 2) / 100) * input.Amount;
             var chargeAmount = Math.Round(charge, 2);

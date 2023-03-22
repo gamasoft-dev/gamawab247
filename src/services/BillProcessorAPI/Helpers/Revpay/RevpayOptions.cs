@@ -13,6 +13,9 @@
         public string ClientId { get; set; }
         public string Currency { get; set; }
         public string Type { get; set; }
+        public decimal MaxCharge { get; set; }
+        public decimal MinCharge { get; set; }
+        public double Percentage { get; set; }
 
         //options for charge
         public double Percentage { get; set; }

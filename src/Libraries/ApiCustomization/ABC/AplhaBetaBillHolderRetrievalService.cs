@@ -45,7 +45,7 @@ public class AplhaBetaBillHolderRetrievalService : IApiContentRetrievalService
 
         var argumentKvpObj = partnerConfigDetail?.Parameters?.FirstOrDefault(x => x.Key?.ToLower() == alphaBetaConfig.LinkGeneratorUserParamKey?.ToLower());
         if (argumentKvpObj is null)
-            throw new BackgroundException($"No value found in the Paramters property for this PaartnerContentDeatil for key {PartnerContentProcessorKey}");
+            throw new BackgroundException($"No value found in the Paramters property for this PartnerContentDeatil for key {PartnerContentProcessorKey}");
 
         var billPaymentCode = await customizationUtil.GetArgumentValueFromSession(argumentKvpObj, waId, PartnerContentProcessorKey);
 

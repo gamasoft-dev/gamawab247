@@ -4,7 +4,7 @@ using BillProcessorAPI.Helpers;
 
 namespace BillProcessorAPI.Services.Interfaces
 {
-    public interface ITransactionService : IAutoDependencyService
+    public interface ITransactionService
     {
         Task<SuccessResponse<TransactionVerificationResponseDto>> VerifyBillTransactionAsync(TransactionVerificationInputDto input);
         Task<SuccessResponse<object>> CreateUserBillTransaction(CreateUserBillTransactionInputDto input);

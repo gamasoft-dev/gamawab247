@@ -7,28 +7,27 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace BillProcessorAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/charge")]
     [ApiController]
     public class ConfigurationsController : ControllerBase
     {
         private readonly IConfigurationService _configurationService;
 
-        public ConfigurationsController(
-            IConfigurationService configurationService)
+        public ConfigurationsController(IConfigurationService configurationService)
         {
             _configurationService = configurationService;
         }
 
-        [HttpPost("calculate-charge")]
+        [HttpPost("/luc/calculate")]
         [ProducesResponseType(typeof(ChargesResponseDto), 200)]
         [SwaggerOperation(Summary = "Endpoint to calculate charges on payable bill amount")]
-        public IActionResult CalculateBillChargesOnAmount(ChargesInputDto input)
+        public IActionResult CalculateBillChargesOnAmount(LucChargesInputDto input)
         {
             var response = _configurationService.CalculateBillChargesOnAmount(input);
             return Ok(response);
         }
 
-        [HttpPost("charges")]
+        [HttpPost("")]
         [ProducesResponseType(typeof(ChargesResponseDto), 200)]
         [SwaggerOperation(Summary = "Endpoint to add charges to the database")]
         public async Task<IActionResult> CreateBillCharges(CreateBillChargeInputDto input)
@@ -37,7 +36,7 @@ namespace BillProcessorAPI.Controllers
             return Ok(response);
         }
 
-        [HttpGet("charges")]
+        [HttpGet("")]
         [ProducesResponseType(typeof(IEnumerable<ChargesResponseDto>), 200)]
         [SwaggerOperation(Summary = "Description: Endpoint get all charges from the db")]
         public async Task<IActionResult> GetBillCharges()
@@ -46,7 +45,7 @@ namespace BillProcessorAPI.Controllers
             return Ok(response);
         }
 
-        [HttpGet("charges/{businessId}")]
+        [HttpGet("business/{businessId}")]
         [ProducesResponseType(typeof(IEnumerable<ChargesResponseDto>), 200)]
         [SwaggerOperation(Summary = "Description: Endpoint get all charges from the db")]
         public async Task<IActionResult> GetBillCharges(Guid businessId)
