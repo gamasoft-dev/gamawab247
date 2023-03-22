@@ -18,7 +18,7 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IRepository<Business> _businessRepository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
-        private RevpayOptions _options;
+        private readonly RevpayOptions _options;
 
         public ConfigurationService(IRepository<BillCharge> billChargeRepository,
             ILoggerManager logger,
@@ -33,7 +33,7 @@ namespace BillProcessorAPI.Services.Implementations
             _options = options.Value;
         }
 
-        public SuccessResponse<ChargesResponseDto> CalculateBillChargesOnAmount(LucChargesInputDto input)
+        public SuccessResponse<ChargesResponseDto> CalculateBillChargesOnAmount(ChargesInputDto input)
         {
             var charge = CalculateAmountCharge(input, _options);
 
@@ -90,7 +90,7 @@ namespace BillProcessorAPI.Services.Implementations
             };
         }
 
-        private static int CalculateAmountCharge(ChargesInputDto input)
+        private static decimal CalculateAmountCharge(ChargesInputDto input, RevpayOptions options)
         {
             var charge = (Math.Round((decimal)options.Percentage, 2) / 100) * input.Amount;
             var chargeAmount = Math.Round(charge, 2);
