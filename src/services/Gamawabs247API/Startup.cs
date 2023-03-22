@@ -56,6 +56,7 @@ namespace API
             services.ConfigureApiVersioning(Configuration);
             services.ConfigureMvc();
             services.ConfigureGlobalization();
+
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()

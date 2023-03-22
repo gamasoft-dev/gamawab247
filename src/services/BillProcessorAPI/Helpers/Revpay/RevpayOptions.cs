@@ -14,6 +14,12 @@
         public string Currency { get; set; }
         public string Type { get; set; }
 
+        //options for charge
+        public double Percentage { get; set; }
+        public decimal MaximumCharge { get; set; }
+        public decimal MinCharge { get; set; }
+
+
     }
 
 

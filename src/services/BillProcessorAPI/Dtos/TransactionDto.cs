@@ -12,19 +12,14 @@ namespace BillProcessorAPI.Dtos
         public double PercentageCharge { get; set; }
     }
 
-    public record ChargesInputDto : CreateBillChargeInputDto
+    public record ChargesInputDto
     {
         public decimal Amount { get; set; }
+        internal string Channel { get; set; }
     }
 
     public record ChargesResponseDto
     {
-        public Guid? BusinessId { get; set; }
-        public string ChannelModel { get; set; }
-        public decimal MaxChargeAmount { get; set; }
-        public decimal MinChargeAmount { get; set; }
-        public decimal Amount { get; set; }
-        public double PercentageCharge { get; set; }
         public decimal AmountCharge { get; set; }
     }
 

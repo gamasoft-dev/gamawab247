@@ -35,6 +35,7 @@ namespace BillProcessorAPI.Data
 			services.Configure<RevpayOptions>(revpaySection);
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IBillPayerRepository, BillPayerRepository>();
+            services.AddScoped<IConfigurationService, ConfigurationService>();
 			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IHttpService, HttpService>();
             

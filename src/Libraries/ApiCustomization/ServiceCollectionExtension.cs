@@ -2,6 +2,8 @@
 using ApiCustomization.ABC;
 using ApiCustomization.Common;
 using ApiCustomization.RequestAndComplaints;
+using ApiCustomization.ShortLinkService;
+using Domain.Common.ShortLink;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,12 +27,14 @@ namespace ApiCustomization
             services.AddScoped<IApiContentRetrievalService, UserRequestProcessor>();
             services.AddScoped<IApiContentRetrievalService, UserComplaintProcessor>();
             services.AddScoped<IApiContentRetrievalService, AplhaBetaBillHolderRetrievalService>();
+            services.AddScoped<ICutlyService,CutlyService>();
             
         }
 
         private static void ApiCustomizationIOObject(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<AlphaBetaConfig>(configuration.GetSection(nameof(AlphaBetaConfig)));
+            services.Configure<CutlyOptions>(configuration.GetSection(nameof(CutlyOptions)));
 
         }
     }
