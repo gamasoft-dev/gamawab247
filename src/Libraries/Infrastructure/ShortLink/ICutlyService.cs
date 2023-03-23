@@ -8,6 +8,6 @@ namespace Infrastructure.ShortLink
 {
     public interface ICutlyService
     {
-        string ShortLink(string link);
+        Task<string> ShortLink(string link);
     }
 }

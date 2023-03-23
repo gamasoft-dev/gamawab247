@@ -56,9 +56,9 @@ namespace ApiCustomization.ABC
             if (string.IsNullOrEmpty(billCode))
                 throw new BackgroundException($"User {waId} bill code not found");
 
-            var endPointDetails = $"?billCode={billCode}&phoneNumber={waId}";
-            var message = $"{alphaBetaConfig.BillCodePaymentPageLink}{endPointDetails}";
-            var shortLink = _cutlyService.ShortLink(message);
+            var endPointParams = $"?billCode={billCode}&phoneNumber={waId}";
+            var paymentLink = $"{alphaBetaConfig.BillCodePaymentPageLink}{endPointParams}";
+            var shortLink = await _cutlyService.ShortLink(paymentLink);
 
 
             return new RetrieveContentResponse

@@ -23,7 +23,7 @@ namespace Infrastructure.ShortLink
             _options = options.Value;
             _httpService = httpService;
         }
-        public string ShortLink(string link)
+        public async Task<string> ShortLink(string link)
         {
             var parameter = $"?key={_options.Key}&short={link}";
             var fullUrl = $"{_options.BaseUrl}/{parameter}";
@@ -33,16 +33,15 @@ namespace Infrastructure.ShortLink
                 var header = new RequestHeader(dictNew);
                 var shortLink = link;
 
-                var cutlyResponse = _httpService.Post<CutlyResponse, string>(fullUrl, header, link);
-                if (cutlyResponse.Result.Status == 200)
+                var cutlyResponse = await _httpService.Post<CutlyResponse, string>(fullUrl, header, link);
+                if (cutlyResponse.Status == 200)
                 {
-                    shortLink = cutlyResponse.Result.Data.Url.ShortLink;
+                    shortLink = cutlyResponse.Data.Url.ShortLink;
                 }
                 return shortLink;
             }
             catch (Exception ex)
             {
-
                 throw new BackgroundException("an error occured while shortening the link", ex.InnerException);
             }
         }
