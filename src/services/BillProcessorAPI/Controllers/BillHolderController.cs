@@ -21,10 +21,10 @@ namespace BillProcessorAPI.Controllers
 			_revpay = revpay;
 		}
 
-		[HttpGet("invoice/{phone}/{billPaymentCode}")]
+		[HttpGet("invoice/{billPaymentCode}")]
         [ProducesResponseType(typeof(SuccessResponse<BillReferenceResponseDto>), 200)]
         [SwaggerOperation(Summary = "Endpoint to get bill payer reference")]
-        public async Task<IActionResult> ReferenceVerification([FromRoute] string phone, string billPaymentCode)
+        public async Task<IActionResult> ReferenceVerification([FromRoute] string billPaymentCode, [FromQuery] string phone)
 		{
 			var response = await _revpay.ReferenceVerification(phone, billPaymentCode);
 			return Ok(response);

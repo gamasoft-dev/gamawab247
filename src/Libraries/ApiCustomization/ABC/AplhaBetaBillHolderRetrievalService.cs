@@ -54,7 +54,7 @@ public class AplhaBetaBillHolderRetrievalService : IApiContentRetrievalService
         // make call to api cald holder information
 
         return alphaBetaConfig.IsMockRequest ? DemoBillPaymentUserInfo() :
-            await MakeApiCallToAbc(billPaymentCode: billPaymentCode);
+            await MakeApiCallToAbc(billPaymentCode: billPaymentCode, phone: waId);
     }
 
     private RetrieveContentResponse DemoBillPaymentUserInfo()
@@ -67,7 +67,7 @@ public class AplhaBetaBillHolderRetrievalService : IApiContentRetrievalService
 
     }
 
-    private async Task<RetrieveContentResponse> MakeApiCallToAbc(string billPaymentCode) {
+    private async Task<RetrieveContentResponse> MakeApiCallToAbc(string billPaymentCode, string phone) {
 
         var url = $"{alphaBetaConfig.BaseUrl}/{alphaBetaConfig.HolderVerificationEndpoint}/{billPaymentCode}";
 
@@ -75,11 +75,13 @@ public class AplhaBetaBillHolderRetrievalService : IApiContentRetrievalService
         var message = "";
         var success = true; 
         ESessionState? updatedSession = null;
+        IDictionary<string, object> parameters = new Dictionary<string, object>();
+        parameters.Add("phone", phone);
 
         try
         {
             httpResult = await httpService.Get<CustomizationSuccessResponse<BillReferenceResponse>>
-                (url: url, parameters: null, header: null);
+                (url: url, parameters: parameters, header: null);
 
             if (httpResult is null || httpResult.Data is null)
                 throw new BadRequestException("Response is empty, record not found", (int)HttpStatusCode.BadRequest);

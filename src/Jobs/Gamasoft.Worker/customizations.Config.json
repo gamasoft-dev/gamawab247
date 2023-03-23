@@ -1,6 +1,6 @@
 ﻿{
     "alphaBetaConfig": {
-        "holderVerificationEndpoint": "v1/abc/reference-verification",
+        "holderVerificationEndpoint": "v1/abc/invoice",
         "clientKey": "",
         "linkGeneratorUserParamKey": "billPaymentCode",
         "billCodePaymentPageLink": "https://gamasoft-lucweb.vercel.app/bill-payment",
