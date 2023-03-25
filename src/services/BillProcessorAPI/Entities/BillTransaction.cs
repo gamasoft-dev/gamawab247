@@ -16,7 +16,7 @@ namespace BillProcessorAPI.Entities
         public decimal TransactionCharge { get; set; }
         public decimal GatewayTransactionCharge { get; set; }
         public string Narration { get; set; }
-        public EPaymentChannel Channel { get; set; }
+        public string Channel { get; set; }
         public string ResourcePIN { get; set; } // PropertyPIN
         public string PaymentUrl { get; set; }
         public string ReceiptUrl { get; set; }

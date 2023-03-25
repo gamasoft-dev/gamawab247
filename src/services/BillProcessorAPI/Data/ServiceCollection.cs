@@ -32,13 +32,12 @@ namespace BillProcessorAPI.Data
             services.AddScoped<ILoggerManager, LoggerManager>();
             services.AddScoped<IPayThruService, PayThruService>();
             services.AddScoped<IConfigurationService, ConfigurationService>();
-            services.AddScoped<ITransactionService, TransactionService>();
+            services.AddScoped<IFlutterwaveService, FlutterwaveService>();
 
 			var revpaySection = config.GetSection("RevpayConfig");
 			services.Configure<RevpayOptions>(revpaySection);
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IBillPayerRepository, BillPayerRepository>();
-            services.AddScoped<IConfigurationService, ConfigurationService>();
 			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IHttpService, HttpService>();
             

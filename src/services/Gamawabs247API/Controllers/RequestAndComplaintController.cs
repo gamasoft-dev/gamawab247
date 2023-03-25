@@ -22,12 +22,13 @@ namespace Gamawabs247API.Controllers
     {
         private readonly IRequestAndComplaintService _requestAndComplaintService;
         private readonly ILogger<RequestAndComplaintController> _logger;
-        public RequestAndComplaintController(IRequestAndComplaintService requestAndComplaintService)
+        public RequestAndComplaintController(IRequestAndComplaintService requestAndComplaintService, ILogger<RequestAndComplaintController> logger)
         {
             _requestAndComplaintService = requestAndComplaintService;
+            _logger = logger;
         }
 
-       
+
         [HttpPost]
         [ProducesResponseType(typeof(SuccessResponse<RequestAndComplaintDto>), (int)HttpStatusCode.Created)]
         [Authorize]//for admin usage

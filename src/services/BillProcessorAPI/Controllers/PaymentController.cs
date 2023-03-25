@@ -11,8 +11,8 @@ namespace BillProcessorAPI.Controllers
     public partial class PaymentController : ControllerBase
     {
         private readonly IPayThruService _paythruService;
-        private readonly ITransactionService _transactionService;
-        public PaymentController(IPayThruService paythruService, ITransactionService transactionService)
+        private readonly IFlutterwaveService _transactionService;
+        public PaymentController(IPayThruService paythruService, IFlutterwaveService transactionService)
         {
             _paythruService = paythruService;
             _transactionService = transactionService;

@@ -39,6 +39,31 @@ namespace BillProcessorAPI.Services.Implementations
             _httpService = httpService;
             _configService = configService;
         }
+
+        public  async Task<SuccessResponse<bool>> ConfirmPayment(ConfirmPaymentRequest model)
+        {           
+            if (string.IsNullOrEmpty(model.Status))
+                   throw new RestException(HttpStatusCode.BadRequest, "success indicator cannot be null");
+
+                try
+                {
+                    var transactionNotification = await _billTransactionsRepo.FirstOrDefault(x => x.SuccessIndicator == model.Status)
+                    ?? throw new RestException(HttpStatusCode.NotFound, "An error occured while processing the transactuion");
+                    return new SuccessResponse<bool>
+                    {
+                        Data = true,
+                        Message = "Transaction Successful"
+                    };
+                }
+                catch (Exception ex)
+                {
+
+                    throw new RestException(HttpStatusCode.InternalServerError, ex.Message);
+                }
+
+            
+        }
+
         public async Task<SuccessResponse<PaythruPaymentResponseDto>> CreatePayment(int amount, string billCode)
         {
             if (amount < PaythruOptions.MinimumPayableAmount)
@@ -122,8 +147,8 @@ namespace BillProcessorAPI.Services.Implementations
                         Amount = paymentCreationPayload.amount
                     };
 
-                    var systemChargeCalculation = _configService.CalculateBillChargesOnAmount(chargeModel);
-                    createTransactionResponse.Data.systemCharge = systemChargeCalculation.Data.AmountCharge;
+                    decimal systemChargeCalculation = 100;
+                    createTransactionResponse.Data.systemCharge = systemChargeCalculation;
 
                     return new SuccessResponse<PaythruPaymentResponseDto>
                     {
@@ -157,10 +182,21 @@ namespace BillProcessorAPI.Services.Implementations
                 if (billTransaction == null)
                     throw new RestException(HttpStatusCode.NotFound, "Transaction not found");
 
-                data.TransactionReference = transactionNotification.TransactionDetail.ResultCode;
+                data.TransactionReference = transactionNotification.TransactionDetail.PaymentReference;
+
+                billTransaction.AmountPaid = transactionNotification.TransactionDetail.Amount;
+                billTransaction.Channel = transactionNotification.TransactionDetail.PaymentMethod;
+                billTransaction.TransactionCharge = 100;
+                billTransaction.GatewayTransactionCharge = transactionNotification.TransactionDetail.Commission;
+                billTransaction.GatewayTransactionReference = transactionNotification.TransactionDetail.PayThruReference;
+                billTransaction.Narration = transactionNotification.TransactionDetail.Naration;
+                billTransaction.Status = ETransactionStatus.Successful.ToString();
+                billTransaction.StatusMessage = "Transaction successful";
 
                 if (billTransaction.SuccessIndicator != transactionNotification.TransactionDetail.ResultCode)
                 {
+                    billTransaction.Status = ETransactionStatus.Failed.ToString();
+                    billTransaction.StatusMessage = "Transaction failed";
                     data.ResponseCode = ETransactionResponseCodes.Failed;
                     data.Description = "Transaction Failed";
                 };
@@ -187,5 +223,7 @@ namespace BillProcessorAPI.Services.Implementations
                 throw new RestException(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+       
     }
 }

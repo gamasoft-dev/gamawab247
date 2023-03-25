@@ -98,71 +98,71 @@ namespace BillProcessorAPI.Dtos
         public DateTime CreatedAt { get; set; }
     }
 
-    public class Data
-    {
-        [JsonPropertyName("id")]
-        public int Id { get; set; }
+    //public class Data
+    //{
+    //    [JsonPropertyName("id")]
+    //    public int Id { get; set; }
 
-        [JsonPropertyName("tx_ref")]
-        public string TxRef { get; set; }
+    //    [JsonPropertyName("tx_ref")]
+    //    public string TxRef { get; set; }
 
-        [JsonPropertyName("flw_ref")]
-        public string FlwRef { get; set; }
+    //    [JsonPropertyName("flw_ref")]
+    //    public string FlwRef { get; set; }
 
-        [JsonPropertyName("device_fingerprint")]
-        public string DeviceFingerprint { get; set; }
+    //    [JsonPropertyName("device_fingerprint")]
+    //    public string DeviceFingerprint { get; set; }
 
-        [JsonPropertyName("amount")]
-        public int Amount { get; set; }
+    //    [JsonPropertyName("amount")]
+    //    public int Amount { get; set; }
 
-        [JsonPropertyName("currency")]
-        public string Currency { get; set; }
+    //    [JsonPropertyName("currency")]
+    //    public string Currency { get; set; }
 
-        [JsonPropertyName("charged_amount")]
-        public int ChargedAmount { get; set; }
+    //    [JsonPropertyName("charged_amount")]
+    //    public int ChargedAmount { get; set; }
 
-        [JsonPropertyName("app_fee")]
-        public double AppFee { get; set; }
+    //    [JsonPropertyName("app_fee")]
+    //    public double AppFee { get; set; }
 
-        [JsonPropertyName("merchant_fee")]
-        public int MerchantFee { get; set; }
+    //    [JsonPropertyName("merchant_fee")]
+    //    public int MerchantFee { get; set; }
 
-        [JsonPropertyName("processor_response")]
-        public string ProcessorResponse { get; set; }
+    //    [JsonPropertyName("processor_response")]
+    //    public string ProcessorResponse { get; set; }
 
-        [JsonPropertyName("auth_model")]
-        public string AuthModel { get; set; }
+    //    [JsonPropertyName("auth_model")]
+    //    public string AuthModel { get; set; }
 
-        [JsonPropertyName("ip")]
-        public string Ip { get; set; }
+    //    [JsonPropertyName("ip")]
+    //    public string Ip { get; set; }
 
-        [JsonPropertyName("narration")]
-        public string Narration { get; set; }
+    //    [JsonPropertyName("narration")]
+    //    public string Narration { get; set; }
 
-        [JsonPropertyName("status")]
-        public string Status { get; set; }
+    //    [JsonPropertyName("status")]
+    //    public string Status { get; set; }
 
-        [JsonPropertyName("payment_type")]
-        public string PaymentType { get; set; }
+    //    [JsonPropertyName("payment_type")]
+    //    public string PaymentType { get; set; }
 
-        [JsonPropertyName("created_at")]
-        public DateTime CreatedAt { get; set; }
+    //    [JsonPropertyName("created_at")]
+    //    public DateTime CreatedAt { get; set; }
 
-        [JsonPropertyName("account_id")]
-        public int AccountId { get; set; }
+    //    [JsonPropertyName("account_id")]
+    //    public int AccountId { get; set; }
 
-        [JsonPropertyName("card")]
-        public Card Card { get; set; }
+    //    [JsonPropertyName("card")]
+    //    public Card Card { get; set; }
 
-        [JsonPropertyName("meta")]
-        public object Meta { get; set; }
+    //    [JsonPropertyName("meta")]
+    //    public object Meta { get; set; }
 
-        [JsonPropertyName("amount_settled")]
-        public double AmountSettled { get; set; }
+    //    [JsonPropertyName("amount_settled")]
+    //    public double AmountSettled { get; set; }
 
-        [JsonPropertyName("customer")]
-        public Customer Customer { get; set; }
-    }
+    //    [JsonPropertyName("customer")]
+    //    public Customer Customer { get; set; }
+    //}
 
     public class TransactionVerificationResponseDto
     {
@@ -172,7 +172,7 @@ namespace BillProcessorAPI.Dtos
         [JsonPropertyName("message")]
         public string Message { get; set; }
 
-        [JsonPropertyName("data")]
-        public Data Data { get; set; }
+        //[JsonPropertyName("data")]
+        //public Data Data { get; set; }
     }
 }
