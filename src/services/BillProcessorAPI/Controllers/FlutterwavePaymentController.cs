@@ -18,12 +18,12 @@ namespace BillProcessorAPI.Controllers
             return Ok(response);
         }
 
-        [HttpPost("/flutterwave-payment-notification")]
+        [HttpPost("/flutterwave/notify")]
         [ProducesResponseType(typeof(TransactionVerificationResponseDto), 200)]
         [SwaggerOperation(Summary = "Webhook endpoint")]
         public async Task<IActionResult> FlutterwavePaymentNotification(WebHookNotificationWrapper model)
         {
-            var signature = Request.Headers["verify-hash"];
+            var signature = Request.Headers["verif-hash"];
             var response = await _transactionService.PaymentNotification(signature, model);
             return Ok(response);
         }
