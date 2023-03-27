@@ -3,6 +3,7 @@ using System;
 using BillProcessorAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BillProcessorAPI.Migrations
 {
     [DbContext(typeof(BillProcessorDbContext))]
-    partial class BillProcessorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230327152849_updateBillTransactionTable")]
+    partial class updateBillTransactionTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,9 +179,6 @@ namespace BillProcessorAPI.Migrations
                     b.Property<Guid?>("CreatedById")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("DueDate")
-                        .HasColumnType("text");
-
                     b.Property<decimal>("GatewayTransactionCharge")
                         .HasColumnType("numeric");
 
@@ -203,9 +203,6 @@ namespace BillProcessorAPI.Migrations
                     b.Property<string>("PaymentUrl")
                         .HasColumnType("text");
 
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
                     b.Property<string>("Pid")
                         .HasColumnType("text");
 
@@ -219,9 +216,6 @@ namespace BillProcessorAPI.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("ResourcePIN")
-                        .HasColumnType("text");
-
-                    b.Property<string>("RevName")
                         .HasColumnType("text");
 
                     b.Property<string>("Status")

@@ -8,6 +8,6 @@ namespace BillProcessorAPI.Services.Interfaces
     {
         Task<SuccessResponse<PaythruPaymentResponseDto>> CreatePayment(int amount, string billCode);
         Task<SuccessResponse<PaymentVerificationResponseDto>> VerifyPayment(NotificationRequestWrapper Url);
-        Task<SuccessResponse<bool>> ConfirmPayment(ConfirmPaymentRequest model);
+        Task<SuccessResponse<PaymentInvoiceResponse>> ConfirmPayment(ConfirmPaymentRequest model);
     }
 }

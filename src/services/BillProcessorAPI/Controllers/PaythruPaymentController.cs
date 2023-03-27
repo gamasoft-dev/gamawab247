@@ -30,9 +30,9 @@ namespace BillProcessorAPI.Controllers
 			return Ok(response);
 		}
 
-        [HttpPost("/paythru/confirm-payment")]
+        [HttpPost("/paythru/payment-confirmation")]
         [ProducesResponseType(typeof(bool), 200)]
-        [SwaggerOperation(Summary = "Paythru Payment Confirmation Url")]
+        [SwaggerOperation(Summary = "Paythru redirect endpoint")]
         public async Task<IActionResult> NotificationConfirmation([FromBody] ConfirmPaymentRequest model)
         {
             var response = await _paythruService.ConfirmPayment(model);

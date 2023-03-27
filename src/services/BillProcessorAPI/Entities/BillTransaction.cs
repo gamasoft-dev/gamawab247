@@ -5,11 +5,18 @@ namespace BillProcessorAPI.Entities
     public class BillTransaction : AuditableEntity
     {
         public Guid Id { get; set; }
-        public Guid? UserId { get; set; }
+        public Guid? BillPayerInfoId { get; set; }
+        public string PayerName { get; set; }
+        public string BillNumber { get; set; }
+        public string Pid { get; set; }
+        public string RevName { get; set; }
+        public string PhoneNumber { get; set; }
+        public string DueDate { get; set; }
         public EGatewayType GatewayType { get; set; }
         public string Status { get; set; }
         public string TransactionReference { get; set; }
         public string GatewayTransactionReference { get; set; }
+        public decimal AmountDue { get; set; }
         public decimal AmountPaid { get; set; } // Include charges
         public decimal BillAmount { get; set; }
         public decimal PrinciPalAmount { get; set; } // Amount without charge
@@ -25,6 +32,6 @@ namespace BillProcessorAPI.Entities
         public string SuccessIndicator { get; set; }
         public string PaymentInfoRequestData { get; set; }
 		public string PaymentInfoResponseData { get; set; }
-		public BillPayerInfo User { get; set; }
+		public BillPayerInfo BillPayerInfo { get; set; }
     }
 }

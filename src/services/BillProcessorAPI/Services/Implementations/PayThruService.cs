@@ -29,8 +29,9 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly PaythruOptions PaythruOptions;
         private readonly IHttpService _httpService;
         private readonly IConfigurationService _configService;
+        private readonly IMapper _mapper;
 
-        public PayThruService(IRepository<BillPayerInfo> billPayerRepo, IRepository<BillTransaction> billTransactions, IOptions<PaythruOptions> paythruOptions, IHttpService httpService, IConfigurationService configService)
+        public PayThruService(IRepository<BillPayerInfo> billPayerRepo, IRepository<BillTransaction> billTransactions, IOptions<PaythruOptions> paythruOptions, IHttpService httpService, IConfigurationService configService, IMapper mapper)
         {
 
             _billPayerRepo = billPayerRepo;
@@ -38,31 +39,9 @@ namespace BillProcessorAPI.Services.Implementations
             PaythruOptions = paythruOptions.Value;
             _httpService = httpService;
             _configService = configService;
+            _mapper = mapper;
         }
 
-        public  async Task<SuccessResponse<bool>> ConfirmPayment(ConfirmPaymentRequest model)
-        {           
-            if (string.IsNullOrEmpty(model.Status))
-                   throw new RestException(HttpStatusCode.BadRequest, "success indicator cannot be null");
-
-                try
-                {
-                    var transactionNotification = await _billTransactionsRepo.FirstOrDefault(x => x.SuccessIndicator == model.Status)
-                    ?? throw new RestException(HttpStatusCode.NotFound, "An error occured while processing the transactuion");
-                    return new SuccessResponse<bool>
-                    {
-                        Data = true,
-                        Message = "Transaction Successful"
-                    };
-                }
-                catch (Exception ex)
-                {
-
-                    throw new RestException(HttpStatusCode.InternalServerError, ex.Message);
-                }
-
-            
-        }
 
         public async Task<SuccessResponse<PaythruPaymentResponseDto>> CreatePayment(int amount, string billCode)
         {
@@ -130,7 +109,15 @@ namespace BillProcessorAPI.Services.Implementations
                     {
                         GatewayType = EGatewayType.Paythru,
                         Status = ETransactionStatus.Created.ToString(),
+                        BillPayerInfoId = billPayer.Id,
+                        PayerName = billPayer.PayerName,
+                        BillNumber = billPayer.billCode,
+                        Pid = billPayer.Pid,
+                        RevName = billPayer.RevName,
+                        PhoneNumber = billPayer.PhoneNumber,
+                        DueDate = billPayer.AcctCloseDate,
                         TransactionReference = paymentCreationPayload.transactionReference,
+                        AmountDue = billPayer.AmountDue,
                         AmountPaid = amount,
                         SuccessIndicator = createTransactionResponse.Data.successIndicator,
                         PaymentUrl = createTransactionResponse.Data.payLink,
@@ -206,7 +193,7 @@ namespace BillProcessorAPI.Services.Implementations
                 {
                     verificationSuccess = true;
                     data.ResponseCode = ETransactionResponseCodes.Successful;
-                    data.Description = "Transaction Successful";  
+                    data.Description = "Transaction Successful";
                 }
 
                 await _billTransactionsRepo.SaveChangesAsync();
@@ -224,6 +211,51 @@ namespace BillProcessorAPI.Services.Implementations
             }
         }
 
-       
+        public async Task<SuccessResponse<PaymentInvoiceResponse>> ConfirmPayment(ConfirmPaymentRequest model)
+        {
+            if (string.IsNullOrEmpty(model.Status))
+                throw new RestException(HttpStatusCode.BadRequest, "success indicator cannot be null");
+            var invoiceResponse = new SuccessResponse<PaymentInvoiceResponse>();
+            try
+            {
+                var transaction = await _billTransactionsRepo.FirstOrDefault(x => x.SuccessIndicator == model.Status);
+                if (transaction == null)
+                {
+                    invoiceResponse.Success = false;
+                    invoiceResponse.Message = "Unable to fetch transaction: transaction failed";
+                    invoiceResponse.Data = null;
+                    return invoiceResponse;
+                }
+
+                var receiptArray = new[]
+                {
+                    new Receipt
+                    {
+                        GateWay = transaction.GatewayType.ToString(),
+                        PaymentRef = transaction.TransactionReference,
+                        GatewayTransactionReference = transaction.GatewayTransactionReference,
+                        AmountPaid = transaction.AmountPaid,
+                        AmountDue = transaction.AmountDue
+                    }
+                };
+
+                var invoice = _mapper.Map<PaymentInvoiceResponse>(transaction);
+                invoice.Receipts = receiptArray;
+
+                invoiceResponse.Data = invoice;
+                invoiceResponse.Success = true;
+                invoiceResponse.Message = "Transaction Successful";
+
+                return invoiceResponse;
+            }
+            catch (Exception ex)
+            {
+
+                throw new RestException(HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+
+        }
+
     }
 }
