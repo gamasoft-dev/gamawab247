@@ -15,6 +15,9 @@ namespace Application.Services.Interfaces
     {
         Task<SuccessResponse<RequestAndComplaintDto>> CreateRequestAndComplaint(CreateRequestAndComplaintDto model);
         Task<SuccessResponse<RequestAndComplaintDto>> UpdateRequestAndComplaint(Guid id,UpdateRequestAndComplaintDto model);
+        Task<SuccessResponse<RequestAndComplaintDto>> UpdateRequestAndComplaint(Guid id, SimpleUpdateRequestAndComplaint model);
+
+
         Task<SuccessResponse<bool>> DeleteRequestAndComplaint(Guid id);
         Task<SuccessResponse<RequestAndComplaintDto>> GetRequestAndComplaint(Guid id);
         Task<SuccessResponse<RequestAndComplaintDto>> GetRequestAndComplaintByTicketId(string ticketId);
@@ -22,6 +25,8 @@ namespace Application.Services.Interfaces
             string endPointName, IUrlHelper url);
         Task<PagedResponse<IEnumerable<RequestAndComplaintDto>>> GetAllRequestAndComplaintByBusinessId(Guid businessId, ResourceParameter parameter,
             string endPointName, IUrlHelper url);
+
+
 
     }
 }

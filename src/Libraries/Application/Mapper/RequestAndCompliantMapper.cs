@@ -13,9 +13,13 @@ namespace Application.Mapper
     {
         public RequestAndCompliantMapper()
         {
-            CreateMap<RequestAndComplaint, RequestAndComplaintDto>().ReverseMap();
-            CreateMap<RequestAndComplaint, CreateRequestAndComplaintDto>().ReverseMap();
-            CreateMap<RequestAndComplaint, UpdateRequestAndComplaintDto>().ReverseMap();
+            CreateMap<RequestAndComplaint, RequestAndComplaintDto>()
+                 .ForMember(dest => dest.TreatedBy, opt => opt.MapFrom(src => src.TreatedBy.FirstName));
+                 //.ForMember(dest => dest.Responses, opt => opt.MapFrom(src => src.ResponsList.Responses.Select(x => x.Response)));
+
+
+            CreateMap<CreateRequestAndComplaintDto, RequestAndComplaint>();
+            CreateMap<UpdateRequestAndComplaintDto, RequestAndComplaint>();
         }
     }
 }
