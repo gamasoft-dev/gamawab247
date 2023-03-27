@@ -15,6 +15,7 @@ using Domain.Entities.RequestAndComplaints;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Meta = Application.Helpers.Meta;
 
 namespace Application.Services.Implementations
@@ -71,19 +72,27 @@ namespace Application.Services.Implementations
         public async Task<PagedResponse<IEnumerable<RequestAndComplaintDto>>> GetAllRequestAndComplaint(ResourceParameter parameter, string endPointName, IUrlHelper url)
         {
             var queryable = _requestAndComplaintRepo
-                  .Query(x => string.IsNullOrEmpty(parameter.Search)
-                              || x.Subject.ToLower().Contains(parameter.Search.ToLower()) || 
-                              x.ResolutionStatus.ToLower().Contains(parameter.Search.ToLower()));
+                  .Query(x => x.Id != Guid.Empty);
+
+            if (!string.IsNullOrEmpty(parameter.Search)) {
+                queryable = queryable.Where(x => x.Detail.ToLower() == parameter.Search.ToLower());
+            }
+
+            if (!string.IsNullOrEmpty(parameter.Filter)) {
+
+                queryable = queryable.Where(x => x.ResolutionStatus.ToLower() == parameter.Filter.ToLower());
+            }
+
 
             var queryProjection = queryable.ProjectTo<RequestAndComplaintDto>(_mapper.ConfigurationProvider);
 
-            var partners = await PagedList<RequestAndComplaintDto>.CreateAsync(queryProjection, parameter.PageNumber, parameter.PageSize, parameter.Sort);
-            var page = PageUtility<RequestAndComplaintDto>.CreateResourcePageUrl(parameter, endPointName, partners, url);
+            var requests = await PagedList<RequestAndComplaintDto>.CreateAsync(queryProjection, parameter.PageNumber, parameter.PageSize, parameter.Sort);
+            var page = PageUtility<RequestAndComplaintDto>.CreateResourcePageUrl(parameter, endPointName, requests, url);
 
             var response = new PagedResponse<IEnumerable<RequestAndComplaintDto>>
             {
                 Message = ResponseMessages.RetrievalSuccessResponse,
-                Data = partners,
+                Data = requests,
                 Meta = new Meta
                 {
                     Pagination = page
@@ -94,11 +103,17 @@ namespace Application.Services.Implementations
 
         public async Task<PagedResponse<IEnumerable<RequestAndComplaintDto>>> GetAllRequestAndComplaintByBusinessId(Guid businessId, ResourceParameter parameter, string endPointName, IUrlHelper url)
         {
-            var queryable = _requestAndComplaintRepo
-                  .Query(x => string.IsNullOrEmpty(parameter.Search)
-                              || x.Subject.ToLower().Contains(parameter.Search.ToLower()) && x.BusinessId == businessId);
-            if (queryable == null)
-                throw new RestException(System.Net.HttpStatusCode.BadRequest, ResponseMessages.Failed);
+            var queryable = _requestAndComplaintRepo.Query(x => x.BusinessId == businessId);
+
+            if (!string.IsNullOrEmpty(parameter.Search))
+            {
+                queryable = queryable.Where(x => x.Detail.ToLower() == parameter.Search.ToLower());
+            }
+
+            if (!string.IsNullOrEmpty(parameter.Filter))
+            {
+                queryable = queryable.Where(x => x.ResolutionStatus.ToLower() == parameter.Filter.ToLower());
+            }
 
             var queryProjection = queryable.ProjectTo<RequestAndComplaintDto>(_mapper.ConfigurationProvider);
 
@@ -172,6 +187,42 @@ namespace Application.Services.Implementations
             requestORComplaint.Detail = model.Detail;
 
             _requestAndComplaintRepo.Update(requestORComplaint);
+            await _requestAndComplaintRepo.SaveChangesAsync();
+
+            RequestAndComplaintDto requestAndComplainResponse = _mapper.Map<RequestAndComplaintDto>(requestORComplaint);
+            return new SuccessResponse<RequestAndComplaintDto>
+            {
+                Data = requestAndComplainResponse,
+                Message = ResponseMessages.Successful
+            };
+        }
+
+        public async Task<SuccessResponse<RequestAndComplaintDto>> UpdateRequestAndComplaint(Guid id, SimpleUpdateRequestAndComplaint model)
+        {
+            if (id == Guid.Empty || model == null)
+                throw new RestException(System.Net.HttpStatusCode.BadRequest, ResponseMessages.Failed);
+
+            var requestORComplaint = await _requestAndComplaintRepo.FirstOrDefault(x=>x.Id == id)
+                ?? throw new RestException(System.Net.HttpStatusCode.NotFound, ResponseMessages.Failed);
+            
+            var respondedBy = WebHelper.CurrentUser?.Identity?.Name;
+
+            var requestResponses = requestORComplaint.ResponsList?.Responses ?? new List<RequestAndComplainResponse>();
+
+            var newResponse = new RequestAndComplainResponse {
+                DateResponded = DateTime.UtcNow,
+                RespondedBy = respondedBy,
+                RespondedById = WebHelper.UserId,
+                Response = model.Response
+            };
+
+            requestResponses.Add(newResponse);
+
+            // update complaint request with new response
+            requestORComplaint.ResponsList = new RequestAndComplaintResponsList { Responses = requestResponses};
+            requestORComplaint.ResolutionStatus = model.ResolutionStatus.ToString();
+            requestORComplaint.ResolutionDate = DateTime.UtcNow;
+
             await _requestAndComplaintRepo.SaveChangesAsync();
 
             RequestAndComplaintDto requestAndComplainResponse = _mapper.Map<RequestAndComplaintDto>(requestORComplaint);
