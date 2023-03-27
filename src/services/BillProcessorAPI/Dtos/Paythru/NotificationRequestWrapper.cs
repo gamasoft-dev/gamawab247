@@ -37,7 +37,7 @@
 
         public decimal Amount { get; set; }
 
-        public decimal? Commission { get; set; }
+        public decimal Commission { get; set; }
         public decimal ResidualAmount { get; set; }
         public string CustomerName { get; set; }
 

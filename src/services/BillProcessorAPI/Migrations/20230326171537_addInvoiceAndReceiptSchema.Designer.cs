@@ -3,6 +3,7 @@ using System;
 using BillProcessorAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BillProcessorAPI.Migrations
 {
     [DbContext(typeof(BillProcessorDbContext))]
-    partial class BillProcessorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230326171537_addInvoiceAndReceiptSchema")]
+    partial class addInvoiceAndReceiptSchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,20 +155,11 @@ namespace BillProcessorAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<decimal>("AmountDue")
-                        .HasColumnType("numeric");
-
                     b.Property<decimal>("AmountPaid")
                         .HasColumnType("numeric");
 
                     b.Property<decimal>("BillAmount")
                         .HasColumnType("numeric");
-
-                    b.Property<string>("BillNumber")
-                        .HasColumnType("text");
-
-                    b.Property<Guid?>("BillPayerInfoId")
-                        .HasColumnType("uuid");
 
                     b.Property<string>("Channel")
                         .HasColumnType("text");
@@ -175,9 +169,6 @@ namespace BillProcessorAPI.Migrations
 
                     b.Property<Guid?>("CreatedById")
                         .HasColumnType("uuid");
-
-                    b.Property<string>("DueDate")
-                        .HasColumnType("text");
 
                     b.Property<decimal>("GatewayTransactionCharge")
                         .HasColumnType("numeric");
@@ -191,9 +182,6 @@ namespace BillProcessorAPI.Migrations
                     b.Property<string>("Narration")
                         .HasColumnType("text");
 
-                    b.Property<string>("PayerName")
-                        .HasColumnType("text");
-
                     b.Property<string>("PaymentInfoRequestData")
                         .HasColumnType("text");
 
@@ -201,12 +189,6 @@ namespace BillProcessorAPI.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("PaymentUrl")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Pid")
                         .HasColumnType("text");
 
                     b.Property<decimal>("PrinciPalAmount")
@@ -219,9 +201,6 @@ namespace BillProcessorAPI.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("ResourcePIN")
-                        .HasColumnType("text");
-
-                    b.Property<string>("RevName")
                         .HasColumnType("text");
 
                     b.Property<string>("Status")
@@ -242,9 +221,12 @@ namespace BillProcessorAPI.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("BillPayerInfoId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("BillTransactions");
                 });
@@ -311,13 +293,42 @@ namespace BillProcessorAPI.Migrations
                     b.ToTable("Invoices");
                 });
 
+            modelBuilder.Entity("BillProcessorAPI.Entities.Receipt", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("AmountDue")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("AmountPaid")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("Gateway")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("PaymentReference")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("TransactionDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("TransactionID")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Receipts");
+                });
+
             modelBuilder.Entity("BillProcessorAPI.Entities.BillTransaction", b =>
                 {
-                    b.HasOne("BillProcessorAPI.Entities.BillPayerInfo", "BillPayerInfo")
+                    b.HasOne("BillProcessorAPI.Entities.BillPayerInfo", "User")
                         .WithMany("BillTransactions")
-                        .HasForeignKey("BillPayerInfoId");
+                        .HasForeignKey("UserId");
 
-                    b.Navigation("BillPayerInfo");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BillProcessorAPI.Entities.BillPayerInfo", b =>

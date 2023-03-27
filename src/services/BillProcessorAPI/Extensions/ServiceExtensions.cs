@@ -18,7 +18,7 @@ namespace BillProcessorAPI.Extensions
                 .HandleTransientHttpError()
                 .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(retryAttempt));
 
-            serviceCollection.AddHttpClient<ITransactionService, TransactionService>()
+            serviceCollection.AddHttpClient<IFlutterwaveService, FlutterwaveService>()
                 .AddPolicyHandler(retryPolicy);
             serviceCollection.AddHttpClient<IBillService, BillService>()
                 .AddPolicyHandler(retryPolicy);

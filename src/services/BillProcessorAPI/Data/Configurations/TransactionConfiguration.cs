@@ -9,9 +9,9 @@ namespace BillProcessorAPI.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<BillTransaction> builder)
         {
-            builder.HasOne(x => x.User)
+            builder.HasOne(x => x.BillPayerInfo)
                 .WithMany()
-                .HasForeignKey(x => x.UserId)
+                .HasForeignKey(x => x.BillPayerInfoId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

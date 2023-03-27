@@ -29,7 +29,7 @@ namespace Gamawabs247API.Controllers
             _logger = logger;
         }
 
-       
+
         [HttpPost]
         [ProducesResponseType(typeof(SuccessResponse<RequestAndComplaintDto>), (int)HttpStatusCode.Created)]
         [Authorize]//for admin usage
