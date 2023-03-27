@@ -95,6 +95,7 @@ namespace Application.Helpers
         public string Sort { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public string Filter { get; internal set; }
 
         internal int Skip { get { return _skip; } private set { 
                _skip = PageNumber > 1 ? (PageNumber * PageSize) / PageSize : 0 ;

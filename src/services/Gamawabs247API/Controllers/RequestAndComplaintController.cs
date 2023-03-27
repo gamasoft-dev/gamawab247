@@ -22,9 +22,11 @@ namespace Gamawabs247API.Controllers
     {
         private readonly IRequestAndComplaintService _requestAndComplaintService;
         private readonly ILogger<RequestAndComplaintController> _logger;
-        public RequestAndComplaintController(IRequestAndComplaintService requestAndComplaintService)
+        public RequestAndComplaintController(IRequestAndComplaintService requestAndComplaintService,
+            ILogger<RequestAndComplaintController> logger)
         {
             _requestAndComplaintService = requestAndComplaintService;
+            _logger = logger;
         }
 
        
@@ -63,6 +65,23 @@ namespace Gamawabs247API.Controllers
             }
         }
 
+        [HttpPut("{id}/resolve")]
+        [ProducesResponseType(typeof(SuccessResponse<RequestAndComplaintDto>), (int)HttpStatusCode.OK)]
+        [Authorize]//for admin usage
+        public async Task<IActionResult> ResolveRequest([FromRoute] Guid id, [FromBody] SimpleUpdateRequestAndComplaint model)
+        {
+            try
+            {
+                var requestOrComplaint = await _requestAndComplaintService.UpdateRequestAndComplaint(id, model);
+                return Ok(requestOrComplaint);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(ex.Message, ex);
+                throw;
+            }
+        }
+
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(SuccessResponse<bool>), (int)HttpStatusCode.NoContent)]
         [Authorize]//for admin usage
@@ -82,7 +101,7 @@ namespace Gamawabs247API.Controllers
 
         [HttpGet(Name = nameof(GetAllRequestAndComplaint))]
         [ProducesResponseType(typeof(IEnumerable<RequestAndComplaintDto>), 200)]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetAllRequestAndComplaint([FromQuery] ResourceParameter parameter)
         {
             try
@@ -98,7 +117,7 @@ namespace Gamawabs247API.Controllers
 
         [HttpGet("business/{id}",Name = nameof(GetAllRequestAndComplaintByBusinessId))]
         [ProducesResponseType(typeof(IEnumerable<RequestAndComplaintDto>), 200)]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetAllRequestAndComplaintByBusinessId([FromRoute] Guid id,[FromQuery] ResourceParameter parameter)
         {
             try
