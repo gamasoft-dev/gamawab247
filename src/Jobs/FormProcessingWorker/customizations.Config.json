@@ -3,7 +3,7 @@
         "holderVerificationEndpoint": "v1/abc/invoice",
         "clientKey": "",
         "linkGeneratorUserParamKey": "billPaymentCode",
-        "billCodePaymentPageLink": "https://gamasoft-lucweb.vercel.app/bill-payment",
+        "billCodePaymentPageLink": "https://gamasoft-lucweb.vercel.app/invoice",
         "baseUrl": "https://gamasoftltd.com.ng",
         "isMockRequest": false
     }
