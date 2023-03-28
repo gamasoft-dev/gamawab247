@@ -19,6 +19,8 @@ using System;
 using BillProcessorAPI.Enums;
 using Domain.Exceptions;
 using BillProcessorAPI.Dtos.Paythru;
+using BillProcessorAPI.Dtos.Common;
+using System.Runtime.InteropServices;
 
 namespace BillProcessorAPI.Services.Implementations
 {
@@ -43,12 +45,12 @@ namespace BillProcessorAPI.Services.Implementations
         }
 
 
-        public async Task<SuccessResponse<PaythruPaymentResponseDto>> CreatePayment(int amount, string billCode)
+        public async Task<SuccessResponse<PaymentCreationResponse>> CreatePayment(int amount, string billCode)
         {
-            if (amount < PaythruOptions.MinimumPayableAmount)
-            {
-                throw new RestException(HttpStatusCode.BadRequest, $"The minimum amount payable is {PaythruOptions.MinimumPayableAmount}");
-            }
+            //if (amount < PaythruOptions.MinimumPayableAmount)
+            //{
+            //    throw new RestException(HttpStatusCode.BadRequest, $"The minimum amount payable is {PaythruOptions.MinimumPayableAmount}");
+            //}
             if (string.IsNullOrEmpty(billCode))
             {
                 throw new RestException(HttpStatusCode.BadRequest, "please enter a valid billCode");
@@ -136,11 +138,17 @@ namespace BillProcessorAPI.Services.Implementations
 
                     decimal systemChargeCalculation = 100;
                     createTransactionResponse.Data.systemCharge = systemChargeCalculation;
-
-                    return new SuccessResponse<PaythruPaymentResponseDto>
+                    var paymentCreationResponse = new PaymentCreationResponse
                     {
-                        Data = createTransactionResponse.Data,
-                        Message = "Data retrieved successfully"
+                        PayLink = createTransactionResponse.Data.payLink,
+                        SystemCharge = systemChargeCalculation,
+                        Status = "success"
+                    };
+
+                    return new SuccessResponse<PaymentCreationResponse>
+                    {
+                        Data = paymentCreationResponse,
+                        Message = "Payment created successfully"
                     };
 
                 }
