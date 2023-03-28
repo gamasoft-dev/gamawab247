@@ -1,4 +1,5 @@
 ﻿using BillProcessorAPI.Dtos;
+using BillProcessorAPI.Dtos.Common;
 using BillProcessorAPI.Dtos.Flutterwave;
 using BillProcessorAPI.Services.Implementations;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,7 @@ namespace BillProcessorAPI.Controllers
     {
 
         [HttpPost("/flutterwave")]
-        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(PaymentCreationResponse), 200)]
         [SwaggerOperation(Summary = "Endpoint to create transaction")]
         public async Task<IActionResult> CreateFlutterwavePayment(string email,  decimal amount, string billPaymentCode)
         {

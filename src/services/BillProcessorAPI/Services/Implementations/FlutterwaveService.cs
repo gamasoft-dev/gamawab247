@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BillProcessorAPI.Dtos;
+using BillProcessorAPI.Dtos.Common;
 using BillProcessorAPI.Dtos.Flutterwave;
 using BillProcessorAPI.Entities;
 using BillProcessorAPI.Enums;
@@ -41,7 +42,7 @@ namespace BillProcessorAPI.Services.Implementations
         }
 
 
-        public async Task<SuccessResponse<string>> CreateTransaction(string email, decimal amount, string billPaymentCode)
+        public async Task<SuccessResponse<PaymentCreationResponse>> CreateTransaction(string email, decimal amount, string billPaymentCode)
         {
 
             if (string.IsNullOrEmpty(email) || amount < 0)
@@ -107,10 +108,24 @@ namespace BillProcessorAPI.Services.Implementations
             await _invoiceRepo.AddAsync(billInvoice);
             await _invoiceRepo.SaveChangesAsync();
 
-            return new SuccessResponse<string>
+            var charge = new ChargesInputDto
             {
-                Data = paymentCreationResponse.Data.Data.Link
+                Amount = amount,
+                Channel = "Flutterwave"
             };
+            var response = new PaymentCreationResponse
+            {
+                SystemCharge = _configService.CalculateBillChargesOnAmount(charge).Data.AmountCharge,
+                PayLink = paymentCreationResponse.Data.Data.Link,
+                Status = paymentCreationResponse.Data.Status,
+            };
+
+            return new SuccessResponse<PaymentCreationResponse>
+            {
+                Data = response,
+                Message = "Payment created successfully",
+            };
+           
         }
 
         public async Task<SuccessResponse<string>> PaymentNotification(string signature, WebHookNotificationWrapper model)

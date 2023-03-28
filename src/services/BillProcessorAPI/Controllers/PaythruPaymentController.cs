@@ -1,4 +1,5 @@
 ﻿using BillProcessorAPI.Dtos;
+using BillProcessorAPI.Dtos.Common;
 using BillProcessorAPI.Dtos.Paythru;
 using BillProcessorAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +14,7 @@ namespace BillProcessorAPI.Controllers
 	{
 
         [HttpPost("/paythru")]
-        [ProducesResponseType(typeof(PaythruPaymentResponseDto), 200)]
+        [ProducesResponseType(typeof(PaymentCreationResponse), 200)]
         [SwaggerOperation(Summary = "Endpoint to create a payment transaction with paythru")]
         public async Task<IActionResult> CreateTransaction(int amount, string billCode)
 		{
