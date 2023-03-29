@@ -168,7 +168,7 @@ namespace BillProcessorAPI.Services.Implementations
                     Amount = model.Data.amount,
                     Channel = "FlutterWave"
                 };
-
+                //TODO
                 transaction.GatewayTransactionReference = model.Data.flw_ref;
                 transaction.Narration = model.Data.narration;
                 transaction.TransactionCharge = _configService.CalculateBillChargesOnAmount(charge).Data.AmountCharge;
