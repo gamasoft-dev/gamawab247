@@ -85,9 +85,17 @@ namespace BillProcessorAPI.Services.Implementations
 
                 var billTransaction = new BillTransaction
                 {
-                    GatewayType = EGatewayType.Flutterwave,
+                    GatewayType = EGatewayType.Paythru,
                     Status = ETransactionStatus.Created.ToString(),
+                    BillPayerInfoId = billPayer.Id,
+                    PayerName = billPayer.PayerName,
+                    BillNumber = billPayer.billCode,
+                    Pid = billPayer.Pid,
+                    RevName = billPayer.RevName,
+                    PhoneNumber = billPayer.PhoneNumber,
+                    DueDate = billPayer.AcctCloseDate,
                     TransactionReference = trxReference,
+                    AmountDue = billPayer.AmountDue,
                     AmountPaid = amount,
                     PaymentUrl = paymentCreationResponse.Data.Data.Link,
                     PaymentInfoResponseData = JsonConvert.SerializeObject(paymentCreationResponse.Data),
