@@ -10,7 +10,7 @@ namespace BillProcessorAPI.Services.Interfaces
     {
         Task<SuccessResponse<PaymentCreationResponse>> CreateTransaction(string email, decimal amount, string billPaymentCode);
         Task<string> VerifyTransaction(string transactionReference);
-        Task<SuccessResponse<string>> PaymentConfirmation(string status, string tx_ref, string transaction_id);
+        Task<SuccessResponse<PaymentInvoiceResponse>> PaymentConfirmation(string status, string tx_ref, string transaction_id);
         Task<SuccessResponse<string>> PaymentNotification(string signature, WebHookNotificationWrapper model);
     }
 }
