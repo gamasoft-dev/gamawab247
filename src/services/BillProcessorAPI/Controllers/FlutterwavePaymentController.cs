@@ -39,7 +39,7 @@ namespace BillProcessorAPI.Controllers
         }
 
         [HttpGet("/flutterwave/payment-confirmation/{status}/{tx_ref}/{transaction_id}")]
-        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(PaymentInvoiceResponse), 200)]
         [SwaggerOperation(Summary = "Endpoint for redirect url")]
         public async Task<IActionResult> PaymentConfirmation([FromRoute] string status, string tx_ref, string transaction_id)
         {

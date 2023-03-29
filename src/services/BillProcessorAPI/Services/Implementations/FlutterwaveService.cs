@@ -9,6 +9,7 @@ using BillProcessorAPI.Helpers.Flutterwave;
 using BillProcessorAPI.Repositories.Interfaces;
 using BillProcessorAPI.Services.Interfaces;
 using Domain.Common;
+using Domain.Exceptions;
 using Infrastructure.Http;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -24,6 +25,7 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly FlutterwaveOptions _flutterOptions;
         private readonly IHttpService _httpService;
         private readonly IConfigurationService _configService;
+        private readonly IMapper _mapper;
         public FlutterwaveService(
             IRepository<BillTransaction> billTransactionsRepo,
             IOptions<BillTransactionSettings> settings,
@@ -31,7 +33,8 @@ namespace BillProcessorAPI.Services.Implementations
             IOptions<FlutterwaveOptions> flutterOptions,
             IHttpService httpService,
             IConfigurationService configService,
-            IRepository<Invoice> invoiceRepo)
+            IRepository<Invoice> invoiceRepo,
+            IMapper mapper)
         {
             _billTransactionsRepo = billTransactionsRepo;
             _billPayerRepository = billPayerRepository;
@@ -39,6 +42,7 @@ namespace BillProcessorAPI.Services.Implementations
             _httpService = httpService;
             _configService = configService;
             _invoiceRepo = invoiceRepo;
+            _mapper = mapper;
         }
 
 
@@ -60,72 +64,85 @@ namespace BillProcessorAPI.Services.Implementations
                 Amount = amount,
                 Tx_ref = trxReference,
                 Currency = "NGN",
-                Redirect_url = "https://92d4-102-91-5-91.eu.ngrok.io/flutterwave/payment-confirmation",
+                Redirect_url = _flutterOptions.RedirectUrl,
                 Customer = new CustomerDto
                 {
                     Email = email,
                 }
             };
-
-            var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.CreateTransaction}";
-
-            var paymentCreationResponse = await _httpService
-                .Post<FlutterwaveResponse<LinkData>, FCreateTransactionRequestDto>(url, headerParam, flutterwaveRequestPayload);
-            if (paymentCreationResponse.Data.Status != "success")
-                throw new RestException(HttpStatusCode.BadRequest, "An error occured while processing your request");
-
-            var billPayer = await _billPayerRepository.FirstOrDefault(x => x.billCode == billPaymentCode)
-                       ?? throw new RestException(HttpStatusCode.NotFound, "unable to fetch bill payer for this transaction");
-            var billTransaction = new BillTransaction
+            try
             {
-                GatewayType = EGatewayType.Flutterwave,
-                Status = ETransactionStatus.Created.ToString(),
-                TransactionReference = trxReference,
-                AmountPaid = amount,
-                PaymentUrl = paymentCreationResponse.Data.Data.Link,
-                PaymentInfoResponseData = JsonConvert.SerializeObject(paymentCreationResponse.Data),
-                PaymentInfoRequestData = JsonConvert.SerializeObject(flutterwaveRequestPayload)
-            };
+                var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.CreateTransaction}";
 
-            await _billTransactionsRepo.AddAsync(billTransaction);
-            await _billTransactionsRepo.SaveChangesAsync();
+                var billPayer = await _billPayerRepository.FirstOrDefault(x => x.billCode == billPaymentCode)
+                           ?? throw new RestException(HttpStatusCode.NotFound, "unable to fetch bill payer for this transaction");
 
-            var billInvoice = new Invoice
+                var paymentCreationResponse = await _httpService
+                    .Post<FlutterwaveResponse<LinkData>, FCreateTransactionRequestDto>(url, headerParam, flutterwaveRequestPayload);
+                if (paymentCreationResponse.Data.Status != "success")
+                    throw new RestException(HttpStatusCode.BadRequest, "An error occured while processing your request");
+
+
+                var billTransaction = new BillTransaction
+                {
+                    GatewayType = EGatewayType.Flutterwave,
+                    Status = ETransactionStatus.Created.ToString(),
+                    TransactionReference = trxReference,
+                    AmountPaid = amount,
+                    PaymentUrl = paymentCreationResponse.Data.Data.Link,
+                    PaymentInfoResponseData = JsonConvert.SerializeObject(paymentCreationResponse.Data),
+                    PaymentInfoRequestData = JsonConvert.SerializeObject(flutterwaveRequestPayload)
+                };
+
+                await _billTransactionsRepo.AddAsync(billTransaction);
+                await _billTransactionsRepo.SaveChangesAsync();
+
+                var billInvoice = new Invoice
+                {
+                    AmountDue = billPayer.AmountDue,
+                    AgencyCode = billPayer.AgencyCode,
+                    PayerName = billPayer.PayerName,
+                    RevenueCode = billPayer.RevenueCode,
+                    OraAgencyRev = billPayer.OraAgencyRev,
+                    State = billPayer.Status,
+                    Pid = billPayer.Pid,
+                    AcctCloseDate = billPayer.AcctCloseDate,
+                    CbnCode = billPayer.CbnCode,
+                    AgencyName = billPayer.AgencyName,
+                    RevName = billPayer.RevName
+                };
+
+                await _invoiceRepo.AddAsync(billInvoice);
+                await _invoiceRepo.SaveChangesAsync();
+
+                var charge = new ChargesInputDto
+                {
+                    Amount = amount,
+                    Channel = "Flutterwave"
+                };
+                var response = new PaymentCreationResponse
+                {
+                    SystemCharge = _configService.CalculateBillChargesOnAmount(charge).Data.AmountCharge,
+                    PayLink = paymentCreationResponse.Data.Data.Link,
+                    Status = paymentCreationResponse.Data.Status,
+                };
+
+                return new SuccessResponse<PaymentCreationResponse>
+                {
+                    Data = response,
+                    Message = "Payment created successfully",
+                };
+            }
+            catch (HttpException e)
             {
-                AmountDue = billPayer.AmountDue,
-                AgencyCode = billPayer.AgencyCode,
-                PayerName = billPayer.PayerName,
-                RevenueCode = billPayer.RevenueCode,
-                OraAgencyRev = billPayer.OraAgencyRev,
-                State = billPayer.Status,
-                Pid = billPayer.Pid,
-                AcctCloseDate = billPayer.AcctCloseDate,
-                CbnCode = billPayer.CbnCode,
-                AgencyName = billPayer.AgencyName,
-                RevName = billPayer.RevName
-            };
-
-            await _invoiceRepo.AddAsync(billInvoice);
-            await _invoiceRepo.SaveChangesAsync();
-
-            var charge = new ChargesInputDto
+                throw new RestException((HttpStatusCode)e.StatusCode, e.Message);
+            }
+            catch (Exception ex)
             {
-                Amount = amount,
-                Channel = "Flutterwave"
-            };
-            var response = new PaymentCreationResponse
-            {
-                SystemCharge = _configService.CalculateBillChargesOnAmount(charge).Data.AmountCharge,
-                PayLink = paymentCreationResponse.Data.Data.Link,
-                Status = paymentCreationResponse.Data.Status,
-            };
+                throw new RestException(HttpStatusCode.InternalServerError, ex.Message);
+            }
 
-            return new SuccessResponse<PaymentCreationResponse>
-            {
-                Data = response,
-                Message = "Payment created successfully",
-            };
-           
+
         }
 
         public async Task<SuccessResponse<string>> PaymentNotification(string signature, WebHookNotificationWrapper model)
@@ -135,47 +152,85 @@ namespace BillProcessorAPI.Services.Implementations
             if (model == null)
                 throw new RestException(HttpStatusCode.BadRequest, "invalid transaction");
 
-            var transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.Data.tx_ref);
-            var charge = new ChargesInputDto
+            try
             {
-                Amount = model.Data.amount,
-                Channel = "FlutterWave"
-            };
+                var transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.Data.tx_ref);
+                var charge = new ChargesInputDto
+                {
+                    Amount = model.Data.amount,
+                    Channel = "FlutterWave"
+                };
 
-            transaction.GatewayTransactionReference = model.Data.flw_ref;
-            transaction.Narration = model.Data.narration;
-            transaction.TransactionCharge = _configService.CalculateBillChargesOnAmount(charge).Data.AmountCharge;
-            transaction.Status = ETransactionStatus.Successful.ToString();
-            transaction.StatusMessage = model.Data.status;
-            transaction.AmountPaid = model.Data.amount;
-            transaction.Channel = model.Data.payment_type;
-            transaction.GatewayTransactionCharge = (decimal)model.Data.app_fee;
+                transaction.GatewayTransactionReference = model.Data.flw_ref;
+                transaction.Narration = model.Data.narration;
+                transaction.TransactionCharge = _configService.CalculateBillChargesOnAmount(charge).Data.AmountCharge;
+                transaction.Status = ETransactionStatus.Successful.ToString();
+                transaction.StatusMessage = model.Data.status;
+                transaction.AmountPaid = model.Data.amount;
+                transaction.Channel = model.Data.payment_type;
+                transaction.GatewayTransactionCharge = (decimal)model.Data.app_fee;
 
-            await _billTransactionsRepo.SaveChangesAsync();
+                await _billTransactionsRepo.SaveChangesAsync();
 
-            return new SuccessResponse<string>
+                return new SuccessResponse<string>
+                {
+                    Data = "Transaction Completed"
+                };
+            }
+            catch (Exception ex)
             {
-                Data = "Transaction Completed"
-            };
+
+                throw new RestException(HttpStatusCode.InternalServerError, ex.Message);
+            }
         }
 
-        public async Task<SuccessResponse<string>> PaymentConfirmation(string status, string tx_ref, string transaction_id)
+        public async Task<SuccessResponse<PaymentInvoiceResponse>> PaymentConfirmation(string status, string tx_ref, string transaction_id)
         {
             var trxStatus = new SuccessResponse<string>();
             if (string.IsNullOrEmpty(status) || string.IsNullOrEmpty(tx_ref) || string.IsNullOrEmpty(transaction_id))
                 throw new RestException(HttpStatusCode.BadGateway, "bad request");
-
-            var verifyPayment = await VerifyTransaction(tx_ref);
-            if (verifyPayment == "Transaction failed")
+            var invoiceResponse = new SuccessResponse<PaymentInvoiceResponse>();
+            try
             {
-                trxStatus.Data = "Transaction failed";
-                trxStatus.Message = "Failed";
-                return trxStatus;
-            }
+                var billTransaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == tx_ref);
+                if (billTransaction == null)
+                    throw new RestException(HttpStatusCode.NotFound, "Unable to fetch transaction: transaction failed");
 
-            trxStatus.Data = "Transaction successful";
-            trxStatus.Message = "Successful";
-            return trxStatus;
+                var verifyPayment = await VerifyTransaction(tx_ref);
+                if (verifyPayment == "Transaction failed")
+                {
+                    invoiceResponse.Success = false;
+                    invoiceResponse.Message = "Unable to fetch transaction: transaction failed";
+                    invoiceResponse.Data = null;
+                    return invoiceResponse;
+                }
+
+                var receiptArray = new[]
+                {
+                    new Receipt
+                    {
+                        GateWay = billTransaction.GatewayType.ToString(),
+                        PaymentRef = billTransaction.TransactionReference,
+                        GatewayTransactionReference = billTransaction.GatewayTransactionReference,
+                        AmountPaid = billTransaction.AmountPaid,
+                        AmountDue = billTransaction.AmountDue
+                    }
+                };
+
+                var invoice = _mapper.Map<PaymentInvoiceResponse>(billTransaction);
+                invoice.Receipts = receiptArray;
+
+                invoiceResponse.Data = invoice;
+                invoiceResponse.Success = true;
+                invoiceResponse.Message = "Transaction Successful";
+
+                return invoiceResponse;
+            }
+            catch (Exception ex)
+            {
+
+                throw new RestException(HttpStatusCode.InternalServerError, ex.Message);
+            }
         }
 
         public async Task<string> VerifyTransaction(string transactionReference)
