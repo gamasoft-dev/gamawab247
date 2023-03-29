@@ -205,7 +205,7 @@ namespace BillProcessorAPI.Services.Implementations
                     throw new RestException(HttpStatusCode.NotFound, "Unable to fetch transaction: transaction failed");
 
                 var verifyPayment = await VerifyTransaction(tx_ref);
-                if (verifyPayment == "Transaction failed")
+                if (!verifyPayment)
                 {
                     invoiceResponse.Success = false;
                     invoiceResponse.Message = "Unable to fetch transaction: transaction failed";
@@ -241,9 +241,9 @@ namespace BillProcessorAPI.Services.Implementations
             }
         }
 
-        public async Task<string> VerifyTransaction(string transactionReference)
+        public async Task<bool> VerifyTransaction(string transactionReference)
         {
-            var response = "Transaction failed";
+            var response = false;
             IDictionary<string, string> param = new Dictionary<string, string>();
             param.Add(key: "Authorization", _flutterOptions.SecretKey);
 
@@ -261,7 +261,7 @@ namespace BillProcessorAPI.Services.Implementations
                 return response;
             }
 
-            return response = "Transaction successful";
+            return response = true;
         }
     }
 }
