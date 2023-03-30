@@ -14,6 +14,6 @@ namespace BillProcessorAPI.Data
         public DbSet<BillTransaction> BillTransactions { get; set; }
         public DbSet<BillCharge> Charges { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
-        //public DbSet<Receipt> Receipts { get; set; }
+        public DbSet<Receipt> Receipts { get; set; }
     }
 }

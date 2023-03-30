@@ -120,7 +120,7 @@ namespace BillProcessorAPI.Services.Implementations
                         DueDate = billPayer.AcctCloseDate,
                         TransactionReference = paymentCreationPayload.transactionReference,
                         AmountDue = billPayer.AmountDue,
-                        AmountPaid = amount,
+                        Amount = amount,
                         SuccessIndicator = createTransactionResponse.Data.successIndicator,
                         PaymentUrl = createTransactionResponse.Data.payLink,
                         PaymentInfoResponseData = JsonConvert.SerializeObject(createTransactionResponse.Data),
@@ -173,20 +173,27 @@ namespace BillProcessorAPI.Services.Implementations
             bool verificationSuccess = false;
             try
             {
-                var billTransaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == transactionNotification.TransactionDetail.PaymentReference);
+                var billTransaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == transactionNotification.TransactionDetail.MerchantReference);
                 if (billTransaction == null)
                     throw new RestException(HttpStatusCode.NotFound, "Transaction not found");
 
-                data.TransactionReference = transactionNotification.TransactionDetail.PaymentReference;
+                data.TransactionReference = transactionNotification.TransactionDetail.MerchantReference;
 
-                billTransaction.AmountPaid = transactionNotification.TransactionDetail.Amount;
+                billTransaction.AmountPaid = transactionNotification.TransactionDetail.ResidualAmount;
                 billTransaction.Channel = transactionNotification.TransactionDetail.PaymentMethod;
                 billTransaction.TransactionCharge = 100;
                 billTransaction.GatewayTransactionCharge = transactionNotification.TransactionDetail.Commission;
                 billTransaction.GatewayTransactionReference = transactionNotification.TransactionDetail.PayThruReference;
+                billTransaction.PaymentReference = transactionNotification.TransactionDetail.PaymentReference;
+                billTransaction.FiName = transactionNotification.TransactionDetail.FiName;
                 billTransaction.Narration = transactionNotification.TransactionDetail.Naration;
-                billTransaction.Status = ETransactionStatus.Successful.ToString();
-                billTransaction.StatusMessage = "Transaction successful";
+                billTransaction.Status = transactionNotification.TransactionDetail.Status;
+                billTransaction.DateCompleted = transactionNotification.TransactionDetail.DateCompleted;
+                billTransaction.StatusMessage = transactionNotification.TransactionDetail.Status;
+                billTransaction.ReceiptUrl = transactionNotification.TransactionDetail.ReceiptUrl;
+                billTransaction.SuccessIndicator = transactionNotification.TransactionDetail.ResultCode;
+                billTransaction.Hash = transactionNotification.TransactionDetail.Hash;
+
 
                 if (billTransaction.SuccessIndicator != transactionNotification.TransactionDetail.ResultCode)
                 {
@@ -237,14 +244,14 @@ namespace BillProcessorAPI.Services.Implementations
 
                 var receiptArray = new[]
                 {
-                    new Receipt
+                   new ReceiptDto
                     {
-                        GateWay = transaction.GatewayType.ToString(),
-                        PaymentRef = transaction.TransactionReference,
-                        GatewayTransactionReference = transaction.GatewayTransactionReference,
-                        AmountPaid = transaction.AmountPaid,
-                        AmountDue = transaction.AmountDue
-                    }
+                    GateWay = transaction.GatewayType.ToString(),
+                    PaymentRef = transaction.TransactionReference,
+                    GatewayTransactionReference = transaction.GatewayTransactionReference,
+                    AmountPaid = transaction.AmountPaid,
+                    AmountDue = transaction.AmountDue
+                   }
                 };
 
                 var invoice = _mapper.Map<PaymentInvoiceResponse>(transaction);

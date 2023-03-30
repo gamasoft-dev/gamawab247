@@ -3,6 +3,7 @@ using System;
 using BillProcessorAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BillProcessorAPI.Migrations
 {
     [DbContext(typeof(BillProcessorDbContext))]
-    partial class BillProcessorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230330100320_RemoveInvoiceTablee")]
+    partial class RemoveInvoiceTablee
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -258,78 +261,6 @@ namespace BillProcessorAPI.Migrations
                     b.ToTable("BillTransactions");
                 });
 
-            modelBuilder.Entity("BillProcessorAPI.Entities.Invoice", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal>("AmountDue")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("AmountPaid")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("BillNumber")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("BillTransactionId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("CreatedById")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("DueDate")
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("GatewayTransactionCharge")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("GatewayTransactionReference")
-                        .HasColumnType("text");
-
-                    b.Property<int>("GatewayType")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("PayerName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Pid")
-                        .HasColumnType("text");
-
-                    b.Property<Guid?>("ReceiptId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ReceiptUrl")
-                        .HasColumnType("text");
-
-                    b.Property<string>("RevName")
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("TransactionCharge")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("TransactionReference")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BillTransactionId");
-
-                    b.HasIndex("ReceiptId");
-
-                    b.ToTable("Invoices");
-                });
-
             modelBuilder.Entity("BillProcessorAPI.Entities.Receipt", b =>
                 {
                     b.Property<Guid>("Id")
@@ -375,23 +306,6 @@ namespace BillProcessorAPI.Migrations
                         .HasForeignKey("BillPayerInfoId");
 
                     b.Navigation("BillPayerInfo");
-                });
-
-            modelBuilder.Entity("BillProcessorAPI.Entities.Invoice", b =>
-                {
-                    b.HasOne("BillProcessorAPI.Entities.BillTransaction", "BillTransaction")
-                        .WithMany()
-                        .HasForeignKey("BillTransactionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BillProcessorAPI.Entities.Receipt", "Receipt")
-                        .WithMany()
-                        .HasForeignKey("ReceiptId");
-
-                    b.Navigation("BillTransaction");
-
-                    b.Navigation("Receipt");
                 });
 
             modelBuilder.Entity("BillProcessorAPI.Entities.Receipt", b =>

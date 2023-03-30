@@ -3,6 +3,7 @@ using System;
 using BillProcessorAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BillProcessorAPI.Migrations
 {
     [DbContext(typeof(BillProcessorDbContext))]
-    partial class BillProcessorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230330100905_InvoiceTable")]
+    partial class InvoiceTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -303,7 +306,7 @@ namespace BillProcessorAPI.Migrations
                     b.Property<string>("Pid")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("ReceiptId")
+                    b.Property<Guid>("ReceiptId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("ReceiptUrl")
@@ -387,7 +390,9 @@ namespace BillProcessorAPI.Migrations
 
                     b.HasOne("BillProcessorAPI.Entities.Receipt", "Receipt")
                         .WithMany()
-                        .HasForeignKey("ReceiptId");
+                        .HasForeignKey("ReceiptId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("BillTransaction");
 
