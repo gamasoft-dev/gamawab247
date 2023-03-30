@@ -20,8 +20,12 @@ namespace BillProcessorAPI.Services.Implementations
     public class FlutterwaveService : IFlutterwaveService
     {
         private readonly IRepository<BillTransaction> _billTransactionsRepo;
+
+        private readonly IInvoiceRepository _invoiceRepo;
         private readonly IRepository<BillPayerInfo> _billPayerRepository;
-        private readonly IRepository<Invoice> _invoiceRepo;
+        private readonly IRepository<Receipt> _receipts;
+
+       
         private readonly FlutterwaveOptions _flutterOptions;
         private readonly IHttpService _httpService;
         private readonly IConfigurationService _configService;
@@ -33,8 +37,9 @@ namespace BillProcessorAPI.Services.Implementations
             IOptions<FlutterwaveOptions> flutterOptions,
             IHttpService httpService,
             IConfigurationService configService,
-            IRepository<Invoice> invoiceRepo,
-            IMapper mapper)
+            IInvoiceRepository invoiceRepo,
+            IMapper mapper,
+            IRepository<Receipt> receipts)
         {
             _billTransactionsRepo = billTransactionsRepo;
             _billPayerRepository = billPayerRepository;
@@ -43,6 +48,7 @@ namespace BillProcessorAPI.Services.Implementations
             _configService = configService;
             _invoiceRepo = invoiceRepo;
             _mapper = mapper;
+            _receipts = receipts;
         }
 
 
@@ -105,32 +111,38 @@ namespace BillProcessorAPI.Services.Implementations
                 await _billTransactionsRepo.AddAsync(billTransaction);
                 await _billTransactionsRepo.SaveChangesAsync();
 
-                var billInvoice = new Invoice
-                {
-                    AmountDue = billPayer.AmountDue,
-                    AgencyCode = billPayer.AgencyCode,
-                    PayerName = billPayer.PayerName,
-                    RevenueCode = billPayer.RevenueCode,
-                    OraAgencyRev = billPayer.OraAgencyRev,
-                    State = billPayer.Status,
-                    Pid = billPayer.Pid,
-                    AcctCloseDate = billPayer.AcctCloseDate,
-                    CbnCode = billPayer.CbnCode,
-                    AgencyName = billPayer.AgencyName,
-                    RevName = billPayer.RevName
-                };
-
-                await _invoiceRepo.AddAsync(billInvoice);
-                await _invoiceRepo.SaveChangesAsync();
-
                 var charge = new ChargesInputDto
                 {
                     Amount = amount,
                     Channel = "Flutterwave"
                 };
+
+              
+
+
+
+                var billInvoice = _mapper.Map<Invoice>(billPayer);
+                billInvoice.BillTransactionId = billTransaction.Id;
+                billInvoice.TransactionReference = trxReference;
+                billInvoice.DueDate = billPayer.AcctCloseDate;
+                billInvoice.BillNumber = billPaymentCode;
+                billInvoice.BillTransactionId = billTransaction.Id;
+                billInvoice.GatewayType = EGatewayType.Flutterwave;
+                billInvoice.PhoneNumber = billPayer.PhoneNumber;
+                billInvoice.TransactionCharge = _configService.CalculateBillChargesOnAmount(charge).Data.AmountCharge;
+
+
+                await _invoiceRepo.AddAsync(billInvoice);
+                await _invoiceRepo.SaveChangesAsync();
+
+                //var charge = new ChargesInputDto
+                //{
+                //    Amount = amount,
+                //    Channel = "Flutterwave"
+                //};
                 var response = new PaymentCreationResponse
                 {
-                    SystemCharge = _configService.CalculateBillChargesOnAmount(charge).Data.AmountCharge,
+                    SystemCharge = billInvoice.TransactionCharge,
                     PayLink = paymentCreationResponse.Data.Data.Link,
                     Status = paymentCreationResponse.Data.Status,
                 };
@@ -168,7 +180,7 @@ namespace BillProcessorAPI.Services.Implementations
                     Amount = model.Data.amount,
                     Channel = "FlutterWave"
                 };
-                //TODO
+
                 transaction.GatewayTransactionReference = model.Data.flw_ref;
                 transaction.Narration = model.Data.narration;
                 transaction.TransactionCharge = _configService.CalculateBillChargesOnAmount(charge).Data.AmountCharge;
@@ -176,9 +188,25 @@ namespace BillProcessorAPI.Services.Implementations
                 transaction.StatusMessage = model.Data.status;
                 transaction.AmountPaid = model.Data.amount;
                 transaction.Channel = model.Data.payment_type;
+                transaction.PaymentReference = "N/A";
+                transaction.DateCompleted = model.Data.created_at.ToString();
                 transaction.GatewayTransactionCharge = (decimal)model.Data.app_fee;
 
                 await _billTransactionsRepo.SaveChangesAsync();
+
+                // Create a receipt record
+                var receipt = _mapper.Map<Receipt>(transaction);
+                receipt.TransactionId = transaction.Id;
+                receipt.PaymentRef = "N/A";
+
+                await _receipts.AddAsync(receipt);
+                await _receipts.SaveChangesAsync();
+
+                //add the receipt to the invoice
+                var invoice =  await _invoiceRepo.FirstOrDefault(x => x.TransactionReference == transaction.TransactionReference);
+                invoice.ReceiptId = receipt.Id;
+                await _invoiceRepo.SaveChangesAsync();
+                           
 
                 return new SuccessResponse<string>
                 {
@@ -200,7 +228,7 @@ namespace BillProcessorAPI.Services.Implementations
             var invoiceResponse = new SuccessResponse<PaymentInvoiceResponse>();
             try
             {
-                var billTransaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == tx_ref);
+                var billTransaction = await _billTransactionsRepo.FirstOrDefault(x=>x.TransactionReference == transaction_id);
                 if (billTransaction == null)
                     throw new RestException(HttpStatusCode.NotFound, "Unable to fetch transaction: transaction failed");
 
@@ -213,20 +241,10 @@ namespace BillProcessorAPI.Services.Implementations
                     return invoiceResponse;
                 }
 
-                var receiptArray = new[]
-                {
-                    new Receipt
-                    {
-                        GateWay = billTransaction.GatewayType.ToString(),
-                        PaymentRef = billTransaction.TransactionReference,
-                        GatewayTransactionReference = billTransaction.GatewayTransactionReference,
-                        AmountPaid = billTransaction.AmountPaid,
-                        AmountDue = billTransaction.AmountDue
-                    }
-                };
-
+                var receiptArray = await _invoiceRepo.GetBillInvoiceWithReceipt(transaction_id);
+                                  
                 var invoice = _mapper.Map<PaymentInvoiceResponse>(billTransaction);
-                invoice.Receipts = receiptArray;
+                //invoice.Receipts = receiptArray;
 
                 invoiceResponse.Data = invoice;
                 invoiceResponse.Success = true;

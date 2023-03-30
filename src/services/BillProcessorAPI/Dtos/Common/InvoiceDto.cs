@@ -1,10 +1,18 @@
 ﻿using BillProcessorAPI.Entities;
 using BillProcessorAPI.Enums;
 
-namespace BillProcessorAPI.Dtos
+namespace BillProcessorAPI.Dtos.Common
 {
-    public class PaymentInvoiceResponse
+    public class InvoiceDto:InvoiceDetailsDto
     {
+        public Guid Id { get; set; }
+       
+    }
+
+    public class InvoiceDetailsDto
+    {
+        public Guid BillTransactionId { get; set; }
+        public Guid? ReceiptId { get; set; }
         public string PayerName { get; set; }
         public string BillNumber { get; set; }
         public string Pid { get; set; }
@@ -19,16 +27,7 @@ namespace BillProcessorAPI.Dtos
         public decimal TransactionCharge { get; set; }
         public decimal GatewayTransactionCharge { get; set; }
         public string ReceiptUrl { get; set; }
-        public object[] Receipts { get; set; }
-    }
-
-    public class ReceiptDto
-    {
-        public string TransactionDate { get; set; }
-        public string GateWay { get; set; }
-        public string PaymentRef { get; set; }
-        public string GatewayTransactionReference { get; set; }
-        public decimal AmountPaid { get; set; }
-        public decimal AmountDue { get; set; }
+        public BillTransaction BillTransaction { get; set; }
+        public Receipt Receipt { get; set; }
     }
 }

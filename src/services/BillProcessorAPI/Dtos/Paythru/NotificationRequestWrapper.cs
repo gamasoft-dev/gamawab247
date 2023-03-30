@@ -50,6 +50,7 @@
         /// SHA512 hash value of Amount+Commission+ResidualAmount+Client's secret
         /// </summary>
         public string Hash { get; set; }
+        public string ReceiptUrl { get; set; }
     }
 }
 
