@@ -21,7 +21,6 @@ using Domain.Exceptions;
 using BillProcessorAPI.Dtos.Paythru;
 using BillProcessorAPI.Dtos.Common;
 using System.Runtime.InteropServices;
-using BillProcessorAPI.Entities.PaythruEntities;
 
 namespace BillProcessorAPI.Services.Implementations
 {
@@ -124,7 +123,6 @@ namespace BillProcessorAPI.Services.Implementations
 
                     var billPayer = await _billPayerRepo.FirstOrDefault(x => x.billCode == billCode)
                         ?? throw new RestException(HttpStatusCode.NotFound, "unable to fetch bill payer for this transaction");
-
                     var billTransaction = new BillTransaction
                     {
                         GatewayType = EGatewayType.Paythru,
@@ -144,14 +142,6 @@ namespace BillProcessorAPI.Services.Implementations
                         PaymentInfoResponseData = JsonConvert.SerializeObject(createTransactionResponse.Data),
                         PaymentInfoRequestData = JsonConvert.SerializeObject(paymentCreationPayload)
                     };
-
-
-                    _logger.LogInformation($"-------------------------------------------------------------------------");
-
-                    _logger.LogInformation(message: $"Creating bill transaction : {transactionNotification.ToString()}");
-
-                    _logger.LogInformation($"-------------------------------------------------------------------------");
-
 
                     await _billTransactionsRepo.AddAsync(billTransaction);
                     await _billTransactionsRepo.SaveChangesAsync();
@@ -194,10 +184,10 @@ namespace BillProcessorAPI.Services.Implementations
         public async Task<SuccessResponse<PaymentVerificationResponseDto>> VerifyPayment(NotificationRequestWrapper transactionNotification)
         {
             _logger.LogInformation($"Payment notification from Paythru just came in as at {DateTime.UtcNow}");
-            _logger.LogInformation($"Payment notification from Paythru just came in as at {DateTime.UtcNow}");
             _logger.LogInformation($"-------------------------------------------------------------------------");
 
-            _logger.LogInformation(message: $"Details of notification : {transactionNotification.ToString()}");
+            _logger.LogInformation(message: $"Formatted string value of the notification :{JsonConvert.SerializeObject(transactionNotification)}");
+            _logger.LogInformation(message: $"Serialized json value of the notification :{JsonConvert.SerializeObject(transactionNotification)}");
 
             _logger.LogInformation($"-------------------------------------------------------------------------");
 
@@ -209,11 +199,11 @@ namespace BillProcessorAPI.Services.Implementations
             try
             {
 
-                var billTransaction = await _billTransactionsRepo
-                    .FirstOrDefault(x => x.TransactionReference == transactionNotification.TransactionDetails.MerchantReference);
+                var billTransaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference.ToLower().Trim()
+                == transactionNotification.TransactionDetails.MerchantReference.ToLower().Trim());
 
-                if (billTransaction is null)
-                    throw new RestException(HttpStatusCode.NotFound, $"Bill Transaction not found was not found for {transactionNotification.TransactionDetails.MerchantReference}");
+                if (billTransaction == null)
+                    throw new RestException(HttpStatusCode.NotFound, "Transaction not found");
 
                 data.TransactionReference = transactionNotification.TransactionDetails.MerchantReference;
 
