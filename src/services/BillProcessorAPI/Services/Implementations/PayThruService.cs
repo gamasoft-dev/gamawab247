@@ -290,6 +290,9 @@ namespace BillProcessorAPI.Services.Implementations
                 throw new PaymentVerificationException(HttpStatusCode.NotFound, "No invoice found for this transaction");
 
             invoice.ReceiptUrl = transactionNotification.TransactionDetails.ReceiptUrl;
+            invoice.AmountPaid = billTransaction.AmountPaid;
+            invoice.AmountDue = billTransaction.AmountDue;
+            invoice.GatewayTransactionCharge = billTransaction.GatewayTransactionCharge;
             invoice.UpdatedAt = DateTime.UtcNow;
 
             // Create a receipt record
