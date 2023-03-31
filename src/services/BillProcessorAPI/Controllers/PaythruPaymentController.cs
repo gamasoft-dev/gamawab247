@@ -1,6 +1,7 @@
 ﻿using BillProcessorAPI.Dtos;
 using BillProcessorAPI.Dtos.Common;
 using BillProcessorAPI.Dtos.Paythru;
+using BillProcessorAPI.Helpers;
 using BillProcessorAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -22,13 +23,26 @@ namespace BillProcessorAPI.Controllers
 			return Ok(response);
 		}
 
+		/// <summary>
+		/// This is a webhook for payment notification by Paythru
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
 		[HttpPost("/paythru/notify")]
 		[ProducesResponseType(typeof(PaymentVerificationResponseDto), 200)]
 		[SwaggerOperation(Summary = "Endpoint to verify paythru payment")]
 		public async Task<IActionResult> PaymentVerification([FromBody] NotificationRequestWrapper model)
 		{
-			var response = await _paythruService.VerifyPayment(model);
-			return Ok(response);
+			try
+			{
+                var response = await _paythruService.VerifyPayment(model);
+            }
+			catch (PaymentVerificationException ex)
+			{
+				_logger.LogError(ex.ErrorMessage);
+				return Ok($"Payement verification didnot complete succesfully but notification was recieved {ex.ToString()}");
+			}
+			return Ok();
 		}
 
         [HttpPost("/paythru/payment-confirmation")]

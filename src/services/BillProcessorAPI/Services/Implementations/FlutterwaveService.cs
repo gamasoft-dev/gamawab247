@@ -175,8 +175,11 @@ namespace BillProcessorAPI.Services.Implementations
 
                 Console.WriteLine($"Details of notification : {model.ToString()}");
 
-
                 var transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.Data.tx_ref);
+
+                if(transaction is null)
+                    throw new PaymentVerificationException(HttpStatusCode.NotFound, "No transaction found for this transaction");
+
                 var charge = new ChargesInputDto
                 {
                     Amount = model.Data.amount,
@@ -201,7 +204,7 @@ namespace BillProcessorAPI.Services.Implementations
                 //add the receipt to the invoice
                 var invoice = await _invoiceRepo.FirstOrDefault(x => x.BillTransactionId == transaction.Id);
                 if (invoice is null)
-                    throw new RestException(HttpStatusCode.NotFound, "No invoice found for this transaction");
+                    throw new PaymentVerificationException(HttpStatusCode.NotFound, "No invoice found for this transaction");
 
                 // Create a receipt record
                 var receipt = _mapper.Map<Receipt>(transaction);

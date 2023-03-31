@@ -191,6 +191,13 @@ namespace BillProcessorAPI.Services.Implementations
             }
         }
 
+        /// <summary>
+        /// This is a payemtn notification/ verification service method.
+        /// </summary>
+        /// <param name="transactionNotification"></param>
+        /// <returns></returns>
+        /// <exception cref="PaymentVerificationException"></exception>
+        /// <exception cref="RestException"></exception>
         public async Task<SuccessResponse<PaymentVerificationResponseDto>> VerifyPayment(NotificationRequestWrapper transactionNotification)
         {
             _logger.LogInformation($"Payment notification from Paythru just came in as at {DateTime.UtcNow}");
@@ -202,7 +209,7 @@ namespace BillProcessorAPI.Services.Implementations
             _logger.LogInformation($"-------------------------------------------------------------------------");
 
             if (transactionNotification is null || transactionNotification.TransactionDetails is null)
-                throw new RestException(HttpStatusCode.BadRequest, "Transaction notification cannot be null");
+                throw new PaymentVerificationException(HttpStatusCode.BadRequest, "Transaction notification cannot be null");
 
             var data = new PaymentVerificationResponseDto();
             bool verificationSuccess = false;
@@ -213,7 +220,7 @@ namespace BillProcessorAPI.Services.Implementations
                 == transactionNotification.TransactionDetails.MerchantReference.ToLower().Trim());
 
                 if (billTransaction == null)
-                    throw new RestException(HttpStatusCode.NotFound, "Transaction not found");
+                    throw new PaymentVerificationException(HttpStatusCode.NotFound, "Transaction not found");
 
                 data.TransactionReference = transactionNotification.TransactionDetails.MerchantReference;
 
@@ -265,7 +272,7 @@ namespace BillProcessorAPI.Services.Implementations
                 //add the receipt to the invoice
                 var invoice = await _invoiceRepo.FirstOrDefault(x => x.BillTransactionId == billTransaction.Id);
                 if (invoice is null)
-                    throw new RestException(HttpStatusCode.NotFound, "No invoice found for this transaction");
+                    throw new PaymentVerificationException(HttpStatusCode.NotFound, "No invoice found for this transaction");
 
                 // Create a receipt record
                 var receipt = _mapper.Map<Receipt>(billTransaction);
@@ -287,7 +294,6 @@ namespace BillProcessorAPI.Services.Implementations
             }
             catch (Exception ex)
             {
-
                 throw new RestException(HttpStatusCode.InternalServerError, ex.Message);
             }
         }

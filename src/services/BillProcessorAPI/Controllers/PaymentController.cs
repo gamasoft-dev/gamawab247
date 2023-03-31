@@ -12,10 +12,14 @@ namespace BillProcessorAPI.Controllers
     {
         private readonly IPayThruService _paythruService;
         private readonly IFlutterwaveService _transactionService;
-        public PaymentController(IPayThruService paythruService, IFlutterwaveService transactionService)
+        private readonly ILogger<PaymentController> _logger;
+        public PaymentController(IPayThruService paythruService,
+            IFlutterwaveService transactionService,
+            ILogger<PaymentController> logger)
         {
             _paythruService = paythruService;
             _transactionService = transactionService;
+            _logger = logger;
         }
     }
 }

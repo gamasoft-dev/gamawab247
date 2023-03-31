@@ -1,6 +1,7 @@
 ﻿using BillProcessorAPI.Dtos;
 using BillProcessorAPI.Dtos.Common;
 using BillProcessorAPI.Dtos.Flutterwave;
+using BillProcessorAPI.Helpers;
 using BillProcessorAPI.Services.Implementations;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -19,13 +20,29 @@ namespace BillProcessorAPI.Controllers
             return Ok(response);
         }
 
+
+        /// <summary>
+        /// Webhook notification to verify and process payment request.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost("/flutterwave/notify")]
         [ProducesResponseType(typeof(TransactionVerificationResponseDto), 200)]
         [SwaggerOperation(Summary = "Webhook endpoint")]
         public async Task<IActionResult> FlutterwavePaymentNotification(WebHookNotificationWrapper model)
         {
-            var response = await _transactionService.PaymentNotification(model);
-            return Ok(response);
+           
+            try
+            {
+                var response = await _transactionService.PaymentNotification(model);
+                return Ok(response);
+            }
+            catch (PaymentVerificationException ex)
+            {
+                _logger.LogError(ex.ErrorMessage);
+                return Ok($"Payement verification didnot complete succesfully but notification was recieved {ex.ToString()}");
+
+            }
         }
 
         [HttpGet("/flutterwave/verify/{tx_ref}")]
@@ -33,8 +50,17 @@ namespace BillProcessorAPI.Controllers
         [SwaggerOperation(Summary = "Endpoint for transaction verification")]
         public async Task<IActionResult> VerifyPayment([FromRoute] string tx_ref)
         {
-            var response = await _transactionService.VerifyTransaction(tx_ref);
-            return Ok(response);
+            try
+            {
+                var response = await _transactionService.VerifyTransaction(tx_ref);
+                return Ok(response);
+            }
+            catch (PaymentVerificationException ex)
+            {
+                _logger.LogError(ex.ErrorMessage);
+                return Ok($"Payement verification didnot complete succesfully but notification was recieved {ex.ToString()}");
+            }
+            
         }
 
         [HttpGet("/flutterwave/payment-confirmation/{status}/{tx_ref}/{transaction_id}")]
