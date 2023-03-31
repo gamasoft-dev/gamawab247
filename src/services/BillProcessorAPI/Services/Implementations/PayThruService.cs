@@ -213,89 +213,84 @@ namespace BillProcessorAPI.Services.Implementations
 
             var data = new PaymentVerificationResponseDto();
             bool verificationSuccess = false;
-            try
+         
+
+            var billTransaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference.ToLower().Trim()
+            == transactionNotification.TransactionDetails.MerchantReference.ToLower().Trim());
+
+            if (billTransaction == null)
+                throw new PaymentVerificationException(HttpStatusCode.NotFound, "Transaction not found");
+
+            data.TransactionReference = transactionNotification.TransactionDetails.MerchantReference;
+
+            billTransaction.AmountPaid = transactionNotification.TransactionDetails.ResidualAmount;
+            billTransaction.PrinciPalAmount = billTransaction.AmountPaid; // amount paid minus charges
+            billTransaction.Channel = transactionNotification.TransactionDetails.PaymentMethod;
+            billTransaction.TransactionCharge = PaythruOptions.TransactionCharge;
+            billTransaction.GatewayTransactionCharge = transactionNotification.TransactionDetails.Commission;
+            billTransaction.GatewayTransactionReference = transactionNotification.TransactionDetails.PayThruReference;
+            billTransaction.PaymentReference = transactionNotification.TransactionDetails.PaymentReference;
+            billTransaction.FiName = transactionNotification.TransactionDetails.FiName;
+            billTransaction.Narration = transactionNotification.TransactionDetails.Naration;
+            billTransaction.Status = transactionNotification.TransactionDetails.Status;
+            billTransaction.DateCompleted = transactionNotification.TransactionDetails.DateCompleted;
+            billTransaction.StatusMessage = transactionNotification.TransactionDetails.Status;
+            billTransaction.ReceiptUrl = transactionNotification.TransactionDetails.ReceiptUrl;
+            billTransaction.SuccessIndicator = transactionNotification.TransactionDetails.ResultCode;
+            billTransaction.Hash = transactionNotification.TransactionDetails.Hash;
+            billTransaction.NotificationResponseData = JsonConvert.SerializeObject(transactionNotification);
+
+            await _billTransactionsRepo.SaveChangesAsync();
+
+
+            if (billTransaction.SuccessIndicator != transactionNotification.TransactionDetails.ResultCode)
             {
-
-                var billTransaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference.ToLower().Trim()
-                == transactionNotification.TransactionDetails.MerchantReference.ToLower().Trim());
-
-                if (billTransaction == null)
-                    throw new PaymentVerificationException(HttpStatusCode.NotFound, "Transaction not found");
-
-                data.TransactionReference = transactionNotification.TransactionDetails.MerchantReference;
-
-                billTransaction.AmountPaid = transactionNotification.TransactionDetails.ResidualAmount;
-                billTransaction.PrinciPalAmount = billTransaction.AmountPaid; // amount paid minus charges
-                billTransaction.Channel = transactionNotification.TransactionDetails.PaymentMethod;
-                billTransaction.TransactionCharge = PaythruOptions.TransactionCharge;
-                billTransaction.GatewayTransactionCharge = transactionNotification.TransactionDetails.Commission;
-                billTransaction.GatewayTransactionReference = transactionNotification.TransactionDetails.PayThruReference;
-                billTransaction.PaymentReference = transactionNotification.TransactionDetails.PaymentReference;
-                billTransaction.FiName = transactionNotification.TransactionDetails.FiName;
-                billTransaction.Narration = transactionNotification.TransactionDetails.Naration;
-                billTransaction.Status = transactionNotification.TransactionDetails.Status;
-                billTransaction.DateCompleted = transactionNotification.TransactionDetails.DateCompleted;
-                billTransaction.StatusMessage = transactionNotification.TransactionDetails.Status;
-                billTransaction.ReceiptUrl = transactionNotification.TransactionDetails.ReceiptUrl;
-                billTransaction.SuccessIndicator = transactionNotification.TransactionDetails.ResultCode;
-                billTransaction.Hash = transactionNotification.TransactionDetails.Hash;
-                billTransaction.NotificationResponseData = JsonConvert.SerializeObject(transactionNotification);
+                billTransaction.Status = ETransactionStatus.Failed.ToString();
+                billTransaction.StatusMessage = "Transaction failed";
+                data.ResponseCode = ETransactionResponseCodes.Failed;
+                data.Description = "Transaction Failed";
 
                 await _billTransactionsRepo.SaveChangesAsync();
-
-
-                if (billTransaction.SuccessIndicator != transactionNotification.TransactionDetails.ResultCode)
-                {
-                    billTransaction.Status = ETransactionStatus.Failed.ToString();
-                    billTransaction.StatusMessage = "Transaction failed";
-                    data.ResponseCode = ETransactionResponseCodes.Failed;
-                    data.Description = "Transaction Failed";
-
-                    await _billTransactionsRepo.SaveChangesAsync();
-
-                    return new SuccessResponse<PaymentVerificationResponseDto>
-                    {
-                        Data = data,
-                        Success = false,
-                        Message = "Transaction failed"
-                    };
-                };
-
-
-                if (billTransaction.Status == ETransactionStatus.Successful.ToString())
-                {
-                    verificationSuccess = true;
-                    data.ResponseCode = ETransactionResponseCodes.Successful;
-                    data.Description = "Transaction Successful";
-                }
-
-                //add the receipt to the invoice
-                var invoice = await _invoiceRepo.FirstOrDefault(x => x.BillTransactionId == billTransaction.Id);
-                if (invoice is null)
-                    throw new PaymentVerificationException(HttpStatusCode.NotFound, "No invoice found for this transaction");
-
-                // Create a receipt record
-                var receipt = _mapper.Map<Receipt>(billTransaction);
-                receipt.TransactionId = billTransaction.Id;
-                receipt.PaymentRef = "N/A";
-                receipt.InvoiceId = invoice.Id;
-                receipt.TransactionDate = billTransaction.DateCompleted;
-                receipt.GateWay = billTransaction.GatewayType.ToString();
-                receipt.ReceiptUrl = transactionNotification.TransactionDetails.ReceiptUrl;
-
-                await _receiptRepo.AddAsync(receipt);
-                await _receiptRepo.SaveChangesAsync();
 
                 return new SuccessResponse<PaymentVerificationResponseDto>
                 {
                     Data = data,
-                    Success = verificationSuccess
+                    Success = false,
+                    Message = "Transaction failed"
                 };
-            }
-            catch (Exception ex)
+            };
+
+
+            if (billTransaction.Status == ETransactionStatus.Successful.ToString())
             {
-                throw new RestException(HttpStatusCode.InternalServerError, ex.Message);
+                verificationSuccess = true;
+                data.ResponseCode = ETransactionResponseCodes.Successful;
+                data.Description = "Transaction Successful";
             }
+
+            //add the receipt to the invoice
+            var invoice = await _invoiceRepo.FirstOrDefault(x => x.BillTransactionId == billTransaction.Id);
+            if (invoice is null)
+                throw new PaymentVerificationException(HttpStatusCode.NotFound, "No invoice found for this transaction");
+
+            // Create a receipt record
+            var receipt = _mapper.Map<Receipt>(billTransaction);
+            receipt.TransactionId = billTransaction.Id;
+            receipt.PaymentRef = "N/A";
+            receipt.InvoiceId = invoice.Id;
+            receipt.TransactionDate = billTransaction.DateCompleted;
+            receipt.GateWay = billTransaction.GatewayType.ToString();
+            receipt.ReceiptUrl = transactionNotification.TransactionDetails.ReceiptUrl;
+
+            await _receiptRepo.AddAsync(receipt);
+            await _receiptRepo.SaveChangesAsync();
+
+            return new SuccessResponse<PaymentVerificationResponseDto>
+            {
+                Data = data,
+                Success = verificationSuccess
+            };
+            
         }
 
         public async Task<SuccessResponse<PaymentConfirmationResponse>> ConfirmPayment(ConfirmPaymentRequest model)

@@ -169,66 +169,61 @@ namespace BillProcessorAPI.Services.Implementations
             if (model == null)
                 throw new RestException(HttpStatusCode.BadRequest, "invalid transaction");
 
-            try
+           
+            Console.WriteLine($"Payment notification from Flutterwave just came in as at: {DateTime.UtcNow}");
+
+            Console.WriteLine($"Details of notification : {model.ToString()}");
+
+            var transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.Data.tx_ref);
+
+            if(transaction is null)
+                throw new PaymentVerificationException(HttpStatusCode.NotFound, "No transaction found for this transaction");
+
+            var charge = new ChargesInputDto
             {
-                Console.WriteLine($"Payment notification from Flutterwave just came in as at: {DateTime.UtcNow}");
+                Amount = model.Data.amount,
+                Channel = "FlutterWave"
+            };
 
-                Console.WriteLine($"Details of notification : {model.ToString()}");
-
-                var transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.Data.tx_ref);
-
-                if(transaction is null)
-                    throw new PaymentVerificationException(HttpStatusCode.NotFound, "No transaction found for this transaction");
-
-                var charge = new ChargesInputDto
-                {
-                    Amount = model.Data.amount,
-                    Channel = "FlutterWave"
-                };
-
-                transaction.GatewayTransactionReference = model.Data.flw_ref;
-                transaction.Narration = model.Data.narration;
-                transaction.TransactionCharge = _configService.CalculateBillChargesOnAmount(charge).Data.AmountCharge;
-                transaction.Status = ETransactionStatus.Successful.ToString();
-                transaction.StatusMessage = model.Data.status;
-                transaction.AmountPaid = model.Data.amount;
-                transaction.Channel = model.Data.payment_type;
-                transaction.PaymentReference = "N/A";
-                transaction.DateCompleted = model.Data.created_at.ToString();
-                transaction.GatewayTransactionCharge = (decimal)model.Data.app_fee;
-                transaction.NotificationResponseData = JsonConvert.SerializeObject(model);
+            transaction.GatewayTransactionReference = model.Data.flw_ref;
+            transaction.Narration = model.Data.narration;
+            transaction.TransactionCharge = _configService.CalculateBillChargesOnAmount(charge).Data.AmountCharge;
+            transaction.Status = ETransactionStatus.Successful.ToString();
+            transaction.StatusMessage = model.Data.status;
+            transaction.AmountPaid = model.Data.amount;
+            transaction.Channel = model.Data.payment_type;
+            transaction.PaymentReference = "N/A";
+            transaction.DateCompleted = model.Data.created_at.ToString();
+            transaction.GatewayTransactionCharge = (decimal)model.Data.app_fee;
+            transaction.NotificationResponseData = JsonConvert.SerializeObject(model);
                 
 
-                await _billTransactionsRepo.SaveChangesAsync();
+            await _billTransactionsRepo.SaveChangesAsync();
 
-                //add the receipt to the invoice
-                var invoice = await _invoiceRepo.FirstOrDefault(x => x.BillTransactionId == transaction.Id);
-                if (invoice is null)
-                    throw new PaymentVerificationException(HttpStatusCode.NotFound, "No invoice found for this transaction");
+            //add the receipt to the invoice
+            var invoice = await _invoiceRepo.FirstOrDefault(x => x.BillTransactionId == transaction.Id);
 
-                // Create a receipt record
-                var receipt = _mapper.Map<Receipt>(transaction);
-                receipt.TransactionId = transaction.Id;
-                receipt.PaymentRef = "N/A";
-                receipt.InvoiceId = invoice.Id;
-                receipt.TransactionDate = transaction.DateCompleted;
-                receipt.GateWay = transaction.GatewayType.ToString();
-                receipt.ReceiptUrl = model.Data.receipt_url;
+            if (invoice is null)
+                throw new PaymentVerificationException(HttpStatusCode.NotFound, "No invoice found for this transaction");
 
-                await _receipts.AddAsync(receipt);
-                await _receipts.SaveChangesAsync();
+            // Create a receipt record
+            var receipt = _mapper.Map<Receipt>(transaction);
+            receipt.TransactionId = transaction.Id;
+            receipt.PaymentRef = "N/A";
+            receipt.InvoiceId = invoice.Id;
+            receipt.TransactionDate = transaction.DateCompleted;
+            receipt.GateWay = transaction.GatewayType.ToString();
+            receipt.ReceiptUrl = model.Data.receipt_url;
+
+            await _receipts.AddAsync(receipt);
+            await _receipts.SaveChangesAsync();
 
                
-                return new SuccessResponse<string>
-                {
-                    Data = "Transaction Completed"
-                };
-            }
-            catch (Exception ex)
+            return new SuccessResponse<string>
             {
-
-                throw new RestException(HttpStatusCode.InternalServerError, ex.Message);
-            }
+                Data = "Transaction Completed"
+            };
+            
         }
 
         public async Task<SuccessResponse<PaymentConfirmationResponse>> PaymentConfirmation(string status, string tx_ref, string transaction_id)
@@ -287,6 +282,7 @@ namespace BillProcessorAPI.Services.Implementations
             var transaction = await _httpService.Get<FlutterwaveResponse<FlutterwaveResponseData>>(url, headerParam);
             if (transaction.Data.Status != "success")
                 throw new RestException(HttpStatusCode.BadRequest, "Unable to fetch transaction for this reference");
+
             if (transaction.Data.Data.status != "successful"
                 || transaction.Data.Data.amount != billTransationRecord.AmountPaid
                 || transaction.Data.Data.currency != "NGN")
