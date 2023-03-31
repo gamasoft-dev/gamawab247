@@ -28,12 +28,14 @@ namespace BillProcessorAPI.Services.Implementations
     {
         private readonly IRepository<BillPayerInfo> _billPayerRepo;
         private readonly IRepository<BillTransaction> _billTransactionsRepo;
+        private readonly IRepository<Invoice> _invoiceRepo;
+        private readonly IRepository<Receipt> _receiptRepo;
         private readonly PaythruOptions PaythruOptions;
         private readonly IHttpService _httpService;
         private readonly IConfigurationService _configService;
         private readonly IMapper _mapper;
 
-        public PayThruService(IRepository<BillPayerInfo> billPayerRepo, IRepository<BillTransaction> billTransactions, IOptions<PaythruOptions> paythruOptions, IHttpService httpService, IConfigurationService configService, IMapper mapper)
+        public PayThruService(IRepository<BillPayerInfo> billPayerRepo, IRepository<BillTransaction> billTransactions, IOptions<PaythruOptions> paythruOptions, IHttpService httpService, IConfigurationService configService, IMapper mapper, IRepository<Invoice> invoiceRepo, IRepository<Receipt> receiptRepo)
         {
 
             _billPayerRepo = billPayerRepo;
@@ -42,23 +44,28 @@ namespace BillProcessorAPI.Services.Implementations
             _httpService = httpService;
             _configService = configService;
             _mapper = mapper;
+            _invoiceRepo = invoiceRepo;
+            _receiptRepo = receiptRepo;
         }
 
 
         public async Task<SuccessResponse<PaymentCreationResponse>> CreatePayment(int amount, string billCode)
         {
-            //if (amount < PaythruOptions.MinimumPayableAmount)
-            //{
-            //    throw new RestException(HttpStatusCode.BadRequest, $"The minimum amount payable is {PaythruOptions.MinimumPayableAmount}");
-            //}
-            if (string.IsNullOrEmpty(billCode))
-            {
-                throw new RestException(HttpStatusCode.BadRequest, "please enter a valid billCode");
-            }
+
             if (PaythruOptions is null)
             {
                 throw new RestException(System.Net.HttpStatusCode.PreconditionFailed, "Kindly configure the required application settings");
             }
+
+            if (amount < PaythruOptions.MinimumPayableAmount)
+            {
+                throw new RestException(HttpStatusCode.BadRequest, $"The minimum amount payable is {PaythruOptions.MinimumPayableAmount}");
+            }
+            if (string.IsNullOrEmpty(billCode))
+            {
+                throw new RestException(HttpStatusCode.BadRequest, "please enter a valid billCode");
+            }
+          
 
             try
             {
@@ -136,7 +143,7 @@ namespace BillProcessorAPI.Services.Implementations
                         Amount = paymentCreationPayload.amount
                     };
 
-                    decimal systemChargeCalculation = 100;
+                    decimal systemChargeCalculation = PaythruOptions.TransactionCharge;
                     createTransactionResponse.Data.systemCharge = systemChargeCalculation;
                     var paymentCreationResponse = new PaymentCreationResponse
                     {
@@ -167,40 +174,50 @@ namespace BillProcessorAPI.Services.Implementations
 
         public async Task<SuccessResponse<PaymentVerificationResponseDto>> VerifyPayment(NotificationRequestWrapper transactionNotification)
         {
-            if (transactionNotification is null && transactionNotification.TransactionDetail is null)
+            if (transactionNotification is null || transactionNotification.TransactionDetails is null)
                 throw new RestException(HttpStatusCode.BadRequest, "Transaction notification cannot be null");
             var data = new PaymentVerificationResponseDto();
             bool verificationSuccess = false;
             try
             {
-                var billTransaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == transactionNotification.TransactionDetail.MerchantReference);
+                var billTransaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == transactionNotification.TransactionDetails.MerchantReference);
                 if (billTransaction == null)
                     throw new RestException(HttpStatusCode.NotFound, "Transaction not found");
 
-                data.TransactionReference = transactionNotification.TransactionDetail.MerchantReference;
+                data.TransactionReference = transactionNotification.TransactionDetails.MerchantReference;
 
-                billTransaction.AmountPaid = transactionNotification.TransactionDetail.ResidualAmount;
-                billTransaction.Channel = transactionNotification.TransactionDetail.PaymentMethod;
-                billTransaction.TransactionCharge = 100;
-                billTransaction.GatewayTransactionCharge = transactionNotification.TransactionDetail.Commission;
-                billTransaction.GatewayTransactionReference = transactionNotification.TransactionDetail.PayThruReference;
-                billTransaction.PaymentReference = transactionNotification.TransactionDetail.PaymentReference;
-                billTransaction.FiName = transactionNotification.TransactionDetail.FiName;
-                billTransaction.Narration = transactionNotification.TransactionDetail.Naration;
-                billTransaction.Status = transactionNotification.TransactionDetail.Status;
-                billTransaction.DateCompleted = transactionNotification.TransactionDetail.DateCompleted;
-                billTransaction.StatusMessage = transactionNotification.TransactionDetail.Status;
-                billTransaction.ReceiptUrl = transactionNotification.TransactionDetail.ReceiptUrl;
-                billTransaction.SuccessIndicator = transactionNotification.TransactionDetail.ResultCode;
-                billTransaction.Hash = transactionNotification.TransactionDetail.Hash;
+                billTransaction.AmountPaid = transactionNotification.TransactionDetails.ResidualAmount;
+                billTransaction.Channel = transactionNotification.TransactionDetails.PaymentMethod;
+                billTransaction.TransactionCharge = PaythruOptions.TransactionCharge;
+                billTransaction.GatewayTransactionCharge = transactionNotification.TransactionDetails.Commission;
+                billTransaction.GatewayTransactionReference = transactionNotification.TransactionDetails.PayThruReference;
+                billTransaction.PaymentReference = transactionNotification.TransactionDetails.PaymentReference;
+                billTransaction.FiName = transactionNotification.TransactionDetails.FiName;
+                billTransaction.Narration = transactionNotification.TransactionDetails.Naration;
+                billTransaction.Status = transactionNotification.TransactionDetails.Status;
+                billTransaction.DateCompleted = transactionNotification.TransactionDetails.DateCompleted;
+                billTransaction.StatusMessage = transactionNotification.TransactionDetails.Status;
+                billTransaction.ReceiptUrl = transactionNotification.TransactionDetails.ReceiptUrl;
+                billTransaction.SuccessIndicator = transactionNotification.TransactionDetails.ResultCode;
+                billTransaction.Hash = transactionNotification.TransactionDetails.Hash;
+                billTransaction.NotificationResponseData = JsonConvert.SerializeObject(transactionNotification);
 
 
-                if (billTransaction.SuccessIndicator != transactionNotification.TransactionDetail.ResultCode)
+                if (billTransaction.SuccessIndicator != transactionNotification.TransactionDetails.ResultCode)
                 {
                     billTransaction.Status = ETransactionStatus.Failed.ToString();
                     billTransaction.StatusMessage = "Transaction failed";
                     data.ResponseCode = ETransactionResponseCodes.Failed;
                     data.Description = "Transaction Failed";
+
+                    await _billTransactionsRepo.SaveChangesAsync();
+
+                    return new SuccessResponse<PaymentVerificationResponseDto>
+                    {
+                        Data = data,
+                        Success = false,
+                        Message = "Transaction failed"
+                    };
                 };
 
 
@@ -211,7 +228,23 @@ namespace BillProcessorAPI.Services.Implementations
                     data.Description = "Transaction Successful";
                 }
 
-                await _billTransactionsRepo.SaveChangesAsync();
+                //add the receipt to the invoice
+                var invoice = await _invoiceRepo.FirstOrDefault(x => x.BillTransactionId == billTransaction.Id);
+                if (invoice is null)
+                    throw new RestException(HttpStatusCode.NotFound, "No invoice found for this transaction");
+
+                // Create a receipt record
+                var receipt = _mapper.Map<Receipt>(billTransaction);
+                receipt.TransactionId = billTransaction.Id;
+                receipt.PaymentRef = "N/A";
+                receipt.InvoiceId = invoice.Id;
+                receipt.TransactionDate = billTransaction.DateCompleted;
+                receipt.GateWay = billTransaction.GatewayType.ToString();
+                receipt.ReceiptUrl = transactionNotification.TransactionDetails.ReceiptUrl;
+
+                await _receiptRepo.AddAsync(receipt);
+                await _receiptRepo.SaveChangesAsync();
+
                 return new SuccessResponse<PaymentVerificationResponseDto>
                 {
                     Data = data,
@@ -226,11 +259,11 @@ namespace BillProcessorAPI.Services.Implementations
             }
         }
 
-        public async Task<SuccessResponse<PaymentInvoiceResponse>> ConfirmPayment(ConfirmPaymentRequest model)
+        public async Task<SuccessResponse<PaymentConfirmationResponse>> ConfirmPayment(ConfirmPaymentRequest model)
         {
             if (string.IsNullOrEmpty(model.Status))
                 throw new RestException(HttpStatusCode.BadRequest, "success indicator cannot be null");
-            var invoiceResponse = new SuccessResponse<PaymentInvoiceResponse>();
+            var invoiceResponse = new SuccessResponse<PaymentConfirmationResponse>();
             try
             {
                 var transaction = await _billTransactionsRepo.FirstOrDefault(x => x.SuccessIndicator == model.Status);
@@ -242,20 +275,7 @@ namespace BillProcessorAPI.Services.Implementations
                     return invoiceResponse;
                 }
 
-                var receiptArray = new[]
-                {
-                   new ReceiptDto
-                    {
-                    GateWay = transaction.GatewayType.ToString(),
-                    PaymentRef = transaction.TransactionReference,
-                    GatewayTransactionReference = transaction.GatewayTransactionReference,
-                    AmountPaid = transaction.AmountPaid,
-                    AmountDue = transaction.AmountDue
-                   }
-                };
-
-                var invoice = _mapper.Map<PaymentInvoiceResponse>(transaction);
-                invoice.Receipts = receiptArray;
+                var invoice = _mapper.Map<PaymentConfirmationResponse>(transaction);
 
                 invoiceResponse.Data = invoice;
                 invoiceResponse.Success = true;
@@ -265,7 +285,6 @@ namespace BillProcessorAPI.Services.Implementations
             }
             catch (Exception ex)
             {
-
                 throw new RestException(HttpStatusCode.InternalServerError, ex.Message);
             }
 

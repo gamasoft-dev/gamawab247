@@ -6,7 +6,6 @@ namespace BillProcessorAPI.Entities
     public class BillTransaction : AuditableEntity
     {
         public Guid Id { get; set; }
-        public Guid? BillPayerInfoId { get; set; }
         public string PayerName { get; set; }
         public string BillNumber { get; set; }
         public string Pid { get; set; }
@@ -34,11 +33,14 @@ namespace BillProcessorAPI.Entities
         public string ReceiptUrl { get; set; }
       //  public string Receipt { get; set; }
         public string StatusMessage { get; set; }
+        public string Hash { get; set; }
         public string SuccessIndicator { get; set; }
         public string PaymentInfoRequestData { get; set; }
-        public string Hash { get; set; }
 		public string PaymentInfoResponseData { get; set; }
-		public BillPayerInfo BillPayerInfo { get; set; }
-        public Receipt Receipts { get; set; }
+		public string NotificationResponseData { get; set; }
+        public Guid? BillPayerInfoId { get; set; }
+        public BillPayerInfo BillPayerInfo { get; set; }
+        //public Guid? InvoiceId  { get; set; }
+        //public Invoice Invoice { get; set; }
     }
 }

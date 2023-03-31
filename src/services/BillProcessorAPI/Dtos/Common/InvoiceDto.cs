@@ -8,10 +8,9 @@ namespace BillProcessorAPI.Dtos.Common
         public Guid Id { get; set; }
        
     }
-
+   
     public class InvoiceDetailsDto
     {
-        public Guid BillTransactionId { get; set; }
         public Guid? ReceiptId { get; set; }
         public string PayerName { get; set; }
         public string BillNumber { get; set; }
@@ -28,6 +27,6 @@ namespace BillProcessorAPI.Dtos.Common
         public decimal GatewayTransactionCharge { get; set; }
         public string ReceiptUrl { get; set; }
         public BillTransaction BillTransaction { get; set; }
-        public Receipt Receipt { get; set; }
+        public virtual IList<ReceiptDetailsDto> Receipt { get; set; }
     }
 }

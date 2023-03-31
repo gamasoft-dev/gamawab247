@@ -15,7 +15,7 @@ namespace BillProcessorAPI.Repositories.Implementations
 
         public async Task<Invoice> GetBillInvoiceWithReceipt(string Id)
         {
-            return await _context.Invoices.Include(w=>w.Receipt).FirstOrDefaultAsync(x => x.TransactionReference == Id);
+            return await _context.Invoices.Include(w=>w.Receipts).FirstOrDefaultAsync(x => x.TransactionReference == Id);
         }
 
         //public async Task<Invoice> GetBillTransactionsWithReceipt(string Id)

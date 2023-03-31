@@ -78,6 +78,10 @@ namespace BillProcessorAPI.Dtos.Flutterwave
         public int account_id { get; set; }
         [JsonProperty("customer")]
         public Customer customer { get; set; }
+
+        [JsonProperty("receipt_url")]
+        public string receipt_url { get; set; } = "";
+
         [JsonProperty("card")]
         public Card card { get; set; }
     }
