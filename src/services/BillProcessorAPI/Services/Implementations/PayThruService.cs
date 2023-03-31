@@ -34,7 +34,7 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IHttpService _httpService;
         private readonly IConfigurationService _configService;
         private readonly IMapper _mapper;
-        private ILogger<PayThruService> logger;
+        private ILogger<PayThruService> _logger;
 
         public PayThruService(IRepository<BillPayerInfo> billPayerRepo,
             IRepository<BillTransaction> billTransactions,
@@ -54,7 +54,7 @@ namespace BillProcessorAPI.Services.Implementations
             _mapper = mapper;
             _invoiceRepo = invoiceRepo;
             _receiptRepo = receiptRepo;
-            this.logger = logger;
+            _logger = logger;
         }
 
 
@@ -183,9 +183,13 @@ namespace BillProcessorAPI.Services.Implementations
 
         public async Task<SuccessResponse<PaymentVerificationResponseDto>> VerifyPayment(NotificationRequestWrapper transactionNotification)
         {
-            logger.LogInformation($"Payment notification from Paythru just came in as at {DateTime.UtcNow}");
+            _logger.LogInformation($"Payment notification from Paythru just came in as at {DateTime.UtcNow}");
+            _logger.LogInformation($"Payment notification from Paythru just came in as at {DateTime.UtcNow}");
+            _logger.LogInformation($"-------------------------------------------------------------------------");
 
-            logger.LogDebug(message: $"Details of notification : {transactionNotification.ToString()}");
+            _logger.LogInformation(message: $"Details of notification : {transactionNotification.ToString()}");
+
+            _logger.LogInformation($"-------------------------------------------------------------------------");
 
             if (transactionNotification is null || transactionNotification.TransactionDetails is null)
                 throw new RestException(HttpStatusCode.BadRequest, "Transaction notification cannot be null");
