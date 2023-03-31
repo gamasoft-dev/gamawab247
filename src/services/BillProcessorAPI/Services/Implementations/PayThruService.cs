@@ -21,7 +21,6 @@ using Domain.Exceptions;
 using BillProcessorAPI.Dtos.Paythru;
 using BillProcessorAPI.Dtos.Common;
 using System.Runtime.InteropServices;
-using Microsoft.EntityFrameworkCore;
 
 namespace BillProcessorAPI.Services.Implementations
 {
@@ -35,8 +34,16 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IHttpService _httpService;
         private readonly IConfigurationService _configService;
         private readonly IMapper _mapper;
+        private ILogger<PayThruService> logger;
 
-        public PayThruService(IRepository<BillPayerInfo> billPayerRepo, IRepository<BillTransaction> billTransactions, IOptions<PaythruOptions> paythruOptions, IHttpService httpService, IConfigurationService configService, IMapper mapper, IRepository<Invoice> invoiceRepo, IRepository<Receipt> receiptRepo)
+        public PayThruService(IRepository<BillPayerInfo> billPayerRepo,
+            IRepository<BillTransaction> billTransactions,
+            IOptions<PaythruOptions> paythruOptions,
+            IHttpService httpService, IConfigurationService configService,
+            IMapper mapper,
+            IRepository<Invoice> invoiceRepo,
+            IRepository<Receipt> receiptRepo,
+            ILogger<PayThruService> logger)
         {
 
             _billPayerRepo = billPayerRepo;
@@ -47,6 +54,7 @@ namespace BillProcessorAPI.Services.Implementations
             _mapper = mapper;
             _invoiceRepo = invoiceRepo;
             _receiptRepo = receiptRepo;
+            this.logger = logger;
         }
 
 
@@ -136,20 +144,7 @@ namespace BillProcessorAPI.Services.Implementations
                     };
 
                     await _billTransactionsRepo.AddAsync(billTransaction);
-                    
-
-                    var billInvoice = _mapper.Map<Invoice>(billPayer);
-                    billInvoice.BillTransactionId = billTransaction.Id;
-                    billInvoice.TransactionReference = billTransaction.TransactionReference;
-                    billInvoice.DueDate = billPayer.AcctCloseDate;
-                    billInvoice.BillNumber = billTransaction.BillNumber;
-                    billInvoice.GatewayType = EGatewayType.Flutterwave;
-                    billInvoice.PhoneNumber = billPayer.PhoneNumber;
-                    billInvoice.TransactionCharge = PaythruOptions.TransactionCharge;
-
-
-                    await _invoiceRepo.AddAsync(billInvoice);
-                    await _invoiceRepo.SaveChangesAsync();
+                    await _billTransactionsRepo.SaveChangesAsync();
 
                     var chargeModel = new ChargesInputDto
                     {
@@ -188,12 +183,18 @@ namespace BillProcessorAPI.Services.Implementations
 
         public async Task<SuccessResponse<PaymentVerificationResponseDto>> VerifyPayment(NotificationRequestWrapper transactionNotification)
         {
+            logger.LogInformation($"Payment notification from Paythru just came in as at {DateTime.UtcNow}");
+
+            logger.LogDebug(message: $"Details of notification : {transactionNotification.ToString()}");
+
             if (transactionNotification is null || transactionNotification.TransactionDetails is null)
                 throw new RestException(HttpStatusCode.BadRequest, "Transaction notification cannot be null");
+
             var data = new PaymentVerificationResponseDto();
             bool verificationSuccess = false;
             try
             {
+
                 var billTransaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == transactionNotification.TransactionDetails.MerchantReference);
                 if (billTransaction == null)
                     throw new RestException(HttpStatusCode.NotFound, "Transaction not found");
@@ -201,6 +202,7 @@ namespace BillProcessorAPI.Services.Implementations
                 data.TransactionReference = transactionNotification.TransactionDetails.MerchantReference;
 
                 billTransaction.AmountPaid = transactionNotification.TransactionDetails.ResidualAmount;
+                billTransaction.PrinciPalAmount = billTransaction.AmountPaid; // amount paid minus charges
                 billTransaction.Channel = transactionNotification.TransactionDetails.PaymentMethod;
                 billTransaction.TransactionCharge = PaythruOptions.TransactionCharge;
                 billTransaction.GatewayTransactionCharge = transactionNotification.TransactionDetails.Commission;
@@ -280,19 +282,18 @@ namespace BillProcessorAPI.Services.Implementations
             var invoiceResponse = new SuccessResponse<PaymentConfirmationResponse>();
             try
             {
-                var billTransaction = await _billTransactionsRepo.FirstOrDefault(x => x.SuccessIndicator == model.Status);
-                if (billTransaction == null)
-                    throw new RestException(HttpStatusCode.NotFound, "Unable to fetch transaction: transaction failed");
+                var transaction = await _billTransactionsRepo.FirstOrDefault(x => x.SuccessIndicator == model.Status);
+                if (transaction == null)
+                {
+                    invoiceResponse.Success = false;
+                    invoiceResponse.Message = "Unable to fetch transaction: transaction failed";
+                    invoiceResponse.Data = null;
+                    return invoiceResponse;
+                }
 
+                var invoice = _mapper.Map<PaymentConfirmationResponse>(transaction);
 
-                var invoice = await _invoiceRepo.Query(x => x.BillTransactionId == billTransaction.Id)
-                    .Include(x => x.Receipts).FirstOrDefaultAsync();
-                if (invoice is null)
-                    throw new RestException(HttpStatusCode.NotFound, "Unable to retrieve invoice for this transaction");
-
-                var invoiceDto = _mapper.Map<PaymentConfirmationResponse>(invoice);
-
-                invoiceResponse.Data = invoiceDto;
+                invoiceResponse.Data = invoice;
                 invoiceResponse.Success = true;
                 invoiceResponse.Message = "Transaction Successful";
 

@@ -3,6 +3,7 @@ using BillProcessorAPI.Dtos;
 using BillProcessorAPI.Dtos.Common;
 using BillProcessorAPI.Dtos.Flutterwave;
 using BillProcessorAPI.Entities;
+using BillProcessorAPI.Entities.PaythruEntities;
 using BillProcessorAPI.Enums;
 using BillProcessorAPI.Helpers;
 using BillProcessorAPI.Helpers.Flutterwave;
@@ -170,6 +171,11 @@ namespace BillProcessorAPI.Services.Implementations
 
             try
             {
+                Console.WriteLine($"Payment notification from Flutterwave just came in as at: {DateTime.UtcNow}");
+
+                Console.WriteLine($"Details of notification : {model.ToString()}");
+
+
                 var transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.Data.tx_ref);
                 var charge = new ChargesInputDto
                 {
