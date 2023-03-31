@@ -22,6 +22,7 @@ using BillProcessorAPI.Dtos.Paythru;
 using BillProcessorAPI.Dtos.Common;
 using System.Runtime.InteropServices;
 using Microsoft.EntityFrameworkCore;
+using BillProcessorAPI.Entities.PaythruEntities;
 
 namespace BillProcessorAPI.Services.Implementations
 {
@@ -144,6 +145,14 @@ namespace BillProcessorAPI.Services.Implementations
                         PaymentInfoRequestData = JsonConvert.SerializeObject(paymentCreationPayload)
                     };
 
+                    _logger.LogInformation($"Create transaction via Paythru. DateTime : {DateTime.UtcNow}");
+                    _logger.LogInformation($"-------------------------------------------------------------------------");
+
+                    _logger.LogInformation(message: $"Serialized json value of the transaction :{JsonConvert.SerializeObject(billTransaction)}");
+
+                    _logger.LogInformation($"-------------------------------------------------------------------------");
+
+
                     await _billTransactionsRepo.AddAsync(billTransaction);
                     await _billTransactionsRepo.SaveChangesAsync();
 
@@ -187,7 +196,7 @@ namespace BillProcessorAPI.Services.Implementations
             _logger.LogInformation($"Payment notification from Paythru just came in as at {DateTime.UtcNow}");
             _logger.LogInformation($"-------------------------------------------------------------------------");
 
-            _logger.LogInformation(message: $"Formatted string value of the notification :{JsonConvert.SerializeObject(transactionNotification)}");
+            _logger.LogInformation(message: $"Formatted string value of the notification :{transactionNotification.ToString()}");
             _logger.LogInformation(message: $"Serialized json value of the notification :{JsonConvert.SerializeObject(transactionNotification)}");
 
             _logger.LogInformation($"-------------------------------------------------------------------------");
@@ -224,6 +233,8 @@ namespace BillProcessorAPI.Services.Implementations
                 billTransaction.SuccessIndicator = transactionNotification.TransactionDetails.ResultCode;
                 billTransaction.Hash = transactionNotification.TransactionDetails.Hash;
                 billTransaction.NotificationResponseData = JsonConvert.SerializeObject(transactionNotification);
+
+                await _billTransactionsRepo.SaveChangesAsync();
 
 
                 if (billTransaction.SuccessIndicator != transactionNotification.TransactionDetails.ResultCode)
@@ -285,7 +296,9 @@ namespace BillProcessorAPI.Services.Implementations
         {
             if (string.IsNullOrEmpty(model.Status))
                 throw new RestException(HttpStatusCode.BadRequest, "success indicator cannot be null");
+
             var invoiceResponse = new SuccessResponse<PaymentConfirmationResponse>();
+
             try
             {
                 var billTransaction = await _billTransactionsRepo.FirstOrDefault(x => x.SuccessIndicator == model.Status);
