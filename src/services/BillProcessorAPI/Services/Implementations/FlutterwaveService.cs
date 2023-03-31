@@ -250,8 +250,7 @@ namespace BillProcessorAPI.Services.Implementations
 
                 var invoiceDto = _mapper.Map<PaymentConfirmationResponse>(invoice);
                                   
-                //var invoice = _mapper.Map<PaymentInvoiceResponse>(billTransaction);
-                //invoice.Receipts = receiptArray;
+                
 
                 invoiceResponse.Data = invoiceDto;
                 invoiceResponse.Success = true;

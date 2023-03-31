@@ -13,7 +13,10 @@ namespace BillProcessorAPI.Mapper
             CreateMap<Invoice, InvoiceDetailsDto>();
             CreateMap<Invoice, InvoiceDto>();
             CreateMap<Invoice, PaymentConfirmationResponse>();
+            CreateMap<BillTransaction, Invoice>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.Empty));
+
         }
-    
+
     }
 }
