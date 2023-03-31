@@ -42,8 +42,13 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.EnableAnnotations();
 });
-
+builder.WebHost.UseSentry(o => {
+    o.Dsn = "https://84a76b43608f4aecbd98622afde5310e@o373456.ingest.sentry.io/6181869";// When configuring for the first time, to see what the SDK is doing:
+    o.Debug = true;// Set TracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.// We recommend adjusting this value in production.
+    o.TracesSampleRate = 1.0;
+});
 builder.Services.ConfigService(builder.Configuration);
+
 
 var app = builder.Build();
 

@@ -5,8 +5,6 @@ namespace BillProcessorAPI.Entities
     public class Invoice : AuditableEntity
     {
         public Guid Id { get; set; }
-        public Guid BillTransactionId { get; set; }
-        public Guid? ReceiptId { get; set; }
         public string PayerName { get; set; }
         public string BillNumber { get; set; }
         public string Pid { get; set; }
@@ -21,7 +19,8 @@ namespace BillProcessorAPI.Entities
         public decimal TransactionCharge { get; set; }
         public decimal GatewayTransactionCharge { get; set; }
         public string ReceiptUrl { get; set; }
+        public Guid BillTransactionId { get; set; }
         public BillTransaction BillTransaction { get; set; }
-        public Receipt Receipt { get; set; }
+        public virtual IList<Receipt> Receipts { get; set; }
     }
 }

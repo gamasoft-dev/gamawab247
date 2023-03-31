@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BillProcessorAPI.Dtos;
 using BillProcessorAPI.Dtos.Common;
 using BillProcessorAPI.Entities;
 using BillProcessorAPI.Enums;
@@ -9,8 +10,9 @@ namespace BillProcessorAPI.Mapper
     {
         public InvoiceMapper()
         {
-            CreateMap<Invoice, InvoiceDetailsDto>().ReverseMap();
-            CreateMap<Invoice, InvoiceDto>().ReverseMap();
+            CreateMap<Invoice, InvoiceDetailsDto>();
+            CreateMap<Invoice, InvoiceDto>();
+            CreateMap<Invoice, PaymentConfirmationResponse>();
         }
     
     }

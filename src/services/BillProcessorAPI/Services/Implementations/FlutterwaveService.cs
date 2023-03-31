@@ -6,11 +6,13 @@ using BillProcessorAPI.Entities;
 using BillProcessorAPI.Enums;
 using BillProcessorAPI.Helpers;
 using BillProcessorAPI.Helpers.Flutterwave;
+using BillProcessorAPI.Helpers.Paythru;
 using BillProcessorAPI.Repositories.Interfaces;
 using BillProcessorAPI.Services.Interfaces;
 using Domain.Common;
 using Domain.Exceptions;
 using Infrastructure.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Net;
@@ -54,11 +56,16 @@ namespace BillProcessorAPI.Services.Implementations
 
         public async Task<SuccessResponse<PaymentCreationResponse>> CreateTransaction(string email, decimal amount, string billPaymentCode)
         {
-
-            if (string.IsNullOrEmpty(email) || amount < 0)
-                throw new RestException(HttpStatusCode.BadRequest, "All fields are required");
             if (_flutterOptions == null)
                 throw new RestException(HttpStatusCode.BadRequest, "please update your application setting file");
+
+            if (amount < _flutterOptions.MinimumPayableAmount)
+            {
+                throw new RestException(HttpStatusCode.BadRequest, $"The minimum amount payable is {_flutterOptions.MinimumPayableAmount}");
+            }
+            if (string.IsNullOrEmpty(email) || amount < 0)
+                throw new RestException(HttpStatusCode.BadRequest, "All fields are required");
+           
 
             IDictionary<string, string> param = new Dictionary<string, string>();
             param.Add(key: "Authorization", _flutterOptions.SecretKey);
@@ -91,7 +98,7 @@ namespace BillProcessorAPI.Services.Implementations
 
                 var billTransaction = new BillTransaction
                 {
-                    GatewayType = EGatewayType.Paythru,
+                    GatewayType = EGatewayType.Flutterwave,
                     Status = ETransactionStatus.Created.ToString(),
                     BillPayerInfoId = billPayer.Id,
                     PayerName = billPayer.PayerName,
@@ -117,16 +124,12 @@ namespace BillProcessorAPI.Services.Implementations
                     Channel = "Flutterwave"
                 };
 
-              
-
-
 
                 var billInvoice = _mapper.Map<Invoice>(billPayer);
                 billInvoice.BillTransactionId = billTransaction.Id;
                 billInvoice.TransactionReference = trxReference;
                 billInvoice.DueDate = billPayer.AcctCloseDate;
                 billInvoice.BillNumber = billPaymentCode;
-                billInvoice.BillTransactionId = billTransaction.Id;
                 billInvoice.GatewayType = EGatewayType.Flutterwave;
                 billInvoice.PhoneNumber = billPayer.PhoneNumber;
                 billInvoice.TransactionCharge = _configService.CalculateBillChargesOnAmount(charge).Data.AmountCharge;
@@ -135,11 +138,6 @@ namespace BillProcessorAPI.Services.Implementations
                 await _invoiceRepo.AddAsync(billInvoice);
                 await _invoiceRepo.SaveChangesAsync();
 
-                //var charge = new ChargesInputDto
-                //{
-                //    Amount = amount,
-                //    Channel = "Flutterwave"
-                //};
                 var response = new PaymentCreationResponse
                 {
                     SystemCharge = billInvoice.TransactionCharge,
@@ -165,10 +163,8 @@ namespace BillProcessorAPI.Services.Implementations
 
         }
 
-        public async Task<SuccessResponse<string>> PaymentNotification(string signature, WebHookNotificationWrapper model)
+        public async Task<SuccessResponse<string>> PaymentNotification(WebHookNotificationWrapper model)
         {
-            if (string.IsNullOrEmpty(signature) || (signature != _flutterOptions.Signature))
-                throw new RestException(HttpStatusCode.Unauthorized, "unable to verify transaction signature");
             if (model == null)
                 throw new RestException(HttpStatusCode.BadRequest, "invalid transaction");
 
@@ -191,23 +187,29 @@ namespace BillProcessorAPI.Services.Implementations
                 transaction.PaymentReference = "N/A";
                 transaction.DateCompleted = model.Data.created_at.ToString();
                 transaction.GatewayTransactionCharge = (decimal)model.Data.app_fee;
+                transaction.NotificationResponseData = JsonConvert.SerializeObject(model);
+                
 
                 await _billTransactionsRepo.SaveChangesAsync();
+
+                //add the receipt to the invoice
+                var invoice = await _invoiceRepo.FirstOrDefault(x => x.BillTransactionId == transaction.Id);
+                if (invoice is null)
+                    throw new RestException(HttpStatusCode.NotFound, "No invoice found for this transaction");
 
                 // Create a receipt record
                 var receipt = _mapper.Map<Receipt>(transaction);
                 receipt.TransactionId = transaction.Id;
                 receipt.PaymentRef = "N/A";
+                receipt.InvoiceId = invoice.Id;
+                receipt.TransactionDate = transaction.DateCompleted;
+                receipt.GateWay = transaction.GatewayType.ToString();
+                receipt.ReceiptUrl = model.Data.receipt_url;
 
                 await _receipts.AddAsync(receipt);
                 await _receipts.SaveChangesAsync();
 
-                //add the receipt to the invoice
-                var invoice =  await _invoiceRepo.FirstOrDefault(x => x.TransactionReference == transaction.TransactionReference);
-                invoice.ReceiptId = receipt.Id;
-                await _invoiceRepo.SaveChangesAsync();
-                           
-
+               
                 return new SuccessResponse<string>
                 {
                     Data = "Transaction Completed"
@@ -220,15 +222,15 @@ namespace BillProcessorAPI.Services.Implementations
             }
         }
 
-        public async Task<SuccessResponse<PaymentInvoiceResponse>> PaymentConfirmation(string status, string tx_ref, string transaction_id)
+        public async Task<SuccessResponse<PaymentConfirmationResponse>> PaymentConfirmation(string status, string tx_ref, string transaction_id)
         {
             var trxStatus = new SuccessResponse<string>();
             if (string.IsNullOrEmpty(status) || string.IsNullOrEmpty(tx_ref) || string.IsNullOrEmpty(transaction_id))
                 throw new RestException(HttpStatusCode.BadGateway, "bad request");
-            var invoiceResponse = new SuccessResponse<PaymentInvoiceResponse>();
+            var invoiceResponse = new SuccessResponse<PaymentConfirmationResponse>();
             try
             {
-                var billTransaction = await _billTransactionsRepo.FirstOrDefault(x=>x.TransactionReference == transaction_id);
+                var billTransaction = await _billTransactionsRepo.FirstOrDefault(x=>x.TransactionReference == tx_ref);
                 if (billTransaction == null)
                     throw new RestException(HttpStatusCode.NotFound, "Unable to fetch transaction: transaction failed");
 
@@ -241,12 +243,17 @@ namespace BillProcessorAPI.Services.Implementations
                     return invoiceResponse;
                 }
 
-                var receiptArray = await _invoiceRepo.GetBillInvoiceWithReceipt(transaction_id);
+                var invoice = await _invoiceRepo.Query(x => x.BillTransactionId == billTransaction.Id)
+                    .Include(x => x.Receipts).FirstOrDefaultAsync();
+                if (invoice is null)
+                    throw new RestException(HttpStatusCode.NotFound, "Unable to retrieve invoice for this transaction");
+
+                var invoiceDto = _mapper.Map<PaymentConfirmationResponse>(invoice);
                                   
-                var invoice = _mapper.Map<PaymentInvoiceResponse>(billTransaction);
+                //var invoice = _mapper.Map<PaymentInvoiceResponse>(billTransaction);
                 //invoice.Receipts = receiptArray;
 
-                invoiceResponse.Data = invoice;
+                invoiceResponse.Data = invoiceDto;
                 invoiceResponse.Success = true;
                 invoiceResponse.Message = "Transaction Successful";
 

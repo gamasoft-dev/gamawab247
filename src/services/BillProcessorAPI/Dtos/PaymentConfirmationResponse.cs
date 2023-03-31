@@ -1,9 +1,10 @@
-﻿using BillProcessorAPI.Entities;
+﻿using BillProcessorAPI.Dtos.Common;
+using BillProcessorAPI.Entities;
 using BillProcessorAPI.Enums;
 
 namespace BillProcessorAPI.Dtos
 {
-    public class PaymentInvoiceResponse
+    public class PaymentConfirmationResponse
     {
         public string PayerName { get; set; }
         public string BillNumber { get; set; }
@@ -19,16 +20,7 @@ namespace BillProcessorAPI.Dtos
         public decimal TransactionCharge { get; set; }
         public decimal GatewayTransactionCharge { get; set; }
         public string ReceiptUrl { get; set; }
-        public object[] Receipts { get; set; }
+        public IList<ReceiptDto> Receipts { get; set; }
     }
 
-    public class ReceiptDto
-    {
-        public string TransactionDate { get; set; }
-        public string GateWay { get; set; }
-        public string PaymentRef { get; set; }
-        public string GatewayTransactionReference { get; set; }
-        public decimal AmountPaid { get; set; }
-        public decimal AmountDue { get; set; }
-    }
 }

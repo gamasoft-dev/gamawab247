@@ -3,6 +3,7 @@ using System;
 using BillProcessorAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BillProcessorAPI.Migrations
 {
     [DbContext(typeof(BillProcessorDbContext))]
-    partial class BillProcessorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230331094415_billInvoiceRefactorUpdate")]
+    partial class billInvoiceRefactorUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -198,9 +201,6 @@ namespace BillProcessorAPI.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Narration")
-                        .HasColumnType("text");
-
-                    b.Property<string>("NotificationResponseData")
                         .HasColumnType("text");
 
                     b.Property<string>("PayerName")
@@ -393,7 +393,7 @@ namespace BillProcessorAPI.Migrations
             modelBuilder.Entity("BillProcessorAPI.Entities.Receipt", b =>
                 {
                     b.HasOne("BillProcessorAPI.Entities.Invoice", null)
-                        .WithMany("Receipts")
+                        .WithMany("Receipt")
                         .HasForeignKey("InvoiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -414,7 +414,7 @@ namespace BillProcessorAPI.Migrations
 
             modelBuilder.Entity("BillProcessorAPI.Entities.Invoice", b =>
                 {
-                    b.Navigation("Receipts");
+                    b.Navigation("Receipt");
                 });
 #pragma warning restore 612, 618
         }

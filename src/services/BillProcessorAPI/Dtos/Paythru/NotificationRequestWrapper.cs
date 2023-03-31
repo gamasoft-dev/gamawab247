@@ -3,7 +3,7 @@
     public class NotificationRequestWrapper
     {
         public int NotificationType { get; set; }
-        public TransactionNotificationDetail TransactionDetail { get; set; }
+        public TransactionNotificationDetail TransactionDetails { get; set; }
     }
 
     public class TransactionNotificationDetail

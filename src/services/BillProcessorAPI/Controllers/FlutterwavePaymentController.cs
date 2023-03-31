@@ -24,8 +24,7 @@ namespace BillProcessorAPI.Controllers
         [SwaggerOperation(Summary = "Webhook endpoint")]
         public async Task<IActionResult> FlutterwavePaymentNotification(WebHookNotificationWrapper model)
         {
-            var signature = Request.Headers["verif-hash"];
-            var response = await _transactionService.PaymentNotification(signature, model);
+            var response = await _transactionService.PaymentNotification(model);
             return Ok(response);
         }
 
@@ -39,7 +38,7 @@ namespace BillProcessorAPI.Controllers
         }
 
         [HttpGet("/flutterwave/payment-confirmation/{status}/{tx_ref}/{transaction_id}")]
-        [ProducesResponseType(typeof(PaymentInvoiceResponse), 200)]
+        [ProducesResponseType(typeof(PaymentConfirmationResponse), 200)]
         [SwaggerOperation(Summary = "Endpoint for redirect url")]
         public async Task<IActionResult> PaymentConfirmation([FromRoute] string status, string tx_ref, string transaction_id)
         {
