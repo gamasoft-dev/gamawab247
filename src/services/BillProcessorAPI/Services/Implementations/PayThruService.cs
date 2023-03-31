@@ -145,8 +145,8 @@ namespace BillProcessorAPI.Services.Implementations
                         PaymentInfoRequestData = JsonConvert.SerializeObject(paymentCreationPayload)
                     };
 
-                    _logger.LogInformation($"Create transaction via Paythru. DateTime : {DateTime.UtcNow}");
                     _logger.LogInformation($"-------------------------------------------------------------------------");
+                    _logger.LogInformation($"Create transaction via Paythru. DateTime : {DateTime.UtcNow}");
 
                     _logger.LogInformation(message: $"Serialized json value of the transaction :{JsonConvert.SerializeObject(billTransaction)}");
 
@@ -154,7 +154,19 @@ namespace BillProcessorAPI.Services.Implementations
 
 
                     await _billTransactionsRepo.AddAsync(billTransaction);
-                    await _billTransactionsRepo.SaveChangesAsync();
+
+                    var billInvoice = _mapper.Map<Invoice>(billPayer);
+                    billInvoice.BillTransactionId = billTransaction.Id;
+                    billInvoice.TransactionReference = billTransaction.TransactionReference;
+                    billInvoice.DueDate = billPayer.AcctCloseDate;
+                    billInvoice.BillNumber = billTransaction.BillNumber;
+                    billInvoice.GatewayType = EGatewayType.Flutterwave;
+                    billInvoice.PhoneNumber = billPayer.PhoneNumber;
+                    billInvoice.TransactionCharge = PaythruOptions.TransactionCharge;
+
+
+                    await _invoiceRepo.AddAsync(billInvoice);
+                    await _invoiceRepo.SaveChangesAsync();
 
                     var chargeModel = new ChargesInputDto
                     {
