@@ -4,6 +4,24 @@
     {
         public int NotificationType { get; set; }
         public TransactionNotificationDetail TransactionDetails { get; set; }
+
+        public override string ToString()
+        {
+            var s = TransactionDetails;
+            return $"{NotificationType} \n" +
+                $" Amount : {s.Amount} \n " +
+                $" BankReference : {s.BankReference} \n" +
+                $" Commission: {s.Commission} \n" +
+                $" Currency: {s.Currency}\n" +
+                $" CustomerId: {s.CustomerId} Customer Name {s.CustomerName} \n" +
+                $" DateCompleted: {s.DateCompleted} \n" +
+                $" Date of Transaxtion {s.DateOfTransaction} {s.FiName} \n" +
+                $" Merchant Reference: {s.MerchantReference} " +
+                $" Payment Reference: {s.PaymentReference} \n " +
+                $" Paythru Reference: {s.PayThruReference} \n " +
+                $" Status : {s.Status} \n " +
+                $" REsponse Code: {s.ResponseCode}  Narration: {s.Naration}  Response Description: {s.ResponseDescription}";
+        }
     }
 
     public class TransactionNotificationDetail

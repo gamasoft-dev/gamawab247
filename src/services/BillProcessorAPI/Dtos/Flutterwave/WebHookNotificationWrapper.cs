@@ -8,6 +8,12 @@ namespace BillProcessorAPI.Dtos.Flutterwave
         public string Event { get; set; }
         [JsonProperty("data")]
         public FlutterwaveResponseData Data { get; set; }
+
+        //TODO: Override properties of data
+        public override string ToString()
+        {
+            return Data.ToString();
+        }
     }
 
     public class Card
