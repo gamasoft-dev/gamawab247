@@ -21,6 +21,7 @@ using Domain.Exceptions;
 using BillProcessorAPI.Dtos.Paythru;
 using BillProcessorAPI.Dtos.Common;
 using System.Runtime.InteropServices;
+using Microsoft.EntityFrameworkCore;
 
 namespace BillProcessorAPI.Services.Implementations
 {
@@ -272,7 +273,6 @@ namespace BillProcessorAPI.Services.Implementations
                     Data = data,
                     Success = verificationSuccess
                 };
-
             }
             catch (Exception ex)
             {
@@ -288,18 +288,19 @@ namespace BillProcessorAPI.Services.Implementations
             var invoiceResponse = new SuccessResponse<PaymentConfirmationResponse>();
             try
             {
-                var transaction = await _billTransactionsRepo.FirstOrDefault(x => x.SuccessIndicator == model.Status);
-                if (transaction == null)
-                {
-                    invoiceResponse.Success = false;
-                    invoiceResponse.Message = "Unable to fetch transaction: transaction failed";
-                    invoiceResponse.Data = null;
-                    return invoiceResponse;
-                }
+                var billTransaction = await _billTransactionsRepo.FirstOrDefault(x => x.SuccessIndicator == model.Status);
+                if (billTransaction == null)
+                    throw new RestException(HttpStatusCode.NotFound, "Unable to fetch transaction: transaction failed");
 
-                var invoice = _mapper.Map<PaymentConfirmationResponse>(transaction);
 
-                invoiceResponse.Data = invoice;
+                var invoice = await _invoiceRepo.Query(x => x.BillTransactionId == billTransaction.Id)
+                    .Include(x => x.Receipts).FirstOrDefaultAsync();
+                if (invoice is null)
+                    throw new RestException(HttpStatusCode.NotFound, "Unable to retrieve invoice for this transaction");
+
+                var invoiceDto = _mapper.Map<PaymentConfirmationResponse>(invoice);
+
+                invoiceResponse.Data = invoiceDto;
                 invoiceResponse.Success = true;
                 invoiceResponse.Message = "Transaction Successful";
 
