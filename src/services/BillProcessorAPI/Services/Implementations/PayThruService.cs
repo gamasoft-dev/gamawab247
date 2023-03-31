@@ -160,12 +160,15 @@ namespace BillProcessorAPI.Services.Implementations
                     billInvoice.TransactionReference = billTransaction.TransactionReference;
                     billInvoice.DueDate = billPayer.AcctCloseDate;
                     billInvoice.BillNumber = billTransaction.BillNumber;
-                    billInvoice.GatewayType = EGatewayType.Flutterwave;
+                    billInvoice.GatewayType = EGatewayType.Paythru;
                     billInvoice.PhoneNumber = billPayer.PhoneNumber;
-                    billInvoice.TransactionCharge = PaythruOptions.TransactionCharge;
-
+                    billInvoice.AmountDue = billTransaction.AmountDue;
+                    billInvoice.AmountPaid = billTransaction.AmountPaid;
+                    billInvoice.GatewayTransactionCharge = PaythruOptions.TransactionCharge;
+                    billInvoice.ReceiptUrl = billTransaction.ReceiptUrl;
 
                     await _invoiceRepo.AddAsync(billInvoice);
+                    _logger.LogInformation("about to save invoice record");
                     await _invoiceRepo.SaveChangesAsync();
 
                     var chargeModel = new ChargesInputDto
@@ -250,6 +253,7 @@ namespace BillProcessorAPI.Services.Implementations
             billTransaction.ReceiptUrl = transactionNotification.TransactionDetails.ReceiptUrl;
             billTransaction.SuccessIndicator = transactionNotification.TransactionDetails.ResultCode;
             billTransaction.Hash = transactionNotification.TransactionDetails.Hash;
+            billTransaction.UpdatedAt = DateTime.UtcNow;
             billTransaction.NotificationResponseData = JsonConvert.SerializeObject(transactionNotification);
 
             await _billTransactionsRepo.SaveChangesAsync();
@@ -285,6 +289,9 @@ namespace BillProcessorAPI.Services.Implementations
             if (invoice is null)
                 throw new PaymentVerificationException(HttpStatusCode.NotFound, "No invoice found for this transaction");
 
+            invoice.ReceiptUrl = transactionNotification.TransactionDetails.ReceiptUrl;
+            invoice.UpdatedAt = DateTime.UtcNow;
+
             // Create a receipt record
             var receipt = _mapper.Map<Receipt>(billTransaction);
             receipt.TransactionId = billTransaction.Id;
@@ -310,7 +317,7 @@ namespace BillProcessorAPI.Services.Implementations
             if (string.IsNullOrEmpty(model.Status))
                 throw new RestException(HttpStatusCode.BadRequest, "success indicator cannot be null");
 
-            var invoiceResponse = new SuccessResponse<PaymentConfirmationResponse>();
+            var verificationDto = new SuccessResponse<PaymentConfirmationResponse>();
 
             try
             {
@@ -319,18 +326,18 @@ namespace BillProcessorAPI.Services.Implementations
                     throw new RestException(HttpStatusCode.NotFound, "Unable to fetch transaction: transaction failed");
 
 
-                var invoice = await _invoiceRepo.Query(x => x.BillTransactionId == billTransaction.Id)
+                Invoice invoice = await _invoiceRepo.Query(x => x.BillTransactionId == billTransaction.Id)
                     .Include(x => x.Receipts).FirstOrDefaultAsync();
                 if (invoice is null)
                     throw new RestException(HttpStatusCode.NotFound, "Unable to retrieve invoice for this transaction");
 
-                var invoiceDto = _mapper.Map<PaymentConfirmationResponse>(invoice);
+                var verificationResponse = _mapper.Map<PaymentConfirmationResponse>(invoice);
 
-                invoiceResponse.Data = invoiceDto;
-                invoiceResponse.Success = true;
-                invoiceResponse.Message = "Transaction Successful";
+                verificationDto.Data = verificationResponse;
+                verificationDto.Success = true;
+                verificationDto.Message = "Transaction Successful";
 
-                return invoiceResponse;
+                return verificationDto;
             }
             catch (Exception ex)
             {
