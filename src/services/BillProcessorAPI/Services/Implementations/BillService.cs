@@ -71,6 +71,7 @@ namespace BillProcessorAPI.Services.Implementations
 				{
 					var revPayRes = await httpResponse.ReadContentAs<BillReferenceResponseDto>();
 					revPayRes.CurrentDate = DateTime.Now;
+
 					var mappedResponse = _mapper.Map<BillPayerInfo>(revPayRes);
 					mappedResponse.PhoneNumber = phone;
 
