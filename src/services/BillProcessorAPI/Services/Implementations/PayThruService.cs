@@ -128,7 +128,7 @@ namespace BillProcessorAPI.Services.Implementations
                     var billTransaction = new BillTransaction
                     {
                         GatewayType = EGatewayType.Paythru,
-                        Status = ETransactionStatus.Created.ToString(),
+                        Status = ETransactionStatus.Pending.ToString(),
                         BillPayerInfoId = billPayer.Id,
                         PayerName = billPayer.PayerName,
                         BillNumber = billPayer.billCode,
@@ -247,7 +247,18 @@ namespace BillProcessorAPI.Services.Implementations
             billTransaction.PaymentReference = transactionNotification.TransactionDetails.PaymentReference;
             billTransaction.FiName = transactionNotification.TransactionDetails.FiName;
             billTransaction.Narration = transactionNotification.TransactionDetails.Naration;
-            billTransaction.Status = transactionNotification.TransactionDetails.Status;
+
+
+            if (transactionNotification?.TransactionDetails?.Status?.ToUpper()
+                == ETransactionStatus.Successful.ToString().ToUpper())
+            {
+                billTransaction.Status = ETransactionStatus.Successful.ToString();
+            }
+            else
+            {
+                billTransaction.Status = ETransactionStatus.Failed.ToString();
+            }
+
             billTransaction.DateCompleted = transactionNotification.TransactionDetails.DateCompleted;
             billTransaction.StatusMessage = transactionNotification.TransactionDetails.Status;
             billTransaction.ReceiptUrl = transactionNotification.TransactionDetails.ReceiptUrl;
@@ -329,6 +340,21 @@ namespace BillProcessorAPI.Services.Implementations
                 if (billTransaction == null)
                     throw new RestException(HttpStatusCode.NotFound, "Unable to fetch transaction: transaction failed");
 
+
+                // check the transaction for the bill
+                // if it's pending dont perform verification..
+                if (billTransaction.Status.Equals(ETransactionStatus.Pending.ToString()) ||
+                    billTransaction.Status.Equals(ETransactionStatus.Created.ToString()))
+                {
+                    var response = _mapper.Map<PaymentConfirmationResponse>(billTransaction);
+
+                    return new SuccessResponse<PaymentConfirmationResponse>
+                    {
+                        Data = response,
+                        Success = false,
+                        Message = "Transaction not completed",
+                    };
+                }
 
                 Invoice invoice = await _invoiceRepo.Query(x => x.BillTransactionId == billTransaction.Id)
                     .Include(x => x.Receipts).FirstOrDefaultAsync();

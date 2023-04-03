@@ -106,7 +106,7 @@ namespace BillProcessorAPI.Services.Implementations
                 {
 
                     GatewayType = EGatewayType.Flutterwave,
-                    Status = ETransactionStatus.Created.ToString(),
+                    Status = ETransactionStatus.Pending.ToString(),
                     BillPayerInfoId = billPayer.Id,
                     PayerName = billPayer.PayerName,
                     BillNumber = billPayer.billCode,
@@ -195,7 +195,17 @@ namespace BillProcessorAPI.Services.Implementations
             transaction.PaymentReference = "N/A";
             transaction.FiName = "N/A";
             transaction.Narration = model.Data.narration;
-            transaction.Status = ETransactionStatus.Successful.ToString();
+
+            if (model?.Data?.status?.ToUpper()
+                == ETransactionStatus.Successful.ToString().ToUpper())
+            {
+                transaction.Status = ETransactionStatus.Successful.ToString();
+            }
+            else
+            {
+                transaction.Status = ETransactionStatus.Failed.ToString();
+            }
+
             transaction.DateCompleted = model.Data.created_at.ToString();
             transaction.StatusMessage = model.Data.status;
             transaction.ReceiptUrl = model.Data.receipt_url;
@@ -242,14 +252,31 @@ namespace BillProcessorAPI.Services.Implementations
         public async Task<SuccessResponse<PaymentConfirmationResponse>> PaymentConfirmation(string status, string tx_ref, string transaction_id)
         {
             var trxStatus = new SuccessResponse<string>();
-            if (string.IsNullOrEmpty(status) || string.IsNullOrEmpty(tx_ref) || string.IsNullOrEmpty(transaction_id))
-                throw new RestException(HttpStatusCode.BadGateway, "bad request");
+            if (string.IsNullOrEmpty(status) || string.IsNullOrEmpty(tx_ref))
+                throw new RestException(HttpStatusCode.BadGateway, "bad request, status param and transaction reference cannot be null");
+
             var invoiceResponse = new SuccessResponse<PaymentConfirmationResponse>();
+
             try
             {
                 var billTransaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == tx_ref);
                 if (billTransaction == null)
                     throw new RestException(HttpStatusCode.NotFound, "Unable to fetch transaction: transaction failed");
+
+                // check the transaction for the bill
+                // if it's pending dont perform verification..
+                if (billTransaction.Status.Equals(ETransactionStatus.Pending.ToString())
+                    || billTransaction.Status.Equals(ETransactionStatus.Created.ToString()))
+                {
+                    var response = _mapper.Map<PaymentConfirmationResponse>(billTransaction);
+
+                    return new SuccessResponse<PaymentConfirmationResponse>
+                    {
+                        Data = response,
+                        Success = false,
+                        Message = "Transaction not completed",
+                    };
+                }
 
                 var verifyPayment = await VerifyTransaction(tx_ref);
                 if (!verifyPayment)
@@ -266,8 +293,6 @@ namespace BillProcessorAPI.Services.Implementations
                     throw new RestException(HttpStatusCode.NotFound, "Unable to retrieve invoice for this transaction");
 
                 var invoiceDto = _mapper.Map<PaymentConfirmationResponse>(invoice);
-
-
 
                 invoiceResponse.Data = invoiceDto;
                 invoiceResponse.Success = true;
