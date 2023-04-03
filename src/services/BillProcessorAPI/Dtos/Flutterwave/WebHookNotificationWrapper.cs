@@ -57,11 +57,11 @@ namespace BillProcessorAPI.Dtos.Flutterwave
         [JsonProperty("device_fingerprint")]
         public string device_fingerprint { get; set; }
         [JsonProperty("amount")]
-        public int amount { get; set; }
+        public decimal amount { get; set; }
         [JsonProperty("currency")]
         public string currency { get; set; }
         [JsonProperty("charged_amount")]
-        public int charged_amount { get; set; }
+        public decimal charged_amount { get; set; }
         [JsonProperty("app_fee")]
         public double app_fee { get; set; }
         [JsonProperty("merchant_fee")]

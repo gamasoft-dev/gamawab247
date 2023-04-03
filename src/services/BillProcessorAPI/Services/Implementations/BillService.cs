@@ -105,11 +105,11 @@ namespace BillProcessorAPI.Services.Implementations
 
 		public async Task<SuccessResponse<BillPaymentVerificationResponseDto>> PaymentVerification(string billPaymentCode)
 		{
-
 			if (string.IsNullOrEmpty(billPaymentCode))
 			{
 				throw new RestException(HttpStatusCode.BadRequest, ResponseMessages.Failed);
 			}
+
 			if (RevpayOptions is null)
 			{
 				throw new RestException(System.Net.HttpStatusCode.PreconditionFailed, "Kindly configure the required application settings");
