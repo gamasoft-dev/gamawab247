@@ -257,6 +257,8 @@ namespace BillProcessorAPI.Services.Implementations
 
             var invoiceResponse = new SuccessResponse<PaymentConfirmationResponse>();
 
+
+            await Task.Delay(3000);
             try
             {
                 var billTransaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == tx_ref);

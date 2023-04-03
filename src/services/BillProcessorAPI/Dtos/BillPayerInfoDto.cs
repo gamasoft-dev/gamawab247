@@ -43,6 +43,7 @@ namespace BillProcessorAPI.Dtos
         public string CbnCode { get; set; }
         public string AgencyName { get; set; }
         public string RevName { get; set; }
+        public DateTime CurrentDate { get; set; }
         public string AccountInfoResponseData { get; set; }
         public string AccountInfoRequestData { get; set; }
     }
