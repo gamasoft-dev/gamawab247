@@ -19,6 +19,7 @@ namespace BillProcessorAPI.Dtos
         public decimal AmountPaid { get; set; } // Include charges
         public decimal TransactionCharge { get; set; }
         public decimal GatewayTransactionCharge { get; set; }
+        public string DateCompleted { get; set; }
         public string ReceiptUrl { get; set; }
         public IList<ReceiptDto> Receipts { get; set; }
     }
