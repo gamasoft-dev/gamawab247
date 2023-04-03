@@ -295,6 +295,7 @@ namespace BillProcessorAPI.Services.Implementations
                     throw new RestException(HttpStatusCode.NotFound, "Unable to retrieve invoice for this transaction");
 
                 var invoiceDto = _mapper.Map<PaymentConfirmationResponse>(invoice);
+                invoiceDto.DateCompleted = billTransaction.DateCompleted;
 
                 invoiceResponse.Data = invoiceDto;
                 invoiceResponse.Success = true;

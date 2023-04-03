@@ -15,11 +15,11 @@ namespace BillProcessorAPI.Dtos
         public string RevName { get; set; }
         public string PhoneNumber { get; set; }
         public string DueDate { get; set; }
+        public string DateCompleted { get; set; }
         public decimal AmountDue { get; set; }
         public decimal AmountPaid { get; set; } // Include charges
         public decimal TransactionCharge { get; set; }
         public decimal GatewayTransactionCharge { get; set; }
-        public string DateCompleted { get; set; }
         public string ReceiptUrl { get; set; }
         public IList<ReceiptDto> Receipts { get; set; }
     }
