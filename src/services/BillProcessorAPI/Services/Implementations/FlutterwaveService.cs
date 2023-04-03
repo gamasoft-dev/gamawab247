@@ -28,7 +28,7 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IRepository<BillPayerInfo> _billPayerRepository;
         private readonly IRepository<Receipt> _receipts;
 
-       
+
         private readonly FlutterwaveOptions _flutterOptions;
         private readonly IHttpService _httpService;
         private readonly IConfigurationService _configService;
@@ -66,7 +66,7 @@ namespace BillProcessorAPI.Services.Implementations
             }
             if (string.IsNullOrEmpty(email) || amount < 0)
                 throw new RestException(HttpStatusCode.BadRequest, "All fields are required");
-           
+
 
             IDictionary<string, string> param = new Dictionary<string, string>();
             param.Add(key: "Authorization", _flutterOptions.SecretKey);
@@ -96,9 +96,15 @@ namespace BillProcessorAPI.Services.Implementations
                 if (paymentCreationResponse.Data.Status != "success")
                     throw new RestException(HttpStatusCode.BadRequest, "An error occured while processing your request");
 
+                var charge = new ChargesInputDto
+                {
+                    Amount = amount,
+                    Channel = "Flutterwave"
+                };
 
                 var billTransaction = new BillTransaction
                 {
+
                     GatewayType = EGatewayType.Flutterwave,
                     Status = ETransactionStatus.Created.ToString(),
                     BillPayerInfoId = billPayer.Id,
@@ -109,6 +115,7 @@ namespace BillProcessorAPI.Services.Implementations
                     PhoneNumber = billPayer.PhoneNumber,
                     DueDate = billPayer.AcctCloseDate,
                     TransactionReference = trxReference,
+                    TransactionCharge = _configService.CalculateBillChargesOnAmount(charge).Data.AmountCharge,
                     AmountDue = billPayer.AmountDue,
                     AmountPaid = amount,
                     PaymentUrl = paymentCreationResponse.Data.Data.Link,
@@ -119,13 +126,7 @@ namespace BillProcessorAPI.Services.Implementations
                 await _billTransactionsRepo.AddAsync(billTransaction);
                 await _billTransactionsRepo.SaveChangesAsync();
 
-                var charge = new ChargesInputDto
-                {
-                    Amount = amount,
-                    Channel = "Flutterwave"
-                };
-
-
+                
                 var billInvoice = _mapper.Map<Invoice>(billPayer);
                 billInvoice.BillTransactionId = billTransaction.Id;
                 billInvoice.TransactionReference = trxReference;
@@ -169,14 +170,14 @@ namespace BillProcessorAPI.Services.Implementations
             if (model == null)
                 throw new RestException(HttpStatusCode.BadRequest, "invalid transaction");
 
-           
+
             Console.WriteLine($"Payment notification from Flutterwave just came in as at: {DateTime.UtcNow}");
 
             Console.WriteLine($"Details of notification : {model.ToString()}");
 
             var transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.Data.tx_ref);
 
-            if(transaction is null)
+            if (transaction is null)
                 throw new PaymentVerificationException(HttpStatusCode.NotFound, "No transaction found for this transaction");
 
             var charge = new ChargesInputDto
@@ -185,31 +186,43 @@ namespace BillProcessorAPI.Services.Implementations
                 Channel = "FlutterWave"
             };
 
-            transaction.GatewayTransactionReference = model.Data.flw_ref;
-            transaction.Narration = model.Data.narration;
-            transaction.TransactionCharge = _configService.CalculateBillChargesOnAmount(charge).Data.AmountCharge;
-            transaction.Status = ETransactionStatus.Successful.ToString();
-            transaction.StatusMessage = model.Data.status;
             transaction.AmountPaid = model.Data.amount;
+            transaction.PrinciPalAmount = model.Data.amount; // amount paid minus charges
             transaction.Channel = model.Data.payment_type;
-            transaction.PaymentReference = "N/A";
-            transaction.DateCompleted = model.Data.created_at.ToString();
+            transaction.TransactionCharge = transaction.TransactionCharge;
             transaction.GatewayTransactionCharge = (decimal)model.Data.app_fee;
+            transaction.GatewayTransactionReference = model.Data.flw_ref;
+            transaction.PaymentReference = "N/A";
+            transaction.FiName = "N/A";
+            transaction.Narration = model.Data.narration;
+            transaction.Status = ETransactionStatus.Successful.ToString();
+            transaction.DateCompleted = model.Data.created_at.ToString();
+            transaction.StatusMessage = model.Data.status;
+            transaction.ReceiptUrl = model.Data.receipt_url;
+            transaction.SuccessIndicator = model.Data.status;
+            transaction.Hash = "N/A";
+            transaction.UpdatedAt = DateTime.UtcNow;
             transaction.NotificationResponseData = JsonConvert.SerializeObject(model);
-                
+
 
             await _billTransactionsRepo.SaveChangesAsync();
 
             //add the receipt to the invoice
             var invoice = await _invoiceRepo.FirstOrDefault(x => x.BillTransactionId == transaction.Id);
-
             if (invoice is null)
                 throw new PaymentVerificationException(HttpStatusCode.NotFound, "No invoice found for this transaction");
+
+            invoice.ReceiptUrl = model.Data.receipt_url;
+            invoice.AmountPaid = model.Data.amount;
+            invoice.AmountDue = transaction.AmountDue;
+            invoice.GatewayTransactionCharge = (decimal)model.Data.app_fee;
+            invoice.UpdatedAt = DateTime.UtcNow;
+            invoice.GatewayTransactionReference = model.Data.flw_ref;
 
             // Create a receipt record
             var receipt = _mapper.Map<Receipt>(transaction);
             receipt.TransactionId = transaction.Id;
-            receipt.PaymentRef = "N/A";
+            receipt.PaymentRef = transaction.TransactionReference;
             receipt.InvoiceId = invoice.Id;
             receipt.TransactionDate = transaction.DateCompleted;
             receipt.GateWay = transaction.GatewayType.ToString();
@@ -218,12 +231,12 @@ namespace BillProcessorAPI.Services.Implementations
             await _receipts.AddAsync(receipt);
             await _receipts.SaveChangesAsync();
 
-               
+
             return new SuccessResponse<string>
             {
                 Data = "Transaction Completed"
             };
-            
+
         }
 
         public async Task<SuccessResponse<PaymentConfirmationResponse>> PaymentConfirmation(string status, string tx_ref, string transaction_id)
@@ -234,7 +247,7 @@ namespace BillProcessorAPI.Services.Implementations
             var invoiceResponse = new SuccessResponse<PaymentConfirmationResponse>();
             try
             {
-                var billTransaction = await _billTransactionsRepo.FirstOrDefault(x=>x.TransactionReference == tx_ref);
+                var billTransaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == tx_ref);
                 if (billTransaction == null)
                     throw new RestException(HttpStatusCode.NotFound, "Unable to fetch transaction: transaction failed");
 
@@ -253,8 +266,8 @@ namespace BillProcessorAPI.Services.Implementations
                     throw new RestException(HttpStatusCode.NotFound, "Unable to retrieve invoice for this transaction");
 
                 var invoiceDto = _mapper.Map<PaymentConfirmationResponse>(invoice);
-                                  
-                
+
+
 
                 invoiceResponse.Data = invoiceDto;
                 invoiceResponse.Success = true;
