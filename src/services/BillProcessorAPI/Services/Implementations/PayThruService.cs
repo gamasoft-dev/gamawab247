@@ -294,11 +294,12 @@ namespace BillProcessorAPI.Services.Implementations
             invoice.AmountDue = billTransaction.AmountDue;
             invoice.GatewayTransactionCharge = billTransaction.GatewayTransactionCharge;
             invoice.UpdatedAt = DateTime.UtcNow;
+            invoice.GatewayTransactionReference = billTransaction.GatewayTransactionReference;
 
             // Create a receipt record
             var receipt = _mapper.Map<Receipt>(billTransaction);
             receipt.TransactionId = billTransaction.Id;
-            receipt.PaymentRef = "N/A";
+            receipt.PaymentRef = billTransaction.TransactionReference;
             receipt.InvoiceId = invoice.Id;
             receipt.TransactionDate = billTransaction.DateCompleted;
             receipt.GateWay = billTransaction.GatewayType.ToString();
