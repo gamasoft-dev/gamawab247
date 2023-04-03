@@ -258,7 +258,7 @@ namespace BillProcessorAPI.Services.Implementations
             var invoiceResponse = new SuccessResponse<PaymentConfirmationResponse>();
 
 
-            await Task.Delay(3000);
+            await Task.Delay(2000);
             try
             {
                 var billTransaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == tx_ref);
@@ -295,6 +295,7 @@ namespace BillProcessorAPI.Services.Implementations
                     throw new RestException(HttpStatusCode.NotFound, "Unable to retrieve invoice for this transaction");
 
                 var invoiceDto = _mapper.Map<PaymentConfirmationResponse>(invoice);
+                invoiceDto.DateCompleted = billTransaction.DateCompleted;
 
                 invoiceResponse.Data = invoiceDto;
                 invoiceResponse.Success = true;
