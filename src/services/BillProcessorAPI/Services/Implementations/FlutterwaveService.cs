@@ -28,11 +28,11 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IRepository<BillPayerInfo> _billPayerRepository;
         private readonly IRepository<Receipt> _receipts;
 
-
         private readonly FlutterwaveOptions _flutterOptions;
         private readonly IHttpService _httpService;
         private readonly IConfigurationService _configService;
         private readonly IMapper _mapper;
+
         public FlutterwaveService(
             IRepository<BillTransaction> billTransactionsRepo,
             IOptions<BillTransactionSettings> settings,
@@ -53,7 +53,6 @@ namespace BillProcessorAPI.Services.Implementations
             _mapper = mapper;
             _receipts = receipts;
         }
-
 
         public async Task<SuccessResponse<PaymentCreationResponse>> CreateTransaction(string email, decimal amount, string billPaymentCode)
         {
@@ -240,7 +239,6 @@ namespace BillProcessorAPI.Services.Implementations
 
             await _receipts.AddAsync(receipt);
             await _receipts.SaveChangesAsync();
-
 
             return new SuccessResponse<string>
             {
