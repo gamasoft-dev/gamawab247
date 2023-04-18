@@ -9,6 +9,7 @@
         public decimal MinimumPayableAmount { get; set; }
         public string Signature { get; set; }
         public string SecretKey { get; set; }
+        public string ExistingAppUrl { get; set; }
 
     }
 }

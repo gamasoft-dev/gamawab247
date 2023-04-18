@@ -70,7 +70,10 @@ namespace BillProcessorAPI.Services.Implementations
 				if (httpResponse.IsSuccessStatusCode)
 				{
 					var revPayRes = await httpResponse.ReadContentAs<BillReferenceResponseDto>();
-					revPayRes.CurrentDate = DateTime.UtcNow;
+
+					//current time update
+					revPayRes.CurrentDate = DateTime.Now;
+
 					var mappedResponse = _mapper.Map<BillPayerInfo>(revPayRes);
 					mappedResponse.PhoneNumber = phone;
 

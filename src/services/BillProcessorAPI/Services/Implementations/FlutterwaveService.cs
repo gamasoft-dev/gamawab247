@@ -16,6 +16,7 @@ using Infrastructure.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using System;
 using System.Net;
 
 namespace BillProcessorAPI.Services.Implementations
@@ -240,6 +241,25 @@ namespace BillProcessorAPI.Services.Implementations
             await _receipts.AddAsync(receipt);
             await _receipts.SaveChangesAsync();
 
+            // send the notification to the existing application
+            try
+            {
+                IDictionary<string, string> param = new Dictionary<string, string>();
+                param.Add(key: "Authorization", _flutterOptions.SecretKey);
+                var headerParam = new RequestHeader(param);
+
+                var url = $"{_flutterOptions.ExistingAppUrl}";
+
+                var notificationResponse = await _httpService
+                       .Post<FlutterwaveResponse<LinkData>, WebHookNotificationWrapper>(url, headerParam, model);
+            }
+            catch (Exception)
+            {
+                // do nothing
+            }
+           
+
+
             return new SuccessResponse<string>
             {
                 Data = "Transaction Completed"
@@ -293,6 +313,7 @@ namespace BillProcessorAPI.Services.Implementations
                     throw new RestException(HttpStatusCode.NotFound, "Unable to retrieve invoice for this transaction");
 
                 var invoiceDto = _mapper.Map<PaymentConfirmationResponse>(invoice);
+                invoiceDto.DateCompleted = billTransaction.DateCompleted;
 
                 invoiceResponse.Data = invoiceDto;
                 invoiceResponse.Success = true;
