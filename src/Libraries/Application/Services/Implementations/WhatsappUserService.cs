@@ -95,6 +95,8 @@ namespace Application.Services.Implementations
             };
         }
 
+
+
         public async Task<PagedResponse<IEnumerable<WhatsappUserDto>>> GetWhatsappUsers(ResourceParameter parameter, string name, IUrlHelper urlHelper)
         {
             var waUserQuery = _waUserRepository.GetWhatsappUsersQuery(parameter.Search);

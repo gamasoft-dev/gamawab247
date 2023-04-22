@@ -68,6 +68,8 @@ namespace BillProcessorAPI.Services.Implementations
             if (string.IsNullOrEmpty(email) || amount < 0)
                 throw new RestException(HttpStatusCode.BadRequest, "All fields are required");
 
+            var billPayer = await _billPayerRepository.FirstOrDefault(x => x.billCode == billPaymentCode)
+                        ?? throw new RestException(HttpStatusCode.NotFound, "unable to fetch bill payer for this transaction");
 
             IDictionary<string, string> param = new Dictionary<string, string>();
             param.Add(key: "Authorization", _flutterOptions.SecretKey);
@@ -83,14 +85,17 @@ namespace BillProcessorAPI.Services.Implementations
                 Customer = new CustomerDto
                 {
                     Email = email,
+                },
+                Meta = new MetaDto
+                {
+                    Webguid = billPaymentCode,
+                    Creditaccount = billPayer.CreditAccount
                 }
             };
+
             try
             {
                 var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.CreateTransaction}";
-
-                var billPayer = await _billPayerRepository.FirstOrDefault(x => x.billCode == billPaymentCode)
-                           ?? throw new RestException(HttpStatusCode.NotFound, "unable to fetch bill payer for this transaction");
 
                 var paymentCreationResponse = await _httpService
                     .Post<FlutterwaveResponse<LinkData>, FCreateTransactionRequestDto>(url, headerParam, flutterwaveRequestPayload);
@@ -176,28 +181,33 @@ namespace BillProcessorAPI.Services.Implementations
 
             Console.WriteLine($"Details of notification : {model.ToString()}");
 
-            var transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.Data.tx_ref);
+            var transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.Tx_ref);
 
             if (transaction is null)
                 throw new PaymentVerificationException(HttpStatusCode.NotFound, "No transaction found for this transaction");
 
-            var charge = new ChargesInputDto
-            {
-                Amount = model.Data.amount,
-                Channel = "FlutterWave"
-            };
+            //verify transaction with flutterwave using the transactionId from the webhook
+            IDictionary<string, string> param = new Dictionary<string, string>();
+            param.Add(key: "Authorization", _flutterOptions.SecretKey);
+            var headerParam = new RequestHeader(param);
 
-            transaction.AmountPaid = model.Data.amount;
-            transaction.PrinciPalAmount = model.Data.amount; // amount paid minus charges
-            transaction.Channel = model.Data.payment_type;
+            var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.VerifyByReference}/?tx_ref={model.Tx_ref}";
+            var verificationReaponse = await _httpService.Get<FlutterwaveResponse<FlutterwaveResponseData>>(url, headerParam);
+
+            if (verificationReaponse.Data.Status != "success")
+                Console.WriteLine($"Unable to verify payment notification from Flutterwave as at: {DateTime.UtcNow}");
+
+            transaction.AmountPaid = verificationReaponse.Data.Data.amount;
+            transaction.PrinciPalAmount = verificationReaponse.Data.Data.amount; // amount paid minus charges
+            transaction.Channel = verificationReaponse.Data.Data.payment_type;
             transaction.TransactionCharge = transaction.TransactionCharge;
-            transaction.GatewayTransactionCharge = (decimal)model.Data.app_fee;
-            transaction.GatewayTransactionReference = model.Data.flw_ref;
+            transaction.GatewayTransactionCharge = (decimal)verificationReaponse.Data.Data.app_fee;
+            transaction.GatewayTransactionReference = verificationReaponse.Data.Data.flw_ref;
             transaction.PaymentReference = "N/A";
             transaction.FiName = "N/A";
-            transaction.Narration = model.Data.narration;
+            transaction.Narration = verificationReaponse.Data.Data.narration;
 
-            if (model?.Data?.status?.ToUpper()
+            if (verificationReaponse?.Data?.Status?.ToUpper()
                 == ETransactionStatus.Successful.ToString().ToUpper())
             {
                 transaction.Status = ETransactionStatus.Successful.ToString();
@@ -207,10 +217,10 @@ namespace BillProcessorAPI.Services.Implementations
                 transaction.Status = ETransactionStatus.Failed.ToString();
             }
 
-            transaction.DateCompleted = model.Data.created_at.ToString();
-            transaction.StatusMessage = model.Data.status;
-            transaction.ReceiptUrl = model.Data.receipt_url;
-            transaction.SuccessIndicator = model.Data.status;
+            transaction.DateCompleted = verificationReaponse.Data.Data.created_at.ToString();
+            transaction.StatusMessage = verificationReaponse.Data.Data.status;
+            transaction.ReceiptUrl = model.ReceiptNumber;
+            transaction.SuccessIndicator = verificationReaponse.Data.Data.status;
             transaction.Hash = "N/A";
             transaction.UpdatedAt = DateTime.UtcNow;
             transaction.NotificationResponseData = JsonConvert.SerializeObject(model);
@@ -223,12 +233,12 @@ namespace BillProcessorAPI.Services.Implementations
             if (invoice is null)
                 throw new PaymentVerificationException(HttpStatusCode.NotFound, "No invoice found for this transaction");
 
-            invoice.ReceiptUrl = model.Data.receipt_url;
-            invoice.AmountPaid = model.Data.amount;
+            invoice.ReceiptUrl = model.ReceiptNumber;
+            invoice.AmountPaid = verificationReaponse.Data.Data.amount;
             invoice.AmountDue = transaction.AmountDue;
-            invoice.GatewayTransactionCharge = (decimal)model.Data.app_fee;
+            invoice.GatewayTransactionCharge = (decimal)verificationReaponse.Data.Data.app_fee;
             invoice.UpdatedAt = DateTime.UtcNow;
-            invoice.GatewayTransactionReference = model.Data.flw_ref;
+            invoice.GatewayTransactionReference = verificationReaponse.Data.Data.flw_ref;
 
             // Create a receipt record
             var receipt = _mapper.Map<Receipt>(transaction);
@@ -237,7 +247,7 @@ namespace BillProcessorAPI.Services.Implementations
             receipt.InvoiceId = invoice.Id;
             receipt.TransactionDate = transaction.DateCompleted;
             receipt.GateWay = transaction.GatewayType.ToString();
-            receipt.ReceiptUrl = model.Data.receipt_url;
+            receipt.ReceiptUrl = model.ReceiptNumber;
 
             await _receipts.AddAsync(receipt);
             await _receipts.SaveChangesAsync();
@@ -245,14 +255,14 @@ namespace BillProcessorAPI.Services.Implementations
             // send the notification to the existing application
             try
             {
-                IDictionary<string, string> param = new Dictionary<string, string>();
+                IDictionary<string, string> paramm = new Dictionary<string, string>();
                 param.Add(key: "Authorization", _flutterOptions.SecretKey);
-                var headerParam = new RequestHeader(param);
+                var headerParamm = new RequestHeader(paramm);
 
-                var url = $"{_flutterOptions.ExistingAppUrl}";
+                var exixtingAppUrl = $"{_flutterOptions.ExistingAppUrl}";
 
                 var notificationResponse = await _httpService
-                       .Post<FlutterwaveResponse<LinkData>, WebHookNotificationWrapper>(url, headerParam, model);
+                       .Post<FlutterwaveResponse<LinkData>, WebHookNotificationWrapper>(exixtingAppUrl, headerParamm, model);
             }
             catch (Exception)
             {

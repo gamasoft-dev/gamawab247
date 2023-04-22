@@ -67,5 +67,20 @@ namespace API.Controllers
             return Ok(response);
         }
 
+
+        /// <summary>
+        /// Endpoint to get a list of message logs by the whatsapp phone number
+        /// </summary>
+        /// <param name="waId"></param>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        [HttpGet("{waId}/message-log", Name = nameof(GetMessageLogsByWhatsappPhoneNumber))]
+        [ProducesResponseType(typeof(PagedResponse<IEnumerable<MessageLogDto>>), 200)]
+        public async Task<IActionResult> GetMessageLogsByWhatsappPhoneNumber([FromRoute] string waId, [FromQuery] ResourceParameter parameter)
+        {
+            var response = await _messageLogService.GetMessageLogsByPhoneNumber(waId, parameter, nameof(MessageLogDto), Url);
+
+            return Ok(response);
+        }
     }
 }

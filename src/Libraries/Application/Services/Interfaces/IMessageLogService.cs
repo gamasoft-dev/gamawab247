@@ -16,5 +16,7 @@ namespace Application.Services.Interfaces
         Task<SuccessResponse<MessageLogDto>> GetMessageLogById(Guid id);
         Task<PagedResponse<IEnumerable<MessageLogDto>>> GetMessageLogs(ResourceParameter parameter, string name, IUrlHelper urlHelper);
         Task<PagedResponse<IEnumerable<MessageLogDto>>> GetMessageLogsByWaId(Guid waId, ResourceParameter parameter, string name, IUrlHelper urlHelper);
+        Task<PagedResponse<IEnumerable<MessageLogDto>>> GetMessageLogsByPhoneNumber(string waId, ResourceParameter parameter, string name, IUrlHelper urlHelper);
+
     }
 }
