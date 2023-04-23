@@ -3,7 +3,7 @@
         "holderVerificationEndpoint": "v1/abc/invoice",
         "clientKey": "",
         "linkGeneratorUserParamKey": "billPaymentCode",
-        "billCodePaymentPageLink": "https://gamasoft-lucweb.vercel.app/invoice",
+        "billCodePaymentPageLink": "https://luc.lagosstate.gov.ng/invoice",
         "baseUrl": "https://gamasoftltd.com.ng",
         "isMockRequest": false
     }
