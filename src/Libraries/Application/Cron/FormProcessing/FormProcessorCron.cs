@@ -17,6 +17,7 @@ using Domain.Enums;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.Extensions.Logging;
 using ApiCustomization.Common;
+using Newtonsoft.Json;
 
 namespace Application.Services.Cron
 {
@@ -32,6 +33,8 @@ namespace Application.Services.Cron
         private readonly IFormConclusionMgtService _formConclusionMgtService;
         private readonly IApiContentIntegrationManager apiContentIntegrationFactory;
         private readonly IRepository<InboundMessage> inboundMessageRepo;
+        private readonly IRepository<WhatsappUser> _whatsappUserRepo;
+        private readonly IRepository<MessageLog> _messageLogRepo;
 
         public FormProcessorCron(IFormRequestResponseService formRequesResponseService,
            IRepository<BusinessForm> businessFormRepo,
@@ -42,7 +45,9 @@ namespace Application.Services.Cron
            IOutboundMesageService outboundMesageService,
            IDuplicateFIlterHelper duplicateFIlterHelper,
            IFormConclusionMgtService formConclusionMgtService,
-           IRepository<InboundMessage> inboundMessageRepo)
+           IRepository<InboundMessage> inboundMessageRepo,
+           IRepository<WhatsappUser> whatsappUserRepo,
+           IRepository<MessageLog> messageLogRepo)
         {
             _formRequesResponseService = formRequesResponseService;
             _businessFormRepo = businessFormRepo;
@@ -54,6 +59,8 @@ namespace Application.Services.Cron
             _businessMessageRepo = businessMessageRepo;
             this.apiContentIntegrationFactory = apiContentIntegrationFactory;
             this.inboundMessageRepo = inboundMessageRepo;
+            _whatsappUserRepo = whatsappUserRepo;
+            _messageLogRepo = messageLogRepo;
         }
 
         public async Task DoWork()
@@ -146,11 +153,31 @@ namespace Application.Services.Cron
                                     dialogSession.UpdatedAt = DateTime.Now;
 
                                 }
+                                var whatsappUser = await _whatsappUserRepo.FirstOrDefaultNoTracking(x => x.WaId == item.To);
+                                if (whatsappUser == null)
+                                    throw new FormBgProcessorException($"Could not retrieve whatsapp user while trying to send form message","", ESessionState.PLAINCONVERSATION);
 
                                 var sendMessageResult = await _outboundMesageService.HttpSendTextMessage(model: item, wa_Id: item.To);
                                 isSent = sendMessageResult.Data;
                                 count++;
+                                if (isSent)
+                                {
+                                   
+                                    var messageLog = new MessageLog
+                                    {
+                                        RequestResponseData = JsonConvert.SerializeObject(sendMessageResult),
+                                        MessageType = EMessageType.Text,
+                                        MessageDirection = EMessageDirection.Outbound,
+                                        MessageBody = item.Message,
+                                        From = item.From,
+                                        To = item.To,
+                                        IsRead = true,
+                                        WhatsappUserId = whatsappUser.Id
+                                    };
 
+                                    await _messageLogRepo.AddAsync(messageLog);
+                                    await _messageLogRepo.SaveChangesAsync();
+                                }
                                 item.Status = EResponseProcessingStatus.Sent.ToString();
                             }
 

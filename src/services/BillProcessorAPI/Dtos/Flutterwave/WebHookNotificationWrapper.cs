@@ -4,17 +4,33 @@ namespace BillProcessorAPI.Dtos.Flutterwave
 {
     public class WebHookNotificationWrapper
     {
-        [JsonProperty("event")]
-        public string Event { get; set; }
-        [JsonProperty("data")]
-        public FlutterwaveResponseData Data { get; set; }
+        [JsonProperty("webguid")]
+        public string WebGuid { get; set; }
+        [JsonProperty("response_code")]
+        public string ResponseCode { get; set; }
+        [JsonProperty("response_desc")]
+        public string ResponseDesc { get; set; }
+        [JsonProperty("receipt_number")]
+        public string ReceiptNumber { get; set; }
+        [JsonProperty("state")]
+        public string State { get; set; }
+        [JsonProperty("status")]
+        public string Status { get; set; }
+        [JsonProperty("trans_id")]
+        public string TransID { get; set; }
+        [JsonProperty("trans_code")]
+        public string TransCode { get; set; }
+        [JsonProperty("status_message")]
+        public string StatusMessage { get; set; }
+        [JsonProperty("property_address")]
+        public string PropertyAddress { get; set; }
+        [JsonProperty("tx_ref")]
+        public string Tx_ref { get; set; }
+        [JsonProperty("id")]
+        public string PaymentRef { get; set; }
 
-        //TODO: Override properties of data
-        public override string ToString()
-        {
-            return Data.ToString();
-        }
     }
+
 
     public class Card
     {

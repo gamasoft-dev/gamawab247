@@ -13,11 +13,20 @@ namespace BillProcessorAPI.Dtos.Flutterwave
         public string Currency { get; set; } = "NGN";
         [JsonProperty("redirect_url")]
         public string Redirect_url { get; set; }
+
+        public MetaDto Meta { get; set; }
         [JsonProperty("customer")]
         public CustomerDto Customer { get; set; }
-        [JsonProperty("customization")]
-        public CustomizationDto Customization { get; set; }
 
+    }
+
+    public class MetaDto
+    {
+
+        [JsonProperty("webguid")]
+        public string Webguid { get; set; }
+        [JsonProperty("creditaccount")]
+        public string Creditaccount { get; set; }
     }
 
     public class CustomerDto

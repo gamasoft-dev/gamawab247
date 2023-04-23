@@ -8,5 +8,6 @@ namespace Infrastructure.Repositories.Interfaces
     {
         IQueryable<MessageLog> GetMessageLogQuery(string search = null);
         IQueryable<MessageLog> CreateMessageLogQuerable(Guid waId, string search = null);
+        IQueryable<MessageLog> CreateMessageLogQuerable(string waId, string search = null);
     }
 }
