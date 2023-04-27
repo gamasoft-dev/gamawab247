@@ -14,13 +14,17 @@ namespace ApiCustomization.RequestAndComplaints
         private readonly IRepository<RequestAndComplaint> requestRepository;
         private readonly IRepository<RequestAndComplaintConfig> requestConfigRepo;
         private readonly ISessionManagement sessionManagement;
+        private readonly IRepository<WhatsappUser> whatsappUserRepository;
 
         public UserComplaintProcessor(IRepository<RequestAndComplaint> requestRepository,
-            IRepository<RequestAndComplaintConfig> requestConfigRepo, ISessionManagement sessionManagement)
+            IRepository<RequestAndComplaintConfig> requestConfigRepo,
+            ISessionManagement sessionManagement,
+            IRepository<WhatsappUser> whatsappUserRepository)
 		{
             this.requestRepository = requestRepository;
             this.requestConfigRepo = requestConfigRepo;
             this.sessionManagement = sessionManagement;
+            this.whatsappUserRepository = whatsappUserRepository;
 		}
 
         public string PartnerContentProcessorKey => EExternalPartnerContentProcessorKey
@@ -37,6 +41,7 @@ namespace ApiCustomization.RequestAndComplaints
                 var session = await sessionManagement.GetByWaId(waId);
                 if (session is null) throw new BackgroundException($"There is no active session for this user that has submitted this request");
 
+                var whatsaAppUser = await whatsappUserRepository.FirstOrDefaultNoTracking(x => x.WaId == waId);
 
                 (string subject, string detail) userSessionResponse = GetUserCompplaintFromSession(waId, session);
 
@@ -46,6 +51,7 @@ namespace ApiCustomization.RequestAndComplaints
                     CallBackUrl = requestConfig.WebHookUrl,
                     Channel = "Whatsapp",
                     CustomerId = waId,
+                    CustomerName = whatsaAppUser is null ? whatsaAppUser.Name : waId,
                     Subject = userSessionResponse.subject ?? "",
                     Detail = userSessionResponse.detail,
                     TicketId = RequestAndComplaint.GenerateTicketId(),
