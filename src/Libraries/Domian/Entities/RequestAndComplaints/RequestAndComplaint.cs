@@ -19,6 +19,8 @@ namespace Domain.Entities.RequestAndComplaints
         /// </summary>
         public string CustomerId { get; set; }
 
+        public string CustomerName { get; set; }
+
         public string Subject { get; set; }
 
         public string Channel { get; set; }

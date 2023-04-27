@@ -8,6 +8,7 @@ using Domain.Entities.RequestAndComplaints;
 using Infrastructure.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -16,9 +17,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230427040244_migration-action-name")]
+    partial class migrationactionname
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1162,10 +1164,6 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CustomerName")
                         .HasColumnType("text");
 
                     b.Property<string>("Detail")
@@ -1196,14 +1194,6 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatedAt");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("ResolutionDate");
-
-                    b.HasIndex("TicketId");
 
                     b.HasIndex("TreatedById");
 
@@ -1607,8 +1597,7 @@ namespace Infrastructure.Data.Migrations
                 {
                     b.HasOne("Domain.Entities.Identities.User", "TreatedBy")
                         .WithMany()
-                        .HasForeignKey("TreatedById")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .HasForeignKey("TreatedById");
 
                     b.Navigation("TreatedBy");
                 });
