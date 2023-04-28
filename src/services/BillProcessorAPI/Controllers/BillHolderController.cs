@@ -31,12 +31,12 @@ namespace BillProcessorAPI.Controllers
 		}
 
 		[HttpGet("receipt/{billPaymentCode}")]
-        [ProducesResponseType(typeof(SuccessResponse<BillPaymentVerificationResponseDto>), 200)]
+        [ProducesResponseType(typeof(SuccessResponse<CustomBillPaymentVerificationResponse>), 200)]
         [SwaggerOperation(Summary = "Endpoint to get verify bill payment")]
         public async Task<IActionResult> PaymentVerification([FromRoute]string billPaymentCode)
 		{
 			var response = await _revpay.PaymentVerification(billPaymentCode);
 			return Ok(response);
 		}
-	}
+    }
 }

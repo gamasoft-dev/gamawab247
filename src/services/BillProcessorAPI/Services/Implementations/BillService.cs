@@ -7,6 +7,7 @@ using BillProcessorAPI.Helpers.Revpay;
 using BillProcessorAPI.Repositories.Interfaces;
 using BillProcessorAPI.Services.Interfaces;
 using Domain.Common;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
@@ -19,7 +20,8 @@ namespace BillProcessorAPI.Services.Implementations
 		private readonly IConfiguration _config;
 		private readonly HttpClient _httpClient;
 		private readonly IBillPayerRepository _billPayerRepo;
-		private readonly IRepository<BillTransaction> _billTransactions;
+		private readonly IRepository<BillTransaction> _billTransactionsRepo;
+		private readonly IRepository<Receipt> _billReceipt;
 		private readonly RevpayOptions RevpayOptions;
 		private readonly IMapper _mapper;
 
@@ -28,15 +30,17 @@ namespace BillProcessorAPI.Services.Implementations
             IMapper mapper,
             IRepository<BillTransaction> billTransactions,
             HttpClient httpClient,
-            IConfiguration config)
+            IConfiguration config,
+            IRepository<Receipt> billReceipt)
         {
             _billPayerRepo = billPayerRepo;
             RevpayOptions = options.Value;
             _mapper = mapper;
 
-            _billTransactions = billTransactions;
+            _billTransactionsRepo = billTransactions;
             _httpClient = httpClient;
             _config = config;
+            _billReceipt = billReceipt;
         }
 
         public async Task<SuccessResponse<BillReferenceResponseDto>> ReferenceVerification(string phone, string billPaymentCode)
@@ -107,7 +111,7 @@ namespace BillProcessorAPI.Services.Implementations
 			}
 		}
 
-		public async Task<SuccessResponse<BillPaymentVerificationResponseDto>> PaymentVerification(string billPaymentCode)
+		public async Task<SuccessResponse<CustomBillPaymentVerificationResponse>> PaymentVerification(string billPaymentCode)
 		{
 			if (string.IsNullOrEmpty(billPaymentCode))
 			{
@@ -135,23 +139,52 @@ namespace BillProcessorAPI.Services.Implementations
 				var revPayJsonResponse = await httpResponse.Content.ReadAsStringAsync();
 				var revPayRes = JsonConvert.DeserializeObject<BillPaymentVerificationResponseDto>(revPayJsonResponse);
 
-				var billTransaction = _mapper.Map<BillTransaction>(revPayRes);
+				var billTransaction = await _billTransactionsRepo
+					.Query(x=>x.BillNumber == billPaymentCode && x.Status == ETransactionStatus.Successful.ToString())
+					.OrderByDescending(x=>x.DateCompleted).FirstOrDefaultAsync();
 
-				// bill-transaction response data
-				billTransaction.PaymentInfoResponseData = revPayJsonResponse;
+				if (billTransaction is null)
+					return new SuccessResponse<CustomBillPaymentVerificationResponse>
+					{
+						Data = null,
+						Message = "unable to verify the status of this transaction"
+					};
 
-				//bill-transaction  request data
-				billTransaction.PaymentInfoRequestData = JsonConvert.SerializeObject(payload);
-
-				await _billTransactions.SaveChangesAsync();
-
-				return new SuccessResponse<BillPaymentVerificationResponseDto>
+				var respoonse = new CustomBillPaymentVerificationResponse
 				{
-					Data = revPayRes,
+					Name = billTransaction.PayerName,
+					PropertyId = billTransaction.Pid,
+					AmountDue = billTransaction.AmountDue.ToString(),
+					AmountPaid = billTransaction.AmountPaid.ToString(),
+					PaymentDate = billTransaction.DateCompleted,
+					Receipt = billTransaction.ReceiptUrl
+				};
+
+				return new SuccessResponse<CustomBillPaymentVerificationResponse>
+				{
+					Data = respoonse,
 					Message = "Data retrieved successfully"
 				};
 			}
 			throw new RestException(System.Net.HttpStatusCode.BadRequest, "Invalid Request: unable to verify the status of this transaction");
+		}
+
+		public async Task<SuccessResponse<IEnumerable<CustomBillPaymentVerificationResponse>>> GetAllTransactions()
+		{
+			var billTransactions = await _billTransactionsRepo.GetAllAsync();
+			if (billTransactions == null)
+				return new SuccessResponse<IEnumerable<CustomBillPaymentVerificationResponse>>
+				{
+					Data = null,
+					Message = "unable to retrive transactions"
+				};
+
+			var response = _mapper.Map<IEnumerable<CustomBillPaymentVerificationResponse>>(billTransactions);
+			return new SuccessResponse<IEnumerable<CustomBillPaymentVerificationResponse>>
+			{
+				Data = response,
+				Message = "Data retrieved successfully"
+            };
 		}
 
 	}
