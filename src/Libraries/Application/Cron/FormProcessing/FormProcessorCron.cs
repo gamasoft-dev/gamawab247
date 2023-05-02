@@ -172,7 +172,8 @@ namespace Application.Services.Cron
                                         From = item.From,
                                         To = item.To,
                                         IsRead = true,
-                                        WhatsappUserId = whatsappUser.Id
+                                        WhatsappUserId = whatsappUser.Id,
+                                        BusinessId = item.BusinessId
                                     };
 
                                     await _messageLogRepo.AddAsync(messageLog);
@@ -278,7 +279,7 @@ namespace Application.Services.Cron
                         }
                         finally
                         {
-                            var sessionBusinessForm = dialogSession.SessionFormDetails?.BusinessForm;
+                            var sessionBusinessForm = dialogSession?.SessionFormDetails?.BusinessForm;
 
                             item.Status = item.Status;
                             item.ErrorMessage = item.ErrorMessage;
@@ -286,14 +287,14 @@ namespace Application.Services.Cron
 
                             await _sessionManagement.Update(waId: item.To, dialogSession: dialogSession);
 
-                            if(dialogSession.SessionState == ESessionState.FORMCONVERSATIONCOMPLETED)
+                            if(dialogSession?.SessionState == ESessionState.FORMCONVERSATIONCOMPLETED)
                             {
                                 // check and queue conclusion inbound message tied to the business form if any.
-                                if(sessionBusinessForm.ConclusionBusinessMessageId is not null)
-                                {
-                                    var businessMessage = await _businessMessageRepo.GetByIdAsync(sessionBusinessForm.ConclusionBusinessMessageId.Value);
+                                //if(sessionBusinessForm?.ConclusionBusinessMessageId is not null)
+                                //{
+                                //    var businessMessage = await _businessMessageRepo.GetByIdAsync(sessionBusinessForm.ConclusionBusinessMessageId.Value);
 
-                                }
+                                //}
                             }
                         }
                     }
