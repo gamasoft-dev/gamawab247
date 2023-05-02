@@ -40,7 +40,7 @@ namespace Application.Services.Implementations
             //if (includeBusinessForm)
             //    formRequestsResponse.Include(x => x.BusinessForm);
             
-            var items = formRequestsResponse.Skip(skip).Take(take).OrderBy(x=>x.CreatedAt);
+            var items = formRequestsResponse.OrderBy(x => x.CreatedAt).Skip(skip).Take(take);
 
             var result = items.ToList();
             return result;
