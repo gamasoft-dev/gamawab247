@@ -4,7 +4,7 @@ using Application.DTOs.CreateDialogDtos;
 using Domain.Entities.FormProcessing.ValueObjects;
 using FluentValidation;
 
-namespace Application.Validations
+namespace Gamawabs247API.Validations
 {
 	public class CreateBusinessFormValidator:AbstractValidator<CreateBusinessFormDto>
     {

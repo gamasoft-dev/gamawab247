@@ -2,7 +2,10 @@
 {
     public enum EResolutionStatus
 	{
-		Pending, Escalated, Processing, Completed,
+		Pending,
+		Escalated,
+		Processing,
+		Completed,
 	}
 
 }

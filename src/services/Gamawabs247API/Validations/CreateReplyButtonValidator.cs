@@ -4,7 +4,7 @@ using Application.DTOs.CreateDialogDtos;
 using Application.DTOs.OutboundMessageRequests;
 using FluentValidation;
 
-namespace Application.Validations;
+namespace Gamawabs247API.Validations;
 
 
 public class CreateButtonValidator : AbstractValidator<CreateBusinessMessageDto<CreateButtonMessageDto>>

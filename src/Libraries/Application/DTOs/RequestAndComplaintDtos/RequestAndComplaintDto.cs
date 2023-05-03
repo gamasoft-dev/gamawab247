@@ -13,6 +13,8 @@ namespace Application.DTOs.RequestAndComplaintDtos
         /// </summary>
         public string CustomerId { get; set; }
 
+        public string CustomerName { get; set; }
+
         public string Subject { get; set; }
 
         public string Channel { get; set; }
@@ -85,8 +87,15 @@ namespace Application.DTOs.RequestAndComplaintDtos
 
     public class SimpleUpdateRequestAndComplaint
     {
+        private EResolutionStatus _resolutionStatus;
         public string Response { get; set; }
-        public EResolutionStatus ResolutionStatus { get; set; }
+        public string ResolutionStatus { get; set; }
+        internal EResolutionStatus? ResolutionStatusEnum { get {
+              bool convertResolutionStatus = Enum.TryParse<EResolutionStatus>(value: ResolutionStatus, ignoreCase: true, out _resolutionStatus);
+
+                return convertResolutionStatus ? _resolutionStatus : null;
+            }
+        }
     }
 }
 

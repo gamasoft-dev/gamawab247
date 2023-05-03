@@ -8,7 +8,7 @@ using Application.AuditServices;
 using Application.DTOs;
 using Application.Services.Implementations;
 using Application.Services.Interfaces;
-using Application.Validations;
+using Gamawabs247API.Validations;
 using Domain.Entities.Identities;
 using Domain.ViewModels;
 using FluentValidation.AspNetCore;
