@@ -51,7 +51,7 @@ namespace ApiCustomization.RequestAndComplaints
                     CallBackUrl = requestConfig.WebHookUrl,
                     Channel = "Whatsapp",
                     CustomerId = waId,
-                    CustomerName = whatsaAppUser is null ? whatsaAppUser.Name : waId,
+                    CustomerName = whatsaAppUser is not null ? whatsaAppUser.Name : waId,
                     Subject = userSessionResponse.subject ?? "",
                     Detail = userSessionResponse.detail,
                     TicketId = RequestAndComplaint.GenerateTicketId(),
