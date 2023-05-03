@@ -220,7 +220,7 @@ namespace Application.Services.Implementations
 
             // update complaint request with new response
             requestORComplaint.ResponsList = new RequestAndComplaintResponsList { Responses = requestResponses};
-            requestORComplaint.ResolutionStatus = model.ResolutionStatus.ToString();
+            requestORComplaint.ResolutionStatus = model.ResolutionStatusEnum?.ToString();
             requestORComplaint.ResolutionDate = DateTime.UtcNow;
 
             await _requestAndComplaintRepo.SaveChangesAsync();

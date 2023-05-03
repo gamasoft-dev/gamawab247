@@ -22,6 +22,7 @@
     <None Remove="Dockerfile.original" />
     <None Remove="Microsoft.AspNetCore.JsonPatch" />
     <None Remove="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
+    <None Remove="Validations\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -60,5 +61,8 @@
     <ProjectReference Include="..\..\Libraries\Application\Application.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Validations\" />
   </ItemGroup>
 </Project>

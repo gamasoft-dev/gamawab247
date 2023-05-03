@@ -1,7 +1,7 @@
 ﻿using Application.DTOs.CreateDialogDtos;
 using FluentValidation;
 
-namespace Application.Validations;
+namespace Gamawabs247API.Validations;
 
 public class CreateTextMesageValidator : AbstractValidator<CreateBusinessMessageDto<CreateTextMessageDto>>
 {

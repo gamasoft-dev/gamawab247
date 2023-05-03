@@ -1,7 +1,7 @@
 ﻿using Application.DTOs;
 using FluentValidation;
 
-namespace Application.Validations
+namespace Gamawabs247API.Validations
 {
     public class UserValidator: AbstractValidator<CreateUserDTO>
     {
