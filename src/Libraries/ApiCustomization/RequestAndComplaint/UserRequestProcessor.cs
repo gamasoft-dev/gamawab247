@@ -15,14 +15,17 @@ namespace ApiCustomization.RequestAndComplaints
         private readonly IRepository<RequestAndComplaint> requestRepository;
         private readonly IRepository<RequestAndComplaintConfig> requestConfigRepo;
         private readonly ISessionManagement sessionManagement;
+        private readonly IRepository<WhatsappUser> whatsappUserRepo;
 
         public UserRequestProcessor(IRepository<RequestAndComplaint> requestRepository,
             IRepository<RequestAndComplaintConfig> requestConfigRepo,
-            ISessionManagement sessionManagement)
+            ISessionManagement sessionManagement,
+            IRepository<WhatsappUser> whatsappUserRepo)
         {
             this.requestRepository = requestRepository;
             this.requestConfigRepo = requestConfigRepo;
             this.sessionManagement = sessionManagement;
+            this.whatsappUserRepo = whatsappUserRepo;
         }
 
         public string PartnerContentProcessorKey => EExternalPartnerContentProcessorKey
@@ -41,17 +44,20 @@ namespace ApiCustomization.RequestAndComplaints
 
 
                 (string subject, string detail) userSessionResponse = GetUserRequestFromSession(waId, session);
+                var whatsappUser = await whatsappUserRepo.FirstOrDefault(x => x.WaId.ToLower() == waId.ToLower());
 
                 var userRequest = new RequestAndComplaint
                 {
                     BusinessId = businessId,
                     CallBackUrl = requestConfig.WebHookUrl,
                     Channel = "Whatsapp",
+                    CustomerName = whatsappUser is not null ? whatsappUser.Name : waId,
                     CustomerId = waId,
                     Subject = userSessionResponse.subject ?? "",
                     Detail = userSessionResponse.detail,
                     TicketId = RequestAndComplaint.GenerateTicketId(),
                     Type = ERequestComplaintType.Request,
+                    
                 };
 
                 await requestRepository.AddAsync(userRequest);
