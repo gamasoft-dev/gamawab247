@@ -1,5 +1,9 @@
 ﻿
 using System;
+using System.Net;
+using System.Threading.Tasks;
+using Application.DTOs.InteractiveMesageDto;
+using Application.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gamawabs247API.Controllers
@@ -13,6 +17,13 @@ namespace Gamawabs247API.Controllers
 		{
 		}
 
-		//	public async Task<IActionResult> SendTextMessage()
+
+
+        [HttpPost("business/{phoneNumber}/direct-broadcast")]
+        [ProducesResponseType(typeof(SuccessResponse<>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> SendTextMessage()
+		{
+			throw new NotImplementedException("endpoint not implemented");
+		}
 	}
 }

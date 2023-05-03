@@ -30,7 +30,7 @@ namespace Application.DTOs.RequestAndComplaintDtos
 
         public Guid BusinessId { get; set; }
 
-        public ERequestComplaintType Type { get; set; }
+        public string Type { get; set; }
 
         public string CallBackUrl { get; set; }
 
