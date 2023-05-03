@@ -146,8 +146,12 @@ namespace BillProcessorAPI.Services.Implementations
 				if (billTransaction is null)
 					return new SuccessResponse<CustomBillPaymentVerificationResponse>
 					{
-						Data = null,
-						Message = "unable to verify the status of this transaction"
+						Data = new CustomBillPaymentVerificationResponse
+						{
+							Receipt = revPayRes.receipt,
+							AmountPaid = revPayRes.amountpaid,
+						},
+						Message = "Incomplete transaction details"
 					};
 
 				var respoonse = new CustomBillPaymentVerificationResponse
