@@ -14,7 +14,10 @@ namespace Application.Mapper
         public RequestAndCompliantMapper()
         {
             CreateMap<RequestAndComplaint, RequestAndComplaintDto>()
-                 .ForMember(dest => dest.TreatedBy, opt => opt.MapFrom(src => src.TreatedBy.FirstName));
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type.ToString()))
+                .ForMember(dest => dest.Responses, opt => opt.MapFrom(src => src.ResponsList.Responses.Select(x=>x.Response)))
+                .ForMember(dest => dest.TreatedBy, opt => opt.MapFrom(src => src.TreatedBy.FirstName));
+
                  //.ForMember(dest => dest.Responses, opt => opt.MapFrom(src => src.ResponsList.Responses.Select(x => x.Response)));
 
 
