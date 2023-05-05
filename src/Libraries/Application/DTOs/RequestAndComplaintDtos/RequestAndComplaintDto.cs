@@ -21,7 +21,7 @@ namespace Application.DTOs.RequestAndComplaintDtos
 
         public string Detail { get; set; }
 
-        public List<string> Responses { get; set; }
+        public IEnumerable<string> Responses { get; set; }
 
         /// <summary>
         /// This is the complaint or request unique identifier. This is generated for every ticker raised
