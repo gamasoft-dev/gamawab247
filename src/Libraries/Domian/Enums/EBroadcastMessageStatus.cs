@@ -8,6 +8,9 @@ namespace Domain.Enums
 {
     public enum EBroadcastMessageStatus
     {
-
+        Pending = 1,
+        Processing,
+        Sent,
+        Failed
     }
 }
