@@ -11,7 +11,7 @@ namespace Application.DTOs
     public class BroadcastMessageDto : CreateBroadcastMessageDto
     {
         public Guid Id { get; set; }
-        
+        public string ErrorMessage { get; set; }
     }
 
     public class CreateBroadcastMessageDto
@@ -20,7 +20,6 @@ namespace Application.DTOs
         public string From { get; set; }
         public string ApiKey { get; set; }
         public string Message { get; set; }
-        public string ErrorMessage { get; set; }
         public EBroadcastMessageStatus Status { get; set; }
 
     }
