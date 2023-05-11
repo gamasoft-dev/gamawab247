@@ -1,4 +1,5 @@
-﻿using BillProcessorAPI.Entities;
+﻿using BillProcessorAPI.Data.Configurations;
+using BillProcessorAPI.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BillProcessorAPI.Data
@@ -15,5 +16,12 @@ namespace BillProcessorAPI.Data
         public DbSet<BillCharge> Charges { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<Receipt> Receipts { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.ApplyConfigurationsFromAssembly(typeof(TransactionConfiguration).Assembly);
+        }
     }
 }

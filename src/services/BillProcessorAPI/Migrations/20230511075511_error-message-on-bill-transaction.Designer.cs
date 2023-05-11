@@ -3,6 +3,7 @@ using System;
 using BillProcessorAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BillProcessorAPI.Migrations
 {
     [DbContext(typeof(BillProcessorDbContext))]
-    partial class BillProcessorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230511075511_error-message-on-bill-transaction")]
+    partial class errormessageonbilltransaction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,10 +146,6 @@ namespace BillProcessorAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UpdatedAt");
-
-                    b.HasIndex("billCode");
-
                     b.ToTable("BillPayers");
                 });
 
@@ -169,9 +168,6 @@ namespace BillProcessorAPI.Migrations
                         .HasColumnType("text");
 
                     b.Property<Guid?>("BillPayerInfoId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("BillPayerInfoId1")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Channel")
@@ -266,15 +262,7 @@ namespace BillProcessorAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BillNumber");
-
                     b.HasIndex("BillPayerInfoId");
-
-                    b.HasIndex("BillPayerInfoId1");
-
-                    b.HasIndex("Status");
-
-                    b.HasIndex("UpdatedAt");
 
                     b.ToTable("BillTransactions");
                 });
@@ -391,13 +379,8 @@ namespace BillProcessorAPI.Migrations
             modelBuilder.Entity("BillProcessorAPI.Entities.BillTransaction", b =>
                 {
                     b.HasOne("BillProcessorAPI.Entities.BillPayerInfo", "BillPayerInfo")
-                        .WithMany()
-                        .HasForeignKey("BillPayerInfoId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("BillProcessorAPI.Entities.BillPayerInfo", null)
                         .WithMany("BillTransactions")
-                        .HasForeignKey("BillPayerInfoId1");
+                        .HasForeignKey("BillPayerInfoId");
 
                     b.Navigation("BillPayerInfo");
                 });
