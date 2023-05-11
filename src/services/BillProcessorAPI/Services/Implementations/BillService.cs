@@ -96,7 +96,8 @@ namespace BillProcessorAPI.Services.Implementations
 
 					var existingBillPayerInfo = await _billPayerRepo
 						.Query(x => x.billCode.ToLower() == billPayerInfo.billCode.ToLower())
-						.LastOrDefaultAsync();
+						.OrderByDescending(x=>x.UpdatedAt)
+						.FirstOrDefaultAsync();
 
 					if(existingBillPayerInfo is null)
 						await _billPayerRepo.AddAsync(billPayerInfo);
@@ -113,8 +114,8 @@ namespace BillProcessorAPI.Services.Implementations
 						Data = revPayRes,
 						Message = "Data retrieved successfully"
 					};
-
 				}
+
 				throw new RestException(HttpStatusCode.BadRequest, "Invalid Request");
 			}
 			catch (Exception ex)

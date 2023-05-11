@@ -9,10 +9,18 @@ namespace BillProcessorAPI.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<BillTransaction> builder)
         {
-            builder.HasOne(x => x.BillPayerInfo)
-                .WithMany()
-                .HasForeignKey(x => x.BillPayerInfoId)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasIndex(x => x.UpdatedAt);
+            builder.HasIndex(x => x.BillNumber);
+            builder.HasIndex(x => x.Status);
+        }
+    }
+
+    public class BillPayerInfoConfiguration : IEntityTypeConfiguration<BillPayerInfo>
+    {
+        public void Configure(EntityTypeBuilder<BillPayerInfo> builder)
+        {
+            builder.HasIndex(x => x.UpdatedAt);
+            builder.HasIndex(x => x.billCode);
         }
     }
 }

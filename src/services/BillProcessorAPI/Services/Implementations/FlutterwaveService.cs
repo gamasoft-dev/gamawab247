@@ -33,6 +33,7 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IHttpService _httpService;
         private readonly IConfigurationService _configService;
         private readonly IMapper _mapper;
+        private ILogger<FlutterwaveService> _logger;
 
         public FlutterwaveService(
             IRepository<BillTransaction> billTransactionsRepo,
@@ -43,7 +44,8 @@ namespace BillProcessorAPI.Services.Implementations
             IConfigurationService configService,
             IInvoiceRepository invoiceRepo,
             IMapper mapper,
-            IRepository<Receipt> receipts)
+            IRepository<Receipt> receipts,
+            ILogger<FlutterwaveService> logger)
         {
             _billTransactionsRepo = billTransactionsRepo;
             _billPayerRepository = billPayerRepository;
@@ -53,6 +55,8 @@ namespace BillProcessorAPI.Services.Implementations
             _invoiceRepo = invoiceRepo;
             _mapper = mapper;
             _receipts = receipts;
+            _logger = logger;
+
         }
 
         public async Task<SuccessResponse<PaymentCreationResponse>> CreateTransaction(string email, decimal amount, string billPaymentCode)
@@ -172,109 +176,128 @@ namespace BillProcessorAPI.Services.Implementations
 
         public async Task<SuccessResponse<string>> PaymentNotification(WebHookNotificationWrapper model)
         {
-            if (model == null)
-                throw new RestException(HttpStatusCode.BadRequest, "invalid transaction");
-
-
-            Console.WriteLine($"Payment notification from Flutterwave just came in as at: {DateTime.UtcNow}");
-
-            Console.WriteLine($"Details of notification : {model.ToString()}");
-
-            var transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.Tx_ref);
-
-            if (transaction is null)
-                throw new PaymentVerificationException(HttpStatusCode.NotFound, "No transaction found for this transaction");
-
-            //verify transaction with flutterwave using the transactionId from the webhook
-            IDictionary<string, string> param = new Dictionary<string, string>();
-            param.Add(key: "Authorization", _flutterOptions.SecretKey);
-            var headerParam = new RequestHeader(param);
-
-            var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.VerifyByReference}/?tx_ref={model.Tx_ref}";
-            var verificationReaponse = await _httpService.Get<FlutterwaveResponse<FlutterwaveResponseData>>(url, headerParam);
-
-            if (verificationReaponse.Data.Status != "success")
-                Console.WriteLine($"Unable to verify payment notification from Flutterwave as at: {DateTime.UtcNow}");
-
-            transaction.AmountPaid = verificationReaponse.Data.Data.amount;
-            transaction.PrinciPalAmount = verificationReaponse.Data.Data.amount; // amount paid minus charges
-            transaction.Channel = verificationReaponse.Data.Data.payment_type;
-            transaction.TransactionCharge = transaction.TransactionCharge;
-            transaction.GatewayTransactionCharge = (decimal)verificationReaponse.Data.Data.app_fee;
-            transaction.GatewayTransactionReference = verificationReaponse.Data.Data.flw_ref;
-            transaction.PaymentReference = "N/A";
-            transaction.FiName = "N/A";
-            transaction.Narration = verificationReaponse.Data.Data.narration;
-
-            if (verificationReaponse?.Data?.Status?.ToUpper()
-                == ETransactionStatus.Successful.ToString().ToUpper())
-            {
-                transaction.Status = ETransactionStatus.Successful.ToString();
-            }
-            else
-            {
-                transaction.Status = ETransactionStatus.Failed.ToString();
-            }
-
-            transaction.DateCompleted = verificationReaponse.Data.Data.created_at.ToString();
-            transaction.StatusMessage = verificationReaponse.Data.Data.status;
-            transaction.ReceiptUrl = model.ReceiptNumber;
-            transaction.SuccessIndicator = verificationReaponse.Data.Data.status;
-            transaction.Hash = "N/A";
-            transaction.UpdatedAt = DateTime.UtcNow;
-            transaction.NotificationResponseData = JsonConvert.SerializeObject(model);
-
-
-            await _billTransactionsRepo.SaveChangesAsync();
-
-            //add the receipt to the invoice
-            var invoice = await _invoiceRepo.FirstOrDefault(x => x.BillTransactionId == transaction.Id);
-            if (invoice is null)
-                throw new PaymentVerificationException(HttpStatusCode.NotFound, "No invoice found for this transaction");
-
-            invoice.ReceiptUrl = model.ReceiptNumber;
-            invoice.AmountPaid = verificationReaponse.Data.Data.amount;
-            invoice.AmountDue = transaction.AmountDue;
-            invoice.GatewayTransactionCharge = (decimal)verificationReaponse.Data.Data.app_fee;
-            invoice.UpdatedAt = DateTime.UtcNow;
-            invoice.GatewayTransactionReference = verificationReaponse.Data.Data.flw_ref;
-
-            // Create a receipt record
-            var receipt = _mapper.Map<Receipt>(transaction);
-            receipt.TransactionId = transaction.Id;
-            receipt.PaymentRef = transaction.TransactionReference;
-            receipt.InvoiceId = invoice.Id;
-            receipt.TransactionDate = transaction.DateCompleted;
-            receipt.GateWay = transaction.GatewayType.ToString();
-            receipt.ReceiptUrl = model.ReceiptNumber;
-
-            await _receipts.AddAsync(receipt);
-            await _receipts.SaveChangesAsync();
-
-            // send the notification to the existing application
+            BillTransaction transaction = null;
             try
             {
-                IDictionary<string, string> paramm = new Dictionary<string, string>();
+                if (model == null)
+                    throw new RestException(HttpStatusCode.BadRequest, "invalid transaction, notification content is null and empty");
+
+                transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.Tx_ref);
+                transaction.NotificationResponseData = JsonConvert.SerializeObject(model);
+
+                await _billTransactionsRepo.SaveChangesAsync();
+
+                _logger.LogInformation($"Payment notification from Flutterwave just came in as at: {DateTime.UtcNow}");
+
+                _logger.LogInformation($"Details of notification : {model.ToString()}");
+
+
+                if (transaction is null)
+                    throw new PaymentVerificationException(HttpStatusCode.NotFound, "No transaction found for this transaction");
+
+                //verify transaction with flutterwave using the transactionId from the webhook
+                IDictionary<string, string> param = new Dictionary<string, string>();
                 param.Add(key: "Authorization", _flutterOptions.SecretKey);
-                var headerParamm = new RequestHeader(paramm);
+                var headerParam = new RequestHeader(param);
 
-                var exixtingAppUrl = $"{_flutterOptions.ExistingAppUrl}";
+                var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.VerifyByReference}/?tx_ref={model.Tx_ref}";
+                var verificationReaponse = await _httpService.Get<FlutterwaveResponse<FlutterwaveResponseData>>(url, headerParam);
 
-                var notificationResponse = await _httpService
-                       .Post<FlutterwaveResponse<LinkData>, WebHookNotificationWrapper>(exixtingAppUrl, headerParamm, model);
+                if (verificationReaponse.Data.Status != "success")
+                    _logger.LogInformation($"Unable to verify payment notification from Flutterwave as at: {DateTime.UtcNow}");
+
+                transaction.AmountPaid = verificationReaponse.Data.Data.amount;
+                transaction.PrinciPalAmount = verificationReaponse.Data.Data.amount; // amount paid minus charges
+                transaction.Channel = verificationReaponse.Data.Data.payment_type;
+                transaction.TransactionCharge = transaction.TransactionCharge;
+                transaction.GatewayTransactionCharge = (decimal)verificationReaponse.Data.Data.app_fee;
+                transaction.GatewayTransactionReference = verificationReaponse.Data.Data.flw_ref;
+                transaction.PaymentReference = "N/A";
+                transaction.FiName = "N/A";
+                transaction.Narration = verificationReaponse.Data.Data.narration;
+
+                if (verificationReaponse?.Data?.Status?.ToUpper()
+                    == ETransactionStatus.Successful.ToString().ToUpper())
+                {
+                    transaction.Status = ETransactionStatus.Successful.ToString();
+                }
+                else
+                {
+                    transaction.Status = ETransactionStatus.Failed.ToString();
+                }
+
+                transaction.DateCompleted = verificationReaponse.Data.Data.created_at.ToString();
+                transaction.StatusMessage = verificationReaponse.Data.Data.status;
+                transaction.ReceiptUrl = model.ReceiptNumber;
+                transaction.SuccessIndicator = verificationReaponse.Data.Data.status;
+                transaction.Hash = "N/A";
+                transaction.UpdatedAt = DateTime.UtcNow;
+                transaction.NotificationResponseData = JsonConvert.SerializeObject(model);
+
+                await _billTransactionsRepo.SaveChangesAsync();
+
+                //add the receipt to the invoice
+                var invoice = await _invoiceRepo.FirstOrDefault(x => x.BillTransactionId == transaction.Id);
+                if (invoice is null)
+                    throw new PaymentVerificationException(HttpStatusCode.NotFound, "No invoice found for this transaction");
+
+                invoice.ReceiptUrl = model.ReceiptNumber;
+                invoice.AmountPaid = verificationReaponse.Data.Data.amount;
+                invoice.AmountDue = transaction.AmountDue;
+                invoice.GatewayTransactionCharge = (decimal)verificationReaponse.Data.Data.app_fee;
+                invoice.UpdatedAt = DateTime.UtcNow;
+                invoice.GatewayTransactionReference = verificationReaponse.Data.Data.flw_ref;
+
+                // Create a receipt record
+                var receipt = _mapper.Map<Receipt>(transaction);
+                receipt.TransactionId = transaction.Id;
+                receipt.PaymentRef = transaction.TransactionReference;
+                receipt.InvoiceId = invoice.Id;
+                receipt.TransactionDate = transaction.DateCompleted;
+                receipt.GateWay = transaction.GatewayType.ToString();
+                receipt.ReceiptUrl = model.ReceiptNumber;
+
+                await _receipts.AddAsync(receipt);
+                await _receipts.SaveChangesAsync();
+
+                // send the notification to the existing application
+                try
+                {
+                    IDictionary<string, string> paramm = new Dictionary<string, string>();
+                    param.Add(key: "Authorization", _flutterOptions.SecretKey);
+                    var headerParamm = new RequestHeader(paramm);
+
+                    var exixtingAppUrl = $"{_flutterOptions.ExistingAppUrl}";
+
+                    var notificationResponse = await _httpService
+                           .Post<FlutterwaveResponse<LinkData>, WebHookNotificationWrapper>(exixtingAppUrl, headerParamm, model);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"An error occurred on verifying flutterwave transaction: {ex.Message}", ex);
+                    transaction.ErrorMessage = ex.ToString();
+                    // do nothing
+                }
+
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // do nothing
+                _logger.LogError( $"An error occurred on receipt of payment notification from flutterwave: {ex.Message}", ex);
+
+                transaction.ErrorMessage = ex.ToString();
+                throw;
             }
-           
+            finally
+            {
+                if (transaction is not null)
+                    await _billPayerRepository.SaveChangesAsync();
+            }
 
 
             return new SuccessResponse<string>
             {
                 Data = "Transaction Completed"
             };
-
         }
 
         public async Task<SuccessResponse<PaymentConfirmationResponse>> PaymentConfirmation(string status, string tx_ref, string transaction_id)
