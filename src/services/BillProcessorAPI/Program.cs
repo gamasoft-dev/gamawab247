@@ -12,6 +12,7 @@ using BillProcessorAPI.Validators;
 using FluentValidation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,12 @@ builder.Services.AddControllers()
     .AddJsonOptions(options=> {
         options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
     });
+builder.Services.AddSerilog();
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.File("./Logger/BillProcessorLogs.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
 //builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddValidatorsFromAssemblyContaining<TransactionValidator>();
 builder.Services.Configure<BillTransactionSettings>(builder.Configuration.GetSection("BillTransactionSettings"));
