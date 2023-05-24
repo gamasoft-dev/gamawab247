@@ -70,7 +70,7 @@ namespace BillProcessorAPI.Services.Implementations
             if (string.IsNullOrEmpty(email) || amount < 0)
                 throw new RestException(HttpStatusCode.BadRequest, "All fields are required");
 
-            var billPayer = await _billPayerRepository.FirstOrDefault(x => x.billCode == billPaymentCode)
+            var billPayer = await _billPayerRepository.Query(x => x.billCode == billPaymentCode).OrderByDescending(c => c.UpdatedAt).FirstOrDefaultAsync()
                         ?? throw new RestException(HttpStatusCode.NotFound, "unable to fetch bill payer for this transaction");
 
             IDictionary<string, string> param = new Dictionary<string, string>();
@@ -181,7 +181,7 @@ namespace BillProcessorAPI.Services.Implementations
 
             _logger.LogCritical($"Payment notification from Flutterwave just came in as at: {DateTime.UtcNow}");
 
-            _logger.LogCritical($"Details of notification : {model.ToString()}");
+            _logger.LogCritical($"Details of notification : {JsonConvert.SerializeObject(model)}");
 
             var transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.Tx_ref);
 
