@@ -4,31 +4,31 @@ namespace BillProcessorAPI.Dtos.Flutterwave
 {
     public class WebHookNotificationWrapper
     {
-        [JsonProperty("webguid")]
+        
         public string WebGuid { get; set; }
-        [JsonProperty("response_code")]
+      
         public string ResponseCode { get; set; }
-        [JsonProperty("response_desc")]
+     
         public string ResponseDesc { get; set; }
-        [JsonProperty("receipt_number")]
+       
         public string ReceiptNumber { get; set; }
-        [JsonProperty("state")]
+    
         public string State { get; set; }
-        [JsonProperty("status")]
+    
         public string Status { get; set; }
-        [JsonProperty("trans_id")]
+        
         public string TransID { get; set; }
-        [JsonProperty("trans_code")]
+        
         public string TransCode { get; set; }
-        [JsonProperty("status_message")]
+        
         public string StatusMessage { get; set; }
-        [JsonProperty("property_address")]
+        
         public string PropertyAddress { get; set; }
 
-        [JsonProperty("transaction_reference")]
+        
         public string TransactionReference { get; set; }
-        [JsonProperty("payment_ref")]
-        public int PaymentRef { get; set; }
+       
+        public dynamic PaymentRef { get; set; }
 
     }
 
