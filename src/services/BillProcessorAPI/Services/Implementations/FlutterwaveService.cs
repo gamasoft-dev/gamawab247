@@ -185,6 +185,7 @@ namespace BillProcessorAPI.Services.Implementations
                 transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.TransactionReference);
                 transaction.NotificationResponseData = JsonConvert.SerializeObject(model);
 
+                await _billTransactionsRepo.SaveChangesAsync();
 
                 _logger.LogInformation($"Payment notification from Flutterwave just came in as at: {DateTime.UtcNow}");
 
@@ -254,7 +255,7 @@ namespace BillProcessorAPI.Services.Implementations
                 receipt.InvoiceId = invoice.Id;
                 receipt.TransactionDate = transaction.DateCompleted;
                 receipt.GateWay = transaction.GatewayType.ToString();
-                receipt.ReceiptUrl = model.ReceiptNumber;
+                receipt.ReceiptUrl = transaction.ReceiptUrl;
 
                 await _receipts.AddAsync(receipt);
                 await _receipts.SaveChangesAsync();
