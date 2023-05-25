@@ -182,7 +182,7 @@ namespace BillProcessorAPI.Services.Implementations
                 if (model == null)
                     throw new RestException(HttpStatusCode.BadRequest, "invalid transaction, notification content is null and empty");
 
-                transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.Tx_ref);
+                transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.TransactionReference);
                 transaction.NotificationResponseData = JsonConvert.SerializeObject(model);
 
                 await _billTransactionsRepo.SaveChangesAsync();
@@ -200,7 +200,7 @@ namespace BillProcessorAPI.Services.Implementations
                 param.Add(key: "Authorization", _flutterOptions.SecretKey);
                 var headerParam = new RequestHeader(param);
 
-                var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.VerifyByReference}/?tx_ref={model.Tx_ref}";
+                var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.VerifyByReference}/?tx_ref={model.TransactionReference}";
                 var verificationReaponse = await _httpService.Get<FlutterwaveResponse<FlutterwaveResponseData>>(url, headerParam);
 
                 if (verificationReaponse.Data.Status != "success")
@@ -217,7 +217,7 @@ namespace BillProcessorAPI.Services.Implementations
                 transaction.Narration = verificationReaponse.Data.Data.narration;
 
                 if (verificationReaponse?.Data?.Status?.ToUpper()
-                    == ETransactionStatus.Successful.ToString().ToUpper())
+                    == "SUCCESS")
                 {
                     transaction.Status = ETransactionStatus.Successful.ToString();
                 }
@@ -255,7 +255,7 @@ namespace BillProcessorAPI.Services.Implementations
                 receipt.InvoiceId = invoice.Id;
                 receipt.TransactionDate = transaction.DateCompleted;
                 receipt.GateWay = transaction.GatewayType.ToString();
-                receipt.ReceiptUrl = model.ReceiptNumber;
+                receipt.ReceiptUrl = transaction.ReceiptUrl;
 
                 await _receipts.AddAsync(receipt);
                 await _receipts.SaveChangesAsync();
