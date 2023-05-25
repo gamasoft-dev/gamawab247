@@ -202,7 +202,7 @@ namespace BillProcessorAPI.Services.Implementations
             transaction.TransactionCharge = transaction.TransactionCharge;
             transaction.GatewayTransactionCharge = (decimal)verificationReaponse.Data.Data.app_fee;
             transaction.GatewayTransactionReference = verificationReaponse.Data.Data.flw_ref;
-            transaction.PaymentReference = "N/A";
+            transaction.PaymentReference = model.PaymentRef.ToString();
             transaction.FiName = "N/A";
             transaction.Narration = verificationReaponse.Data.Data.narration;
 

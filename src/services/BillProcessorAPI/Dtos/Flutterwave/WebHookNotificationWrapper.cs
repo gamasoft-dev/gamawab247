@@ -26,8 +26,8 @@ namespace BillProcessorAPI.Dtos.Flutterwave
         public string PropertyAddress { get; set; }
         [JsonProperty("tx_ref")]
         public string Tx_ref { get; set; }
-        [JsonProperty("id")]
-        public string PaymentRef { get; set; }
+        [JsonProperty("payment_ref")]
+        public int PaymentRef { get; set; }
 
     }
 
