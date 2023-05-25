@@ -263,9 +263,9 @@ namespace BillProcessorAPI.Services.Implementations
                 // send the notification to the existing application
                 try
                 {
-                    IDictionary<string, string> paramm = new Dictionary<string, string>();
-                    param.Add(key: "Authorization", _flutterOptions.SecretKey);
-                    var headerParamm = new RequestHeader(paramm);
+                    IDictionary<string, string> existingAppParam = new Dictionary<string, string>();
+                    existingAppParam.Add(key: "Authorization", _flutterOptions.SecretKey);
+                    var headerParamm = new RequestHeader(existingAppParam);
 
                     var exixtingAppUrl = $"{_flutterOptions.ExistingAppUrl}";
 
