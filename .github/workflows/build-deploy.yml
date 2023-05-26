@@ -22,5 +22,5 @@ jobs:
         username: ${{ secrets.DEV_USERNAME }}
         port: ${{ secrets.DEV_PORT }}
         password: ${{ secrets.DEV_PASSWORD }}
-        script: cd ${{ secrets.DEV_Path }} && ls && git pull && ls && docker-compose -f docker-compose.yml -f docker-compose.override.yml up --build -d
+        script: cd ${{ secrets.DEV_Path }} && ls && git pull && ls && docker-compose -f docker-compose.yml -f docker-compose.override.yml up --no-cache --build -d
   
