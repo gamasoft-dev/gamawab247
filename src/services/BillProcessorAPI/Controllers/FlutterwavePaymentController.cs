@@ -47,9 +47,14 @@ namespace BillProcessorAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Test endpoint
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost("/flutterwave/notify2")]
         [ProducesResponseType(typeof(TransactionVerificationResponseDto), 200)]
-        [SwaggerOperation(Summary = "Webhook endpoint")]
+        [SwaggerOperation(Summary = "Test webhook endpoint")]
         public async Task<IActionResult> FlutterwavePaymentNotification2([FromBody] WebHookNotificationWrapper model)
         {
 
