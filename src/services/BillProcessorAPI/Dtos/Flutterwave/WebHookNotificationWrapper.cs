@@ -29,7 +29,7 @@ namespace BillProcessorAPI.Dtos.Flutterwave
         public string TransactionReference { get; set; }
 
         // this is a dynamic type and it should handle both int and or strings
-        public Int16 PaymentRef { get; set; }
+        public long PaymentRef { get; set; }
 
     }
 
