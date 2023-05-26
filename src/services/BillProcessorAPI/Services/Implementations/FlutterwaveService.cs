@@ -33,6 +33,7 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IHttpService _httpService;
         private readonly IConfigurationService _configService;
         private readonly IMapper _mapper;
+        private readonly ILogger<FlutterwaveService> _logger;
 
         public FlutterwaveService(
             IRepository<BillTransaction> billTransactionsRepo,
@@ -43,7 +44,8 @@ namespace BillProcessorAPI.Services.Implementations
             IConfigurationService configService,
             IInvoiceRepository invoiceRepo,
             IMapper mapper,
-            IRepository<Receipt> receipts)
+            IRepository<Receipt> receipts,
+            ILogger<FlutterwaveService> logger)
         {
             _billTransactionsRepo = billTransactionsRepo;
             _billPayerRepository = billPayerRepository;
@@ -53,6 +55,7 @@ namespace BillProcessorAPI.Services.Implementations
             _invoiceRepo = invoiceRepo;
             _mapper = mapper;
             _receipts = receipts;
+            _logger = logger;
         }
 
         public async Task<SuccessResponse<PaymentCreationResponse>> CreateTransaction(string email, decimal amount, string billPaymentCode)
@@ -67,7 +70,7 @@ namespace BillProcessorAPI.Services.Implementations
             if (string.IsNullOrEmpty(email) || amount < 0)
                 throw new RestException(HttpStatusCode.BadRequest, "All fields are required");
 
-            var billPayer = await _billPayerRepository.FirstOrDefault(x => x.billCode == billPaymentCode)
+            var billPayer = await _billPayerRepository.Query(x => x.billCode == billPaymentCode).OrderByDescending(c => c.UpdatedAt).FirstOrDefaultAsync()
                         ?? throw new RestException(HttpStatusCode.NotFound, "unable to fetch bill payer for this transaction");
 
             IDictionary<string, string> param = new Dictionary<string, string>();
@@ -176,9 +179,9 @@ namespace BillProcessorAPI.Services.Implementations
                 throw new RestException(HttpStatusCode.BadRequest, "invalid transaction");
 
 
-            Console.WriteLine($"Payment notification from Flutterwave just came in as at: {DateTime.UtcNow}");
+            _logger.LogCritical($"Payment notification from Flutterwave just came in as at: {DateTime.UtcNow}");
 
-            Console.WriteLine($"Details of notification : {model.ToString()}");
+            _logger.LogCritical($"Details of notification : {JsonConvert.SerializeObject(model)}");
 
             var transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.Tx_ref);
 
@@ -194,7 +197,7 @@ namespace BillProcessorAPI.Services.Implementations
             var verificationReaponse = await _httpService.Get<FlutterwaveResponse<FlutterwaveResponseData>>(url, headerParam);
 
             if (verificationReaponse.Data.Status != "success")
-                Console.WriteLine($"Unable to verify payment notification from Flutterwave as at: {DateTime.UtcNow}");
+                _logger.LogCritical($"Unable to verify payment notification from Flutterwave as at: {DateTime.UtcNow}");
 
             transaction.AmountPaid = verificationReaponse.Data.Data.amount;
             transaction.PrinciPalAmount = verificationReaponse.Data.Data.amount; // amount paid minus charges
