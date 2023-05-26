@@ -22,7 +22,7 @@ services:
       - ~/.aspnet/https:/https/
   
   billprocessorapi:
-    image: ${DOCKER_REGISTRY-}billprocessorapi
+    image: ${DOCKER_REGISTRY-}billprocessorapi2
     build:
       context: .
       dockerfile: src/services/BillProcessorAPI/Dockerfile
