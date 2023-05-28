@@ -21,8 +21,8 @@ services:
       - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
       - ~/.aspnet/https:/https/
   
-  billprocessorapi2:
-    image: ${DOCKER_REGISTRY-}billprocessorapi2
+  billprocessorapi:
+    image: ${DOCKER_REGISTRY-}billprocessorapi
     build:
       context: .
       dockerfile: src/services/BillProcessorAPI/Dockerfile
