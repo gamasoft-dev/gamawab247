@@ -52,10 +52,10 @@ namespace BillProcessorAPI.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        [HttpPost("/flutterwave/notify2")]
+        [HttpPost("/flutterwave/notify3")]
         [ProducesResponseType(typeof(TransactionVerificationResponseDto), 200)]
         [SwaggerOperation(Summary = "Test webhook endpoint")]
-        public async Task<IActionResult> FlutterwavePaymentNotification2([FromBody] WebHookNotificationWrapper model)
+        public async Task<IActionResult> FlutterwavePaymentNotification3([FromBody] WebHookNotificationWrapper model)
         {
 
             try
