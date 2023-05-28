@@ -21,11 +21,13 @@ services:
       - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
       - ~/.aspnet/https:/https/
   
-  billprocessorapi:
+  billprocessorapi2:
     image: ${DOCKER_REGISTRY-}billprocessorapi2
     build:
       context: .
       dockerfile: src/services/BillProcessorAPI/Dockerfile
+
+    restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+
@@ -45,6 +47,7 @@ services:
     build:
       context: .
       dockerfile: src/Jobs/Gamasoft.Worker/Dockerfile
+    restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
