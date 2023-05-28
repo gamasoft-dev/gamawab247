@@ -47,32 +47,6 @@ namespace BillProcessorAPI.Controllers
             }
         }
 
-        /// <summary>
-        /// Test endpoint
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        [HttpPost("/flutterwave/notify3")]
-        [ProducesResponseType(typeof(TransactionVerificationResponseDto), 200)]
-        [SwaggerOperation(Summary = "Test webhook endpoint")]
-        public async Task<IActionResult> FlutterwavePaymentNotification3([FromBody] WebHookNotificationWrapper model)
-        {
-
-            try
-            {
-                _logger.LogInformation("Flutter wave request received");
-
-                var response = await _transactionService.PaymentNotification(model);
-                return Ok(response);
-            }
-            catch (PaymentVerificationException ex)
-            {
-                _logger.LogError(ex.ErrorMessage);
-                return Ok($"Payement verification didnot complete succesfully but notification was recieved {ex.ToString()}");
-
-            }
-        }
-
         [HttpGet("/flutterwave/verify/{tx_ref}")]
         [ProducesResponseType(typeof(object), 200)]
         [SwaggerOperation(Summary = "Endpoint for transaction verification")]
