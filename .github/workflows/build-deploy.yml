@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
-        ref: 'prod'
+        ref: prod
     
     - name: Push to server and deploy
       uses: appleboy/ssh-action@master
