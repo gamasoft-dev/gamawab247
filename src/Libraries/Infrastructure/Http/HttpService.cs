@@ -143,6 +143,14 @@ public class HttpService: IHttpService
         }
     }
 
+    public void ClearHeader(HttpClient httpClient)
+    {
+        if(httpClient is not null)
+        {
+            
+        }
+    }
+
 
     private string AddParameter(string url, IDictionary<string, object> paramters)
     {

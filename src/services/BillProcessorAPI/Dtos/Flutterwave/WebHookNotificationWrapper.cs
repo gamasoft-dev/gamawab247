@@ -2,7 +2,7 @@
 
 namespace BillProcessorAPI.Dtos.Flutterwave
 {
-    public class WebHookNotificationWrapper
+    public record WebHookNotificationWrapper
     {
         
         public string WebGuid { get; set; }
@@ -27,13 +27,14 @@ namespace BillProcessorAPI.Dtos.Flutterwave
 
         
         public string TransactionReference { get; set; }
-       
+
+        // this is a dynamic type and it should handle both int and or strings
         public dynamic PaymentRef { get; set; }
 
     }
 
 
-    public class Card
+    public record Card
     {
         [JsonProperty("first_6digits")]
         public string first_6digits { get; set; }
@@ -49,7 +50,7 @@ namespace BillProcessorAPI.Dtos.Flutterwave
         public string expiry { get; set; }
     }
 
-    public class Customer
+    public record Customer
     {
         [JsonProperty("id")]
         public int id { get; set; }
@@ -63,7 +64,7 @@ namespace BillProcessorAPI.Dtos.Flutterwave
         public DateTime created_at { get; set; }
     }
 
-    public class FlutterwaveResponseData
+    public record FlutterwaveResponseData
     {
         [JsonProperty("id")]
         public int id { get; set; }

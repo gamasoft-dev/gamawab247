@@ -29,11 +29,13 @@ namespace BillProcessorAPI.Controllers
         [HttpPost("/flutterwave/notify")]
         [ProducesResponseType(typeof(TransactionVerificationResponseDto), 200)]
         [SwaggerOperation(Summary = "Webhook endpoint")]
-        public async Task<IActionResult> FlutterwavePaymentNotification(WebHookNotificationWrapper model)
+        public async Task<IActionResult> FlutterwavePaymentNotification([FromBody] WebHookNotificationWrapper model)
         {
            
             try
             {
+                _logger.LogInformation("Flutter wave request received");
+
                 var response = await _transactionService.PaymentNotification(model);
                 return Ok(response);
             }
