@@ -261,23 +261,23 @@ namespace BillProcessorAPI.Services.Implementations
                 await _receipts.SaveChangesAsync();
 
                 // send the notification to the existing application
-                try
-                {
-                    IDictionary<string, string> existingAppParam = new Dictionary<string, string>();
-                    existingAppParam.Add(key: "Authorization", _flutterOptions.SecretKey);
-                    var headerParamm = new RequestHeader(existingAppParam);
+                //try
+                //{
+                //    IDictionary<string, string> existingAppParam = new Dictionary<string, string>();
+                //    existingAppParam.Add(key: "Authorization", _flutterOptions.SecretKey);
+                //    var headerParamm = new RequestHeader(existingAppParam);
 
-                    var exixtingAppUrl = $"{_flutterOptions.ExistingAppUrl}";
+                //    var exixtingAppUrl = $"{_flutterOptions.ExistingAppUrl}";
 
-                    var notificationResponse = await _httpService
-                           .Post<FlutterwaveResponse<LinkData>, WebHookNotificationWrapper>(exixtingAppUrl, headerParamm, model);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError($"An error occurred on verifying flutterwave transaction: {ex.Message}", ex);
-                    transaction.ErrorMessage = ex.ToString();
-                    // do nothing
-                }
+                //    var notificationResponse = await _httpService
+                //           .Post<FlutterwaveResponse<LinkData>, WebHookNotificationWrapper>(exixtingAppUrl, headerParamm, model);
+                //}
+                //catch (Exception ex)
+                //{
+                //    _logger.LogError($"An error occurred on verifying flutterwave transaction: {ex.Message}", ex);
+                //    transaction.ErrorMessage = ex.ToString();
+                //    // do nothing
+                //}
 
             }
             catch (Exception ex)
