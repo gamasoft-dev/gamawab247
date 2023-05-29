@@ -4,6 +4,7 @@ using BillProcessorAPI.Helpers;
 
 namespace BillProcessorAPI.Services.Interfaces
 {
+    // useful for all configurational settings to the db
     public interface IConfigurationService
     {
         Task<SuccessResponse<IEnumerable<ChargesResponseDto>>> GetBillChargesByBusiness(Guid businessId);

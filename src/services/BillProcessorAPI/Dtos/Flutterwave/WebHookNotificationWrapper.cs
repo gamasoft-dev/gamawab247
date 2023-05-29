@@ -2,37 +2,39 @@
 
 namespace BillProcessorAPI.Dtos.Flutterwave
 {
-    public class WebHookNotificationWrapper
+    public record WebHookNotificationWrapper
     {
-        [JsonProperty("webguid")]
+        
         public string WebGuid { get; set; }
-        [JsonProperty("response_code")]
+      
         public string ResponseCode { get; set; }
-        [JsonProperty("response_desc")]
+     
         public string ResponseDesc { get; set; }
-        [JsonProperty("receipt_number")]
+       
         public string ReceiptNumber { get; set; }
-        [JsonProperty("state")]
+    
         public string State { get; set; }
-        [JsonProperty("status")]
+    
         public string Status { get; set; }
-        [JsonProperty("trans_id")]
+        
         public string TransID { get; set; }
-        [JsonProperty("trans_code")]
+        
         public string TransCode { get; set; }
-        [JsonProperty("status_message")]
+        
         public string StatusMessage { get; set; }
-        [JsonProperty("property_address")]
+        
         public string PropertyAddress { get; set; }
-        [JsonProperty("tx_ref")]
-        public string Tx_ref { get; set; }
-        [JsonProperty("id")]
-        public string PaymentRef { get; set; }
+
+        
+        public string TransactionReference { get; set; }
+
+        // this is a dynamic type and it should handle both int and or strings
+        public dynamic PaymentRef { get; set; }
 
     }
 
 
-    public class Card
+    public record Card
     {
         [JsonProperty("first_6digits")]
         public string first_6digits { get; set; }
@@ -48,7 +50,7 @@ namespace BillProcessorAPI.Dtos.Flutterwave
         public string expiry { get; set; }
     }
 
-    public class Customer
+    public record Customer
     {
         [JsonProperty("id")]
         public int id { get; set; }
@@ -62,7 +64,7 @@ namespace BillProcessorAPI.Dtos.Flutterwave
         public DateTime created_at { get; set; }
     }
 
-    public class FlutterwaveResponseData
+    public record FlutterwaveResponseData
     {
         [JsonProperty("id")]
         public int id { get; set; }

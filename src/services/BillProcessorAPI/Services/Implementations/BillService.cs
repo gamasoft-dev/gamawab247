@@ -78,22 +78,35 @@ namespace BillProcessorAPI.Services.Implementations
 					//current time update
 					revPayRes.CurrentDate = DateTime.Now;
 
-					var mappedResponse = _mapper.Map<BillPayerInfo>(revPayRes);
-					mappedResponse.PhoneNumber = phone;
+					var billPayerInfo = _mapper.Map<BillPayerInfo>(revPayRes);
+					billPayerInfo.PhoneNumber = phone;
 
-					if (mappedResponse.PayerName == null && mappedResponse.Status == null)
+					if (billPayerInfo.PayerName == null && billPayerInfo.Status == null)
 						throw new RestException(HttpStatusCode.NotFound, "Record not found for the bill-code provided");
                  
 					// biller information response data
-					mappedResponse.AccountInfoResponseData = JsonConvert.SerializeObject(revPayRes);
-					mappedResponse.billCode = billPaymentCode;
-					mappedResponse.PhoneNumber = phone;
+					billPayerInfo.AccountInfoResponseData = JsonConvert.SerializeObject(revPayRes);
+					billPayerInfo.billCode = billPaymentCode;
+					billPayerInfo.PhoneNumber = phone;
 					
 
-					//bill-payer information request data
-					mappedResponse.AccountInfoRequestData = JsonConvert.SerializeObject(payload);
+					// bill-payer information request data
+					billPayerInfo.AccountInfoRequestData = JsonConvert.SerializeObject(payload);
+					billPayerInfo.AccountInfoResponseData = JsonConvert.SerializeObject(revPayRes);
 
-					await _billPayerRepo.AddAsync(mappedResponse);
+					var existingBillPayerInfo = await _billPayerRepo
+						.Query(x => x.billCode.ToLower() == billPayerInfo.billCode.ToLower())
+						.OrderByDescending(x=>x.UpdatedAt)
+						.FirstOrDefaultAsync();
+
+					if(existingBillPayerInfo is null)
+						await _billPayerRepo.AddAsync(billPayerInfo);
+					else
+					{
+						_mapper.Map(billPayerInfo, existingBillPayerInfo);
+					}
+
+
 					await _billPayerRepo.SaveChangesAsync();
 
 					return new SuccessResponse<BillReferenceResponseDto>
@@ -101,8 +114,8 @@ namespace BillProcessorAPI.Services.Implementations
 						Data = revPayRes,
 						Message = "Data retrieved successfully"
 					};
-
 				}
+
 				throw new RestException(HttpStatusCode.BadRequest, "Invalid Request");
 			}
 			catch (Exception ex)
