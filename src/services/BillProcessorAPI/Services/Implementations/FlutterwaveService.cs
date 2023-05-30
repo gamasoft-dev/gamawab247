@@ -190,7 +190,7 @@ namespace BillProcessorAPI.Services.Implementations
 
             _logger.LogCritical($"Details of notification : {JsonConvert.SerializeObject(model)}");
 
-            var transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.Tx_ref);
+                 transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.TransactionReference);
 
 
                 if (transaction is null)
