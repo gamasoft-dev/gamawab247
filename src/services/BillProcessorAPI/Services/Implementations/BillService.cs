@@ -154,7 +154,7 @@ namespace BillProcessorAPI.Services.Implementations
 
 				var billTransaction = await _billTransactionsRepo
 					.Query(x=>x.BillNumber == billPaymentCode && x.Status == ETransactionStatus.Successful.ToString())
-					.OrderByDescending(x=>x.DateCompleted).FirstOrDefaultAsync();
+					.OrderByDescending(x=>x.UpdatedAt).FirstOrDefaultAsync();
 
 				if (billTransaction is null)
 					return new SuccessResponse<CustomBillPaymentVerificationResponse>

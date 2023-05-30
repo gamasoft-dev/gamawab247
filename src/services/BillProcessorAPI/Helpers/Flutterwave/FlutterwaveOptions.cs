@@ -11,6 +11,9 @@
         public string Signature { get; set; }
         public string SecretKey { get; set; }
         public string ExistingAppUrl { get; set; }
+        public string ResendFailedWebhook { get; set; }
+        public string ResendWebhookHeader { get; set; }
+        public string ResendWebhookHeaderValue { get; set; }
 
     }
 }
