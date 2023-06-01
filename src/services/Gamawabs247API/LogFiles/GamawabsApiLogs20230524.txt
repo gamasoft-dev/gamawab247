@@ -1,0 +1,79 @@
+2023-05-24 04:08:52.427 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-24 04:09:02.520 +01:00 [INF] Now listening on: http://localhost:6000
+2023-05-24 04:09:02.606 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-24 04:09:02.824 +01:00 [INF] Hosting environment: Development
+2023-05-24 04:09:02.850 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\Gamawabs247API
+2023-05-24 04:32:31.316 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-24 04:32:34.160 +01:00 [INF] Now listening on: http://localhost:6000
+2023-05-24 04:32:34.212 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-24 04:32:34.229 +01:00 [INF] Hosting environment: Development
+2023-05-24 04:32:34.237 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\Gamawabs247API
+2023-05-24 04:34:47.370 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-24 04:34:50.354 +01:00 [INF] Capturing event.
+2023-05-24 04:34:50.934 +01:00 [ERR] An error occurred when capturing the event cf4dc324cf2348d0a5a35aa526331f2c.
+System.ObjectDisposedException: Instances cannot be resolved and nested lifetimes cannot be created from this LifetimeScope as it (or one of its parent scopes) has already been disposed.
+   at Autofac.Core.Lifetime.LifetimeScope.ResolveComponent(ResolveRequest request)
+   at Autofac.ResolutionExtensions.TryResolveService(IComponentContext context, Service service, IEnumerable`1 parameters, Object& instance)
+   at Autofac.ResolutionExtensions.ResolveService(IComponentContext context, Service service, IEnumerable`1 parameters)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService[T](IServiceProvider provider)
+   at System.Linq.Enumerable.SelectManySingleSelectorIterator`2.MoveNext()
+   at Sentry.ScopeExtensions.GetAllExceptionProcessors(Scope scope)+MoveNext() in /_/src/Sentry/ScopeExtensions.cs:line 41
+   at Sentry.SentryClient.DoSendEvent(SentryEvent event, Scope scope) in /_/src/Sentry/SentryClient.cs:line 189
+   at Sentry.SentryClient.CaptureEvent(SentryEvent event, Scope scope) in /_/src/Sentry/SentryClient.cs:line 71
+2023-05-24 04:34:50.950 +01:00 [ERR] Failure to capture event: cf4dc324cf2348d0a5a35aa526331f2c
+System.AggregateException: An error occurred while writing to logger(s). (Cannot access a disposed object.
+Object name: 'EventLogInternal'.)
+ ---> System.ObjectDisposedException: Cannot access a disposed object.
+Object name: 'EventLogInternal'.
+   at System.Diagnostics.EventLogInternal.OpenForWrite(String currentMachineName)
+   at System.Diagnostics.EventLogInternal.InternalWriteEvent(UInt32 eventID, UInt16 category, EventLogEntryType type, String[] strings, Byte[] rawData, String currentMachineName)
+   at System.Diagnostics.EventLogInternal.WriteEvent(EventInstance instance, Byte[] data, Object[] values)
+   at System.Diagnostics.EventLog.WriteEvent(EventInstance instance, Object[] values)
+   at Microsoft.Extensions.Logging.EventLog.WindowsEventLog.WriteEntry(String message, EventLogEntryType type, Int32 eventID, Int16 category)
+   at Microsoft.Extensions.Logging.EventLog.EventLogLogger.WriteMessage(String message, EventLogEntryType eventLogEntryType, Int32 eventId)
+   at Microsoft.Extensions.Logging.EventLog.EventLogLogger.Log[TState](LogLevel logLevel, EventId eventId, TState state, Exception exception, Func`3 formatter)
+   at Microsoft.Extensions.Logging.Logger.<Log>g__LoggerLog|12_0[TState](LogLevel logLevel, EventId eventId, ILogger logger, Exception exception, Func`3 formatter, List`1& exceptions, TState& state)
+   --- End of inner exception stack trace ---
+   at Microsoft.Extensions.Logging.Logger.ThrowLoggingError(List`1 exceptions)
+   at Microsoft.Extensions.Logging.Logger.Log[TState](LogLevel logLevel, EventId eventId, TState state, Exception exception, Func`3 formatter)
+   at Microsoft.Extensions.Logging.Logger`1.Microsoft.Extensions.Logging.ILogger.Log[TState](LogLevel logLevel, EventId eventId, TState state, Exception exception, Func`3 formatter)
+   at Microsoft.Extensions.Logging.LoggerExtensions.Log(ILogger logger, LogLevel logLevel, EventId eventId, Exception exception, String message, Object[] args)
+   at Sentry.Extensions.Logging.MelDiagnosticLogger.Log(SentryLevel logLevel, String message, Exception exception, Object[] args) in /_/src/Sentry.Extensions.Logging/MelDiagnosticLogger.cs:line 46
+   at Sentry.Extensibility.DiagnosticLoggerExtensions.LogError[TArg](SentryOptions options, String message, Exception exception, TArg arg) in /_/src/Sentry/Extensibility/DiagnosticLoggerExtensions.cs:line 244
+   at Sentry.SentryClient.CaptureEvent(SentryEvent event, Scope scope) in /_/src/Sentry/SentryClient.cs:line 75
+   at Sentry.Internal.Hub.CaptureEvent(SentryEvent evt, Scope scope) in /_/src/Sentry/Internal/Hub.cs:line 305
+2023-05-24 09:17:42.504 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-24 09:17:46.672 +01:00 [INF] Now listening on: http://localhost:6000
+2023-05-24 09:17:47.430 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-24 09:17:49.284 +01:00 [INF] Hosting environment: Development
+2023-05-24 09:17:50.247 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\Gamawabs247API
+2023-05-24 09:18:50.003 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-24 09:18:52.548 +01:00 [INF] Now listening on: http://localhost:6000
+2023-05-24 09:18:52.764 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-24 09:18:52.796 +01:00 [INF] Hosting environment: Development
+2023-05-24 09:18:52.806 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\Gamawabs247API
+2023-05-24 09:19:42.841 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-24 09:19:45.418 +01:00 [INF] Now listening on: http://localhost:6000
+2023-05-24 09:19:45.748 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-24 09:19:45.863 +01:00 [INF] Hosting environment: Development
+2023-05-24 09:19:45.926 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\Gamawabs247API
+2023-05-24 09:25:44.552 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-24 09:25:46.420 +01:00 [INF] Now listening on: https://localhost:6001
+2023-05-24 09:25:46.449 +01:00 [INF] Now listening on: http://localhost:6000
+2023-05-24 09:25:46.465 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-24 09:25:46.474 +01:00 [INF] Hosting environment: Development
+2023-05-24 09:25:46.477 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\Gamawabs247API
+2023-05-24 09:25:50.091 +01:00 [INF] Request starting HTTP/2 GET https://localhost:6001/swagger/index.html - -
+2023-05-24 09:25:51.765 +01:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2023-05-24 09:25:51.814 +01:00 [INF] Request finished HTTP/2 GET https://localhost:6001/swagger/index.html - - - 200 - text/html;charset=utf-8 1728.3434ms
+2023-05-24 09:25:52.348 +01:00 [INF] Request starting HTTP/2 GET https://localhost:6001/_vs/browserLink - -
+2023-05-24 09:25:52.837 +01:00 [INF] Request finished HTTP/2 GET https://localhost:6001/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 488.7590ms
+2023-05-24 09:25:53.013 +01:00 [INF] Request starting HTTP/2 GET https://localhost:6001/swagger/v1/swagger.json - -
+2023-05-24 09:25:53.876 +01:00 [WRN] An error occurred while trying to create a DataContractSerializer for the type 'Application.Helpers.SuccessResponse`1'.
+System.Runtime.Serialization.InvalidDataContractException: Type 'Application.Helpers.SuccessResponse`1[T]' cannot be exported as a schema type because it is an open generic type. You can only export a generic type if all its generic parameter types are actual types.
+   at System.Runtime.Serialization.DataContractSet.EnsureTypeNotGeneric(Type type)
+   at System.Runtime.Serialization.XsdDataContractExporter.GetRootElementName(Type type)
+   at Microsoft.AspNetCore.Mvc.Formatters.XmlDataContractSerializerOutputFormatter.CreateSerializer(Type type)
+2023-05-24 09:25:54.917 +01:00 [INF] Request finished HTTP/2 GET https://localhost:6001/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 1903.4669ms
+2023-05-24 09:25:58.579 +01:00 [INF] Request starting HTTP/2 GET https://localhost:6001/swagger/index.html - -
+2023-05-24 09:25:58.579 +01:00 [INF] Request finished HTTP/2 GET https://localhost:6001/swagger/index.html - - - 200 - text/html;charset=utf-8 0.7856ms

@@ -110,4 +110,16 @@ namespace BillProcessorAPI.Dtos.Flutterwave
         public Card card { get; set; }
     }
 
+    public class FailedWebhookResponseModel
+    {
+        public string Status { get; set; }
+        public string Message { get; set; }
+        public string Data { get; set; }
+    }
+
+    public record FailedWebhookRequest
+    {
+        public int PaymentReference { get; set; }
+    }
+
 }

@@ -1,0 +1,18 @@
+2023-05-24 19:56:35.863 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-24 19:56:37.033 +01:00 [INF] Now listening on: https://localhost:7253
+2023-05-24 19:56:37.033 +01:00 [INF] Now listening on: http://localhost:5273
+2023-05-24 19:56:37.038 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-24 19:56:37.038 +01:00 [INF] Hosting environment: Development
+2023-05-24 19:56:37.039 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-05-24 19:56:42.283 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-24 19:56:48.920 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 6642.5703ms
+2023-05-24 19:57:06.038 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-05-24 19:57:06.044 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 6.3224ms
+2023-05-24 19:57:09.858 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-05-24 19:57:10.479 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 620.8690ms
+2023-05-24 19:57:16.580 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-05-24 19:57:17.087 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 506.4372ms
+2023-05-24 19:57:19.052 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-24 19:57:19.054 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 2.6640ms
+2023-05-24 19:57:28.559 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-24 19:57:32.165 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 3606.5073ms

@@ -12,5 +12,6 @@ namespace BillProcessorAPI.Services.Interfaces
         Task<bool> VerifyTransaction(string transactionReference);
         Task<SuccessResponse<PaymentConfirmationResponse>> PaymentConfirmation(string status, string tx_ref, string transaction_id);
         Task<SuccessResponse<string>> PaymentNotification(WebHookNotificationWrapper model);
+        Task<FailedWebhookResponseModel> ResendWebhook(FailedWebhookRequest model);
     }
 }

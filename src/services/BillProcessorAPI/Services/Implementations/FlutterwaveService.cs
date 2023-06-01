@@ -33,6 +33,7 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IHttpService _httpService;
         private readonly IConfigurationService _configService;
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _context;
         private ILogger<FlutterwaveService> _logger;
 
         public FlutterwaveService(
@@ -45,7 +46,8 @@ namespace BillProcessorAPI.Services.Implementations
             IInvoiceRepository invoiceRepo,
             IMapper mapper,
             IRepository<Receipt> receipts,
-            ILogger<FlutterwaveService> logger)
+            ILogger<FlutterwaveService> logger,
+            IHttpContextAccessor context)
         {
             _billTransactionsRepo = billTransactionsRepo;
             _billPayerRepository = billPayerRepository;
@@ -56,7 +58,7 @@ namespace BillProcessorAPI.Services.Implementations
             _mapper = mapper;
             _receipts = receipts;
             _logger = logger;
-
+            _context = context;
         }
 
         public async Task<SuccessResponse<PaymentCreationResponse>> CreateTransaction(string email, decimal amount, string billPaymentCode)
@@ -72,7 +74,7 @@ namespace BillProcessorAPI.Services.Implementations
                 throw new RestException(HttpStatusCode.BadRequest, "All fields are required");
 
             var billPayer = await _billPayerRepository.Query(x => x.billCode == billPaymentCode).OrderByDescending(c => c.UpdatedAt).FirstOrDefaultAsync()
-                       ?? throw new RestException(HttpStatusCode.NotFound, "unable to fetch bill payer for this transaction");
+                        ?? throw new RestException(HttpStatusCode.NotFound, "unable to fetch bill payer for this transaction");
 
             IDictionary<string, string> param = new Dictionary<string, string>();
             param.Add(key: "Authorization", _flutterOptions.SecretKey);
@@ -186,10 +188,11 @@ namespace BillProcessorAPI.Services.Implementations
                 transaction.NotificationResponseData = JsonConvert.SerializeObject(model);
 
                 await _billTransactionsRepo.SaveChangesAsync();
+            _logger.LogCritical($"Payment notification from Flutterwave just came in as at: {DateTime.UtcNow}");
 
-                _logger.LogInformation($"Payment notification from Flutterwave just came in as at: {DateTime.UtcNow}");
+            _logger.LogCritical($"Details of notification : {JsonConvert.SerializeObject(model)}");
 
-                _logger.LogInformation($"Details of notification : {model.ToString()}");
+                 transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.TransactionReference);
 
 
                 if (transaction is null)
@@ -203,8 +206,8 @@ namespace BillProcessorAPI.Services.Implementations
                 var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.VerifyByReference}/?tx_ref={model.TransactionReference}";
                 var verificationReaponse = await _httpService.Get<FlutterwaveResponse<FlutterwaveResponseData>>(url, headerParam);
 
-                if (verificationReaponse.Data.Status != "success")
-                    _logger.LogInformation($"Unable to verify payment notification from Flutterwave as at: {DateTime.UtcNow}");
+            if (verificationReaponse.Data.Status != "success")
+                _logger.LogCritical($"Unable to verify payment notification from Flutterwave as at: {DateTime.UtcNow}");
 
                 transaction.AmountPaid = verificationReaponse.Data.Data.amount;
                 transaction.PrinciPalAmount = verificationReaponse.Data.Data.amount; // amount paid minus charges
@@ -383,6 +386,45 @@ namespace BillProcessorAPI.Services.Implementations
             }
 
             return response = true;
+        }
+
+        public async Task<FailedWebhookResponseModel> ResendWebhook(FailedWebhookRequest model)
+        {
+            var request = _context.HttpContext.Request;
+            if (!request.Headers.ContainsKey(_flutterOptions.ResendWebhookHeader)
+                || request.Headers[_flutterOptions.ResendWebhookHeader] != _flutterOptions.ResendWebhookHeaderValue)
+            {
+                throw new RestException(HttpStatusCode.Unauthorized, "Authorization failed");
+            }
+
+            var response = new FailedWebhookResponseModel();
+            IDictionary<string, string> resendWehookUrl = new Dictionary<string, string>();
+            resendWehookUrl.Add(key: "Authorization", _flutterOptions.SecretKey);
+            var headerParamm = new RequestHeader(resendWehookUrl);
+
+            var billTransationRecord = await _billTransactionsRepo.FirstOrDefault(x => x.PaymentReference == model.PaymentReference.ToString());
+            var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.ResendFailedWebhook}/{billTransationRecord.PaymentReference}/resend-hook";
+
+            try
+            {
+                    var notificationResponse = await _httpService
+                           .Post<FailedWebhookResponseModel, FailedWebhookRequest>(url, headerParamm, model);
+                if (notificationResponse.Data.Status != "success")
+                    throw new RestException(HttpStatusCode.BadRequest, "Unable to resend webhook notification for the payment reference provided");
+
+                response.Status = notificationResponse.Data.Status;
+                response.Message = notificationResponse.Data.Message;
+                response.Data = notificationResponse.Data.Data;
+                
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new RestException(HttpStatusCode.InternalServerError, ex.Message);
+            }
+           
         }
     }
 }
