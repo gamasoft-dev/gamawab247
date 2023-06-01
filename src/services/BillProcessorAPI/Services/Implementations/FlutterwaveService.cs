@@ -33,6 +33,7 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IHttpService _httpService;
         private readonly IConfigurationService _configService;
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _context;
         private ILogger<FlutterwaveService> _logger;
 
         public FlutterwaveService(
@@ -45,7 +46,8 @@ namespace BillProcessorAPI.Services.Implementations
             IInvoiceRepository invoiceRepo,
             IMapper mapper,
             IRepository<Receipt> receipts,
-            ILogger<FlutterwaveService> logger)
+            ILogger<FlutterwaveService> logger,
+            IHttpContextAccessor context)
         {
             _billTransactionsRepo = billTransactionsRepo;
             _billPayerRepository = billPayerRepository;
@@ -56,7 +58,7 @@ namespace BillProcessorAPI.Services.Implementations
             _mapper = mapper;
             _receipts = receipts;
             _logger = logger;
-
+            _context = context;
         }
 
         public async Task<SuccessResponse<PaymentCreationResponse>> CreateTransaction(string email, decimal amount, string billPaymentCode)
@@ -384,6 +386,45 @@ namespace BillProcessorAPI.Services.Implementations
             }
 
             return response = true;
+        }
+
+        public async Task<FailedWebhookResponseModel> ResendWebhook(FailedWebhookRequest model)
+        {
+            var request = _context.HttpContext.Request;
+            if (!request.Headers.ContainsKey(_flutterOptions.ResendWebhookHeader)
+                || request.Headers[_flutterOptions.ResendWebhookHeader] != _flutterOptions.ResendWebhookHeaderValue)
+            {
+                throw new RestException(HttpStatusCode.Unauthorized, "Authorization failed");
+            }
+
+            var response = new FailedWebhookResponseModel();
+            IDictionary<string, string> resendWehookUrl = new Dictionary<string, string>();
+            resendWehookUrl.Add(key: "Authorization", _flutterOptions.SecretKey);
+            var headerParamm = new RequestHeader(resendWehookUrl);
+
+            var billTransationRecord = await _billTransactionsRepo.FirstOrDefault(x => x.PaymentReference == model.PaymentReference.ToString());
+            var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.ResendFailedWebhook}/{billTransationRecord.PaymentReference}/resend-hook";
+
+            try
+            {
+                    var notificationResponse = await _httpService
+                           .Post<FailedWebhookResponseModel, FailedWebhookRequest>(url, headerParamm, model);
+                if (notificationResponse.Data.Status != "success")
+                    throw new RestException(HttpStatusCode.BadRequest, "Unable to resend webhook notification for the payment reference provided");
+
+                response.Status = notificationResponse.Data.Status;
+                response.Message = notificationResponse.Data.Message;
+                response.Data = notificationResponse.Data.Data;
+                
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new RestException(HttpStatusCode.InternalServerError, ex.Message);
+            }
+           
         }
     }
 }

@@ -1,0 +1,672 @@
+2023-05-30 11:19:33.389 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-30 11:19:36.000 +01:00 [INF] Now listening on: https://localhost:7253
+2023-05-30 11:19:36.000 +01:00 [INF] Now listening on: http://localhost:5273
+2023-05-30 11:19:36.006 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-30 11:19:36.007 +01:00 [INF] Hosting environment: Development
+2023-05-30 11:19:36.007 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-05-30 11:19:41.549 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 11:19:48.457 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 6914.8325ms
+2023-05-30 11:19:48.839 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-05-30 11:19:48.851 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 11.8732ms
+2023-05-30 11:19:49.010 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-05-30 11:19:49.291 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 281.1229ms
+2023-05-30 11:19:50.057 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-05-30 11:19:50.666 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 609.7059ms
+2023-05-30 11:19:55.538 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 11:19:55.539 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1.2130ms
+2023-05-30 11:20:14.570 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35
+2023-05-30 11:20:14.583 +01:00 [INF] CORS policy execution successful.
+2023-05-30 11:20:14.680 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 11:20:14.881 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 11:20:30.572 +01:00 [INF] Start processing HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 11:20:30.577 +01:00 [INF] Sending HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 11:20:32.370 +01:00 [INF] Received HTTP response headers after 1784.0705ms - 200
+2023-05-30 11:20:32.376 +01:00 [INF] End processing HTTP request after 2326.2089ms - 200
+2023-05-30 11:24:24.466 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 249574.4317ms
+2023-05-30 11:24:24.481 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 11:24:24.882 +01:00 [ERR] Exception of type 'BillProcessorAPI.Helpers.RestException' was thrown.
+2023-05-30 11:24:25.004 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35 - 500 - application/json 250433.9530ms
+2023-05-30 11:24:30.790 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35
+2023-05-30 11:24:30.791 +01:00 [INF] CORS policy execution successful.
+2023-05-30 11:24:30.797 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 11:24:30.797 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 11:24:31.368 +01:00 [INF] Start processing HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 11:24:31.368 +01:00 [INF] Sending HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 11:24:32.717 +01:00 [INF] Received HTTP response headers after 1348.8754ms - 200
+2023-05-30 11:24:32.717 +01:00 [INF] End processing HTTP request after 1349.1813ms - 200
+2023-05-30 11:26:20.395 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 109597.709ms
+2023-05-30 11:26:20.395 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 11:26:21.073 +01:00 [ERR] Exception of type 'BillProcessorAPI.Helpers.RestException' was thrown.
+2023-05-30 11:26:21.075 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35 - 500 - application/json 110284.8718ms
+2023-05-30 11:33:51.833 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-30 11:33:52.957 +01:00 [INF] Now listening on: https://localhost:7253
+2023-05-30 11:33:52.957 +01:00 [INF] Now listening on: http://localhost:5273
+2023-05-30 11:33:52.965 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-30 11:33:52.965 +01:00 [INF] Hosting environment: Development
+2023-05-30 11:33:52.965 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-05-30 11:33:56.159 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 11:34:00.628 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 4478.1665ms
+2023-05-30 11:34:05.768 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-05-30 11:34:05.774 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 6.4845ms
+2023-05-30 11:34:05.911 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-05-30 11:34:06.031 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 120.0448ms
+2023-05-30 11:34:09.793 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-05-30 11:34:10.280 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 486.9367ms
+2023-05-30 11:34:11.438 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 11:34:11.439 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1.6387ms
+2023-05-30 11:35:30.014 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35
+2023-05-30 11:35:30.021 +01:00 [INF] CORS policy execution successful.
+2023-05-30 11:35:30.072 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 11:35:30.216 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 11:35:44.233 +01:00 [INF] Start processing HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 11:35:44.330 +01:00 [INF] Sending HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 11:35:45.966 +01:00 [INF] Received HTTP response headers after 1626.3779ms - 200
+2023-05-30 11:35:45.971 +01:00 [INF] End processing HTTP request after 1752.0036ms - 200
+2023-05-30 11:35:47.084 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 16858.0003ms
+2023-05-30 11:35:47.086 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 11:35:48.376 +01:00 [ERR] Exception of type 'BillProcessorAPI.Helpers.RestException' was thrown.
+2023-05-30 11:35:48.519 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35 - 500 - application/json 18504.6563ms
+2023-05-30 11:36:32.730 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35
+2023-05-30 11:36:32.730 +01:00 [INF] CORS policy execution successful.
+2023-05-30 11:36:32.733 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 11:36:32.733 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 11:36:33.066 +01:00 [INF] Start processing HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 11:36:33.066 +01:00 [INF] Sending HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 11:36:33.379 +01:00 [INF] Received HTTP response headers after 313.4947ms - 200
+2023-05-30 11:36:33.379 +01:00 [INF] End processing HTTP request after 313.7815ms - 200
+2023-05-30 11:36:51.624 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 18890.3027ms
+2023-05-30 11:36:51.624 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 11:36:52.122 +01:00 [ERR] Exception of type 'BillProcessorAPI.Helpers.RestException' was thrown.
+2023-05-30 11:36:52.124 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35 - 500 - application/json 19393.7920ms
+2023-05-30 11:39:16.875 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-30 11:39:17.616 +01:00 [INF] Now listening on: https://localhost:7253
+2023-05-30 11:39:17.616 +01:00 [INF] Now listening on: http://localhost:5273
+2023-05-30 11:39:17.640 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-30 11:39:17.642 +01:00 [INF] Hosting environment: Development
+2023-05-30 11:39:17.642 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-05-30 11:39:21.859 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 11:39:23.296 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1446.8560ms
+2023-05-30 11:39:23.712 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-05-30 11:39:23.720 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 7.3902ms
+2023-05-30 11:39:23.775 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-05-30 11:39:24.075 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 299.2542ms
+2023-05-30 11:39:24.465 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-05-30 11:39:25.035 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 570.3292ms
+2023-05-30 11:39:27.659 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 11:39:27.661 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1.3093ms
+2023-05-30 11:39:53.422 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35
+2023-05-30 11:39:53.432 +01:00 [INF] CORS policy execution successful.
+2023-05-30 11:39:53.534 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 11:39:53.640 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 11:40:06.270 +01:00 [INF] Start processing HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 11:40:06.283 +01:00 [INF] Sending HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 11:40:07.698 +01:00 [INF] Received HTTP response headers after 1404.7819ms - 200
+2023-05-30 11:40:07.703 +01:00 [INF] End processing HTTP request after 1449.3963ms - 200
+2023-05-30 11:42:25.733 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-30 11:42:27.054 +01:00 [INF] Now listening on: https://localhost:7253
+2023-05-30 11:42:27.054 +01:00 [INF] Now listening on: http://localhost:5273
+2023-05-30 11:42:27.059 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-30 11:42:27.059 +01:00 [INF] Hosting environment: Development
+2023-05-30 11:42:27.059 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-05-30 11:42:29.428 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 11:42:30.862 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1438.6361ms
+2023-05-30 11:42:30.934 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-05-30 11:42:30.940 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 6.0503ms
+2023-05-30 11:42:30.992 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-05-30 11:42:31.600 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 607.1043ms
+2023-05-30 11:42:31.972 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-05-30 11:42:32.775 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 802.3490ms
+2023-05-30 11:42:34.933 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 11:42:34.934 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1.1937ms
+2023-05-30 11:42:56.476 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35
+2023-05-30 11:42:56.483 +01:00 [INF] CORS policy execution successful.
+2023-05-30 11:42:56.545 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 11:42:56.643 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 11:43:11.930 +01:00 [INF] Start processing HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 11:43:11.935 +01:00 [INF] Sending HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 11:43:13.759 +01:00 [INF] Received HTTP response headers after 1815.9171ms - 200
+2023-05-30 11:43:13.768 +01:00 [INF] End processing HTTP request after 1850.7852ms - 200
+2023-05-30 11:43:35.343 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 38690.9201ms
+2023-05-30 11:43:35.550 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 11:43:36.022 +01:00 [ERR] Exception of type 'BillProcessorAPI.Helpers.RestException' was thrown.
+2023-05-30 11:43:36.072 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35 - 500 - application/json 39596.6590ms
+2023-05-30 11:43:43.578 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35
+2023-05-30 11:43:43.578 +01:00 [INF] CORS policy execution successful.
+2023-05-30 11:43:43.583 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 11:43:43.583 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 11:43:43.927 +01:00 [INF] Start processing HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 11:43:43.927 +01:00 [INF] Sending HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 11:43:44.397 +01:00 [INF] Received HTTP response headers after 469.8095ms - 200
+2023-05-30 11:43:44.397 +01:00 [INF] End processing HTTP request after 470.0902ms - 200
+2023-05-30 13:35:05.835 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 6681969.5824ms
+2023-05-30 13:35:05.839 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 13:35:06.104 +01:00 [ERR] Exception of type 'BillProcessorAPI.Helpers.RestException' was thrown.
+2023-05-30 13:35:06.153 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35 - 500 - application/json 6682285.6912ms
+2023-05-30 13:35:14.201 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35
+2023-05-30 13:35:14.205 +01:00 [INF] CORS policy execution successful.
+2023-05-30 13:35:14.206 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 13:35:14.206 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 13:35:53.343 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 39136.8269ms
+2023-05-30 13:35:53.343 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 13:35:55.408 +01:00 [ERR] An exception has been raised that is likely due to a transient failure.
+2023-05-30 13:35:55.423 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35 - 500 - application/json 41222.8925ms
+2023-05-30 13:37:16.096 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35
+2023-05-30 13:37:16.096 +01:00 [INF] CORS policy execution successful.
+2023-05-30 13:37:16.096 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 13:37:16.096 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 13:37:31.962 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 15865.1733ms
+2023-05-30 13:37:31.962 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 13:37:32.802 +01:00 [ERR] An exception has been raised that is likely due to a transient failure.
+2023-05-30 13:37:32.804 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35 - 500 - application/json 16707.9665ms
+2023-05-30 13:37:50.241 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35
+2023-05-30 13:37:50.242 +01:00 [INF] CORS policy execution successful.
+2023-05-30 13:37:50.242 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 13:37:50.243 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 13:38:06.123 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 15880.5729ms
+2023-05-30 13:38:06.123 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 13:38:06.843 +01:00 [ERR] An exception has been raised that is likely due to a transient failure.
+2023-05-30 13:38:06.845 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35 - 500 - application/json 16603.2257ms
+2023-05-30 13:39:17.723 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-30 13:39:19.094 +01:00 [INF] Now listening on: https://localhost:7253
+2023-05-30 13:39:19.094 +01:00 [INF] Now listening on: http://localhost:5273
+2023-05-30 13:39:19.100 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-30 13:39:19.100 +01:00 [INF] Hosting environment: Development
+2023-05-30 13:39:19.100 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-05-30 13:39:22.370 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 13:39:25.194 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 2835.8606ms
+2023-05-30 13:39:25.707 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-05-30 13:39:25.735 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 28.4296ms
+2023-05-30 13:39:25.746 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-05-30 13:39:26.103 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 13:39:26.104 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 0.8739ms
+2023-05-30 13:39:26.997 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 1251.5455ms
+2023-05-30 13:39:28.266 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-05-30 13:39:28.944 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 677.9817ms
+2023-05-30 13:39:46.933 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35
+2023-05-30 13:39:46.945 +01:00 [INF] CORS policy execution successful.
+2023-05-30 13:39:47.016 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 13:39:47.262 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 13:40:17.876 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 30603.4219ms
+2023-05-30 13:40:17.885 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 13:40:18.815 +01:00 [ERR] An exception has been raised that is likely due to a transient failure.
+2023-05-30 13:40:19.668 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35 - 500 - application/json 32735.0853ms
+2023-05-30 13:40:26.182 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35
+2023-05-30 13:40:26.182 +01:00 [INF] CORS policy execution successful.
+2023-05-30 13:40:26.189 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 13:40:26.190 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 13:40:42.058 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 15868.2848ms
+2023-05-30 13:40:42.059 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 13:40:42.766 +01:00 [ERR] An exception has been raised that is likely due to a transient failure.
+2023-05-30 13:40:42.771 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35 - 500 - application/json 16589.0880ms
+2023-05-30 13:40:59.194 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35
+2023-05-30 13:40:59.195 +01:00 [INF] CORS policy execution successful.
+2023-05-30 13:40:59.195 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 13:40:59.195 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 13:41:15.393 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 16197.2136ms
+2023-05-30 13:41:15.393 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 13:41:16.150 +01:00 [ERR] An exception has been raised that is likely due to a transient failure.
+2023-05-30 13:41:16.152 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35 - 500 - application/json 16957.1153ms
+2023-05-30 13:41:46.413 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35
+2023-05-30 13:41:46.413 +01:00 [INF] CORS policy execution successful.
+2023-05-30 13:41:46.413 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 13:41:46.413 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 13:42:03.281 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 16867.6548ms
+2023-05-30 13:42:03.281 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 13:42:04.089 +01:00 [ERR] An exception has been raised that is likely due to a transient failure.
+2023-05-30 13:42:04.094 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35 - 500 - application/json 17678.6145ms
+2023-05-30 13:42:49.977 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-30 13:42:51.248 +01:00 [INF] Now listening on: https://localhost:7253
+2023-05-30 13:42:51.250 +01:00 [INF] Now listening on: http://localhost:5273
+2023-05-30 13:42:51.255 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-30 13:42:51.256 +01:00 [INF] Hosting environment: Development
+2023-05-30 13:42:51.256 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-05-30 13:42:53.322 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 13:42:54.966 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1650.3271ms
+2023-05-30 13:42:55.244 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-05-30 13:42:55.254 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 10.7418ms
+2023-05-30 13:42:55.255 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-05-30 13:42:55.489 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 234.4454ms
+2023-05-30 13:42:56.019 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-05-30 13:42:56.623 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 604.5183ms
+2023-05-30 13:42:59.167 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 13:42:59.168 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1.2474ms
+2023-05-30 13:43:12.223 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35
+2023-05-30 13:43:12.232 +01:00 [INF] CORS policy execution successful.
+2023-05-30 13:43:12.298 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 13:43:12.393 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 13:43:42.151 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 29444.325ms
+2023-05-30 13:43:42.162 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 13:43:44.086 +01:00 [ERR] An exception has been raised that is likely due to a transient failure.
+2023-05-30 13:43:45.105 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35 - 500 - application/json 32882.2358ms
+2023-05-30 13:51:17.282 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-30 13:51:19.507 +01:00 [INF] Now listening on: https://localhost:7253
+2023-05-30 13:51:19.507 +01:00 [INF] Now listening on: http://localhost:5273
+2023-05-30 13:51:19.514 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-30 13:51:19.515 +01:00 [INF] Hosting environment: Development
+2023-05-30 13:51:19.515 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-05-30 13:51:22.598 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 13:51:25.054 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 2461.2897ms
+2023-05-30 13:51:25.545 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-05-30 13:51:25.552 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 7.7726ms
+2023-05-30 13:51:25.553 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-05-30 13:51:26.803 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 1250.1293ms
+2023-05-30 13:51:27.193 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-05-30 13:51:28.257 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 1064.1513ms
+2023-05-30 13:51:48.446 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 13:51:48.450 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 4.0245ms
+2023-05-30 13:51:49.562 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35
+2023-05-30 13:51:49.573 +01:00 [INF] CORS policy execution successful.
+2023-05-30 13:51:50.190 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 13:51:50.371 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 13:52:33.122 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 42728.2811ms
+2023-05-30 13:52:33.178 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 13:52:34.011 +01:00 [ERR] An exception has been raised that is likely due to a transient failure.
+2023-05-30 13:52:35.852 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35 - 500 - application/json 46289.2646ms
+2023-05-30 13:52:39.483 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35
+2023-05-30 13:52:39.488 +01:00 [INF] CORS policy execution successful.
+2023-05-30 13:52:39.494 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 13:52:39.495 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 13:52:57.031 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 17536.2241ms
+2023-05-30 13:52:57.031 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 13:52:57.670 +01:00 [ERR] An exception has been raised that is likely due to a transient failure.
+2023-05-30 13:52:57.672 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35 - 500 - application/json 18189.5424ms
+2023-05-30 13:53:31.385 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35
+2023-05-30 13:53:31.386 +01:00 [INF] CORS policy execution successful.
+2023-05-30 13:53:31.386 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 13:53:31.386 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 13:53:37.512 +01:00 [INF] Start processing HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 13:53:37.543 +01:00 [INF] Sending HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 13:53:42.146 +01:00 [INF] Received HTTP response headers after 4593.6693ms - 200
+2023-05-30 13:53:42.152 +01:00 [INF] End processing HTTP request after 4652.7208ms - 200
+2023-05-30 13:56:56.377 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-30 13:56:57.395 +01:00 [INF] Now listening on: https://localhost:7253
+2023-05-30 13:56:57.395 +01:00 [INF] Now listening on: http://localhost:5273
+2023-05-30 13:56:57.400 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-30 13:56:57.401 +01:00 [INF] Hosting environment: Development
+2023-05-30 13:56:57.401 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-05-30 13:57:00.927 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 13:57:02.466 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1545.1072ms
+2023-05-30 13:57:02.808 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-05-30 13:57:02.816 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 7.7438ms
+2023-05-30 13:57:02.816 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-05-30 13:57:03.244 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 427.5047ms
+2023-05-30 13:57:03.550 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-05-30 13:57:04.648 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 1098.8001ms
+2023-05-30 13:57:07.576 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 13:57:07.578 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1.7460ms
+2023-05-30 14:04:16.344 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-30 14:04:17.397 +01:00 [INF] Now listening on: https://localhost:7253
+2023-05-30 14:04:17.397 +01:00 [INF] Now listening on: http://localhost:5273
+2023-05-30 14:04:17.402 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-30 14:04:17.403 +01:00 [INF] Hosting environment: Development
+2023-05-30 14:04:17.403 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-05-30 14:04:20.593 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 14:04:22.220 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1632.5460ms
+2023-05-30 14:04:22.452 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-05-30 14:04:22.481 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 28.6596ms
+2023-05-30 14:04:22.898 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-05-30 14:04:23.111 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 213.2093ms
+2023-05-30 14:04:23.490 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-05-30 14:04:24.269 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 778.4158ms
+2023-05-30 14:04:25.489 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 14:04:25.492 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 2.4501ms
+2023-05-30 14:04:40.731 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35
+2023-05-30 14:04:40.738 +01:00 [INF] CORS policy execution successful.
+2023-05-30 14:04:40.792 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 14:04:41.220 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 14:04:54.245 +01:00 [INF] Start processing HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 14:04:54.253 +01:00 [INF] Sending HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 14:04:58.514 +01:00 [INF] Received HTTP response headers after 4244.7453ms - 200
+2023-05-30 14:04:58.524 +01:00 [INF] End processing HTTP request after 4321.6015ms - 200
+2023-05-30 14:07:30.451 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-30 14:07:31.410 +01:00 [INF] Now listening on: https://localhost:7253
+2023-05-30 14:07:31.410 +01:00 [INF] Now listening on: http://localhost:5273
+2023-05-30 14:07:31.416 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-30 14:07:31.417 +01:00 [INF] Hosting environment: Development
+2023-05-30 14:07:31.417 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-05-30 14:07:33.226 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 14:07:34.446 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1225.4018ms
+2023-05-30 14:07:36.955 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-05-30 14:07:36.963 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 7.1763ms
+2023-05-30 14:07:37.038 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-05-30 14:07:37.188 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 149.4144ms
+2023-05-30 14:07:38.023 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-05-30 14:07:38.355 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 332.0515ms
+2023-05-30 14:07:39.481 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 14:07:39.483 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1.2210ms
+2023-05-30 14:07:54.726 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35
+2023-05-30 14:07:54.736 +01:00 [INF] CORS policy execution successful.
+2023-05-30 14:07:54.780 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 14:07:54.844 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 14:08:09.715 +01:00 [INF] Start processing HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 14:08:09.722 +01:00 [INF] Sending HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 14:08:11.464 +01:00 [INF] Received HTTP response headers after 1734.3211ms - 200
+2023-05-30 14:08:11.470 +01:00 [INF] End processing HTTP request after 1765.774ms - 200
+2023-05-30 14:09:04.161 +01:00 [INF] Executing OkObjectResult, writing value of type 'BillProcessorAPI.Dtos.Flutterwave.FailedWebhookResponseModel'.
+2023-05-30 14:09:04.626 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 69774.0254ms
+2023-05-30 14:09:04.627 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 14:09:04.711 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35 - 200 - application/json;+charset=utf-8 69984.4168ms
+2023-05-30 14:09:27.572 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 34
+2023-05-30 14:09:27.573 +01:00 [INF] CORS policy execution successful.
+2023-05-30 14:09:27.576 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 14:09:27.576 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 14:54:16.812 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-30 14:54:19.084 +01:00 [INF] Now listening on: https://localhost:7253
+2023-05-30 14:54:19.084 +01:00 [INF] Now listening on: http://localhost:5273
+2023-05-30 14:54:19.090 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-30 14:54:19.091 +01:00 [INF] Hosting environment: Development
+2023-05-30 14:54:19.091 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-05-30 14:54:22.981 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 14:54:27.130 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 4161.9336ms
+2023-05-30 14:54:27.600 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-05-30 14:54:27.616 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 15.5594ms
+2023-05-30 14:54:28.205 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-05-30 14:54:28.285 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 14:54:28.286 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 0.8833ms
+2023-05-30 14:54:28.987 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 782.1696ms
+2023-05-30 14:54:29.586 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-05-30 14:54:31.272 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 1685.9918ms
+2023-05-30 17:08:17.746 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-30 17:08:19.672 +01:00 [INF] Now listening on: https://localhost:7253
+2023-05-30 17:08:19.673 +01:00 [INF] Now listening on: http://localhost:5273
+2023-05-30 17:08:19.678 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-30 17:08:19.679 +01:00 [INF] Hosting environment: Development
+2023-05-30 17:08:19.679 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-05-30 17:08:23.718 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 17:08:26.698 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 2981.3483ms
+2023-05-30 17:08:27.142 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-05-30 17:08:27.156 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 14.5264ms
+2023-05-30 17:08:28.356 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-05-30 17:08:30.781 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 2425.4051ms
+2023-05-30 17:08:31.698 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-05-30 17:08:32.596 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 897.2146ms
+2023-05-30 17:08:38.653 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 17:08:38.654 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1.9154ms
+2023-05-30 17:09:02.523 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35
+2023-05-30 17:09:02.535 +01:00 [INF] CORS policy execution successful.
+2023-05-30 17:09:02.709 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 17:09:02.871 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 17:09:29.871 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 26990.0492ms
+2023-05-30 17:09:29.915 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 17:09:30.783 +01:00 [ERR] An exception has been raised that is likely due to a transient failure.
+2023-05-30 17:09:34.565 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35 - 500 - application/json 32042.3211ms
+2023-05-30 17:09:57.722 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35
+2023-05-30 17:09:57.722 +01:00 [INF] CORS policy execution successful.
+2023-05-30 17:09:57.743 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 17:09:57.744 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 17:10:16.463 +01:00 [INF] Start processing HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 17:10:16.471 +01:00 [INF] Sending HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 17:10:26.268 +01:00 [INF] Received HTTP response headers after 9788.2194ms - 200
+2023-05-30 17:10:26.270 +01:00 [INF] End processing HTTP request after 9889.744ms - 200
+2023-05-30 17:11:02.298 +01:00 [INF] Executing OkObjectResult, writing value of type 'BillProcessorAPI.Dtos.Flutterwave.FailedWebhookResponseModel'.
+2023-05-30 17:11:02.317 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 64573.4986ms
+2023-05-30 17:11:02.317 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 17:11:02.318 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35 - 200 - application/json;+charset=utf-8 64595.9386ms
+2023-05-30 17:11:08.695 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35
+2023-05-30 17:11:08.696 +01:00 [INF] CORS policy execution successful.
+2023-05-30 17:11:08.696 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 17:11:08.696 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 17:13:57.306 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-30 17:13:58.120 +01:00 [INF] Now listening on: https://localhost:7253
+2023-05-30 17:13:58.121 +01:00 [INF] Now listening on: http://localhost:5273
+2023-05-30 17:13:58.125 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-30 17:13:58.126 +01:00 [INF] Hosting environment: Development
+2023-05-30 17:13:58.126 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-05-30 17:14:01.700 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 17:14:03.613 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1919.6746ms
+2023-05-30 17:14:03.830 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-05-30 17:14:03.838 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 7.3085ms
+2023-05-30 17:14:04.112 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-05-30 17:14:04.284 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 17:14:04.289 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 5.8151ms
+2023-05-30 17:14:04.676 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 564.2280ms
+2023-05-30 17:14:05.125 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-05-30 17:14:07.253 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 2128.1735ms
+2023-05-30 17:14:39.812 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35
+2023-05-30 17:14:39.823 +01:00 [INF] CORS policy execution successful.
+2023-05-30 17:14:39.996 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 17:14:40.087 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 17:15:06.613 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 26517.1963ms
+2023-05-30 17:15:06.620 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 17:15:07.795 +01:00 [ERR] Authorization failed
+2023-05-30 17:15:09.374 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 35 - 401 - application/json 29561.8193ms
+2023-05-30 17:24:08.522 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-30 17:24:10.062 +01:00 [INF] Now listening on: https://localhost:7253
+2023-05-30 17:24:10.062 +01:00 [INF] Now listening on: http://localhost:5273
+2023-05-30 17:24:10.067 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-30 17:24:10.067 +01:00 [INF] Hosting environment: Development
+2023-05-30 17:24:10.067 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-05-30 17:24:14.856 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 17:24:16.251 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1401.4992ms
+2023-05-30 17:24:16.330 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-05-30 17:24:16.336 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 6.4633ms
+2023-05-30 17:24:16.545 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-05-30 17:24:16.899 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 353.6228ms
+2023-05-30 17:24:17.201 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-05-30 17:24:18.062 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 860.9216ms
+2023-05-30 17:24:19.759 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 17:24:19.760 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1.1635ms
+2023-05-30 17:24:45.785 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 27
+2023-05-30 17:24:45.796 +01:00 [INF] CORS policy execution successful.
+2023-05-30 17:24:45.896 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 17:24:46.066 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 17:26:22.659 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-30 17:26:23.896 +01:00 [INF] Now listening on: https://localhost:7253
+2023-05-30 17:26:23.896 +01:00 [INF] Now listening on: http://localhost:5273
+2023-05-30 17:26:23.901 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-30 17:26:23.901 +01:00 [INF] Hosting environment: Development
+2023-05-30 17:26:23.901 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-05-30 17:26:26.697 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 17:26:29.665 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 2973.1333ms
+2023-05-30 17:26:29.743 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-05-30 17:26:29.749 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 6.1145ms
+2023-05-30 17:26:30.057 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-05-30 17:26:30.212 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 155.3355ms
+2023-05-30 17:26:31.245 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-05-30 17:26:32.075 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 829.2773ms
+2023-05-30 17:26:35.400 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 17:26:35.401 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1.1865ms
+2023-05-30 17:27:07.469 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 27
+2023-05-30 17:27:07.481 +01:00 [INF] CORS policy execution successful.
+2023-05-30 17:27:07.761 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 17:27:07.820 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 17:27:11.745 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 3915.086ms
+2023-05-30 17:27:11.792 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 17:27:12.899 +01:00 [ERR] Authorization failed
+2023-05-30 17:27:13.718 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 27 - 401 - application/json 6248.6852ms
+2023-05-30 17:29:44.504 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7253/flutterwave/resend-webhook application/json 39
+2023-05-30 17:29:44.512 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 17:29:44.512 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 17:29:47.044 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 2532.1073ms
+2023-05-30 17:29:47.044 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 17:29:47.797 +01:00 [ERR] Authorization failed
+2023-05-30 17:29:47.806 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7253/flutterwave/resend-webhook application/json 39 - 401 - application/json 3301.8369ms
+2023-05-30 17:30:00.608 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7253/flutterwave/resend-webhook application/json 39
+2023-05-30 17:30:00.609 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 17:30:00.609 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 17:32:27.331 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-30 17:32:30.552 +01:00 [INF] Now listening on: https://localhost:7253
+2023-05-30 17:32:30.552 +01:00 [INF] Now listening on: http://localhost:5273
+2023-05-30 17:32:30.557 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-30 17:32:30.558 +01:00 [INF] Hosting environment: Development
+2023-05-30 17:32:30.558 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-05-30 17:32:34.870 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 17:32:38.001 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 3136.3386ms
+2023-05-30 17:32:38.590 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-05-30 17:32:38.598 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 8.0935ms
+2023-05-30 17:32:39.015 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-05-30 17:32:41.015 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 1999.4085ms
+2023-05-30 17:32:44.389 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-05-30 17:32:45.945 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 1556.4260ms
+2023-05-30 17:32:57.347 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7253/flutterwave/resend-webhook application/json 39
+2023-05-30 17:32:57.755 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 17:32:58.092 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 17:33:13.242 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 17:33:13.243 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 0.6563ms
+2023-05-30 17:33:24.429 +01:00 [INF] Start processing HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 17:33:24.434 +01:00 [INF] Sending HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 17:33:26.038 +01:00 [INF] Received HTTP response headers after 1595.777ms - 200
+2023-05-30 17:33:26.046 +01:00 [INF] End processing HTTP request after 1632.6327ms - 200
+2023-05-30 17:33:37.189 +01:00 [INF] Executing OkObjectResult, writing value of type 'BillProcessorAPI.Dtos.Flutterwave.FailedWebhookResponseModel'.
+2023-05-30 17:33:37.348 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 39120.967ms
+2023-05-30 17:33:37.349 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 17:33:37.870 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7253/flutterwave/resend-webhook application/json 39 - 200 - application/json;+charset=utf-8 40522.8565ms
+2023-05-30 17:34:33.112 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7253/flutterwave/resend-webhook application/json 39
+2023-05-30 17:34:33.115 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 17:34:33.115 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 17:34:36.650 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 3534.5543ms
+2023-05-30 17:34:36.939 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 17:34:37.922 +01:00 [ERR] Authorization failed
+2023-05-30 17:34:37.941 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7253/flutterwave/resend-webhook application/json 39 - 401 - application/json 4829.4953ms
+2023-05-30 18:19:37.891 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-30 18:19:39.784 +01:00 [INF] Now listening on: https://localhost:7253
+2023-05-30 18:19:39.784 +01:00 [INF] Now listening on: http://localhost:5273
+2023-05-30 18:19:39.794 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-30 18:19:39.795 +01:00 [INF] Hosting environment: Development
+2023-05-30 18:19:39.795 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-05-30 18:19:45.121 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 18:19:48.341 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 3229.4612ms
+2023-05-30 18:19:49.009 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-05-30 18:19:49.021 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 12.6004ms
+2023-05-30 18:19:49.415 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-05-30 18:19:49.895 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 480.0481ms
+2023-05-30 18:19:50.275 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-05-30 18:19:51.698 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 1423.6010ms
+2023-05-30 18:20:02.676 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/v1/abc/receipt/1901887149 - -
+2023-05-30 18:20:02.756 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.BillHolderController.PaymentVerification (BillProcessorAPI)'
+2023-05-30 18:20:02.891 +01:00 [INF] Route matched with {action = "PaymentVerification", controller = "BillHolder"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] PaymentVerification(System.String) on controller BillProcessorAPI.Controllers.BillHolderController (BillProcessorAPI).
+2023-05-30 18:20:07.121 +01:00 [INF] Start processing HTTP request POST https://revpay.ebs-rcm.com/BankPay/Interface/PaymentConfirmationByBillRef
+2023-05-30 18:20:07.133 +01:00 [INF] Sending HTTP request POST https://revpay.ebs-rcm.com/BankPay/Interface/PaymentConfirmationByBillRef
+2023-05-30 18:20:08.288 +01:00 [INF] Received HTTP response headers after 1146.0364ms - 200
+2023-05-30 18:20:08.296 +01:00 [INF] End processing HTTP request after 1198.3318ms - 200
+2023-05-30 18:20:20.499 +01:00 [INF] Executing OkObjectResult, writing value of type 'BillProcessorAPI.Helpers.SuccessResponse`1[[BillProcessorAPI.Dtos.CustomBillPaymentVerificationResponse, BillProcessorAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2023-05-30 18:20:20.544 +01:00 [INF] Executed action BillProcessorAPI.Controllers.BillHolderController.PaymentVerification (BillProcessorAPI) in 17641.0019ms
+2023-05-30 18:20:20.545 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.BillHolderController.PaymentVerification (BillProcessorAPI)'
+2023-05-30 18:20:20.603 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/v1/abc/receipt/1901887149 - - - 200 - application/json;+charset=utf-8 17926.7532ms
+2023-05-30 18:20:22.203 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 18:20:22.204 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 0.5797ms
+2023-05-30 18:21:05.917 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/v1/abc/receipt/2203052044 - -
+2023-05-30 18:21:05.920 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.BillHolderController.PaymentVerification (BillProcessorAPI)'
+2023-05-30 18:21:05.921 +01:00 [INF] Route matched with {action = "PaymentVerification", controller = "BillHolder"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] PaymentVerification(System.String) on controller BillProcessorAPI.Controllers.BillHolderController (BillProcessorAPI).
+2023-05-30 18:21:05.923 +01:00 [INF] Start processing HTTP request POST https://revpay.ebs-rcm.com/BankPay/Interface/PaymentConfirmationByBillRef
+2023-05-30 18:21:05.923 +01:00 [INF] Sending HTTP request POST https://revpay.ebs-rcm.com/BankPay/Interface/PaymentConfirmationByBillRef
+2023-05-30 18:21:06.095 +01:00 [INF] Received HTTP response headers after 171.7514ms - 200
+2023-05-30 18:21:06.095 +01:00 [INF] End processing HTTP request after 172.0195ms - 200
+2023-05-30 18:21:06.439 +01:00 [INF] Executing OkObjectResult, writing value of type 'BillProcessorAPI.Helpers.SuccessResponse`1[[BillProcessorAPI.Dtos.CustomBillPaymentVerificationResponse, BillProcessorAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2023-05-30 18:21:06.440 +01:00 [INF] Executed action BillProcessorAPI.Controllers.BillHolderController.PaymentVerification (BillProcessorAPI) in 518.801ms
+2023-05-30 18:21:06.440 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.BillHolderController.PaymentVerification (BillProcessorAPI)'
+2023-05-30 18:21:06.440 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/v1/abc/receipt/2203052044 - - - 200 - application/json;+charset=utf-8 523.1404ms
+2023-05-30 18:21:11.338 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/v1/abc/receipt/2203052044 - -
+2023-05-30 18:21:11.338 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.BillHolderController.PaymentVerification (BillProcessorAPI)'
+2023-05-30 18:21:11.339 +01:00 [INF] Route matched with {action = "PaymentVerification", controller = "BillHolder"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] PaymentVerification(System.String) on controller BillProcessorAPI.Controllers.BillHolderController (BillProcessorAPI).
+2023-05-30 18:21:11.349 +01:00 [INF] Start processing HTTP request POST https://revpay.ebs-rcm.com/BankPay/Interface/PaymentConfirmationByBillRef
+2023-05-30 18:21:11.349 +01:00 [INF] Sending HTTP request POST https://revpay.ebs-rcm.com/BankPay/Interface/PaymentConfirmationByBillRef
+2023-05-30 18:21:11.685 +01:00 [INF] Received HTTP response headers after 336.1671ms - 200
+2023-05-30 18:21:11.685 +01:00 [INF] End processing HTTP request after 336.4521ms - 200
+2023-05-30 18:21:11.911 +01:00 [INF] Executing OkObjectResult, writing value of type 'BillProcessorAPI.Helpers.SuccessResponse`1[[BillProcessorAPI.Dtos.CustomBillPaymentVerificationResponse, BillProcessorAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2023-05-30 18:21:11.912 +01:00 [INF] Executed action BillProcessorAPI.Controllers.BillHolderController.PaymentVerification (BillProcessorAPI) in 573.0628ms
+2023-05-30 18:21:11.912 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.BillHolderController.PaymentVerification (BillProcessorAPI)'
+2023-05-30 18:21:11.912 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/v1/abc/receipt/2203052044 - - - 200 - application/json;+charset=utf-8 574.2756ms
+2023-05-30 18:23:18.801 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/v1/abc/receipt/1901887149 - -
+2023-05-30 18:23:18.801 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.BillHolderController.PaymentVerification (BillProcessorAPI)'
+2023-05-30 18:23:18.801 +01:00 [INF] Route matched with {action = "PaymentVerification", controller = "BillHolder"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] PaymentVerification(System.String) on controller BillProcessorAPI.Controllers.BillHolderController (BillProcessorAPI).
+2023-05-30 18:23:18.802 +01:00 [INF] Start processing HTTP request POST https://revpay.ebs-rcm.com/BankPay/Interface/PaymentConfirmationByBillRef
+2023-05-30 18:23:18.802 +01:00 [INF] Sending HTTP request POST https://revpay.ebs-rcm.com/BankPay/Interface/PaymentConfirmationByBillRef
+2023-05-30 18:23:27.901 +01:00 [INF] Received HTTP response headers after 9098.8838ms - 200
+2023-05-30 18:23:27.901 +01:00 [INF] End processing HTTP request after 9099.1522ms - 200
+2023-05-30 18:23:29.041 +01:00 [INF] Executing OkObjectResult, writing value of type 'BillProcessorAPI.Helpers.SuccessResponse`1[[BillProcessorAPI.Dtos.CustomBillPaymentVerificationResponse, BillProcessorAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2023-05-30 18:23:29.041 +01:00 [INF] Executed action BillProcessorAPI.Controllers.BillHolderController.PaymentVerification (BillProcessorAPI) in 10240.2159ms
+2023-05-30 18:23:29.041 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.BillHolderController.PaymentVerification (BillProcessorAPI)'
+2023-05-30 18:23:29.042 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/v1/abc/receipt/1901887149 - - - 200 - application/json;+charset=utf-8 10240.8937ms
+2023-05-30 18:26:45.173 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-30 18:26:45.859 +01:00 [INF] Now listening on: https://localhost:7253
+2023-05-30 18:26:45.859 +01:00 [INF] Now listening on: http://localhost:5273
+2023-05-30 18:26:45.865 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-30 18:26:45.866 +01:00 [INF] Hosting environment: Development
+2023-05-30 18:26:45.866 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-05-30 18:26:48.271 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 18:26:49.645 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1384.2606ms
+2023-05-30 18:26:50.111 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-05-30 18:26:50.117 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 6.0581ms
+2023-05-30 18:26:50.184 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-05-30 18:26:50.439 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 255.2170ms
+2023-05-30 18:26:51.080 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-05-30 18:26:53.566 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 2486.3990ms
+2023-05-30 18:26:57.582 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 18:26:57.584 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 2.3021ms
+2023-05-30 18:27:20.043 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 36
+2023-05-30 18:27:20.052 +01:00 [INF] CORS policy execution successful.
+2023-05-30 18:27:20.249 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 18:27:20.323 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 18:53:09.414 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-30 18:53:12.792 +01:00 [INF] Now listening on: https://localhost:7253
+2023-05-30 18:53:12.793 +01:00 [INF] Now listening on: http://localhost:5273
+2023-05-30 18:53:12.797 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-30 18:53:12.798 +01:00 [INF] Hosting environment: Development
+2023-05-30 18:53:12.798 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-05-30 18:53:16.568 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 18:53:18.901 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 2338.1547ms
+2023-05-30 18:53:19.488 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-05-30 18:53:19.496 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 7.6026ms
+2023-05-30 18:53:19.638 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-05-30 18:53:21.526 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 1887.6995ms
+2023-05-30 18:53:21.893 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-05-30 18:53:23.567 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 1674.1113ms
+2023-05-30 18:53:26.220 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 18:53:26.221 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1.1805ms
+2023-05-30 18:54:01.541 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7253/flutterwave/resend-webhook application/json 39
+2023-05-30 18:54:02.009 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 18:54:03.650 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 19:03:53.644 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-05-30 19:03:54.691 +01:00 [INF] Now listening on: https://localhost:7253
+2023-05-30 19:03:54.691 +01:00 [INF] Now listening on: http://localhost:5273
+2023-05-30 19:03:54.697 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-05-30 19:03:54.698 +01:00 [INF] Hosting environment: Development
+2023-05-30 19:03:54.698 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-05-30 19:03:57.419 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 19:03:58.921 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1507.1003ms
+2023-05-30 19:03:59.245 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-05-30 19:03:59.253 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 8.4144ms
+2023-05-30 19:03:59.253 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-05-30 19:03:59.484 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 230.6038ms
+2023-05-30 19:03:59.948 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-05-30 19:04:01.068 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 1119.8682ms
+2023-05-30 19:04:03.201 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-05-30 19:04:03.202 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1.1608ms
+2023-05-30 19:21:20.693 +01:00 [INF] Request starting HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 36
+2023-05-30 19:21:20.701 +01:00 [INF] CORS policy execution successful.
+2023-05-30 19:21:23.284 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 19:21:23.684 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 19:22:43.266 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 79573.7284ms
+2023-05-30 19:22:43.396 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 19:22:44.261 +01:00 [ERR] Authorization failed
+2023-05-30 19:22:45.983 +01:00 [INF] Request finished HTTP/2 POST https://localhost:7253/flutterwave/resend-webhook application/json 36 - 401 - application/json 85290.1437ms
+2023-05-30 19:22:57.030 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7253/flutterwave/resend-webhook application/json 39
+2023-05-30 19:22:57.036 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 19:22:57.036 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 19:23:09.053 +01:00 [INF] Start processing HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 19:23:09.059 +01:00 [INF] Sending HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 19:23:11.227 +01:00 [INF] Received HTTP response headers after 2160.1593ms - 200
+2023-05-30 19:23:11.230 +01:00 [INF] End processing HTTP request after 2190.7984ms - 200
+2023-05-30 19:23:50.591 +01:00 [INF] Executing OkObjectResult, writing value of type 'BillProcessorAPI.Dtos.Flutterwave.FailedWebhookResponseModel'.
+2023-05-30 19:23:50.616 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 53579.7601ms
+2023-05-30 19:23:50.624 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 19:23:51.454 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7253/flutterwave/resend-webhook application/json 39 - 200 - application/json;+charset=utf-8 54424.3671ms
+2023-05-30 19:24:08.156 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7253/flutterwave/resend-webhook application/json 39
+2023-05-30 19:24:08.157 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 19:24:08.157 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 19:24:08.599 +01:00 [INF] Start processing HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 19:24:08.599 +01:00 [INF] Sending HTTP request POST https://api.flutterwave.com/v3/transactions/929672655/resend-hook
+2023-05-30 19:24:08.824 +01:00 [INF] Received HTTP response headers after 224.6897ms - 200
+2023-05-30 19:24:08.824 +01:00 [INF] End processing HTTP request after 224.9817ms - 200
+2023-05-30 19:24:21.873 +01:00 [INF] Executing OkObjectResult, writing value of type 'BillProcessorAPI.Dtos.Flutterwave.FailedWebhookResponseModel'.
+2023-05-30 19:24:21.873 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 13715.8454ms
+2023-05-30 19:24:21.873 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 19:24:21.873 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7253/flutterwave/resend-webhook application/json 39 - 200 - application/json;+charset=utf-8 13717.1586ms
+2023-05-30 19:25:16.107 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7253/flutterwave/resend-webhook application/json 39
+2023-05-30 19:25:16.107 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 19:25:16.107 +01:00 [INF] Route matched with {action = "ResendWebhook", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ResendWebhook(BillProcessorAPI.Dtos.Flutterwave.FailedWebhookRequest) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-05-30 19:25:23.473 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI) in 7366.15ms
+2023-05-30 19:25:23.473 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.ResendWebhook (BillProcessorAPI)'
+2023-05-30 19:25:24.255 +01:00 [ERR] Authorization failed
+2023-05-30 19:25:24.261 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7253/flutterwave/resend-webhook application/json 39 - 401 - application/json 8154.1445ms

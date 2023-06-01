@@ -47,6 +47,15 @@ namespace BillProcessorAPI.Controllers
             }
         }
 
+        [HttpPost("/flutterwave/resend-webhook")]
+        [ProducesResponseType(typeof(FailedWebhookResponseModel), 200)]
+        [SwaggerOperation(Summary = "Endpoint for resending failed webhooks")]
+        public async Task<IActionResult> ResendWebhook([FromBody] FailedWebhookRequest model)
+        {
+            var response = await _transactionService.ResendWebhook(model);
+            return Ok(response);
+        }
+
         [HttpGet("/flutterwave/verify/{tx_ref}")]
         [ProducesResponseType(typeof(object), 200)]
         [SwaggerOperation(Summary = "Endpoint for transaction verification")]
@@ -73,6 +82,8 @@ namespace BillProcessorAPI.Controllers
             var response = await _transactionService.PaymentConfirmation(status,tx_ref,transaction_id);
             return Ok(response);
         }
+
        
+
     }
 }
