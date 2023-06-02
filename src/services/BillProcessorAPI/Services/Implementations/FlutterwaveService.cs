@@ -3,6 +3,7 @@ using BillProcessorAPI.Dtos;
 using BillProcessorAPI.Dtos.Common;
 using BillProcessorAPI.Dtos.Flutterwave;
 using BillProcessorAPI.Entities;
+using BillProcessorAPI.Entities.FlutterwaveEntities;
 using BillProcessorAPI.Entities.PaythruEntities;
 using BillProcessorAPI.Enums;
 using BillProcessorAPI.Helpers;
@@ -28,6 +29,7 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IInvoiceRepository _invoiceRepo;
         private readonly IRepository<BillPayerInfo> _billPayerRepository;
         private readonly IRepository<Receipt> _receipts;
+        private readonly IRepository<WebHookNotificationWrapper> _oldAppWebhook;
 
         private readonly FlutterwaveOptions _flutterOptions;
         private readonly IHttpService _httpService;
@@ -47,7 +49,8 @@ namespace BillProcessorAPI.Services.Implementations
             IMapper mapper,
             IRepository<Receipt> receipts,
             ILogger<FlutterwaveService> logger,
-            IHttpContextAccessor context)
+            IHttpContextAccessor context,
+            IRepository<WebHookNotificationWrapper> oldAppWebhook)
         {
             _billTransactionsRepo = billTransactionsRepo;
             _billPayerRepository = billPayerRepository;
@@ -59,6 +62,7 @@ namespace BillProcessorAPI.Services.Implementations
             _receipts = receipts;
             _logger = logger;
             _context = context;
+            _oldAppWebhook = oldAppWebhook;
         }
 
         public async Task<SuccessResponse<PaymentCreationResponse>> CreateTransaction(string email, decimal amount, string billPaymentCode)
@@ -137,7 +141,7 @@ namespace BillProcessorAPI.Services.Implementations
                 await _billTransactionsRepo.AddAsync(billTransaction);
                 await _billTransactionsRepo.SaveChangesAsync();
 
-                
+
                 var billInvoice = _mapper.Map<Invoice>(billPayer);
                 billInvoice.BillTransactionId = billTransaction.Id;
                 billInvoice.TransactionReference = trxReference;
@@ -188,26 +192,29 @@ namespace BillProcessorAPI.Services.Implementations
                 transaction.NotificationResponseData = JsonConvert.SerializeObject(model);
 
                 await _billTransactionsRepo.SaveChangesAsync();
-            _logger.LogCritical($"Payment notification from Flutterwave just came in as at: {DateTime.UtcNow}");
+                _logger.LogCritical($"Payment notification from Flutterwave just came in as at: {DateTime.UtcNow}");
 
-            _logger.LogCritical($"Details of notification : {JsonConvert.SerializeObject(model)}");
-
-                 transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.TransactionReference);
+                _logger.LogCritical($"Details of notification : {JsonConvert.SerializeObject(model)}");
 
 
                 if (transaction is null)
-                    throw new PaymentVerificationException(HttpStatusCode.NotFound, "No transaction found for this transaction");
+                {
+                    //saving the webhook to the database since no transaction was retrieved for the webhook to update
+                    await _oldAppWebhook.AddAsync(model);
+                    await _oldAppWebhook.SaveChangesAsync();
+                }
+                _logger.LogInformation($"No transaction was found for the webhok received, webhook saved to the database");
 
                 //verify transaction with flutterwave using the transactionId from the webhook
                 IDictionary<string, string> param = new Dictionary<string, string>();
                 param.Add(key: "Authorization", _flutterOptions.SecretKey);
                 var headerParam = new RequestHeader(param);
-
+                
                 var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.VerifyByReference}/?tx_ref={model.TransactionReference}";
                 var verificationReaponse = await _httpService.Get<FlutterwaveResponse<FlutterwaveResponseData>>(url, headerParam);
 
-            if (verificationReaponse.Data.Status != "success")
-                _logger.LogCritical($"Unable to verify payment notification from Flutterwave as at: {DateTime.UtcNow}");
+                if (verificationReaponse.Data.Status != "success")
+                    _logger.LogCritical($"Unable to verify payment notification from Flutterwave as at: {DateTime.UtcNow}");
 
                 transaction.AmountPaid = verificationReaponse.Data.Data.amount;
                 transaction.PrinciPalAmount = verificationReaponse.Data.Data.amount; // amount paid minus charges
@@ -285,7 +292,7 @@ namespace BillProcessorAPI.Services.Implementations
             }
             catch (Exception ex)
             {
-                _logger.LogError( $"An error occurred on receipt of payment notification from flutterwave: {ex.Message}", ex);
+                _logger.LogError($"An error occurred on receipt of payment notification from flutterwave: {ex.Message}", ex);
 
                 transaction.ErrorMessage = ex.ToString();
                 throw;
@@ -293,7 +300,7 @@ namespace BillProcessorAPI.Services.Implementations
             finally
             {
                 if (transaction is not null)
-                    await _billPayerRepository.SaveChangesAsync();
+                    await _billTransactionsRepo.SaveChangesAsync();
             }
 
 
@@ -407,15 +414,15 @@ namespace BillProcessorAPI.Services.Implementations
 
             try
             {
-                    var notificationResponse = await _httpService
-                           .Post<FailedWebhookResponseModel, FailedWebhookRequest>(url, headerParamm, model);
+                var notificationResponse = await _httpService
+                       .Post<FailedWebhookResponseModel, FailedWebhookRequest>(url, headerParamm, model);
                 if (notificationResponse.Data.Status != "success")
                     throw new RestException(HttpStatusCode.BadRequest, "Unable to resend webhook notification for the payment reference provided");
 
                 response.Status = notificationResponse.Data.Status;
                 response.Message = notificationResponse.Data.Message;
                 response.Data = notificationResponse.Data.Data;
-                
+
                 return response;
 
             }
@@ -424,7 +431,7 @@ namespace BillProcessorAPI.Services.Implementations
 
                 throw new RestException(HttpStatusCode.InternalServerError, ex.Message);
             }
-           
+
         }
     }
 }
