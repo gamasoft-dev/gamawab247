@@ -29,7 +29,7 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IInvoiceRepository _invoiceRepo;
         private readonly IRepository<BillPayerInfo> _billPayerRepository;
         private readonly IRepository<Receipt> _receipts;
-        private readonly IRepository<WebHookNotificationWrapper> _oldAppWebhook;
+        private readonly IRepository<WebhookNotification> _oldAppWebhook;
 
         private readonly FlutterwaveOptions _flutterOptions;
         private readonly IHttpService _httpService;
@@ -50,7 +50,7 @@ namespace BillProcessorAPI.Services.Implementations
             IRepository<Receipt> receipts,
             ILogger<FlutterwaveService> logger,
             IHttpContextAccessor context,
-            IRepository<WebHookNotificationWrapper> oldAppWebhook)
+            IRepository<WebhookNotification> oldAppWebhook)
         {
             _billTransactionsRepo = billTransactionsRepo;
             _billPayerRepository = billPayerRepository;
@@ -189,9 +189,11 @@ namespace BillProcessorAPI.Services.Implementations
                     throw new RestException(HttpStatusCode.BadRequest, "invalid transaction, notification content is null and empty");
 
                 transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.TransactionReference);
-                transaction.NotificationResponseData = JsonConvert.SerializeObject(model);
+                
 
-                await _billTransactionsRepo.SaveChangesAsync();
+                //this line is an extra call to the db that the finally block already caters for, i think its needless
+                //await _billTransactionsRepo.SaveChangesAsync();
+
                 _logger.LogCritical($"Payment notification from Flutterwave just came in as at: {DateTime.UtcNow}");
 
                 _logger.LogCritical($"Details of notification : {JsonConvert.SerializeObject(model)}");
@@ -199,9 +201,14 @@ namespace BillProcessorAPI.Services.Implementations
 
                 if (transaction is null)
                 {
+                    var webhook = model.ToWebHook();
                     //saving the webhook to the database since no transaction was retrieved for the webhook to update
-                    await _oldAppWebhook.AddAsync(model);
+                    await _oldAppWebhook.AddAsync(webhook);
                     await _oldAppWebhook.SaveChangesAsync();
+                    return new SuccessResponse<string>
+                    {
+                        Data = "Transaction Completed"
+                    };
                 }
                 _logger.LogInformation($"No transaction was found for the webhok received, webhook saved to the database");
 
