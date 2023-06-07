@@ -29,7 +29,7 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IInvoiceRepository _invoiceRepo;
         private readonly IRepository<BillPayerInfo> _billPayerRepository;
         private readonly IRepository<Receipt> _receipts;
-        private readonly IRepository<WebHookNotificationWrapper> _oldAppWebhook;
+     
 
         private readonly FlutterwaveOptions _flutterOptions;
         private readonly IHttpService _httpService;
@@ -49,8 +49,7 @@ namespace BillProcessorAPI.Services.Implementations
             IMapper mapper,
             IRepository<Receipt> receipts,
             ILogger<FlutterwaveService> logger,
-            IHttpContextAccessor context,
-            IRepository<WebHookNotificationWrapper> oldAppWebhook)
+            IHttpContextAccessor context)
         {
             _billTransactionsRepo = billTransactionsRepo;
             _billPayerRepository = billPayerRepository;
@@ -62,7 +61,6 @@ namespace BillProcessorAPI.Services.Implementations
             _receipts = receipts;
             _logger = logger;
             _context = context;
-            _oldAppWebhook = oldAppWebhook;
         }
 
         public async Task<SuccessResponse<PaymentCreationResponse>> CreateTransaction(string email, decimal amount, string billPaymentCode)
@@ -200,8 +198,7 @@ namespace BillProcessorAPI.Services.Implementations
                 if (transaction is null)
                 {
                     //saving the webhook to the database since no transaction was retrieved for the webhook to update
-                    await _oldAppWebhook.AddAsync(model);
-                    await _oldAppWebhook.SaveChangesAsync();
+                    _logger.LogInformation($"No transaction was found for the webhok received, webhook saved to the database");
                 }
                 _logger.LogInformation($"No transaction was found for the webhok received, webhook saved to the database");
 

@@ -18,7 +18,7 @@ namespace BillProcessorAPI.Data
         public DbSet<BillCharge> Charges { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<Receipt> Receipts { get; set; }
-        public DbSet<WebHookNotificationWrapper> Webhooks { get; set; }
+    
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
