@@ -1,5 +1,6 @@
-﻿using Application.Helpers;
-using BillProcessorAPI.Dtos;
+﻿using BillProcessorAPI.Dtos;
+using BillProcessorAPI.Entities.ValueObjects;
+using BillProcessorAPI.Helpers;
 using BillProcessorAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -16,12 +17,14 @@ namespace BillProcessorAPI.Controllers
 	public class BillHolderController : ControllerBase
 	{
 		private readonly IBillService _revpay;
-		public BillHolderController(IBillService revpay)
-		{
-			_revpay = revpay;
-		}
+		private readonly ICollectionReportService _collection;
+        public BillHolderController(IBillService revpay, ICollectionReportService collection)
+        {
+            _revpay = revpay;
+            _collection = collection;
+        }
 
-		[HttpGet("invoice/{billPaymentCode}")]
+        [HttpGet("invoice/{billPaymentCode}")]
         [ProducesResponseType(typeof(SuccessResponse<BillReferenceResponseDto>), 200)]
         [SwaggerOperation(Summary = "Endpoint to get bill payer reference")]
         public async Task<IActionResult> ReferenceVerification([FromRoute] string billPaymentCode, [FromQuery] string phone)
@@ -38,5 +41,14 @@ namespace BillProcessorAPI.Controllers
 			var response = await _revpay.PaymentVerification(billPaymentCode);
 			return Ok(response);
 		}
+
+        [HttpGet( "collection-report", Name = nameof(Collections))]
+        [ProducesResponseType(typeof(SuccessResponse<CollectionReportDto>), 200)]
+        [SwaggerOperation(Summary = "Endpoint to get verify bill payment")]
+        public async Task<IActionResult> Collections([FromQuery] ResourceParameter param,[FromQuery] ReportParameters reportParameters)
+        {
+            var response = await _collection.GetAllCollections(param, reportParameters, nameof(Collections), Url);
+            return Ok(response);
+        }
     }
 }
