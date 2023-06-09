@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Application.DTOs.RequestAndComplaintDtos;
 using AutoMapper;
 using Domain.Entities.RequestAndComplaints;
+using Org.BouncyCastle.Math.EC.Rfc7748;
 
 namespace Application.Mapper
 {
@@ -15,10 +16,11 @@ namespace Application.Mapper
         {
             CreateMap<RequestAndComplaint, RequestAndComplaintDto>()
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type.ToString()))
-                .ForMember(dest => dest.TreatedBy, opt => opt.MapFrom(src => src.TreatedBy.FirstName))
+                .ForMember(dest => dest.LastTreatedBy, opt => opt.MapFrom(src => src.TreatedBy.FirstName))
+                .ForMember(dest => dest.LastTreatedById, opt => opt.MapFrom(src => src.TreatedBy.Id))
                 .AfterMap((src, dest) =>
                 {
-                    dest.Responses = src.ResponsList.Responses.Select(x => x.Response)?.ToList();
+                    dest.Responses = src.ResponsList.Responses.ToList().OrderByDescending(x=>x.DateResponded).Take(3);
                 });
 
                  //.ForMember(dest => dest.Responses, opt => opt.MapFrom(src => src.ResponsList.Responses.Select(x => x.Response)));

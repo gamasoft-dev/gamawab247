@@ -2,6 +2,7 @@
 using Domain.Entities.Identities;
 using Domain.Enums;
 using System.Collections.Generic;
+using Domain.Entities.RequestAndComplaints;
 
 namespace Application.DTOs.RequestAndComplaintDtos
 {
@@ -21,7 +22,7 @@ namespace Application.DTOs.RequestAndComplaintDtos
 
         public string Detail { get; set; }
 
-        public IEnumerable<string> Responses { get; set; }
+        public IEnumerable<RequestAndComplainResponse> Responses { get; set; }
 
         /// <summary>
         /// This is the complaint or request unique identifier. This is generated for every ticker raised
@@ -38,9 +39,9 @@ namespace Application.DTOs.RequestAndComplaintDtos
 
         public string ResolutionStatus { get; set; }
 
-        public Guid? TreatedById { get; set; }
+        public Guid? LastTreatedById { get; set; }
 
-        public string TreatedBy { get; set; }
+        public string LastTreatedBy { get; set; }
 
     }
 
