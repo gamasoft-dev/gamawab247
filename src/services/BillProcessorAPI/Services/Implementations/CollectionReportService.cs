@@ -1,4 +1,5 @@
-﻿using Application.DTOs.PartnerContentDtos;
+﻿using System.Globalization;
+using Application.DTOs.PartnerContentDtos;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using BillProcessorAPI.Dtos;
@@ -9,6 +10,7 @@ using BillProcessorAPI.Helpers;
 using BillProcessorAPI.Repositories.Interfaces;
 using BillProcessorAPI.Services.Interfaces;
 using Domain.Common;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BillProcessorAPI.Services.Implementations
@@ -30,7 +32,18 @@ namespace BillProcessorAPI.Services.Implementations
                            || x.PayerName.ToLower().Contains(parameter.Search.ToLower()) 
                            || DateTime.Parse(x.DateCompleted) >= parameter.StartDate 
                            || DateTime.Parse(x.DateCompleted) <= parameter.EndDate);
+            //DateOnly result;
+            //string format = "yyyy-MM-dd";
+            //CultureInfo culture = CultureInfo.InvariantCulture;
+            //DateTimeStyles styles = DateTimeStyles.None;
 
+            //queryable.Where(x => DateOnly.TryParse(x.DateCompleted.ToString(), out result));
+
+            if (parameter.StartDate != DateTime.MinValue)
+            {
+                queryable.Where(x => x.UpdatedAt >= parameter.StartDate && x.UpdatedAt <= parameter.EndDate);
+            };
+            
             if (queryable == null)
                 throw new RestException(System.Net.HttpStatusCode.BadRequest, ResponseMessages.Failed);
 

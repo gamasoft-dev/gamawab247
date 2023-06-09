@@ -81,3 +81,40 @@
 2023-06-08 13:26:08.239 +01:00 [INF] Executed action BillProcessorAPI.Controllers.BillHolderController.Collections (BillProcessorAPI) in 7735.8601ms
 2023-06-08 13:26:08.245 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.BillHolderController.Collections (BillProcessorAPI)'
 2023-06-08 13:26:08.273 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/v1/abc - - - 200 - application/json;+charset=utf-8 7901.7846ms
+2023-06-08 14:03:19.716 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-06-08 14:03:20.545 +01:00 [INF] Now listening on: https://localhost:7253
+2023-06-08 14:03:20.546 +01:00 [INF] Now listening on: http://localhost:5273
+2023-06-08 14:03:20.551 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-06-08 14:03:20.551 +01:00 [INF] Hosting environment: Development
+2023-06-08 14:03:20.551 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-06-08 14:03:23.110 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-06-08 14:03:24.660 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1555.5147ms
+2023-06-08 14:03:24.990 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-06-08 14:03:24.997 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 6.5829ms
+2023-06-08 14:03:25.011 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-06-08 14:03:26.083 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 1072.1897ms
+2023-06-08 14:03:26.280 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-06-08 14:03:26.844 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 564.6016ms
+2023-06-08 14:03:29.795 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-06-08 14:03:29.796 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1.2003ms
+2023-06-08 14:05:22.325 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/v1/abc/collection-report?StartDate=2023-06-08 - -
+2023-06-08 14:05:22.382 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.BillHolderController.Collections (BillProcessorAPI)'
+2023-06-08 14:05:22.497 +01:00 [INF] Route matched with {action = "Collections", controller = "BillHolder"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Collections(BillProcessorAPI.Helpers.ResourceParameter, BillProcessorAPI.Helpers.ReportParameters) on controller BillProcessorAPI.Controllers.BillHolderController (BillProcessorAPI).
+2023-06-08 14:12:54.248 +01:00 [INF] Executed action BillProcessorAPI.Controllers.BillHolderController.Collections (BillProcessorAPI) in 451736.6002ms
+2023-06-08 14:12:54.254 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.BillHolderController.Collections (BillProcessorAPI)'
+2023-06-08 14:12:54.432 +01:00 [ERR] An exception has been raised that is likely due to a transient failure.
+2023-06-08 14:12:54.669 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/v1/abc/collection-report?StartDate=2023-06-08 - - - 500 - application/json 452343.6499ms
+2023-06-08 14:14:32.785 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/v1/abc/collection-report?StartDate=2023-06-08 - -
+2023-06-08 14:14:32.789 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.BillHolderController.Collections (BillProcessorAPI)'
+2023-06-08 14:14:32.789 +01:00 [INF] Route matched with {action = "Collections", controller = "BillHolder"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Collections(BillProcessorAPI.Helpers.ResourceParameter, BillProcessorAPI.Helpers.ReportParameters) on controller BillProcessorAPI.Controllers.BillHolderController (BillProcessorAPI).
+2023-06-08 14:15:19.653 +01:00 [INF] Executing OkObjectResult, writing value of type 'BillProcessorAPI.Helpers.PagedResponse`1[[System.Collections.Generic.IEnumerable`1[[BillProcessorAPI.Dtos.CollectionReportDto, BillProcessorAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2023-06-08 14:15:19.721 +01:00 [INF] Executed action BillProcessorAPI.Controllers.BillHolderController.Collections (BillProcessorAPI) in 46912.3155ms
+2023-06-08 14:15:19.725 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.BillHolderController.Collections (BillProcessorAPI)'
+2023-06-08 14:15:19.727 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/v1/abc/collection-report?StartDate=2023-06-08 - - - 200 - application/json;+charset=utf-8 46922.5595ms
+2023-06-08 14:15:35.374 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/v1/abc/collection-report?StartDate=2023-05-08 - -
+2023-06-08 14:15:35.374 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.BillHolderController.Collections (BillProcessorAPI)'
+2023-06-08 14:15:35.374 +01:00 [INF] Route matched with {action = "Collections", controller = "BillHolder"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Collections(BillProcessorAPI.Helpers.ResourceParameter, BillProcessorAPI.Helpers.ReportParameters) on controller BillProcessorAPI.Controllers.BillHolderController (BillProcessorAPI).
+2023-06-08 14:15:46.300 +01:00 [INF] Executing OkObjectResult, writing value of type 'BillProcessorAPI.Helpers.PagedResponse`1[[System.Collections.Generic.IEnumerable`1[[BillProcessorAPI.Dtos.CollectionReportDto, BillProcessorAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2023-06-08 14:15:46.301 +01:00 [INF] Executed action BillProcessorAPI.Controllers.BillHolderController.Collections (BillProcessorAPI) in 10921.6188ms
+2023-06-08 14:15:46.301 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.BillHolderController.Collections (BillProcessorAPI)'
+2023-06-08 14:15:46.301 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/v1/abc/collection-report?StartDate=2023-05-08 - - - 200 - application/json;+charset=utf-8 10922.8622ms
