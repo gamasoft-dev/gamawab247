@@ -189,7 +189,7 @@ namespace BillProcessorAPI.Services.Implementations
                     throw new RestException(HttpStatusCode.BadRequest, "invalid transaction, notification content is null and empty");
 
                 transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.TransactionReference);
-                
+
 
                 //this line is an extra call to the db that the finally block already caters for, i think its needless
                 //await _billTransactionsRepo.SaveChangesAsync();
@@ -219,7 +219,7 @@ namespace BillProcessorAPI.Services.Implementations
                 IDictionary<string, string> param = new Dictionary<string, string>();
                 param.Add(key: "Authorization", _flutterOptions.SecretKey);
                 var headerParam = new RequestHeader(param);
-                
+
                 var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.VerifyByReference}/?tx_ref={model.TransactionReference}";
                 var verificationReaponse = await _httpService.Get<FlutterwaveResponse<FlutterwaveResponseData>>(url, headerParam);
 
@@ -419,8 +419,8 @@ namespace BillProcessorAPI.Services.Implementations
             resendWehookUrl.Add(key: "Authorization", _flutterOptions.SecretKey);
             var headerParamm = new RequestHeader(resendWehookUrl);
 
-            var billTransationRecord = await _billTransactionsRepo.FirstOrDefault(x => x.PaymentReference == model.PaymentReference.ToString());
-            var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.ResendFailedWebhook}/{billTransationRecord.PaymentReference}/resend-hook";
+            //var billTransationRecord = await _billTransactionsRepo.FirstOrDefault(x => x.PaymentReference == model.PaymentReference.ToString());
+            var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.ResendFailedWebhook}/{model.PaymentReference}/resend-hook";
 
             try
             {
