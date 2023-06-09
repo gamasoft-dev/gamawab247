@@ -1,0 +1,54 @@
+2023-06-09 02:49:48.683 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-06-09 02:49:54.338 +01:00 [INF] Now listening on: https://localhost:6001
+2023-06-09 02:49:54.591 +01:00 [INF] Now listening on: http://localhost:6000
+2023-06-09 02:49:54.643 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-06-09 02:49:54.681 +01:00 [INF] Hosting environment: Development
+2023-06-09 02:49:54.705 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\Gamawabs247API
+2023-06-09 02:49:56.018 +01:00 [INF] Request starting HTTP/2 GET https://localhost:6001/swagger/index.html - -
+2023-06-09 02:49:56.898 +01:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2023-06-09 02:49:56.921 +01:00 [INF] Request finished HTTP/2 GET https://localhost:6001/swagger/index.html - - - 200 - text/html;charset=utf-8 907.0875ms
+2023-06-09 02:49:57.366 +01:00 [INF] Request starting HTTP/2 GET https://localhost:6001/_vs/browserLink - -
+2023-06-09 02:49:57.523 +01:00 [INF] Request finished HTTP/2 GET https://localhost:6001/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 157.2817ms
+2023-06-09 02:49:57.956 +01:00 [INF] Request starting HTTP/2 GET https://localhost:6001/swagger/v1/swagger.json - -
+2023-06-09 02:49:58.917 +01:00 [WRN] An error occurred while trying to create a DataContractSerializer for the type 'Application.Helpers.SuccessResponse`1'.
+System.Runtime.Serialization.InvalidDataContractException: Type 'Application.Helpers.SuccessResponse`1[T]' cannot be exported as a schema type because it is an open generic type. You can only export a generic type if all its generic parameter types are actual types.
+   at System.Runtime.Serialization.DataContractSet.EnsureTypeNotGeneric(Type type)
+   at System.Runtime.Serialization.XsdDataContractExporter.GetRootElementName(Type type)
+   at Microsoft.AspNetCore.Mvc.Formatters.XmlDataContractSerializerOutputFormatter.CreateSerializer(Type type)
+2023-06-09 02:49:59.424 +01:00 [INF] Request finished HTTP/2 GET https://localhost:6001/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 1468.0282ms
+2023-06-09 02:50:02.965 +01:00 [INF] Request starting HTTP/2 GET https://localhost:6001/swagger/index.html - -
+2023-06-09 02:50:02.966 +01:00 [INF] Request finished HTTP/2 GET https://localhost:6001/swagger/index.html - - - 200 - text/html;charset=utf-8 0.7373ms
+2023-06-09 02:50:33.118 +01:00 [INF] Request starting HTTP/2 GET https://localhost:6001/api/v1/wausers - -
+2023-06-09 02:50:34.668 +01:00 [INF] Failed to validate the token.
+Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException: IDX10223: Lifetime validation failed. The token is expired. ValidTo: '6/8/2023 2:10:21 AM', Current time: '6/9/2023 1:50:34 AM'.
+   at Microsoft.IdentityModel.Tokens.Validators.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.ValidateTokenPayload(JwtSecurityToken jwtToken, TokenValidationParameters validationParameters)
+   at System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.ValidateToken(String token, TokenValidationParameters validationParameters, SecurityToken& validatedToken)
+   at Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler.HandleAuthenticateAsync()
+2023-06-09 02:50:34.676 +01:00 [INF] Bearer was not authenticated. Failure message: IDX10223: Lifetime validation failed. The token is expired. ValidTo: '6/8/2023 2:10:21 AM', Current time: '6/9/2023 1:50:34 AM'.
+2023-06-09 02:50:34.689 +01:00 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2023-06-09 02:50:34.708 +01:00 [INF] AuthenticationScheme: Bearer was challenged.
+2023-06-09 02:50:34.708 +01:00 [INF] Request finished HTTP/2 GET https://localhost:6001/api/v1/wausers - - - 401 0 - 1589.7757ms
+2023-06-09 02:51:40.343 +01:00 [INF] Request starting HTTP/2 POST https://localhost:6001/api/v1/users/login application/json 67
+2023-06-09 02:51:40.355 +01:00 [INF] CORS policy execution successful.
+2023-06-09 02:51:40.358 +01:00 [INF] Failed to validate the token.
+Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException: IDX10223: Lifetime validation failed. The token is expired. ValidTo: '6/8/2023 2:10:21 AM', Current time: '6/9/2023 1:51:40 AM'.
+   at Microsoft.IdentityModel.Tokens.Validators.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.ValidateTokenPayload(JwtSecurityToken jwtToken, TokenValidationParameters validationParameters)
+   at System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.ValidateToken(String token, TokenValidationParameters validationParameters, SecurityToken& validatedToken)
+   at Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler.HandleAuthenticateAsync()
+2023-06-09 02:51:40.358 +01:00 [INF] Bearer was not authenticated. Failure message: IDX10223: Lifetime validation failed. The token is expired. ValidTo: '6/8/2023 2:10:21 AM', Current time: '6/9/2023 1:51:40 AM'.
+2023-06-09 02:51:40.365 +01:00 [INF] Executing endpoint 'API.Controllers.AuthController.LoginUser (Gamawabs247API)'
+2023-06-09 02:51:40.415 +01:00 [INF] Route matched with {action = "LoginUser", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] LoginUser(Application.DTOs.UserLoginDTO) on controller API.Controllers.AuthController (Gamawabs247API).
+2023-06-09 02:51:50.817 +01:00 [INF] Executing OkObjectResult, writing value of type 'Application.Helpers.SuccessResponse`1[[Application.DTOs.UserLoginResponse, Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2023-06-09 02:51:50.855 +01:00 [INF] Executed action API.Controllers.AuthController.LoginUser (Gamawabs247API) in 10431.8564ms
+2023-06-09 02:51:50.861 +01:00 [INF] Executed endpoint 'API.Controllers.AuthController.LoginUser (Gamawabs247API)'
+2023-06-09 02:51:50.885 +01:00 [INF] Request finished HTTP/2 POST https://localhost:6001/api/v1/users/login application/json 67 - 200 - application/json;+charset=utf-8 10542.1963ms
+2023-06-09 02:52:28.952 +01:00 [INF] Request starting HTTP/2 GET https://localhost:6001/api/v1/wausers - -
+2023-06-09 02:52:28.996 +01:00 [INF] Executing endpoint 'API.Controllers.WhatsappUsersController.GetWhatsappUsers (Gamawabs247API)'
+2023-06-09 02:52:29.027 +01:00 [INF] Route matched with {action = "GetWhatsappUsers", controller = "WhatsappUsers"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetWhatsappUsers(Application.Helpers.ResourceParameter) on controller API.Controllers.WhatsappUsersController (Gamawabs247API).
+2023-06-09 02:52:29.820 +01:00 [INF] Executing OkObjectResult, writing value of type 'Application.Helpers.PagedResponse`1[[System.Collections.Generic.IEnumerable`1[[Application.DTOs.WhatsappUserDto, Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2023-06-09 02:52:29.831 +01:00 [INF] Executed action API.Controllers.WhatsappUsersController.GetWhatsappUsers (Gamawabs247API) in 803.6408ms
+2023-06-09 02:52:29.831 +01:00 [INF] Executed endpoint 'API.Controllers.WhatsappUsersController.GetWhatsappUsers (Gamawabs247API)'
+2023-06-09 02:52:29.832 +01:00 [INF] Request finished HTTP/2 GET https://localhost:6001/api/v1/wausers - - - 200 - application/json;+charset=utf-8 880.6578ms
