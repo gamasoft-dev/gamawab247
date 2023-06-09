@@ -137,7 +137,7 @@ namespace Application.Services.Implementations
             if (id == Guid.Empty)
                 throw new RestException(System.Net.HttpStatusCode.BadRequest, "id cannot be null");
 
-            RequestAndComplaint requestOrComplaint = await _requestAndComplaintRepo.GetByIdAsync(id);
+            var requestOrComplaint = _requestAndComplaintRepo.Query(x=>x.Id == id).Include(x=>x.TreatedBy).FirstOrDefault();
             if (requestOrComplaint == null)
                 return new SuccessResponse<RequestAndComplaintDto>
                 {
@@ -145,6 +145,8 @@ namespace Application.Services.Implementations
                 };
 
             RequestAndComplaintDto requestAndComplaintDtDto = _mapper.Map<RequestAndComplaintDto>(requestOrComplaint);
+           
+            
             return new SuccessResponse<RequestAndComplaintDto>
             {
                 Data = requestAndComplaintDtDto,
@@ -222,7 +224,8 @@ namespace Application.Services.Implementations
             requestORComplaint.ResponsList = new RequestAndComplaintResponsList { Responses = requestResponses};
             requestORComplaint.ResolutionStatus = model.ResolutionStatusEnum?.ToString();
             requestORComplaint.ResolutionDate = DateTime.UtcNow;
-
+            requestORComplaint.TreatedById = WebHelper.UserId;
+   
             await _requestAndComplaintRepo.SaveChangesAsync();
 
             RequestAndComplaintDto requestAndComplainResponse = _mapper.Map<RequestAndComplaintDto>(requestORComplaint);
