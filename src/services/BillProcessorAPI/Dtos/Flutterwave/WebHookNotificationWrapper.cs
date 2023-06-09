@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using BillProcessorAPI.Entities;
+using Newtonsoft.Json;
 
 namespace BillProcessorAPI.Dtos.Flutterwave
 {
@@ -31,6 +32,32 @@ namespace BillProcessorAPI.Dtos.Flutterwave
         public dynamic PaymentRef { get; set; }
 
     }
+
+    public static class WebhookNotificationConversion
+    {
+        public static WebhookNotification ToWebHook(this WebHookNotificationWrapper model)
+        {
+            
+            int.TryParse(model.PaymentRef.ToString(), out int paymentRef);
+            return model is null ? null : new WebhookNotification()
+            {
+                WebGuid = model.WebGuid,
+                ResponseCode = model.ResponseCode,
+                ResponseDesc = model.ResponseDesc,
+                ReceiptNumber = model.ReceiptNumber,
+                State = model.State,
+                Status = model.Status,
+                TransID = model.TransID,
+                TransCode = model.TransCode,
+                StatusMessage = model.StatusMessage,
+                PropertyAddress = model.PropertyAddress,
+                TransactionReference = model.TransactionReference,
+                PaymentRef = paymentRef
+            };
+        }
+    }
+
+   
 
 
     public record Card

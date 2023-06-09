@@ -29,7 +29,7 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IInvoiceRepository _invoiceRepo;
         private readonly IRepository<BillPayerInfo> _billPayerRepository;
         private readonly IRepository<Receipt> _receipts;
-
+        private readonly IRepository<WebhookNotification> _oldAppWebhook;
 
         private readonly FlutterwaveOptions _flutterOptions;
         private readonly IHttpService _httpService;
@@ -49,7 +49,8 @@ namespace BillProcessorAPI.Services.Implementations
             IMapper mapper,
             IRepository<Receipt> receipts,
             ILogger<FlutterwaveService> logger,
-            IHttpContextAccessor context)
+            IHttpContextAccessor context,
+            IRepository<WebhookNotification> oldAppWebhook)
         {
             _billTransactionsRepo = billTransactionsRepo;
             _billPayerRepository = billPayerRepository;
@@ -61,7 +62,7 @@ namespace BillProcessorAPI.Services.Implementations
             _receipts = receipts;
             _logger = logger;
             _context = context;
-
+            _oldAppWebhook = oldAppWebhook;
         }
 
         public async Task<SuccessResponse<PaymentCreationResponse>> CreateTransaction(string email, decimal amount, string billPaymentCode)
@@ -188,9 +189,11 @@ namespace BillProcessorAPI.Services.Implementations
                     throw new RestException(HttpStatusCode.BadRequest, "invalid transaction, notification content is null and empty");
 
                 transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.TransactionReference);
-                transaction.NotificationResponseData = JsonConvert.SerializeObject(model);
 
-                await _billTransactionsRepo.SaveChangesAsync();
+
+                //this line is an extra call to the db that the finally block already caters for, i think its needless
+                //await _billTransactionsRepo.SaveChangesAsync();
+
                 _logger.LogCritical($"Payment notification from Flutterwave just came in as at: {DateTime.UtcNow}");
 
                 _logger.LogCritical($"Details of notification : {JsonConvert.SerializeObject(model)}");
@@ -198,9 +201,17 @@ namespace BillProcessorAPI.Services.Implementations
 
                 if (transaction is null)
                 {
+                    var webhook = model.ToWebHook();
+                    webhook.Data = JsonConvert.SerializeObject(webhook);
+                    webhook.GatewayType = "Flutterwave";
+                    webhook.Remark = "This webhook transaction is not found on the billTransaction";
                     //saving the webhook to the database since no transaction was retrieved for the webhook to update
-                    //await _oldAppWebhook.AddAsync(model);
-                    //await _oldAppWebhook.SaveChangesAsync();
+                    await _oldAppWebhook.AddAsync(webhook);
+                    await _oldAppWebhook.SaveChangesAsync();
+                    return new SuccessResponse<string>
+                    {
+                        Data = "Transaction Completed"
+                    };
                 }
                 _logger.LogInformation($"No transaction was found for the webhok received, webhook saved to the database");
 
@@ -208,7 +219,7 @@ namespace BillProcessorAPI.Services.Implementations
                 IDictionary<string, string> param = new Dictionary<string, string>();
                 param.Add(key: "Authorization", _flutterOptions.SecretKey);
                 var headerParam = new RequestHeader(param);
-                
+
                 var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.VerifyByReference}/?tx_ref={model.TransactionReference}";
                 var verificationReaponse = await _httpService.Get<FlutterwaveResponse<FlutterwaveResponseData>>(url, headerParam);
 
@@ -408,8 +419,8 @@ namespace BillProcessorAPI.Services.Implementations
             resendWehookUrl.Add(key: "Authorization", _flutterOptions.SecretKey);
             var headerParamm = new RequestHeader(resendWehookUrl);
 
-            var billTransationRecord = await _billTransactionsRepo.FirstOrDefault(x => x.PaymentReference == model.PaymentReference.ToString());
-            var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.ResendFailedWebhook}/{billTransationRecord.PaymentReference}/resend-hook";
+            //var billTransationRecord = await _billTransactionsRepo.FirstOrDefault(x => x.PaymentReference == model.PaymentReference.ToString());
+            var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.ResendFailedWebhook}/{model.PaymentReference}/resend-hook";
 
             try
             {
