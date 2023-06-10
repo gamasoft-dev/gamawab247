@@ -1,4 +1,4 @@
-﻿namespace BillProcessorAPI.Helpers
+﻿namespace BillProcessorAPI.Dtos
 {
     public class ReportParameters
     {

@@ -1,12 +1,10 @@
 ﻿using System.Globalization;
 using Application.DTOs.PartnerContentDtos;
+using Application.Helpers;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using BillProcessorAPI.Dtos;
 using BillProcessorAPI.Entities;
-using BillProcessorAPI.Entities.ValueObjects;
-using BillProcessorAPI.Enums;
-using BillProcessorAPI.Helpers;
 using BillProcessorAPI.Repositories.Interfaces;
 using BillProcessorAPI.Services.Interfaces;
 using Domain.Common;

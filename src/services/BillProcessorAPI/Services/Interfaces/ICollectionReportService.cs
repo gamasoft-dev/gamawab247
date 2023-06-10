@@ -1,7 +1,6 @@
 ﻿using Application.DTOs.PartnerContentDtos;
+using Application.Helpers;
 using BillProcessorAPI.Dtos;
-using BillProcessorAPI.Entities.ValueObjects;
-using BillProcessorAPI.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BillProcessorAPI.Services.Interfaces
