@@ -67,7 +67,7 @@ namespace Gamawabs247API.Controllers
 
         [HttpPut("{id}/resolve")]
         [ProducesResponseType(typeof(SuccessResponse<RequestAndComplaintDto>), (int)HttpStatusCode.OK)]
-        //[Authorize]//for admin usage
+        [Authorize]//for admin usage
         public async Task<IActionResult> ResolveRequest([FromRoute] Guid id, [FromBody] SimpleUpdateRequestAndComplaint model)
         {
             try
