@@ -202,7 +202,7 @@ namespace BillProcessorAPI.Services.Implementations
                 if (transaction is null)
                 {
                     var webhook = model.ToWebHook();
-                    webhook.Data = JsonConvert.SerializeObject(webhook);
+                    webhook.Data = JsonConvert.SerializeObject(model);
                     webhook.GatewayType = "Flutterwave";
                     webhook.Remark = "This webhook transaction is not found on the billTransaction";
                     //saving the webhook to the database since no transaction was retrieved for the webhook to update
