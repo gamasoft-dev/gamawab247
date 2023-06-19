@@ -1,0 +1,5 @@
+2023-06-11 08:03:48.142 +01:00 [INF] User profile is available. Using '/Users/christopher.ogbosuka/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2023-06-11 08:03:48.597 +01:00 [INF] Now listening on: http://localhost:6000
+2023-06-11 08:03:48.635 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-06-11 08:03:48.639 +01:00 [INF] Hosting environment: Development
+2023-06-11 08:03:48.640 +01:00 [INF] Content root path: /Users/christopher.ogbosuka/Github/gamasoft-dev/gamawab247/src/services/Gamawabs247API

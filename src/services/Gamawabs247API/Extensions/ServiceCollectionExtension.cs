@@ -148,10 +148,9 @@ namespace API.Extensions
                 {
                     EndPoints = { { config.Server, config.Port } },
                     AbortOnConnectFail = false,
-                    ConnectTimeout = 200000,
+                    ConnectTimeout = 100000,
                     ConnectRetry = 10,
                     Ssl = false,
-                    SslProtocols = System.Security.Authentication.SslProtocols.Tls12,
                     Password = config.Auth
                 };
                 options.Configuration = redisConfig.ToString();
