@@ -12,6 +12,7 @@ using Newtonsoft.Json.Serialization;
 using Infrastructure.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using ApiCustomization;
+using Serilog;
 
 namespace API
 {
@@ -52,6 +53,12 @@ namespace API
             services.ConfigureApiCustomizationService(Configuration);
             services.AddControllers()
                 .AddXmlDataContractSerializerFormatters();
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .WriteTo.File("./LogFiles/GamawabsApiLogs.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+
             services.ConfigureSwagger();
             services.ConfigureApiVersioning(Configuration);
             services.ConfigureMvc();
@@ -61,6 +68,8 @@ namespace API
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,10 +90,9 @@ namespace API
             });
 
             app.UseHttpsRedirection();
-
+           
             app.UseRouting();
             app.UseCors("CorsPolicy");
-
             app.UseAuthentication();
             app.UseAuthorization();
 

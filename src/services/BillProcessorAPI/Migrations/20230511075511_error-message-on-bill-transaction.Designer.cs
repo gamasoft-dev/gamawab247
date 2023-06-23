@@ -3,6 +3,7 @@ using System;
 using BillProcessorAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BillProcessorAPI.Migrations
 {
     [DbContext(typeof(BillProcessorDbContext))]
-    partial class BillProcessorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230511075511_error-message-on-bill-transaction")]
+    partial class errormessageonbilltransaction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,10 +146,6 @@ namespace BillProcessorAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UpdatedAt");
-
-                    b.HasIndex("billCode");
-
                     b.ToTable("BillPayers");
                 });
 
@@ -263,13 +262,7 @@ namespace BillProcessorAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BillNumber");
-
                     b.HasIndex("BillPayerInfoId");
-
-                    b.HasIndex("Status");
-
-                    b.HasIndex("UpdatedAt");
 
                     b.ToTable("BillTransactions");
                 });
@@ -381,71 +374,6 @@ namespace BillProcessorAPI.Migrations
                     b.HasIndex("TransactionId");
 
                     b.ToTable("Receipts");
-                });
-
-            modelBuilder.Entity("BillProcessorAPI.Entities.WebhookNotification", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("CreatedById")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Data")
-                        .HasColumnType("text");
-
-                    b.Property<string>("GatewayType")
-                        .HasColumnType("text");
-
-                    b.Property<int>("PaymentRef")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("PropertyAddress")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ReceiptNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Remark")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ResponseCode")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ResponseDesc")
-                        .HasColumnType("text");
-
-                    b.Property<string>("State")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("text");
-
-                    b.Property<string>("StatusMessage")
-                        .HasColumnType("text");
-
-                    b.Property<string>("TransCode")
-                        .HasColumnType("text");
-
-                    b.Property<string>("TransID")
-                        .HasColumnType("text");
-
-                    b.Property<string>("TransactionReference")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("WebGuid")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Webhooks");
                 });
 
             modelBuilder.Entity("BillProcessorAPI.Entities.BillTransaction", b =>

@@ -6,7 +6,7 @@ cd github/gamasoft-dev/gamawab247/src/services/Gamawabs247API/
 dotnet ef migrations add "migration-action-name" --project "../../Libraries/Infrastructure.Data/"
 
 To run migration for the BillProcessor Api
-cd gamasoft-dev/gamawab247/src/services/BillProcessorAPI/
+cd github/gamasoft-dev/gamawab247/src/services/BillProcessorAPI/
 dotnet ef migrations add "migration-action-name" --project "../../Libraries/Infrastructure.Data/"
 dotnet ef database update
 

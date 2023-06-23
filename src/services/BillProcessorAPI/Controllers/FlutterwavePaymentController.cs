@@ -29,11 +29,13 @@ namespace BillProcessorAPI.Controllers
         [HttpPost("/flutterwave/notify")]
         [ProducesResponseType(typeof(TransactionVerificationResponseDto), 200)]
         [SwaggerOperation(Summary = "Webhook endpoint")]
-        public async Task<IActionResult> FlutterwavePaymentNotification(WebHookNotificationWrapper model)
+        public async Task<IActionResult> FlutterwavePaymentNotification([FromBody] WebHookNotificationWrapper model)
         {
            
             try
             {
+                _logger.LogInformation("Flutter wave request received");
+
                 var response = await _transactionService.PaymentNotification(model);
                 return Ok(response);
             }
@@ -43,6 +45,15 @@ namespace BillProcessorAPI.Controllers
                 return Ok($"Payement verification didnot complete succesfully but notification was recieved {ex.ToString()}");
 
             }
+        }
+
+        [HttpPost("/flutterwave/resend-webhook")]
+        [ProducesResponseType(typeof(FailedWebhookResponseModel), 200)]
+        [SwaggerOperation(Summary = "Endpoint for resending failed webhooks")]
+        public async Task<IActionResult> ResendWebhook([FromBody] FailedWebhookRequest model)
+        {
+            var response = await _transactionService.ResendWebhook(model);
+            return Ok(response);
         }
 
         [HttpGet("/flutterwave/verify/{tx_ref}")]
@@ -71,6 +82,8 @@ namespace BillProcessorAPI.Controllers
             var response = await _transactionService.PaymentConfirmation(status,tx_ref,transaction_id);
             return Ok(response);
         }
+
        
+
     }
 }

@@ -40,6 +40,7 @@ namespace BillProcessorAPI.Entities
 		public string NotificationResponseData { get; set; }
         public Guid? BillPayerInfoId { get; set; }
         public BillPayerInfo BillPayerInfo { get; set; }
+        public string ErrorMessage { get; set; }
         //public Guid? InvoiceId  { get; set; }
         //public Invoice Invoice { get; set; }
     }
