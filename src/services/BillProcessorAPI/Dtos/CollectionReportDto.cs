@@ -8,7 +8,7 @@ namespace BillProcessorAPI.Dtos
         public string PayerName { get; set; }
         public string BillNumber { get; set; }
 		public string Pid { get; set; }
-        public EGatewayType GatewayType { get; set; }
+        public int GatewayType { get; set; }
         public string Platform { get; set; }
 		public decimal AmountDue { get; set; }
 		public decimal AmountPaid { get; set; }
@@ -24,7 +24,7 @@ namespace BillProcessorAPI.Dtos
                 PayerName = model.PayerName,
                 BillNumber = model.BillNumber,
                 Pid = model.Pid,
-                GatewayType = model.GatewayType,
+                GatewayType = (int)model.GatewayType,
 				Platform = "N/A",
                 AmountDue = model.AmountDue,
 				AmountPaid = model.AmountPaid,

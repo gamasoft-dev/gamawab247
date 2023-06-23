@@ -1,4 +1,7 @@
-﻿namespace BillProcessorAPI.Dtos
+﻿using BillProcessorAPI.Enums;
+using Domain.Enums;
+
+namespace BillProcessorAPI.Dtos
 {
     public class ReportParameters
     {
