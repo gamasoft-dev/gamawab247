@@ -224,7 +224,11 @@ namespace Application.Services.Implementations
             requestORComplaint.ResponsList = new RequestAndComplaintResponsList { Responses = requestResponses};
             requestORComplaint.ResolutionStatus = model.ResolutionStatusEnum?.ToString();
             requestORComplaint.ResolutionDate = DateTime.UtcNow;
-            requestORComplaint.TreatedById = WebHelper.UserId;
+
+            Console.WriteLine($"Value of the WebHelper UserId => {WebHelper.UserId}");
+
+            if(WebHelper.UserId != Guid.Empty)
+                requestORComplaint.TreatedById = WebHelper.UserId;
    
             await _requestAndComplaintRepo.SaveChangesAsync();
 
