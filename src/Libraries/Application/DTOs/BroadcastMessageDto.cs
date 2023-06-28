@@ -12,6 +12,7 @@ namespace Application.DTOs
     {
         public Guid Id { get; set; }
         public string ErrorMessage { get; set; }
+        public string Busisness { get; set; }
     }
 
     public class CreateBroadcastMessageDto
