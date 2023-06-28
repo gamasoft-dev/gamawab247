@@ -5,7 +5,6 @@ namespace BillProcessorAPI.Dtos.Flutterwave
 {
     public record WebHookNotificationWrapper
     {
-        
         public string WebGuid { get; set; }
       
         public string ResponseCode { get; set; }

@@ -15,6 +15,8 @@ namespace BillProcessorAPI.Mapper
 			CreateMap<BillTransaction, PayThruPaymentRequestDto>().ReverseMap();
 			CreateMap<BillTransaction, BankTransferInstruction>().ReverseMap();
 			CreateMap<BillTransaction, PaymentConfirmationResponse>();
+			CreateMap<BillTransaction, CollectionReportDto>();
+
 
 		}
 	}
