@@ -1,5 +1,6 @@
 using Autofac.Core;
 using BillProcessorAPI.Data;
+using BillProcessorAPI.Dtos.BroadcastMessage;
 using BillProcessorAPI.Extensions;
 using BillProcessorAPI.Helpers;
 using BillProcessorAPI.Helpers.Flutterwave;
@@ -35,6 +36,8 @@ builder.Services.Configure<BillTransactionSettings>(builder.Configuration.GetSec
 builder.Services.Configure<RevpayOptions>(builder.Configuration.GetSection("RevpayConfig"));
 builder.Services.Configure<PaythruOptions>(builder.Configuration.GetSection("PaythruOptions"));
 builder.Services.Configure<FlutterwaveOptions>(builder.Configuration.GetSection("FlutterWaveOptions"));
+builder.Services.AddOptions<BusinessesPhoneNumber>().BindConfiguration("businessesPhoneNumberConfig");
+builder.Services.AddOptions<ReceiptBroadcastConfig>().BindConfiguration("receiptBroadcastSettings");
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.ConfigureHttpPollyExtension();
 builder.Services.AddEndpointsApiExplorer();

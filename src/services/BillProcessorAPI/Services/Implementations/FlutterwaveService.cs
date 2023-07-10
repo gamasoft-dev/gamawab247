@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BillProcessorAPI.Dtos;
+using BillProcessorAPI.Dtos.BroadcastMessage;
 using BillProcessorAPI.Dtos.Common;
 using BillProcessorAPI.Dtos.Flutterwave;
 using BillProcessorAPI.Entities;
@@ -37,6 +38,8 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _context;
         private ILogger<FlutterwaveService> _logger;
+        private readonly BusinessesPhoneNumber _phoneNumberOptions;
+        private readonly ReceiptBroadcastConfig _receiptBroadcastOptions;
 
         public FlutterwaveService(
             IRepository<BillTransaction> billTransactionsRepo,
@@ -50,7 +53,9 @@ namespace BillProcessorAPI.Services.Implementations
             IRepository<Receipt> receipts,
             ILogger<FlutterwaveService> logger,
             IHttpContextAccessor context,
-            IRepository<WebhookNotification> oldAppWebhook)
+            IRepository<WebhookNotification> oldAppWebhook,
+            IOptions<BusinessesPhoneNumber> phoneNumberOptions,
+            IOptions<ReceiptBroadcastConfig> receiptBroadcastOptions)
         {
             _billTransactionsRepo = billTransactionsRepo;
             _billPayerRepository = billPayerRepository;
@@ -63,6 +68,8 @@ namespace BillProcessorAPI.Services.Implementations
             _logger = logger;
             _context = context;
             _oldAppWebhook = oldAppWebhook;
+            _phoneNumberOptions = phoneNumberOptions.Value;
+            _receiptBroadcastOptions = receiptBroadcastOptions.Value;
         }
 
         public async Task<SuccessResponse<PaymentCreationResponse>> CreateTransaction(string email, decimal amount, string billPaymentCode)
@@ -182,6 +189,7 @@ namespace BillProcessorAPI.Services.Implementations
 
         public async Task<SuccessResponse<string>> PaymentNotification(WebHookNotificationWrapper model)
         {
+
             BillTransaction transaction = null;
             try
             {
@@ -190,9 +198,6 @@ namespace BillProcessorAPI.Services.Implementations
 
                 transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.TransactionReference);
 
-
-                //this line is an extra call to the db that the finally block already caters for, i think its needless
-                //await _billTransactionsRepo.SaveChangesAsync();
 
                 _logger.LogCritical($"Payment notification from Flutterwave just came in as at: {DateTime.UtcNow}");
 
@@ -256,6 +261,8 @@ namespace BillProcessorAPI.Services.Implementations
 
                 await _billTransactionsRepo.SaveChangesAsync();
 
+                await SendReceipt(transaction);
+
                 //add the receipt to the invoice
                 var invoice = await _invoiceRepo.FirstOrDefault(x => x.BillTransactionId == transaction.Id);
                 if (invoice is null)
@@ -279,25 +286,6 @@ namespace BillProcessorAPI.Services.Implementations
 
                 await _receipts.AddAsync(receipt);
                 await _receipts.SaveChangesAsync();
-
-                // send the notification to the existing application
-                //try
-                //{
-                //    IDictionary<string, string> existingAppParam = new Dictionary<string, string>();
-                //    existingAppParam.Add(key: "Authorization", _flutterOptions.SecretKey);
-                //    var headerParamm = new RequestHeader(existingAppParam);
-
-                //    var exixtingAppUrl = $"{_flutterOptions.ExistingAppUrl}";
-
-                //    var notificationResponse = await _httpService
-                //           .Post<FlutterwaveResponse<LinkData>, WebHookNotificationWrapper>(exixtingAppUrl, headerParamm, model);
-                //}
-                //catch (Exception ex)
-                //{
-                //    _logger.LogError($"An error occurred on verifying flutterwave transaction: {ex.Message}", ex);
-                //    transaction.ErrorMessage = ex.ToString();
-                //    // do nothing
-                //}
 
             }
             catch (Exception ex)
@@ -442,6 +430,31 @@ namespace BillProcessorAPI.Services.Implementations
                 throw new RestException(HttpStatusCode.InternalServerError, ex.Message);
             }
 
+        }
+
+        private async Task SendReceipt(BillTransaction transaction)
+        {
+            if (string.IsNullOrEmpty(_phoneNumberOptions.LUC.PhoneNumber))
+            {
+                throw new RestException(HttpStatusCode.PreconditionFailed, "LUC business phone number not cconfigured");
+            }
+
+            if (!string.IsNullOrEmpty(transaction.ReceiptUrl))
+            {
+                var broadcastMessage = new CreateBroadcastMessageDto
+                {
+                    From = _phoneNumberOptions.LUC.PhoneNumber,
+                    Message = $"Please click on the link below to view payment receipt.{Environment.NewLine}{Environment.NewLine}{transaction.ReceiptUrl}",
+                    To = transaction.PhoneNumber
+                };
+
+                var gamawabsBroadcastUrl = _receiptBroadcastOptions.Url;
+                var postBroadcast = await _httpService.Post<BroadcastMessageDto, CreateBroadcastMessageDto>(gamawabsBroadcastUrl, null, broadcastMessage);
+                if (postBroadcast.Data.Id != Guid.Empty)
+                {
+                    transaction.isReceiptSent = true;
+                }
+            }
         }
     }
 }

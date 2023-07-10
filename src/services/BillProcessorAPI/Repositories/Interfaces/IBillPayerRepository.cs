@@ -1,4 +1,5 @@
-﻿using BillProcessorAPI.Entities;
+﻿using Application.AutofacDI;
+using BillProcessorAPI.Entities;
 
 namespace BillProcessorAPI.Repositories.Interfaces
 {
