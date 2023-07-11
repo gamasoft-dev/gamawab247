@@ -46,7 +46,7 @@ namespace Gamawabs247API.Controllers
             }
         }
 
-        [HttpPut("id")]
+        [HttpPut("{id}")]
         [ProducesResponseType(typeof(SuccessResponse<BroadcastMessageDto>), (int)HttpStatusCode.NoContent)]
         
         public async Task<IActionResult> UpdateBroadcastMessage([FromQuery] Guid id, [FromBody] UpdateBroadcastMessageDto model)
@@ -63,10 +63,10 @@ namespace Gamawabs247API.Controllers
             }
         }
 
-        [HttpDelete("id")]
+        [HttpDelete("{id}")]
         [ProducesResponseType(typeof(SuccessResponse<BroadcastMessageDto>), (int)HttpStatusCode.NoContent)]
        
-        public async Task<IActionResult> DeleteBroadcastMessage([FromQuery] Guid id)
+        public async Task<IActionResult> DeleteBroadcastMessage(Guid id)
         {
             var result = await _broadcastMessage.DeleteBroadcastMessage(id);
             return NoContent();
@@ -94,7 +94,7 @@ namespace Gamawabs247API.Controllers
         [HttpGet("{id}", Name =nameof(GetBroadcastMessageById))]
         [ProducesResponseType(typeof(SuccessResponse<BroadcastMessageDto>), (int)HttpStatusCode.OK)]
      
-        public async Task<IActionResult> GetBroadcastMessageById([FromQuery] Guid id)
+        public async Task<IActionResult> GetBroadcastMessageById(Guid id)
         {
             try
             {
@@ -108,10 +108,10 @@ namespace Gamawabs247API.Controllers
             }
         }
 
-        [HttpGet("{id}", Name = nameof(GetBroadcastMessageByBusinessId))]
+        [HttpGet("business/{id}", Name = nameof(GetBroadcastMessageByBusinessId))]
         [ProducesResponseType(typeof(SuccessResponse<BroadcastMessageDto>), (int)HttpStatusCode.OK)]
       
-        public async Task<IActionResult> GetBroadcastMessageByBusinessId([FromQuery] Guid id, ResourceParameter parameter)
+        public async Task<IActionResult> GetBroadcastMessageByBusinessId(Guid id, ResourceParameter parameter)
         {
             try
             {
