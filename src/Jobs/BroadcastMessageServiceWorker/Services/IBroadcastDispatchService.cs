@@ -1,23 +1,19 @@
 ﻿using System;
-using Application.Helpers;
 using Application.Services.Interfaces;
-using BillProcessorAPI.Repositories.Interfaces;
-using Domain.Common;
 using Domain.Entities;
 using Domain.Entities.FormProcessing;
 using Domain.Enums;
 using Infrastructure.Repositories.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 
 namespace BroadcastMessageServiceWorker.Services
 {
     public class BroadcastDispatchService : IBroadcastDispatchService
     {
-        private readonly Infrastructure.Repositories.Interfaces.IRepository<BroadcastMessage> _broadcastMessageRepo;
+        private readonly IRepository<BroadcastMessage> _broadcastMessageRepo;
         //private readonly IBillTransactionRepository _billTransactionRepo;
         private readonly IOutboundMesageService _outboundMesageService;
 
-        public BroadcastDispatchService(Infrastructure.Repositories.Interfaces.IRepository<BroadcastMessage> broadcastMessageRepo, IOutboundMesageService outboundMesageService)
+        public BroadcastDispatchService(IRepository<BroadcastMessage> broadcastMessageRepo, IOutboundMesageService outboundMesageService)
         {
             _broadcastMessageRepo = broadcastMessageRepo;
             _outboundMesageService = outboundMesageService;
@@ -28,7 +24,7 @@ namespace BroadcastMessageServiceWorker.Services
         {
             // get paginated list of broacast messages on pending by order of FIFO using the createdTime
             var pendingBroadcastMessage = _broadcastMessageRepo
-                .Query(x => x.Status == Domain.Enums.EBroadcastMessageStatus.Pending).OrderBy(x => x.CreatedAt).ToList();
+                .Query(x => x.Status == EBroadcastMessageStatus.Pending).OrderBy(x => x.CreatedAt).ToList();
             
             // iterate through the list and process message sending as below
             foreach (var broadcastMessage in pendingBroadcastMessage)

@@ -15,6 +15,7 @@ using BillProcessorAPI.Services.Interfaces;
 using Domain.Common;
 using Domain.Exceptions;
 using Infrastructure.Http;
+using Infrastructure.ShortLink;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -31,6 +32,7 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IRepository<BillPayerInfo> _billPayerRepository;
         private readonly IRepository<Receipt> _receipts;
         private readonly IRepository<WebhookNotification> _oldAppWebhook;
+        private readonly ICutlyService _cutlyService;
 
         private readonly FlutterwaveOptions _flutterOptions;
         private readonly IHttpService _httpService;
@@ -55,7 +57,8 @@ namespace BillProcessorAPI.Services.Implementations
             IHttpContextAccessor context,
             IRepository<WebhookNotification> oldAppWebhook,
             IOptions<BusinessesPhoneNumber> phoneNumberOptions,
-            IOptions<ReceiptBroadcastConfig> receiptBroadcastOptions)
+            IOptions<ReceiptBroadcastConfig> receiptBroadcastOptions,
+            ICutlyService cutlyService)
         {
             _billTransactionsRepo = billTransactionsRepo;
             _billPayerRepository = billPayerRepository;
@@ -70,6 +73,7 @@ namespace BillProcessorAPI.Services.Implementations
             _oldAppWebhook = oldAppWebhook;
             _phoneNumberOptions = phoneNumberOptions.Value;
             _receiptBroadcastOptions = receiptBroadcastOptions.Value;
+            _cutlyService = cutlyService;
         }
 
         public async Task<SuccessResponse<PaymentCreationResponse>> CreateTransaction(string email, decimal amount, string billPaymentCode)
@@ -441,10 +445,12 @@ namespace BillProcessorAPI.Services.Implementations
 
             if (!string.IsNullOrEmpty(transaction.ReceiptUrl))
             {
+                var shortReceiptUrl = await _cutlyService.ShortLink(transaction.ReceiptUrl.ToString());
+
                 var broadcastMessage = new CreateBroadcastMessageDto
                 {
                     From = _phoneNumberOptions.LUC.PhoneNumber,
-                    Message = $"Please click on the link below to view payment receipt.{Environment.NewLine}{Environment.NewLine}{transaction.ReceiptUrl}",
+                    Message = $"Please click on the link below to download your payment receipt.{Environment.NewLine}{Environment.NewLine}{shortReceiptUrl}",
                     To = transaction.PhoneNumber
                 };
 

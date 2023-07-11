@@ -40,7 +40,6 @@ namespace BroadcastMessageServiceWorker
         {
 
             services.ConfigureIisIntegration();
-            services.ConfigureLoggerService();
             services.ConfigureSqlContext(Configuration);
             services.ConfigureRedisCache(Configuration);
             services.AddAuthentication();
@@ -71,7 +70,6 @@ namespace BroadcastMessageServiceWorker
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseCors("CorsPolicy");
 
             app.UseAuthentication();
             app.UseAuthorization();

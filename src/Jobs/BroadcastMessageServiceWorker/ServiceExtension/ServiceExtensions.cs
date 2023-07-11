@@ -4,7 +4,6 @@ using Application.AuditServices;
 using Application.DTOs;
 using Application.Services.Implementations;
 using Application.Services.Interfaces;
-using BillProcessorAPI.Data;
 using Domain.Common.ShortLink.ValueObjects;
 using Domain.Entities.Identities;
 using Infrastructure;
@@ -24,16 +23,6 @@ namespace BroadcastMessageServiceWorker.ServiceExtension
     {
         private static readonly ILoggerFactory ContextLoggerFactory = LoggerFactory.Create(builder => { builder.AddConsole(); });
 
-        public static void ConfigureCors(this IServiceCollection services)
-        {
-            services.AddCors(opts =>
-            {
-                opts.AddPolicy("CorsPolicy", builder =>
-                {
-                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-                });
-            });
-        }
 
         public static void ConfigureGlobalization(this IServiceCollection services)
         {
@@ -50,8 +39,7 @@ namespace BroadcastMessageServiceWorker.ServiceExtension
             });
 
 
-            //services.AddSingleton<IValidationLocalizerService, ValidationLocalizerService>();
-            //services.AddSingleton<IRestErrorLocalizerService, RestErrorLocalizerService>();
+       
         }
 
         public static void ConfigureIisIntegration(this IServiceCollection services)
@@ -66,13 +54,11 @@ namespace BroadcastMessageServiceWorker.ServiceExtension
         /// <param name="configuration"></param>
         public static void ConfigureIOObjects(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<EmailSettings>(configuration.GetSection(nameof(EmailSettings)));
-            services.Configure<MailSettings>(configuration.GetSection("MailSettings"));
+       
             services.Configure<SystemSettingsConfig>(configuration.GetSection("Config"));
             services.Configure<Dialog360Settings>(configuration.GetSection("Dialog360Setting"));
             services.Configure<CutlyOptions>(configuration.GetSection("CutlyOptions"));
-            services.Configure<Domain.ViewModels.JwtConfigSettings>(configuration.GetSection("JwtSettings"));
-            services.Configure<RedisCacheConfig>(configuration.GetSection("RedisCacheConfig"));
+            //services.Configure<Domain.ViewModels.JwtConfigSettings>(configuration.GetSection("JwtSettings"));
         }
 
         public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration)
@@ -92,12 +78,6 @@ namespace BroadcastMessageServiceWorker.ServiceExtension
         public static void ConfigureRepositoryManager(this IServiceCollection services)
         {
             services.AddInfrastructureServices();
-        }
-
-
-        public static void ConfigureCustomServices(this IServiceCollection services)
-        {
-            //services.AddSingleton<ISessionManagement, SessionManagement>();
         }
 
         public static void ConfigureMvcAndAutomapper(this IServiceCollection services)
@@ -127,18 +107,6 @@ namespace BroadcastMessageServiceWorker.ServiceExtension
                 options.InstanceName = config.InstanceName;
             });
             services.AddScoped<ICacheService, CacheService>();
-        }
-
-        public static void ConfigureHangfire(this IServiceCollection services, IConfiguration configuration)
-        {
-            //    services.AddHangfire(x =>
-            //        x.UseSqlServerStorage(configuration.GetConnectionString("DefaultConnection")));
-            //    services.AddHangfireServer();
-        }
-
-        public static void ConfigureLoggerService(this IServiceCollection services)
-        {
-            services.AddScoped<ILoggerManager, LoggerManager>();
         }
 
         public static void ConfigureIdentity(this IServiceCollection services)

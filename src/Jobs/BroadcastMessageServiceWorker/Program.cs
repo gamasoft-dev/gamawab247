@@ -4,15 +4,10 @@ using Application.Services.Implementations;
 using Application.Services.Interfaces;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using BillProcessorAPI.Repositories.Implementations;
-using BillProcessorAPI.Repositories.Interfaces;
 using BroadcastMessageServiceWorker;
 using BroadcastMessageServiceWorker.Services;
-using Infrastructure;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 
-IConfiguration configuration;
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureWebHostDefaults(webBuilder =>
 {
@@ -32,7 +27,6 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddHostedService<Worker>();
         services.AddScoped<IBroadcastDispatchService, BroadcastDispatchService>();
         services.AddScoped<IOutboundMesageService, OutboundMessageService>();
-        services.AddScoped<IBillTransactionRepository, BillTransactionRespository>();
     })
     .Build();
 

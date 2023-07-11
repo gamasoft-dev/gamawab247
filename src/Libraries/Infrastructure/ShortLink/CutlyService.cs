@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using System.Transactions;
 using Domain.Common;
@@ -25,15 +26,20 @@ namespace Infrastructure.ShortLink
         }
         public async Task<string> ShortLink(string link)
         {
-            var parameter = $"?key={_options.Key}&short={link}";
+            //encode the url so that its been shortened appropriately without breaking the link
+            var encodedUrl = UrlEncoder.Default.Encode(link);
+
+            var parameter = $"?key={_options.Key}&short={encodedUrl}";
             var fullUrl = $"{_options.BaseUrl}/{parameter}";
+            
+            
             try
             {
                 IDictionary<string, string> dictNew = new Dictionary<string, string>();
                 var header = new RequestHeader(dictNew);
-                var shortLink = link;
+                var shortLink = encodedUrl;
 
-                var cutlyResponse = await _httpService.Post<CutlyResponse, string>(fullUrl, header, link);
+                var cutlyResponse = await _httpService.Post<CutlyResponse, string>(fullUrl, header, encodedUrl);
                 if (cutlyResponse.Status == 200)
                 {
                     shortLink = cutlyResponse.Data.Url.ShortLink;

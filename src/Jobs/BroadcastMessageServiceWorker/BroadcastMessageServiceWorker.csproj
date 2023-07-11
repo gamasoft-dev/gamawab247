@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.2" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
   </ItemGroup>
   <ItemGroup>
@@ -21,6 +20,5 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\Application\Application.csproj" />
     <ProjectReference Include="..\..\Libraries\Infrastructure\Infrastructure.csproj" />
-    <ProjectReference Include="..\..\services\BillProcessorAPI\BillProcessorAPI.csproj" />
   </ItemGroup>
 </Project>
