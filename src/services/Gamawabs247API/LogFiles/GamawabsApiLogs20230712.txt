@@ -1,0 +1,106 @@
+2023-07-12 18:26:09.450 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-07-12 18:26:13.247 +01:00 [INF] Now listening on: https://localhost:8000
+2023-07-12 18:26:13.263 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-07-12 18:26:13.270 +01:00 [INF] Hosting environment: Development
+2023-07-12 18:26:13.275 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\Gamawabs247API
+2023-07-12 18:26:20.543 +01:00 [INF] Request starting HTTP/2 GET https://localhost:8000/swagger - -
+2023-07-12 18:26:20.784 +01:00 [INF] Request finished HTTP/2 GET https://localhost:8000/swagger - - - 301 0 - 247.5335ms
+2023-07-12 18:26:20.817 +01:00 [INF] Request starting HTTP/2 GET https://localhost:8000/swagger/index.html - -
+2023-07-12 18:26:21.453 +01:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2023-07-12 18:26:21.455 +01:00 [INF] Request finished HTTP/2 GET https://localhost:8000/swagger/index.html - - - 200 - text/html;charset=utf-8 637.5834ms
+2023-07-12 18:26:21.471 +01:00 [INF] Request starting HTTP/2 GET https://localhost:8000/swagger/swagger-ui.css - -
+2023-07-12 18:26:21.471 +01:00 [INF] Request starting HTTP/2 GET https://localhost:8000/swagger/swagger-ui-bundle.js - -
+2023-07-12 18:26:21.512 +01:00 [INF] Request starting HTTP/2 GET https://localhost:8000/swagger/swagger-ui-standalone-preset.js - -
+2023-07-12 18:26:21.515 +01:00 [INF] Request starting HTTP/2 GET https://localhost:8000/_vs/browserLink - -
+2023-07-12 18:26:21.700 +01:00 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2023-07-12 18:26:21.719 +01:00 [INF] Request finished HTTP/2 GET https://localhost:8000/swagger/swagger-ui.css - - - 200 143632 text/css 248.1813ms
+2023-07-12 18:26:21.804 +01:00 [INF] Sending file. Request path: '/swagger-ui-standalone-preset.js'. Physical path: 'N/A'
+2023-07-12 18:26:21.804 +01:00 [INF] Request finished HTTP/2 GET https://localhost:8000/swagger/swagger-ui-standalone-preset.js - - - 200 337162 application/javascript 291.7949ms
+2023-07-12 18:26:22.012 +01:00 [INF] Sending file. Request path: '/swagger-ui-bundle.js'. Physical path: 'N/A'
+2023-07-12 18:26:22.012 +01:00 [INF] Request finished HTTP/2 GET https://localhost:8000/swagger/swagger-ui-bundle.js - - - 200 1092889 application/javascript 540.7846ms
+2023-07-12 18:26:22.015 +01:00 [INF] Request finished HTTP/2 GET https://localhost:8000/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 500.5732ms
+2023-07-12 18:26:23.117 +01:00 [INF] Request starting HTTP/2 GET https://localhost:8000/swagger/v1/swagger.json - -
+2023-07-12 18:26:24.277 +01:00 [WRN] An error occurred while trying to create a DataContractSerializer for the type 'Application.Helpers.SuccessResponse`1'.
+System.Runtime.Serialization.InvalidDataContractException: Type 'Application.Helpers.SuccessResponse`1[T]' cannot be exported as a schema type because it is an open generic type. You can only export a generic type if all its generic parameter types are actual types.
+   at System.Runtime.Serialization.DataContractSet.EnsureTypeNotGeneric(Type type)
+   at System.Runtime.Serialization.XsdDataContractExporter.GetRootElementName(Type type)
+   at Microsoft.AspNetCore.Mvc.Formatters.XmlDataContractSerializerOutputFormatter.CreateSerializer(Type type)
+2023-07-12 18:26:25.191 +01:00 [INF] Request finished HTTP/2 GET https://localhost:8000/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 2073.6268ms
+2023-07-12 19:01:48.480 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-07-12 19:01:55.541 +01:00 [INF] Now listening on: https://localhost:8000
+2023-07-12 19:01:55.563 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-07-12 19:01:55.601 +01:00 [INF] Hosting environment: Development
+2023-07-12 19:01:55.616 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\Gamawabs247API
+2023-07-12 19:02:01.694 +01:00 [INF] Request starting HTTP/2 GET https://localhost:8000/swagger/index.html - -
+2023-07-12 19:02:08.046 +01:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2023-07-12 19:02:08.753 +01:00 [INF] Request finished HTTP/2 GET https://localhost:8000/swagger/index.html - - - 200 - text/html;charset=utf-8 7065.9658ms
+2023-07-12 19:02:21.070 +01:00 [INF] Request starting HTTP/2 GET https://localhost:8000/_vs/browserLink - -
+2023-07-12 19:02:21.429 +01:00 [INF] Request finished HTTP/2 GET https://localhost:8000/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 359.3140ms
+2023-07-12 19:02:32.046 +01:00 [INF] Request starting HTTP/2 GET https://localhost:8000/swagger/v1/swagger.json - -
+2023-07-12 19:02:32.828 +01:00 [WRN] An error occurred while trying to create a DataContractSerializer for the type 'Application.Helpers.SuccessResponse`1'.
+System.Runtime.Serialization.InvalidDataContractException: Type 'Application.Helpers.SuccessResponse`1[T]' cannot be exported as a schema type because it is an open generic type. You can only export a generic type if all its generic parameter types are actual types.
+   at System.Runtime.Serialization.DataContractSet.EnsureTypeNotGeneric(Type type)
+   at System.Runtime.Serialization.XsdDataContractExporter.GetRootElementName(Type type)
+   at Microsoft.AspNetCore.Mvc.Formatters.XmlDataContractSerializerOutputFormatter.CreateSerializer(Type type)
+2023-07-12 19:02:34.463 +01:00 [INF] Request finished HTTP/2 GET https://localhost:8000/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 2417.3686ms
+2023-07-12 19:02:42.737 +01:00 [INF] Request starting HTTP/2 GET https://localhost:8000/swagger/index.html - -
+2023-07-12 19:02:42.738 +01:00 [INF] Request finished HTTP/2 GET https://localhost:8000/swagger/index.html - - - 200 - text/html;charset=utf-8 0.8291ms
+2023-07-12 19:04:44.792 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:8000/api/v1/messagebroadcast application/json;+charset=utf-8 179
+2023-07-12 19:04:44.985 +01:00 [INF] Executing endpoint 'Gamawabs247API.Controllers.BroadcastMessageController.CreateBroadCastMessage (Gamawabs247API)'
+2023-07-12 19:04:45.078 +01:00 [INF] Route matched with {action = "CreateBroadCastMessage", controller = "BroadcastMessage"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CreateBroadCastMessage(Application.DTOs.CreateBroadcastMessageDto) on controller Gamawabs247API.Controllers.BroadcastMessageController (Gamawabs247API).
+2023-07-12 19:05:10.331 +01:00 [INF] Executing OkObjectResult, writing value of type 'Application.Helpers.SuccessResponse`1[[Application.DTOs.BroadcastMessageDto, Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2023-07-12 19:05:10.546 +01:00 [INF] Executed action Gamawabs247API.Controllers.BroadcastMessageController.CreateBroadCastMessage (Gamawabs247API) in 25293.4603ms
+2023-07-12 19:05:10.550 +01:00 [INF] Executed endpoint 'Gamawabs247API.Controllers.BroadcastMessageController.CreateBroadCastMessage (Gamawabs247API)'
+2023-07-12 19:05:10.569 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:8000/api/v1/messagebroadcast application/json;+charset=utf-8 179 - 200 - application/json;+charset=utf-8 25777.3515ms
+2023-07-12 20:41:05.209 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-07-12 20:41:09.817 +01:00 [INF] Now listening on: https://localhost:8000
+2023-07-12 20:41:09.857 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-07-12 20:41:09.890 +01:00 [INF] Hosting environment: Development
+2023-07-12 20:41:10.197 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\Gamawabs247API
+2023-07-12 20:41:14.828 +01:00 [INF] Request starting HTTP/2 GET https://localhost:8000/swagger/index.html - -
+2023-07-12 20:41:31.346 +01:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2023-07-12 20:41:31.369 +01:00 [INF] Request finished HTTP/2 GET https://localhost:8000/swagger/index.html - - - 200 - text/html;charset=utf-8 16544.8060ms
+2023-07-12 20:41:32.016 +01:00 [INF] Request starting HTTP/2 GET https://localhost:8000/_vs/browserLink - -
+2023-07-12 20:41:40.126 +01:00 [INF] Request starting HTTP/2 GET https://localhost:8000/swagger/index.html - -
+2023-07-12 20:41:40.810 +01:00 [INF] Request finished HTTP/2 GET https://localhost:8000/swagger/index.html - - - 200 - text/html;charset=utf-8 683.0780ms
+2023-07-12 20:41:46.287 +01:00 [INF] Request finished HTTP/2 GET https://localhost:8000/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 14271.2218ms
+2023-07-12 20:41:47.621 +01:00 [INF] Request starting HTTP/2 GET https://localhost:8000/swagger/v1/swagger.json - -
+2023-07-12 20:41:49.077 +01:00 [WRN] An error occurred while trying to create a DataContractSerializer for the type 'Application.Helpers.SuccessResponse`1'.
+System.Runtime.Serialization.InvalidDataContractException: Type 'Application.Helpers.SuccessResponse`1[T]' cannot be exported as a schema type because it is an open generic type. You can only export a generic type if all its generic parameter types are actual types.
+   at System.Runtime.Serialization.DataContractSet.EnsureTypeNotGeneric(Type type)
+   at System.Runtime.Serialization.XsdDataContractExporter.GetRootElementName(Type type)
+   at Microsoft.AspNetCore.Mvc.Formatters.XmlDataContractSerializerOutputFormatter.CreateSerializer(Type type)
+2023-07-12 20:41:54.942 +01:00 [INF] Request finished HTTP/2 GET https://localhost:8000/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 7320.3769ms
+2023-07-12 20:53:46.255 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-07-12 20:53:48.745 +01:00 [INF] Now listening on: https://localhost:8000
+2023-07-12 20:53:49.296 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-07-12 20:53:49.354 +01:00 [INF] Hosting environment: Development
+2023-07-12 20:53:49.510 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\Gamawabs247API
+2023-07-12 20:53:51.562 +01:00 [INF] Request starting HTTP/2 GET https://localhost:8000/swagger/index.html - -
+2023-07-12 20:53:54.575 +01:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2023-07-12 20:53:54.600 +01:00 [INF] Request finished HTTP/2 GET https://localhost:8000/swagger/index.html - - - 200 - text/html;charset=utf-8 3042.7600ms
+2023-07-12 20:53:54.977 +01:00 [INF] Request starting HTTP/2 GET https://localhost:8000/_vs/browserLink - -
+2023-07-12 20:53:55.877 +01:00 [INF] Request starting HTTP/2 GET https://localhost:8000/swagger/index.html - -
+2023-07-12 20:53:55.878 +01:00 [INF] Request finished HTTP/2 GET https://localhost:8000/swagger/index.html - - - 200 - text/html;charset=utf-8 1.1474ms
+2023-07-12 20:53:55.973 +01:00 [INF] Request finished HTTP/2 GET https://localhost:8000/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 995.5687ms
+2023-07-12 20:53:56.313 +01:00 [INF] Request starting HTTP/2 GET https://localhost:8000/swagger/v1/swagger.json - -
+2023-07-12 20:53:57.012 +01:00 [WRN] An error occurred while trying to create a DataContractSerializer for the type 'Application.Helpers.SuccessResponse`1'.
+System.Runtime.Serialization.InvalidDataContractException: Type 'Application.Helpers.SuccessResponse`1[T]' cannot be exported as a schema type because it is an open generic type. You can only export a generic type if all its generic parameter types are actual types.
+   at System.Runtime.Serialization.DataContractSet.EnsureTypeNotGeneric(Type type)
+   at System.Runtime.Serialization.XsdDataContractExporter.GetRootElementName(Type type)
+   at Microsoft.AspNetCore.Mvc.Formatters.XmlDataContractSerializerOutputFormatter.CreateSerializer(Type type)
+2023-07-12 20:53:58.213 +01:00 [INF] Request finished HTTP/2 GET https://localhost:8000/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 1899.4669ms
+2023-07-12 20:55:03.315 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:8000/api/v1/messagebroadcast application/json;+charset=utf-8 179
+2023-07-12 20:55:03.501 +01:00 [INF] Executing endpoint 'Gamawabs247API.Controllers.BroadcastMessageController.CreateBroadCastMessage (Gamawabs247API)'
+2023-07-12 20:55:03.612 +01:00 [INF] Route matched with {action = "CreateBroadCastMessage", controller = "BroadcastMessage"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CreateBroadCastMessage(Application.DTOs.CreateBroadcastMessageDto) on controller Gamawabs247API.Controllers.BroadcastMessageController (Gamawabs247API).
+2023-07-12 20:55:17.381 +01:00 [INF] Executing OkObjectResult, writing value of type 'Application.Helpers.SuccessResponse`1[[Application.DTOs.BroadcastMessageDto, Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2023-07-12 20:55:17.461 +01:00 [INF] Executed action Gamawabs247API.Controllers.BroadcastMessageController.CreateBroadCastMessage (Gamawabs247API) in 13837.114ms
+2023-07-12 20:55:17.465 +01:00 [INF] Executed endpoint 'Gamawabs247API.Controllers.BroadcastMessageController.CreateBroadCastMessage (Gamawabs247API)'
+2023-07-12 20:55:17.547 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:8000/api/v1/messagebroadcast application/json;+charset=utf-8 179 - 200 - application/json;+charset=utf-8 14232.4756ms
+2023-07-12 21:01:11.342 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:8000/api/v1/messagebroadcast application/json;+charset=utf-8 179
+2023-07-12 21:01:11.349 +01:00 [INF] Executing endpoint 'Gamawabs247API.Controllers.BroadcastMessageController.CreateBroadCastMessage (Gamawabs247API)'
+2023-07-12 21:01:11.349 +01:00 [INF] Route matched with {action = "CreateBroadCastMessage", controller = "BroadcastMessage"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CreateBroadCastMessage(Application.DTOs.CreateBroadcastMessageDto) on controller Gamawabs247API.Controllers.BroadcastMessageController (Gamawabs247API).
+2023-07-12 21:01:13.596 +01:00 [INF] Executing OkObjectResult, writing value of type 'Application.Helpers.SuccessResponse`1[[Application.DTOs.BroadcastMessageDto, Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2023-07-12 21:01:13.597 +01:00 [INF] Executed action Gamawabs247API.Controllers.BroadcastMessageController.CreateBroadCastMessage (Gamawabs247API) in 2247.2722ms
+2023-07-12 21:01:13.597 +01:00 [INF] Executed endpoint 'Gamawabs247API.Controllers.BroadcastMessageController.CreateBroadCastMessage (Gamawabs247API)'
+2023-07-12 21:01:13.597 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:8000/api/v1/messagebroadcast application/json;+charset=utf-8 179 - 200 - application/json;+charset=utf-8 2255.3086ms

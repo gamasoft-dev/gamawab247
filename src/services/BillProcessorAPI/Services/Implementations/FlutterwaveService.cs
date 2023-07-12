@@ -265,7 +265,10 @@ namespace BillProcessorAPI.Services.Implementations
 
                 await _billTransactionsRepo.SaveChangesAsync();
 
-                await SendReceipt(transaction);
+
+                //Send customer receipt
+                await ReceiptBroadcast.SendReceipt(transaction,_phoneNumberOptions,_cutlyService,
+                    _receiptBroadcastOptions,_httpService);
 
                 //add the receipt to the invoice
                 var invoice = await _invoiceRepo.FirstOrDefault(x => x.BillTransactionId == transaction.Id);
