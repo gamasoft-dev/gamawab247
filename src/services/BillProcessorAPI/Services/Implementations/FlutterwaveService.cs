@@ -439,31 +439,5 @@ namespace BillProcessorAPI.Services.Implementations
 
         }
 
-        private async Task SendReceipt(BillTransaction transaction)
-        {
-            if (string.IsNullOrEmpty(_phoneNumberOptions.LUC.PhoneNumber))
-            {
-                throw new RestException(HttpStatusCode.PreconditionFailed, "LUC business phone number not cconfigured");
-            }
-
-            if (!string.IsNullOrEmpty(transaction.ReceiptUrl))
-            {
-                var shortReceiptUrl = await _cutlyService.ShortLink(transaction.ReceiptUrl.ToString());
-
-                var broadcastMessage = new CreateBroadcastMessageDto
-                {
-                    From = _phoneNumberOptions.LUC.PhoneNumber,
-                    Message = $"Please click on the link below to download your payment receipt.{Environment.NewLine}{Environment.NewLine}{shortReceiptUrl}",
-                    To = transaction.PhoneNumber
-                };
-
-                var gamawabsBroadcastUrl = _receiptBroadcastOptions.Url;
-                var postBroadcast = await _httpService.Post<BroadcastMessageDto, CreateBroadcastMessageDto>(gamawabsBroadcastUrl, null, broadcastMessage);
-                if (postBroadcast.Data.Id != Guid.Empty)
-                {
-                    transaction.isReceiptSent = true;
-                }
-            }
-        }
     }
 }
