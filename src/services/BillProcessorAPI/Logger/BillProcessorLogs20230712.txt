@@ -195,3 +195,64 @@
 2023-07-12 21:01:14.905 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.PaymentVerification (BillProcessorAPI) in 181532.2146ms
 2023-07-12 21:01:14.905 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.PaymentVerification (BillProcessorAPI)'
 2023-07-12 21:01:14.906 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7253/paythru/notify application/json 1178 - 200 0 - 181540.7109ms
+2023-07-12 21:38:50.951 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-07-12 21:38:51.637 +01:00 [INF] Now listening on: https://localhost:7253
+2023-07-12 21:38:51.637 +01:00 [INF] Now listening on: http://localhost:5273
+2023-07-12 21:38:51.642 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-07-12 21:38:51.643 +01:00 [INF] Hosting environment: Development
+2023-07-12 21:38:51.643 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-07-12 21:38:55.384 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-07-12 21:38:56.399 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1019.8670ms
+2023-07-12 21:38:56.475 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-07-12 21:38:56.481 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 6.3268ms
+2023-07-12 21:38:56.531 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-07-12 21:38:57.059 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 528.6397ms
+2023-07-12 21:38:57.268 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-07-12 21:38:57.978 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 710.2646ms
+2023-07-12 21:39:23.331 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-07-12 21:39:23.332 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1.3102ms
+2023-07-12 21:41:07.881 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-07-12 21:41:08.371 +01:00 [INF] Now listening on: https://localhost:7253
+2023-07-12 21:41:08.371 +01:00 [INF] Now listening on: http://localhost:5273
+2023-07-12 21:41:08.376 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-07-12 21:41:08.377 +01:00 [INF] Hosting environment: Development
+2023-07-12 21:41:08.377 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-07-12 21:41:10.503 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-07-12 21:41:11.958 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1460.0343ms
+2023-07-12 21:41:12.053 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-07-12 21:41:12.060 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 7.1640ms
+2023-07-12 21:41:12.116 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-07-12 21:41:12.503 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 387.2074ms
+2023-07-12 21:41:13.943 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-07-12 21:41:14.921 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 977.9513ms
+2023-07-12 21:42:14.554 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7253/paythru/notify application/json 1178
+2023-07-12 21:42:14.649 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.PaymentVerification (BillProcessorAPI)'
+2023-07-12 21:42:14.978 +01:00 [INF] Route matched with {action = "PaymentVerification", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] PaymentVerification(BillProcessorAPI.Dtos.Paythru.NotificationRequestWrapper) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-07-12 21:42:17.794 +01:00 [INF] Payment notification from Paythru just came in as at 7/12/2023 8:42:17 PM
+2023-07-12 21:42:17.794 +01:00 [INF] -------------------------------------------------------------------------
+2023-07-12 21:42:17.800 +01:00 [INF] Formatted string value of the notification :1 
+ Amount : 80100.00 
+  BankReference :  
+ Commission: 100.00 
+ Currency: 566
+ CustomerId: 376 Customer Name  
+ DateCompleted: 2023-05-24T05:44Z 
+ Date of Transaxtion 2023-05-24T05:41Z WEMA BANK 
+ Merchant Reference: 230054367007688552990225386377  Payment Reference: 456729191684946160 
+  Paythru Reference: 230524173658865248 
+  Status : Successful 
+  REsponse Code: 00  Narration:   Response Description: 00
+2023-07-12 21:42:18.270 +01:00 [INF] Serialized json value of the notification :{"notificationType":1,"transactionDetails":{"productId":"97128981666199460","dateOfTransaction":"2023-05-24T05:41Z","merchantReference":"230054367007688552990225386377","customerId":376,"fiName":"WEMA BANK","paymentMethod":"Virtual Account","payThruReference":"230524173658865248","paymentReference":"456729191684946160","bankReference":"","responseCode":"00","responseDescription":"00","dateCompleted":"2023-05-24T05:44Z","naration":null,"currency":"566","ussdReferenceCode":"N/A","status":"Successful","amount":80100.00,"commission":100.00,"residualAmount":80000.00,"customerName":null,"resultCode":"o85k06h3co5a7pvd","hash":"d9d91b47b912347a63bfad9937ec2147637c2a4a9e91b2c05cac2564d52164a618034d5e30421fa070181d473680ac8032648463a5c0dd7114c6893cc3ee41a6","receiptUrl":"https://printreceipt.ebs-rcm.com/Listen/printreceipt?dbName=LASG&payertype=N&payerid=5084377&transid=51761466&transcode=UJFEIVGV"}
+2023-07-12 21:42:18.271 +01:00 [INF] -------------------------------------------------------------------------
+2023-07-12 21:42:31.351 +01:00 [INF] Start processing HTTP request POST https://cutt.ly/api/api.php/?key=21910549b12e51bdfb8584b1d0f01fcac9e7d&short=https%3A%2F%2Fprintreceipt.ebs-rcm.com%2FListen%2Fprintreceipt%3FdbName%3DLASG%26payertype%3DN%26payerid%3D5084377%26transid%3D51761466%26transcode%3DUJFEIVGV
+2023-07-12 21:42:31.357 +01:00 [INF] Sending HTTP request POST https://cutt.ly/api/api.php/?key=21910549b12e51bdfb8584b1d0f01fcac9e7d&short=https%3A%2F%2Fprintreceipt.ebs-rcm.com%2FListen%2Fprintreceipt%3FdbName%3DLASG%26payertype%3DN%26payerid%3D5084377%26transid%3D51761466%26transcode%3DUJFEIVGV
+2023-07-12 21:42:34.045 +01:00 [INF] Received HTTP response headers after 2680.3695ms - 200
+2023-07-12 21:42:34.051 +01:00 [INF] End processing HTTP request after 2713.1285ms - 200
+2023-07-12 21:42:34.406 +01:00 [INF] Start processing HTTP request POST https://localhost:8000/api/v1/messagebroadcast
+2023-07-12 21:42:34.407 +01:00 [INF] Sending HTTP request POST https://localhost:8000/api/v1/messagebroadcast
+2023-07-12 21:42:51.371 +01:00 [INF] Received HTTP response headers after 16964.0907ms - 200
+2023-07-12 21:42:51.371 +01:00 [INF] End processing HTTP request after 16964.4237ms - 200
+2023-07-12 21:42:52.959 +01:00 [INF] Executing StatusCodeResult, setting HTTP status code 200
+2023-07-12 21:42:52.973 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.PaymentVerification (BillProcessorAPI) in 37986.3879ms
+2023-07-12 21:42:52.975 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.PaymentVerification (BillProcessorAPI)'
+2023-07-12 21:42:53.158 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7253/paythru/notify application/json 1178 - 200 0 - 38603.6901ms
