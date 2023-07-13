@@ -32,12 +32,12 @@ namespace API;
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.UseSentry(o => {
-                        o.Dsn = "https://3980744645414fc68df06ec33fd9abe7@o1289200.ingest.sentry.io/6507272";
-                        o.Debug = true;// Set TracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.// We recommend adjusting this value in production.
-                        o.TracesSampleRate = 1.0;
-                        o.Environment = "production";
-                    });
+                    //webBuilder.UseSentry(o => {
+                    //    o.Dsn = "https://3980744645414fc68df06ec33fd9abe7@o1289200.ingest.sentry.io/6507272";
+                    //    o.Debug = true;// Set TracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.// We recommend adjusting this value in production.
+                    //    o.TracesSampleRate = 1.0;
+                    //    o.Environment = "production";
+                    //});
                 })
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureContainer<ContainerBuilder>(builder =>

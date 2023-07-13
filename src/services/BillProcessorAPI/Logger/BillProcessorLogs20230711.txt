@@ -1,0 +1,189 @@
+2023-07-11 03:47:06.310 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-07-11 03:47:12.405 +01:00 [INF] Now listening on: https://localhost:7253
+2023-07-11 03:47:12.405 +01:00 [INF] Now listening on: http://localhost:5273
+2023-07-11 03:47:12.410 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-07-11 03:47:12.411 +01:00 [INF] Hosting environment: Development
+2023-07-11 03:47:12.411 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-07-11 03:47:24.185 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-07-11 03:47:25.542 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1365.8666ms
+2023-07-11 03:47:25.923 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-07-11 03:47:25.931 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 7.4342ms
+2023-07-11 03:47:26.021 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-07-11 03:47:26.772 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 751.1045ms
+2023-07-11 03:47:27.094 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-07-11 03:47:27.967 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 909.2164ms
+2023-07-11 03:51:09.064 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7253/flutterwave/notify application/json 563
+2023-07-11 03:51:09.174 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.FlutterwavePaymentNotification (BillProcessorAPI)'
+2023-07-11 03:51:09.366 +01:00 [INF] Route matched with {action = "FlutterwavePaymentNotification", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] FlutterwavePaymentNotification(BillProcessorAPI.Dtos.Flutterwave.WebHookNotificationWrapper) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-07-11 03:51:13.144 +01:00 [INF] Flutter wave request received
+2023-07-11 03:51:28.248 +01:00 [FTL] Payment notification from Flutterwave just came in as at: 7/11/2023 2:51:28 AM
+2023-07-11 03:51:28.868 +01:00 [FTL] Details of notification : {"webGuid":"2300436276","responseCode":"SUCCESSFULL","responseDesc":"PostResult = Successful","receiptNumber":"https://printreceipt.ebs-rcm.com/Listen/printreceipt?dbName=LASG&payertype=N&payerid=1826190&transid=52041727&transcode=BKQWWQHH","state":"LASG","status":"SUCCESS","transID":"52041727","transCode":"BKQWWQHH","statusMessage":"PostResult = Successful","propertyAddress":null,"transactionReference":"L12664222637816118597","paymentRef":{"valueKind":1}}
+2023-07-11 03:51:28.868 +01:00 [INF] No transaction was found for the webhok received, webhook saved to the database
+2023-07-11 03:51:29.104 +01:00 [INF] Start processing HTTP request GET https://api.flutterwave.com//v3/transactions/verify_by_reference/?tx_ref=L12664222637816118597
+2023-07-11 03:51:29.115 +01:00 [INF] Sending HTTP request GET https://api.flutterwave.com//v3/transactions/verify_by_reference/?tx_ref=L12664222637816118597
+2023-07-11 03:51:30.782 +01:00 [INF] Received HTTP response headers after 1653.8754ms - 200
+2023-07-11 03:51:30.788 +01:00 [INF] End processing HTTP request after 1783.4044ms - 200
+2023-07-11 03:51:35.198 +01:00 [ERR] An error occurred on receipt of payment notification from flutterwave: an error occured while shortening the link
+2023-07-11 03:51:38.390 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.FlutterwavePaymentNotification (BillProcessorAPI) in 29009.2998ms
+2023-07-11 03:51:38.398 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.FlutterwavePaymentNotification (BillProcessorAPI)'
+2023-07-11 03:51:39.268 +01:00 [ERR] an error occured while shortening the link
+2023-07-11 03:51:39.638 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7253/flutterwave/notify application/json 563 - 500 - application/json 30573.5856ms
+2023-07-11 03:52:26.918 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7253/flutterwave/notify application/json 563
+2023-07-11 03:52:26.922 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.FlutterwavePaymentNotification (BillProcessorAPI)'
+2023-07-11 03:52:26.923 +01:00 [INF] Route matched with {action = "FlutterwavePaymentNotification", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] FlutterwavePaymentNotification(BillProcessorAPI.Dtos.Flutterwave.WebHookNotificationWrapper) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-07-11 03:52:26.924 +01:00 [INF] Flutter wave request received
+2023-07-11 03:52:30.830 +01:00 [FTL] Payment notification from Flutterwave just came in as at: 7/11/2023 2:52:30 AM
+2023-07-11 03:52:30.830 +01:00 [FTL] Details of notification : {"webGuid":"2300436276","responseCode":"SUCCESSFULL","responseDesc":"PostResult = Successful","receiptNumber":"https://printreceipt.ebs-rcm.com/Listen/printreceipt?dbName=LASG&payertype=N&payerid=1826190&transid=52041727&transcode=BKQWWQHH","state":"LASG","status":"SUCCESS","transID":"52041727","transCode":"BKQWWQHH","statusMessage":"PostResult = Successful","propertyAddress":null,"transactionReference":"L12664222637816118597","paymentRef":{"valueKind":1}}
+2023-07-11 03:52:30.830 +01:00 [INF] No transaction was found for the webhok received, webhook saved to the database
+2023-07-11 03:52:30.830 +01:00 [INF] Start processing HTTP request GET https://api.flutterwave.com//v3/transactions/verify_by_reference/?tx_ref=L12664222637816118597
+2023-07-11 03:52:30.830 +01:00 [INF] Sending HTTP request GET https://api.flutterwave.com//v3/transactions/verify_by_reference/?tx_ref=L12664222637816118597
+2023-07-11 03:52:34.291 +01:00 [INF] Received HTTP response headers after 3460.6753ms - 200
+2023-07-11 03:52:34.291 +01:00 [INF] End processing HTTP request after 3460.9207ms - 200
+2023-07-11 04:03:29.336 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-07-11 04:03:30.764 +01:00 [INF] Now listening on: https://localhost:7253
+2023-07-11 04:03:30.764 +01:00 [INF] Now listening on: http://localhost:5273
+2023-07-11 04:03:30.769 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-07-11 04:03:30.770 +01:00 [INF] Hosting environment: Development
+2023-07-11 04:03:30.770 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-07-11 04:03:34.325 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-07-11 04:03:36.785 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 2471.9313ms
+2023-07-11 04:03:37.185 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-07-11 04:03:37.208 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 22.2910ms
+2023-07-11 04:03:37.504 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-07-11 04:03:38.057 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 552.8699ms
+2023-07-11 04:03:38.424 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-07-11 04:03:39.522 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 1097.9273ms
+2023-07-11 04:03:47.467 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-07-11 04:03:47.469 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1.5719ms
+2023-07-11 04:05:54.017 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7253/flutterwave/notify application/json 563
+2023-07-11 04:05:54.270 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.FlutterwavePaymentNotification (BillProcessorAPI)'
+2023-07-11 04:05:54.412 +01:00 [INF] Route matched with {action = "FlutterwavePaymentNotification", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] FlutterwavePaymentNotification(BillProcessorAPI.Dtos.Flutterwave.WebHookNotificationWrapper) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-07-11 04:06:02.887 +01:00 [INF] Flutter wave request received
+2023-07-11 04:06:29.778 +01:00 [FTL] Payment notification from Flutterwave just came in as at: 7/11/2023 3:06:29 AM
+2023-07-11 04:06:31.377 +01:00 [FTL] Details of notification : {"webGuid":"2300436276","responseCode":"SUCCESSFULL","responseDesc":"PostResult = Successful","receiptNumber":"https://printreceipt.ebs-rcm.com/Listen/printreceipt?dbName=LASG&payertype=N&payerid=1826190&transid=52041727&transcode=BKQWWQHH","state":"LASG","status":"SUCCESS","transID":"52041727","transCode":"BKQWWQHH","statusMessage":"PostResult = Successful","propertyAddress":null,"transactionReference":"L12664222637816118597","paymentRef":{"valueKind":1}}
+2023-07-11 04:06:31.378 +01:00 [INF] No transaction was found for the webhok received, webhook saved to the database
+2023-07-11 04:06:31.537 +01:00 [INF] Start processing HTTP request GET https://api.flutterwave.com//v3/transactions/verify_by_reference/?tx_ref=L12664222637816118597
+2023-07-11 04:06:31.543 +01:00 [INF] Sending HTTP request GET https://api.flutterwave.com//v3/transactions/verify_by_reference/?tx_ref=L12664222637816118597
+2023-07-11 04:06:35.315 +01:00 [INF] Received HTTP response headers after 3760.5359ms - 200
+2023-07-11 04:06:35.323 +01:00 [INF] End processing HTTP request after 3862.1948ms - 200
+2023-07-11 04:10:28.896 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-07-11 04:10:34.141 +01:00 [INF] Now listening on: https://localhost:7253
+2023-07-11 04:10:34.141 +01:00 [INF] Now listening on: http://localhost:5273
+2023-07-11 04:10:34.146 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-07-11 04:10:34.146 +01:00 [INF] Hosting environment: Development
+2023-07-11 04:10:34.147 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-07-11 04:10:39.467 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-07-11 04:10:47.603 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 8144.7236ms
+2023-07-11 04:10:48.475 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-07-11 04:10:48.482 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 6.8293ms
+2023-07-11 04:10:49.166 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-07-11 04:10:54.390 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 5223.6066ms
+2023-07-11 04:10:54.755 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-07-11 04:10:55.977 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 1221.0960ms
+2023-07-11 04:11:03.376 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-07-11 04:11:03.377 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1.2922ms
+2023-07-11 04:11:27.020 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7253/flutterwave/notify application/json 563
+2023-07-11 04:11:27.164 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.FlutterwavePaymentNotification (BillProcessorAPI)'
+2023-07-11 04:11:27.307 +01:00 [INF] Route matched with {action = "FlutterwavePaymentNotification", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] FlutterwavePaymentNotification(BillProcessorAPI.Dtos.Flutterwave.WebHookNotificationWrapper) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-07-11 04:11:33.300 +01:00 [INF] Flutter wave request received
+2023-07-11 04:11:44.991 +01:00 [FTL] Payment notification from Flutterwave just came in as at: 7/11/2023 3:11:44 AM
+2023-07-11 04:11:45.282 +01:00 [FTL] Details of notification : {"webGuid":"2300436276","responseCode":"SUCCESSFULL","responseDesc":"PostResult = Successful","receiptNumber":"https://printreceipt.ebs-rcm.com/Listen/printreceipt?dbName=LASG&payertype=N&payerid=1826190&transid=52041727&transcode=BKQWWQHH","state":"LASG","status":"SUCCESS","transID":"52041727","transCode":"BKQWWQHH","statusMessage":"PostResult = Successful","propertyAddress":null,"transactionReference":"L12664222637816118597","paymentRef":{"valueKind":1}}
+2023-07-11 04:11:45.282 +01:00 [INF] No transaction was found for the webhok received, webhook saved to the database
+2023-07-11 04:11:45.466 +01:00 [INF] Start processing HTTP request GET https://api.flutterwave.com//v3/transactions/verify_by_reference/?tx_ref=L12664222637816118597
+2023-07-11 04:11:45.475 +01:00 [INF] Sending HTTP request GET https://api.flutterwave.com//v3/transactions/verify_by_reference/?tx_ref=L12664222637816118597
+2023-07-11 04:11:46.582 +01:00 [INF] Received HTTP response headers after 1098.9309ms - 200
+2023-07-11 04:11:46.594 +01:00 [INF] End processing HTTP request after 1151.9821ms - 200
+2023-07-11 04:12:09.801 +01:00 [INF] Start processing HTTP request POST https://cutt.ly/api/api.php/?key=21910549b12e51bdfb8584b1d0f01fcac9e7d&short=https://printreceipt.ebs-rcm.com/Listen/printreceipt?dbName=LASG&payertype=N&payerid=1826190&transid=52041727&transcode=BKQWWQHH
+2023-07-11 04:12:09.801 +01:00 [INF] Sending HTTP request POST https://cutt.ly/api/api.php/?key=21910549b12e51bdfb8584b1d0f01fcac9e7d&short=https://printreceipt.ebs-rcm.com/Listen/printreceipt?dbName=LASG&payertype=N&payerid=1826190&transid=52041727&transcode=BKQWWQHH
+2023-07-11 04:12:13.258 +01:00 [INF] Received HTTP response headers after 3456.4792ms - 200
+2023-07-11 04:12:13.258 +01:00 [INF] End processing HTTP request after 3456.8005ms - 200
+2023-07-11 04:12:13.272 +01:00 [INF] Start processing HTTP request POST https://localhost:8000/api/v1/messagebroadcast
+2023-07-11 04:12:13.272 +01:00 [INF] Sending HTTP request POST https://localhost:8000/api/v1/messagebroadcast
+2023-07-11 04:12:30.296 +01:00 [INF] Received HTTP response headers after 17024.0285ms - 200
+2023-07-11 04:12:30.297 +01:00 [INF] End processing HTTP request after 17024.3332ms - 200
+2023-07-11 04:12:31.724 +01:00 [INF] Executing OkObjectResult, writing value of type 'BillProcessorAPI.Helpers.SuccessResponse`1[[System.String, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2023-07-11 04:12:31.756 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.FlutterwavePaymentNotification (BillProcessorAPI) in 64439.9014ms
+2023-07-11 04:12:31.805 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.FlutterwavePaymentNotification (BillProcessorAPI)'
+2023-07-11 04:12:31.839 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7253/flutterwave/notify application/json 563 - 200 - application/json;+charset=utf-8 64819.7657ms
+2023-07-11 04:32:12.911 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-07-11 04:32:45.275 +01:00 [INF] Now listening on: https://localhost:7253
+2023-07-11 04:32:45.275 +01:00 [INF] Now listening on: http://localhost:5273
+2023-07-11 04:32:45.282 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-07-11 04:32:45.282 +01:00 [INF] Hosting environment: Development
+2023-07-11 04:32:45.282 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-07-11 04:33:04.776 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-07-11 04:33:33.465 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 28692.4055ms
+2023-07-11 04:34:35.692 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-07-11 04:34:35.703 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 11.5887ms
+2023-07-11 04:34:35.703 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-07-11 04:34:38.166 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 2463.1272ms
+2023-07-11 04:35:04.549 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-07-11 04:35:06.445 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 1896.1647ms
+2023-07-11 04:36:49.035 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7253/flutterwave/notify application/json 563
+2023-07-11 04:36:49.364 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.FlutterwavePaymentNotification (BillProcessorAPI)'
+2023-07-11 04:36:49.640 +01:00 [INF] Route matched with {action = "FlutterwavePaymentNotification", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] FlutterwavePaymentNotification(BillProcessorAPI.Dtos.Flutterwave.WebHookNotificationWrapper) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-07-11 04:36:59.577 +01:00 [INF] Flutter wave request received
+2023-07-11 04:37:23.313 +01:00 [FTL] Payment notification from Flutterwave just came in as at: 7/11/2023 3:37:23 AM
+2023-07-11 04:37:25.000 +01:00 [FTL] Details of notification : {"webGuid":"2300436276","responseCode":"SUCCESSFULL","responseDesc":"PostResult = Successful","receiptNumber":"https://printreceipt.ebs-rcm.com/Listen/printreceipt?dbName=LASG&payertype=N&payerid=1826190&transid=52041727&transcode=BKQWWQHH","state":"LASG","status":"SUCCESS","transID":"52041727","transCode":"BKQWWQHH","statusMessage":"PostResult = Successful","propertyAddress":null,"transactionReference":"L12664222637816118597","paymentRef":{"valueKind":1}}
+2023-07-11 04:37:25.000 +01:00 [INF] No transaction was found for the webhok received, webhook saved to the database
+2023-07-11 04:37:25.359 +01:00 [INF] Start processing HTTP request GET https://api.flutterwave.com//v3/transactions/verify_by_reference/?tx_ref=L12664222637816118597
+2023-07-11 04:37:25.369 +01:00 [INF] Sending HTTP request GET https://api.flutterwave.com//v3/transactions/verify_by_reference/?tx_ref=L12664222637816118597
+2023-07-11 04:37:31.739 +01:00 [INF] Received HTTP response headers after 6361.2645ms - 200
+2023-07-11 04:37:31.747 +01:00 [INF] End processing HTTP request after 6486.1492ms - 200
+2023-07-11 04:38:04.577 +01:00 [INF] Start processing HTTP request POST https://cutt.ly/api/api.php/?key=21910549b12e51bdfb8584b1d0f01fcac9e7d&short=https://printreceipt.ebs-rcm.com/Listen/printreceipt?dbName=LASG&payertype=N&payerid=1826190&transid=52041727&transcode=BKQWWQHH
+2023-07-11 04:38:04.578 +01:00 [INF] Sending HTTP request POST https://cutt.ly/api/api.php/?key=21910549b12e51bdfb8584b1d0f01fcac9e7d&short=https://printreceipt.ebs-rcm.com/Listen/printreceipt?dbName=LASG&payertype=N&payerid=1826190&transid=52041727&transcode=BKQWWQHH
+2023-07-11 04:38:13.084 +01:00 [INF] Received HTTP response headers after 8506.5136ms - 200
+2023-07-11 04:38:13.084 +01:00 [INF] End processing HTTP request after 8506.8773ms - 200
+2023-07-11 05:04:09.597 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-07-11 05:04:16.575 +01:00 [INF] Now listening on: https://localhost:7253
+2023-07-11 05:04:16.575 +01:00 [INF] Now listening on: http://localhost:5273
+2023-07-11 05:04:16.581 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-07-11 05:04:16.582 +01:00 [INF] Hosting environment: Development
+2023-07-11 05:04:16.582 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-07-11 05:04:22.390 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-07-11 05:04:38.883 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 16500.6824ms
+2023-07-11 05:04:41.568 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-07-11 05:04:41.587 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 18.9779ms
+2023-07-11 05:04:43.614 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-07-11 05:05:03.620 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 20006.0482ms
+2023-07-11 05:05:28.245 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-07-11 05:05:30.320 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 2075.4831ms
+2023-07-11 05:09:59.195 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-07-11 05:09:59.838 +01:00 [INF] Now listening on: https://localhost:7253
+2023-07-11 05:09:59.838 +01:00 [INF] Now listening on: http://localhost:5273
+2023-07-11 05:09:59.843 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-07-11 05:09:59.844 +01:00 [INF] Hosting environment: Development
+2023-07-11 05:09:59.844 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-07-11 05:10:03.865 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-07-11 05:10:06.973 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 3113.8131ms
+2023-07-11 05:10:07.587 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-07-11 05:10:07.600 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 13.8694ms
+2023-07-11 05:10:07.982 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-07-11 05:10:08.765 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 782.3451ms
+2023-07-11 05:10:09.511 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-07-11 05:10:10.453 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 941.6769ms
+2023-07-11 05:10:23.607 +01:00 [INF] Request starting HTTP/1.1 POST https://localhost:7253/flutterwave/notify application/json 563
+2023-07-11 05:10:23.799 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.PaymentController.FlutterwavePaymentNotification (BillProcessorAPI)'
+2023-07-11 05:10:24.086 +01:00 [INF] Route matched with {action = "FlutterwavePaymentNotification", controller = "Payment"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] FlutterwavePaymentNotification(BillProcessorAPI.Dtos.Flutterwave.WebHookNotificationWrapper) on controller BillProcessorAPI.Controllers.PaymentController (BillProcessorAPI).
+2023-07-11 05:10:32.456 +01:00 [INF] Flutter wave request received
+2023-07-11 05:10:45.166 +01:00 [FTL] Payment notification from Flutterwave just came in as at: 7/11/2023 4:10:45 AM
+2023-07-11 05:10:45.592 +01:00 [FTL] Details of notification : {"webGuid":"2300436276","responseCode":"SUCCESSFULL","responseDesc":"PostResult = Successful","receiptNumber":"https://printreceipt.ebs-rcm.com/Listen/printreceipt?dbName=LASG&payertype=N&payerid=1826190&transid=52041727&transcode=BKQWWQHH","state":"LASG","status":"SUCCESS","transID":"52041727","transCode":"BKQWWQHH","statusMessage":"PostResult = Successful","propertyAddress":null,"transactionReference":"L12664222637816118597","paymentRef":{"valueKind":1}}
+2023-07-11 05:10:45.592 +01:00 [INF] No transaction was found for the webhok received, webhook saved to the database
+2023-07-11 05:10:45.684 +01:00 [INF] Start processing HTTP request GET https://api.flutterwave.com//v3/transactions/verify_by_reference/?tx_ref=L12664222637816118597
+2023-07-11 05:10:45.696 +01:00 [INF] Sending HTTP request GET https://api.flutterwave.com//v3/transactions/verify_by_reference/?tx_ref=L12664222637816118597
+2023-07-11 05:10:46.959 +01:00 [INF] Received HTTP response headers after 1252.2564ms - 200
+2023-07-11 05:10:46.965 +01:00 [INF] End processing HTTP request after 1309.7461ms - 200
+2023-07-11 05:11:15.834 +01:00 [INF] Start processing HTTP request POST https://cutt.ly/api/api.php/?key=21910549b12e51bdfb8584b1d0f01fcac9e7d&short=https%3A%2F%2Fprintreceipt.ebs-rcm.com%2FListen%2Fprintreceipt%3FdbName%3DLASG%26payertype%3DN%26payerid%3D1826190%26transid%3D52041727%26transcode%3DBKQWWQHH
+2023-07-11 05:11:15.834 +01:00 [INF] Sending HTTP request POST https://cutt.ly/api/api.php/?key=21910549b12e51bdfb8584b1d0f01fcac9e7d&short=https%3A%2F%2Fprintreceipt.ebs-rcm.com%2FListen%2Fprintreceipt%3FdbName%3DLASG%26payertype%3DN%26payerid%3D1826190%26transid%3D52041727%26transcode%3DBKQWWQHH
+2023-07-11 05:11:15.941 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-07-11 05:11:15.942 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 0.6349ms
+2023-07-11 05:11:19.042 +01:00 [INF] Received HTTP response headers after 3207.7182ms - 200
+2023-07-11 05:11:19.045 +01:00 [INF] End processing HTTP request after 3208.1128ms - 200
+2023-07-11 05:12:10.088 +01:00 [INF] Start processing HTTP request POST https://localhost:8000/api/v1/messagebroadcast
+2023-07-11 05:12:10.088 +01:00 [INF] Sending HTTP request POST https://localhost:8000/api/v1/messagebroadcast
+2023-07-11 05:12:42.378 +01:00 [INF] Received HTTP response headers after 32289.3852ms - 200
+2023-07-11 05:12:42.378 +01:00 [INF] End processing HTTP request after 32289.7592ms - 200
+2023-07-11 05:12:44.036 +01:00 [INF] Executing OkObjectResult, writing value of type 'BillProcessorAPI.Helpers.SuccessResponse`1[[System.String, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2023-07-11 05:12:44.103 +01:00 [INF] Executed action BillProcessorAPI.Controllers.PaymentController.FlutterwavePaymentNotification (BillProcessorAPI) in 139971.1856ms
+2023-07-11 05:12:44.104 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.PaymentController.FlutterwavePaymentNotification (BillProcessorAPI)'
+2023-07-11 05:12:44.139 +01:00 [INF] Request finished HTTP/1.1 POST https://localhost:7253/flutterwave/notify application/json 563 - 200 - application/json;+charset=utf-8 140531.7905ms

@@ -1,0 +1,40 @@
+2023-06-28 11:05:52.974 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-06-28 11:05:55.776 +01:00 [INF] Now listening on: http://localhost:8000
+2023-06-28 11:05:56.008 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-06-28 11:05:56.140 +01:00 [INF] Hosting environment: Development
+2023-06-28 11:05:56.520 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\Gamawabs247API
+2023-06-28 11:06:09.479 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:8000/swagger - -
+2023-06-28 11:06:09.674 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:8000/swagger - - - 301 0 - 199.4359ms
+2023-06-28 11:06:09.699 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:8000/swagger/index.html - -
+2023-06-28 11:06:10.898 +01:00 [WRN] Unable to configure browser refresh script injection on the response. Consider manually adding '<script src="/_framework/aspnetcore-browser-refresh.js"></script>' to the body of the page.
+2023-06-28 11:06:10.899 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:8000/swagger/index.html - - - 200 - text/html;charset=utf-8 1199.7972ms
+2023-06-28 11:06:10.901 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:8000/swagger/swagger-ui-bundle.js - -
+2023-06-28 11:06:10.915 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:8000/swagger/swagger-ui-standalone-preset.js - -
+2023-06-28 11:06:10.933 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:8000/_vs/browserLink - -
+2023-06-28 11:06:10.945 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:8000/swagger/swagger-ui.css - -
+2023-06-28 11:06:11.020 +01:00 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2023-06-28 11:06:11.020 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:8000/swagger/swagger-ui.css - - - 200 143632 text/css 74.3688ms
+2023-06-28 11:06:11.168 +01:00 [INF] Sending file. Request path: '/swagger-ui-standalone-preset.js'. Physical path: 'N/A'
+2023-06-28 11:06:11.168 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:8000/swagger/swagger-ui-standalone-preset.js - - - 200 337162 application/javascript 253.2014ms
+2023-06-28 11:06:11.302 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:8000/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 369.1443ms
+2023-06-28 11:06:11.480 +01:00 [INF] Sending file. Request path: '/swagger-ui-bundle.js'. Physical path: 'N/A'
+2023-06-28 11:06:11.481 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:8000/swagger/swagger-ui-bundle.js - - - 200 1092889 application/javascript 579.0264ms
+2023-06-28 11:06:11.976 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:8000/swagger/v1/swagger.json - -
+2023-06-28 11:06:12.303 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:8000/swagger/favicon-32x32.png - -
+2023-06-28 11:06:12.303 +01:00 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2023-06-28 11:06:12.303 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:8000/swagger/favicon-32x32.png - - - 200 628 image/png 0.3464ms
+2023-06-28 11:06:12.392 +01:00 [WRN] An error occurred while trying to create a DataContractSerializer for the type 'Application.Helpers.SuccessResponse`1'.
+System.Runtime.Serialization.InvalidDataContractException: Type 'Application.Helpers.SuccessResponse`1[T]' cannot be exported as a schema type because it is an open generic type. You can only export a generic type if all its generic parameter types are actual types.
+   at System.Runtime.Serialization.DataContractSet.EnsureTypeNotGeneric(Type type)
+   at System.Runtime.Serialization.XsdDataContractExporter.GetRootElementName(Type type)
+   at Microsoft.AspNetCore.Mvc.Formatters.XmlDataContractSerializerOutputFormatter.CreateSerializer(Type type)
+2023-06-28 11:06:12.670 +01:00 [ERR] An unhandled exception has occurred while executing the request.
+Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Conflicting method/path combination "GET api/v1/messagebroadcast/{id}" for actions - Gamawabs247API.Controllers.BroadcastMessageController.GetBroadcastMessageById (Gamawabs247API),Gamawabs247API.Controllers.BroadcastMessageController.GetBroadcastMessageByBusinessId (Gamawabs247API). Actions require a unique method/path combination for Swagger/OpenAPI 3.0. Use ConflictingActionsResolver as a workaround
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperations(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePaths(IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwagger(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+2023-06-28 11:06:12.673 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:8000/swagger/v1/swagger.json - - - 500 - text/plain;+charset=utf-8 697.1867ms
+2023-06-28 11:06:14.713 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:8000/swagger/index.html - -
+2023-06-28 11:06:14.713 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:8000/swagger/index.html - - - 200 - text/html;charset=utf-8 0.6717ms

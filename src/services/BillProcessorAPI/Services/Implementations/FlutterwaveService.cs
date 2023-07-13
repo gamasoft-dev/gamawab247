@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using BillProcessorAPI.Dtos;
+using BillProcessorAPI.Dtos.BroadcastMessage;
 using BillProcessorAPI.Dtos.Common;
 using BillProcessorAPI.Dtos.Flutterwave;
 using BillProcessorAPI.Entities;
+using BillProcessorAPI.Entities.FlutterwaveEntities;
 using BillProcessorAPI.Entities.PaythruEntities;
 using BillProcessorAPI.Enums;
 using BillProcessorAPI.Helpers;
@@ -13,6 +15,7 @@ using BillProcessorAPI.Services.Interfaces;
 using Domain.Common;
 using Domain.Exceptions;
 using Infrastructure.Http;
+using Infrastructure.ShortLink;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -28,6 +31,8 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IInvoiceRepository _invoiceRepo;
         private readonly IRepository<BillPayerInfo> _billPayerRepository;
         private readonly IRepository<Receipt> _receipts;
+        private readonly IRepository<WebhookNotification> _oldAppWebhook;
+        private readonly ICutlyService _cutlyService;
 
         private readonly FlutterwaveOptions _flutterOptions;
         private readonly IHttpService _httpService;
@@ -35,6 +40,8 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _context;
         private ILogger<FlutterwaveService> _logger;
+        private readonly BusinessesPhoneNumber _phoneNumberOptions;
+        private readonly ReceiptBroadcastConfig _receiptBroadcastOptions;
 
         public FlutterwaveService(
             IRepository<BillTransaction> billTransactionsRepo,
@@ -47,7 +54,11 @@ namespace BillProcessorAPI.Services.Implementations
             IMapper mapper,
             IRepository<Receipt> receipts,
             ILogger<FlutterwaveService> logger,
-            IHttpContextAccessor context)
+            IHttpContextAccessor context,
+            IRepository<WebhookNotification> oldAppWebhook,
+            IOptions<BusinessesPhoneNumber> phoneNumberOptions,
+            IOptions<ReceiptBroadcastConfig> receiptBroadcastOptions,
+            ICutlyService cutlyService)
         {
             _billTransactionsRepo = billTransactionsRepo;
             _billPayerRepository = billPayerRepository;
@@ -59,6 +70,10 @@ namespace BillProcessorAPI.Services.Implementations
             _receipts = receipts;
             _logger = logger;
             _context = context;
+            _oldAppWebhook = oldAppWebhook;
+            _phoneNumberOptions = phoneNumberOptions.Value;
+            _receiptBroadcastOptions = receiptBroadcastOptions.Value;
+            _cutlyService = cutlyService;
         }
 
         public async Task<SuccessResponse<PaymentCreationResponse>> CreateTransaction(string email, decimal amount, string billPaymentCode)
@@ -137,7 +152,7 @@ namespace BillProcessorAPI.Services.Implementations
                 await _billTransactionsRepo.AddAsync(billTransaction);
                 await _billTransactionsRepo.SaveChangesAsync();
 
-                
+
                 var billInvoice = _mapper.Map<Invoice>(billPayer);
                 billInvoice.BillTransactionId = billTransaction.Id;
                 billInvoice.TransactionReference = trxReference;
@@ -178,6 +193,7 @@ namespace BillProcessorAPI.Services.Implementations
 
         public async Task<SuccessResponse<string>> PaymentNotification(WebHookNotificationWrapper model)
         {
+
             BillTransaction transaction = null;
             try
             {
@@ -185,18 +201,28 @@ namespace BillProcessorAPI.Services.Implementations
                     throw new RestException(HttpStatusCode.BadRequest, "invalid transaction, notification content is null and empty");
 
                 transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.TransactionReference);
-                transaction.NotificationResponseData = JsonConvert.SerializeObject(model);
 
-                await _billTransactionsRepo.SaveChangesAsync();
-            _logger.LogCritical($"Payment notification from Flutterwave just came in as at: {DateTime.UtcNow}");
 
-            _logger.LogCritical($"Details of notification : {JsonConvert.SerializeObject(model)}");
+                _logger.LogCritical($"Payment notification from Flutterwave just came in as at: {DateTime.UtcNow}");
 
-                 transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.TransactionReference);
+                _logger.LogCritical($"Details of notification : {JsonConvert.SerializeObject(model)}");
 
 
                 if (transaction is null)
-                    throw new PaymentVerificationException(HttpStatusCode.NotFound, "No transaction found for this transaction");
+                {
+                    var webhook = model.ToWebHook();
+                    webhook.Data = JsonConvert.SerializeObject(model);
+                    webhook.GatewayType = "Flutterwave";
+                    webhook.Remark = "This webhook transaction is not found on the billTransaction";
+                    //saving the webhook to the database since no transaction was retrieved for the webhook to update
+                    await _oldAppWebhook.AddAsync(webhook);
+                    await _oldAppWebhook.SaveChangesAsync();
+                    return new SuccessResponse<string>
+                    {
+                        Data = "Transaction Completed"
+                    };
+                }
+                _logger.LogInformation($"No transaction was found for the webhok received, webhook saved to the database");
 
                 //verify transaction with flutterwave using the transactionId from the webhook
                 IDictionary<string, string> param = new Dictionary<string, string>();
@@ -206,8 +232,8 @@ namespace BillProcessorAPI.Services.Implementations
                 var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.VerifyByReference}/?tx_ref={model.TransactionReference}";
                 var verificationReaponse = await _httpService.Get<FlutterwaveResponse<FlutterwaveResponseData>>(url, headerParam);
 
-            if (verificationReaponse.Data.Status != "success")
-                _logger.LogCritical($"Unable to verify payment notification from Flutterwave as at: {DateTime.UtcNow}");
+                if (verificationReaponse.Data.Status != "success")
+                    _logger.LogCritical($"Unable to verify payment notification from Flutterwave as at: {DateTime.UtcNow}");
 
                 transaction.AmountPaid = verificationReaponse.Data.Data.amount;
                 transaction.PrinciPalAmount = verificationReaponse.Data.Data.amount; // amount paid minus charges
@@ -239,6 +265,8 @@ namespace BillProcessorAPI.Services.Implementations
 
                 await _billTransactionsRepo.SaveChangesAsync();
 
+                await SendReceipt(transaction);
+
                 //add the receipt to the invoice
                 var invoice = await _invoiceRepo.FirstOrDefault(x => x.BillTransactionId == transaction.Id);
                 if (invoice is null)
@@ -263,29 +291,10 @@ namespace BillProcessorAPI.Services.Implementations
                 await _receipts.AddAsync(receipt);
                 await _receipts.SaveChangesAsync();
 
-                // send the notification to the existing application
-                //try
-                //{
-                //    IDictionary<string, string> existingAppParam = new Dictionary<string, string>();
-                //    existingAppParam.Add(key: "Authorization", _flutterOptions.SecretKey);
-                //    var headerParamm = new RequestHeader(existingAppParam);
-
-                //    var exixtingAppUrl = $"{_flutterOptions.ExistingAppUrl}";
-
-                //    var notificationResponse = await _httpService
-                //           .Post<FlutterwaveResponse<LinkData>, WebHookNotificationWrapper>(exixtingAppUrl, headerParamm, model);
-                //}
-                //catch (Exception ex)
-                //{
-                //    _logger.LogError($"An error occurred on verifying flutterwave transaction: {ex.Message}", ex);
-                //    transaction.ErrorMessage = ex.ToString();
-                //    // do nothing
-                //}
-
             }
             catch (Exception ex)
             {
-                _logger.LogError( $"An error occurred on receipt of payment notification from flutterwave: {ex.Message}", ex);
+                _logger.LogError($"An error occurred on receipt of payment notification from flutterwave: {ex.Message}", ex);
 
                 transaction.ErrorMessage = ex.ToString();
                 throw;
@@ -293,7 +302,7 @@ namespace BillProcessorAPI.Services.Implementations
             finally
             {
                 if (transaction is not null)
-                    await _billPayerRepository.SaveChangesAsync();
+                    await _billTransactionsRepo.SaveChangesAsync();
             }
 
 
@@ -402,20 +411,20 @@ namespace BillProcessorAPI.Services.Implementations
             resendWehookUrl.Add(key: "Authorization", _flutterOptions.SecretKey);
             var headerParamm = new RequestHeader(resendWehookUrl);
 
-            var billTransationRecord = await _billTransactionsRepo.FirstOrDefault(x => x.PaymentReference == model.PaymentReference.ToString());
-            var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.ResendFailedWebhook}/{billTransationRecord.PaymentReference}/resend-hook";
+            //var billTransationRecord = await _billTransactionsRepo.FirstOrDefault(x => x.PaymentReference == model.PaymentReference.ToString());
+            var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.ResendFailedWebhook}/{model.PaymentReference}/resend-hook";
 
             try
             {
-                    var notificationResponse = await _httpService
-                           .Post<FailedWebhookResponseModel, FailedWebhookRequest>(url, headerParamm, model);
+                var notificationResponse = await _httpService
+                       .Post<FailedWebhookResponseModel, FailedWebhookRequest>(url, headerParamm, model);
                 if (notificationResponse.Data.Status != "success")
                     throw new RestException(HttpStatusCode.BadRequest, "Unable to resend webhook notification for the payment reference provided");
 
                 response.Status = notificationResponse.Data.Status;
                 response.Message = notificationResponse.Data.Message;
                 response.Data = notificationResponse.Data.Data;
-                
+
                 return response;
 
             }
@@ -424,7 +433,42 @@ namespace BillProcessorAPI.Services.Implementations
 
                 throw new RestException(HttpStatusCode.InternalServerError, ex.Message);
             }
-           
+
+        }
+
+        private async Task SendReceipt(BillTransaction transaction)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(_phoneNumberOptions.LUC.PhoneNumber))
+                {
+                    throw new RestException(HttpStatusCode.PreconditionFailed, "LUC business phone number not cconfigured");
+                }
+
+                if (!string.IsNullOrEmpty(transaction.ReceiptUrl))
+                {
+                    var shortReceiptUrl = await _cutlyService.ShortLink(transaction.ReceiptUrl.ToString());
+
+                    var broadcastMessage = new CreateBroadcastMessageDto
+                    {
+                        From = _phoneNumberOptions.LUC.PhoneNumber,
+                        Message = $"*Please click on the link below to download your payment receipt.*" +
+                        $"{Environment.NewLine}{Environment.NewLine}{shortReceiptUrl}",
+                        To = transaction.PhoneNumber
+                    };
+
+                    var gamawabsBroadcastUrl = _receiptBroadcastOptions.Url;
+                    var postBroadcast = await _httpService.Post<BroadcastMessageDto, CreateBroadcastMessageDto>(gamawabsBroadcastUrl, null, broadcastMessage);
+                    if (postBroadcast.Data.Id != Guid.Empty)
+                    {
+                        transaction.isReceiptSent = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(message: ex.Message, ex);
+            }
         }
     }
 }

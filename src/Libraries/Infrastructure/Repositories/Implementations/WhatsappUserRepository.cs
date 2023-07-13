@@ -14,7 +14,7 @@ namespace Infrastructure.Repositories.Implementations
         }
         public IQueryable<WhatsappUser> GetWhatsappUsersQuery(string search = null)
         {
-            var query = _context.WhatsappUsers.IgnoreQueryFilters() as IQueryable<WhatsappUser>;
+            var query = _context.WhatsappUsers.OrderByDescending(x=>x.LastMessageTime).IgnoreQueryFilters() as IQueryable<WhatsappUser>;
 
             if(!string.IsNullOrEmpty(search))
             {

@@ -1,5 +1,6 @@
 ﻿using Application.Helpers;
 using BillProcessorAPI.Dtos;
+using BillProcessorAPI.Entities.ValueObjects;
 using BillProcessorAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -9,19 +10,21 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace BillProcessorAPI.Controllers
 {
 
-	[ApiController]
+    [ApiController]
 	[ApiVersion("1.0")]
 	[Route("v1/abc")]
 	[Produces("application/json")]
 	public class BillHolderController : ControllerBase
 	{
 		private readonly IBillService _revpay;
-		public BillHolderController(IBillService revpay)
-		{
-			_revpay = revpay;
-		}
+		private readonly ICollectionReportService _collectionReportService;
+        public BillHolderController(IBillService revpay, ICollectionReportService collection)
+        {
+            _revpay = revpay;
+            _collectionReportService = collection;
+        }
 
-		[HttpGet("invoice/{billPaymentCode}")]
+        [HttpGet("invoice/{billPaymentCode}")]
         [ProducesResponseType(typeof(SuccessResponse<BillReferenceResponseDto>), 200)]
         [SwaggerOperation(Summary = "Endpoint to get bill payer reference")]
         public async Task<IActionResult> ReferenceVerification([FromRoute] string billPaymentCode, [FromQuery] string phone)
@@ -38,5 +41,14 @@ namespace BillProcessorAPI.Controllers
 			var response = await _revpay.PaymentVerification(billPaymentCode);
 			return Ok(response);
 		}
+
+        [HttpGet( "bill-report", Name = nameof(Collections))]
+        [ProducesResponseType(typeof(SuccessResponse<CollectionReportDto>), 200)]
+        [SwaggerOperation(Summary = "Endpoint to get verify bill payment")]
+        public async Task<IActionResult> Collections([FromQuery] ResourceParameter param,[FromQuery] ReportParameters reportParameters)
+        {
+            var response = await _collectionReportService.GetAllCollections(param, reportParameters, nameof(Collections), Url);
+            return Ok(response);
+        }
     }
 }

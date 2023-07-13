@@ -171,9 +171,6 @@ namespace BillProcessorAPI.Migrations
                     b.Property<Guid?>("BillPayerInfoId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("BillPayerInfoId1")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Channel")
                         .HasColumnType("text");
 
@@ -269,8 +266,6 @@ namespace BillProcessorAPI.Migrations
                     b.HasIndex("BillNumber");
 
                     b.HasIndex("BillPayerInfoId");
-
-                    b.HasIndex("BillPayerInfoId1");
 
                     b.HasIndex("Status");
 
@@ -388,16 +383,76 @@ namespace BillProcessorAPI.Migrations
                     b.ToTable("Receipts");
                 });
 
+            modelBuilder.Entity("BillProcessorAPI.Entities.WebhookNotification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("CreatedById")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Data")
+                        .HasColumnType("text");
+
+                    b.Property<string>("GatewayType")
+                        .HasColumnType("text");
+
+                    b.Property<int>("PaymentRef")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("PropertyAddress")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ReceiptNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Remark")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ResponseCode")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ResponseDesc")
+                        .HasColumnType("text");
+
+                    b.Property<string>("State")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("text");
+
+                    b.Property<string>("StatusMessage")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TransCode")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TransID")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TransactionReference")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("WebGuid")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Webhooks");
+                });
+
             modelBuilder.Entity("BillProcessorAPI.Entities.BillTransaction", b =>
                 {
                     b.HasOne("BillProcessorAPI.Entities.BillPayerInfo", "BillPayerInfo")
-                        .WithMany()
-                        .HasForeignKey("BillPayerInfoId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("BillProcessorAPI.Entities.BillPayerInfo", null)
                         .WithMany("BillTransactions")
-                        .HasForeignKey("BillPayerInfoId1");
+                        .HasForeignKey("BillPayerInfoId");
 
                     b.Navigation("BillPayerInfo");
                 });

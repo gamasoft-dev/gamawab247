@@ -91,5 +91,22 @@ services:
       - ./docker/redis/redis.conf:/../../usr/local/etc/redis/redis.conf
       - redis_data:/data
     ports:
-      - "6379:6379"
+      - "6370:6379"
+
+
+  broadcastmessageserviceworker:
+    image: ${DOCKER_REGISTRY-}broadcastmessageserviceworker
+    build:
+      context: .
+      dockerfile: src/Jobs/BroadcastMessageServiceWorker/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "8045:80"
+    depends_on:
+      - gamawabsdb
+      - gamawabsredis
+    volumes:
+      - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
 
