@@ -8,6 +8,7 @@ using BillProcessorAPI.Entities.FlutterwaveEntities;
 using BillProcessorAPI.Entities.PaythruEntities;
 using BillProcessorAPI.Enums;
 using BillProcessorAPI.Helpers;
+using BillProcessorAPI.Helpers.BroadcastMessage;
 using BillProcessorAPI.Helpers.Flutterwave;
 using BillProcessorAPI.Helpers.Paythru;
 using BillProcessorAPI.Repositories.Interfaces;

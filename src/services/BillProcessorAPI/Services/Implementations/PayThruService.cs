@@ -25,6 +25,7 @@ using Microsoft.EntityFrameworkCore;
 using BillProcessorAPI.Entities.PaythruEntities;
 using BillProcessorAPI.Dtos.BroadcastMessage;
 using Infrastructure.ShortLink;
+using BillProcessorAPI.Helpers.BroadcastMessage;
 
 namespace BillProcessorAPI.Services.Implementations
 {

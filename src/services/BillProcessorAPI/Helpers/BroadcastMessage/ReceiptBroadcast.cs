@@ -1,15 +1,16 @@
 ﻿using System.Net;
+using BillProcessorAPI.Dtos.BroadcastMessage;
 using BillProcessorAPI.Entities;
 using BillProcessorAPI.Helpers;
 using Infrastructure.Http;
 using Infrastructure.ShortLink;
 using Microsoft.Extensions.Options;
 
-namespace BillProcessorAPI.Dtos.BroadcastMessage
+namespace BillProcessorAPI.Helpers.BroadcastMessage
 {
     public class ReceiptBroadcast
     {
-       
+
         public static async Task SendReceipt
             (BillTransaction transaction, BusinessesPhoneNumber phoneNumberOptions,
              ICutlyService cutlyService, ReceiptBroadcastConfig receiptBroadcastOptions,

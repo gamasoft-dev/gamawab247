@@ -48,4 +48,8 @@
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Logger\" />
+  </ItemGroup>
 </Project>
