@@ -8,6 +8,7 @@ using BillProcessorAPI.Entities.FlutterwaveEntities;
 using BillProcessorAPI.Entities.PaythruEntities;
 using BillProcessorAPI.Enums;
 using BillProcessorAPI.Helpers;
+using BillProcessorAPI.Helpers.BroadcastMessage;
 using BillProcessorAPI.Helpers.Flutterwave;
 using BillProcessorAPI.Helpers.Paythru;
 using BillProcessorAPI.Repositories.Interfaces;
@@ -265,7 +266,10 @@ namespace BillProcessorAPI.Services.Implementations
 
                 await _billTransactionsRepo.SaveChangesAsync();
 
-                await SendReceipt(transaction);
+
+                //Send customer receipt
+                await ReceiptBroadcast.SendReceipt(transaction,_phoneNumberOptions,_cutlyService,
+                    _receiptBroadcastOptions,_httpService);
 
                 //add the receipt to the invoice
                 var invoice = await _invoiceRepo.FirstOrDefault(x => x.BillTransactionId == transaction.Id);
@@ -436,39 +440,5 @@ namespace BillProcessorAPI.Services.Implementations
 
         }
 
-        private async Task SendReceipt(BillTransaction transaction)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(_phoneNumberOptions.LUC.PhoneNumber))
-                {
-                    throw new RestException(HttpStatusCode.PreconditionFailed, "LUC business phone number not cconfigured");
-                }
-
-                if (!string.IsNullOrEmpty(transaction.ReceiptUrl))
-                {
-                    var shortReceiptUrl = await _cutlyService.ShortLink(transaction.ReceiptUrl.ToString());
-
-                    var broadcastMessage = new CreateBroadcastMessageDto
-                    {
-                        From = _phoneNumberOptions.LUC.PhoneNumber,
-                        Message = $"*Please click on the link below to download your payment receipt.*" +
-                        $"{Environment.NewLine}{Environment.NewLine}{shortReceiptUrl}",
-                        To = transaction.PhoneNumber
-                    };
-
-                    var gamawabsBroadcastUrl = _receiptBroadcastOptions.Url;
-                    var postBroadcast = await _httpService.Post<BroadcastMessageDto, CreateBroadcastMessageDto>(gamawabsBroadcastUrl, null, broadcastMessage);
-                    if (postBroadcast.Data.Id != Guid.Empty)
-                    {
-                        transaction.isReceiptSent = true;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(message: ex.Message, ex);
-            }
-        }
     }
 }
