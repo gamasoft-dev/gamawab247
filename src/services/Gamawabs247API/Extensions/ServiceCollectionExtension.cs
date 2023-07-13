@@ -30,6 +30,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Domain.Common.ShortLink.ValueObjects;
 
 namespace API.Extensions
 {
@@ -66,6 +67,7 @@ namespace API.Extensions
             services.Configure<Dialog360Settings>(configuration.GetSection("Dialog360Setting"));
             services.Configure<JwtConfigSettings>(configuration.GetSection("JwtSettings"));
             services.Configure<RedisCacheConfig>(configuration.GetSection("RedisCacheConfig"));
+            services.Configure<CutlyOptions>(configuration.GetSection(nameof(CutlyOptions)));
         }
 
         public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration)
@@ -77,8 +79,7 @@ namespace API.Extensions
                      x.MigrationsAssembly("Infrastructure.Data");
                  })
                 .EnableDetailedErrors(true)
-                .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()))
-                 .EnableSensitiveDataLogging();
+                .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
             });
         }
 

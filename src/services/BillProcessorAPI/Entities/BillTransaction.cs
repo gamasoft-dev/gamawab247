@@ -31,7 +31,7 @@ namespace BillProcessorAPI.Entities
         public string ResourcePIN { get; set; } // PropertyPIN
         public string PaymentUrl { get; set; }
         public string ReceiptUrl { get; set; }
-      //  public string Receipt { get; set; }
+        public bool isReceiptSent { get; set; }
         public string StatusMessage { get; set; }
         public string Hash { get; set; }
         public string SuccessIndicator { get; set; }

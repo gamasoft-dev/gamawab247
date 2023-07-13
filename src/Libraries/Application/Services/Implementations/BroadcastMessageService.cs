@@ -22,24 +22,40 @@ namespace Application.Services.Implementations
     {
         private readonly IRepository<BroadcastMessage> _broadcastMessageRepo;
         private readonly IRepository<BusinessMessageSettings> _businessMessageSettingsRepo;
+        private readonly IRepository<Business> _businessRepo;
         private readonly IMapper _mapper;
-        public BroadcastMessageService(IRepository<BroadcastMessage> broadcastMessageRepo, IMapper mapper, IRepository<BusinessMessageSettings> businessMessageSettingsRepo)
+        public BroadcastMessageService(IRepository<BroadcastMessage> broadcastMessageRepo, 
+            IMapper mapper, IRepository<BusinessMessageSettings> businessMessageSettingsRepo, IRepository<Business> businessRepo)
         {
             _broadcastMessageRepo = broadcastMessageRepo;
             _mapper = mapper;
             _businessMessageSettingsRepo = businessMessageSettingsRepo;
+            _businessRepo = businessRepo;
         }
 
         public async Task<SuccessResponse<BroadcastMessageDto>> CreateBroadcastMessage(CreateBroadcastMessageDto model)
         {
+            Guid businessId = Guid.Empty;
             if (model is null)
                 throw new RestException(HttpStatusCode.BadRequest, "validate broadcast message");
+            if (!string.IsNullOrEmpty(model.ApiKey))
+            {
+                var business = await _businessMessageSettingsRepo.FirstOrDefaultNoTracking(x => x.ApiKey == model.ApiKey)
+                ?? throw new RestException(HttpStatusCode.NotFound, $"unable to retrieve business for ApiKey{model.ApiKey}");
+                businessId = business.BusinessId;
+            }else if (!string.IsNullOrEmpty(model.From))
+            {
+                var business = await _businessRepo.FirstOrDefaultNoTracking(x => x.PhoneNumber == model.From)
+                ?? throw new RestException(HttpStatusCode.NotFound, $"unable to retrieve business for ApiKey{model.ApiKey}");
+                businessId = business.Id;
+            }
 
-            var business = await _businessMessageSettingsRepo.FirstOrDefaultNoTracking(x => x.ApiKey == model.ApiKey)
-                ?? throw new RestException(HttpStatusCode.NotFound,$"unable to retrieve business for ApiKey{model.ApiKey}");
-
+            if (businessId == Guid.Empty)
+            {
+                throw new RestException(HttpStatusCode.NotFound, $"unable to retrieve business for ApiKey");
+            }
             var broadcastMessage = _mapper.Map<BroadcastMessage>(model);
-            broadcastMessage.BusinessId = business.BusinessId;
+            broadcastMessage.BusinessId = businessId;
             broadcastMessage.Status = Domain.Enums.EBroadcastMessageStatus.Pending;
 
             await _broadcastMessageRepo.AddAsync(broadcastMessage);
@@ -147,6 +163,29 @@ namespace Application.Services.Implementations
             };
         }
 
-        
+        public async Task<PagedResponse<IEnumerable<BroadcastMessageDto>>> GetAllPendingBroadcastMessage(ResourceParameter parameter, string name, IUrlHelper urlHelper)
+        {
+            var broadcastPendingBroadcastMessage = _broadcastMessageRepo
+                .Query(x => x.Status == Domain.Enums.EBroadcastMessageStatus.Pending).OrderBy(x => x.CreatedAt);
+
+
+            var queryProjection = broadcastPendingBroadcastMessage.ProjectTo<BroadcastMessageDto>(_mapper.ConfigurationProvider);
+
+            var broadcastMessages = await PagedList<BroadcastMessageDto>.CreateAsync(queryProjection, parameter.PageNumber, parameter.PageSize, parameter.Sort);
+            var page = PageUtility<BroadcastMessageDto>.CreateResourcePageUrl(parameter, name, broadcastMessages, urlHelper);
+
+            var response = new PagedResponse<IEnumerable<BroadcastMessageDto>>
+            {
+                Message = ResponseMessages.RetrievalSuccessResponse,
+                Data = broadcastMessages,
+                Meta = new Helpers.Meta
+                {
+                    Pagination = page
+                }
+            };
+            return response;
+        }
+
+
     }
 }

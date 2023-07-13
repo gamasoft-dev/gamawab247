@@ -18,5 +18,6 @@ namespace Application.Services.Interfaces
         Task<SuccessResponse<BroadcastMessageDto>> GetBroadcastMessageById(Guid id);
         Task<PagedResponse<IEnumerable<BroadcastMessageDto>>> GetAllBroadcastMessage(ResourceParameter parameter, string name, IUrlHelper urlHelper);
         Task<PagedResponse<IEnumerable<BroadcastMessageDto>>> GetBroadcastMessageByBusinessId(Guid businessId, ResourceParameter parameter, string name, IUrlHelper urlHelper);
+        Task<PagedResponse<IEnumerable<BroadcastMessageDto>>> GetAllPendingBroadcastMessage(ResourceParameter parameter, string name, IUrlHelper urlHelper);
     }
 }

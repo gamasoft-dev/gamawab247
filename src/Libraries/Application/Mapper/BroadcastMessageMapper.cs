@@ -14,6 +14,7 @@ namespace Application.Mapper
         public BroadcastMessageMapper()
         {
             CreateMap<BroadcastMessage, BroadcastMessageDto>();
+            CreateMap<CreateBroadcastMessageDto, BroadcastMessage>().ReverseMap();
         }
     }
 }
