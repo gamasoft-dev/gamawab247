@@ -13,7 +13,6 @@ IHost host = Host.CreateDefaultBuilder(args)
 {
     webBuilder.UseStartup<Startup>();
 
-    //webBuilder.UseUrls("https://*:8015", "http://*:8082");
 })
   .UseServiceProviderFactory(new AutofacServiceProviderFactory())
   .ConfigureContainer<ContainerBuilder>(builder =>
@@ -22,13 +21,12 @@ IHost host = Host.CreateDefaultBuilder(args)
     
 
   })
-    .ConfigureServices(services =>
-    {
+  .ConfigureServices(services =>
+  {
         services.AddHostedService<Worker>();
         services.AddScoped<IBroadcastDispatchService, BroadcastDispatchService>();
         services.AddScoped<IOutboundMesageService, OutboundMessageService>();
-    })
-    .Build();
+  }).Build();
 
 await host.RunAsync();
 

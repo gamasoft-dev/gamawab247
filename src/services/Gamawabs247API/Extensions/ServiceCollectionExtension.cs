@@ -79,8 +79,7 @@ namespace API.Extensions
                      x.MigrationsAssembly("Infrastructure.Data");
                  })
                 .EnableDetailedErrors(true)
-                .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()))
-                 .EnableSensitiveDataLogging();
+                .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
             });
         }
 
