@@ -2,8 +2,6 @@
 using System.Globalization;
 using Application.AuditServices;
 using Application.DTOs;
-using Application.Services.Implementations;
-using Application.Services.Interfaces;
 using Domain.Common.ShortLink.ValueObjects;
 using Domain.Entities.Identities;
 using Infrastructure;
@@ -13,7 +11,6 @@ using Infrastructure.Data.DbContext.DbAuditFilters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 
@@ -22,30 +19,6 @@ namespace BroadcastMessageServiceWorker.ServiceExtension
     public static class ServiceExtensions
     {
         private static readonly ILoggerFactory ContextLoggerFactory = LoggerFactory.Create(builder => { builder.AddConsole(); });
-
-
-        public static void ConfigureGlobalization(this IServiceCollection services)
-        {
-            services.AddLocalization();
-            services.Configure<RequestLocalizationOptions>(options =>
-            {
-                var supportedCultures = new List<CultureInfo>
-                {
-                    new CultureInfo("en"),
-                };
-                options.DefaultRequestCulture = new RequestCulture("en");
-                options.SupportedCultures = supportedCultures;
-                options.SupportedUICultures = supportedCultures;
-            });
-
-
-       
-        }
-
-        public static void ConfigureIisIntegration(this IServiceCollection services)
-        {
-            services.Configure<IISOptions>(options => { });
-        }
 
         /// <summary>
         /// Configure binding of IConfigurations to typed object for better maintainability.
@@ -58,7 +31,6 @@ namespace BroadcastMessageServiceWorker.ServiceExtension
             services.Configure<SystemSettingsConfig>(configuration.GetSection("Config"));
             services.Configure<Dialog360Settings>(configuration.GetSection("Dialog360Setting"));
             services.Configure<CutlyOptions>(configuration.GetSection("CutlyOptions"));
-            //services.Configure<Domain.ViewModels.JwtConfigSettings>(configuration.GetSection("JwtSettings"));
         }
 
         public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration)

@@ -10,14 +10,12 @@ namespace BroadcastMessageServiceWorker.Services
     public class BroadcastDispatchService : IBroadcastDispatchService
     {
         private readonly IRepository<BroadcastMessage> _broadcastMessageRepo;
-        //private readonly IBillTransactionRepository _billTransactionRepo;
         private readonly IOutboundMesageService _outboundMesageService;
 
         public BroadcastDispatchService(IRepository<BroadcastMessage> broadcastMessageRepo, IOutboundMesageService outboundMesageService)
         {
             _broadcastMessageRepo = broadcastMessageRepo;
             _outboundMesageService = outboundMesageService;
-            //_billTransactionRepo = billTransactionRepo;
         }
 
         public async Task SendMessage()
@@ -28,35 +26,49 @@ namespace BroadcastMessageServiceWorker.Services
             
             // iterate through the list and process message sending as below
             foreach (var broadcastMessage in pendingBroadcastMessage)
-             {
+            {
                 // format the message value of the broadcast message entity
 
-                var formRequest = new FormRequestResponse();
-                formRequest.From = broadcastMessage.From;
-                formRequest.To = broadcastMessage.To;
-                formRequest.Message = broadcastMessage.Message;
-                formRequest.MessageType = EMessageType.Text.ToString();
-                formRequest.BusinessId = broadcastMessage.BusinessId;
-
-                // update the broadcast message status as processing once send
-                broadcastMessage.Status = EBroadcastMessageStatus.Processing;
-
-                // call the httpSendMessage service to send text based message;
-                var outboundBroadcast = await _outboundMesageService.HttpSendTextMessage(formRequest.To, formRequest);
-
-                // if response ok message is received from httpMessageSend service
-                // update the broadcast message to sent
-                if (outboundBroadcast.Data)
+                try
                 {
-                    broadcastMessage.Status = EBroadcastMessageStatus.Sent;
-                  
+                    var formRequest = new FormRequestResponse();
+                    formRequest.From = broadcastMessage.From;
+                    formRequest.To = broadcastMessage.To;
+                    formRequest.Message = broadcastMessage.Message;
+                    formRequest.MessageType = EMessageType.Text.ToString();
+                    formRequest.BusinessId = broadcastMessage.BusinessId;
+
+                    // update the broadcast message status as processing once send
+                    broadcastMessage.Status = EBroadcastMessageStatus.Processing;
+                    await _broadcastMessageRepo.SaveChangesAsync();
+
+                    // call the httpSendMessage service to send text based message;
+                    var outboundBroadcast = await _outboundMesageService.HttpSendTextMessage(formRequest.To, formRequest);
+
+                    // if response ok message is received from httpMessageSend service, update status
+                    if (outboundBroadcast.Data)
+                    {
+                        broadcastMessage.Status = EBroadcastMessageStatus.Sent;
+                        broadcastMessage.UpdatedAt = DateTime.Now;
+                    }
+                    else
+                    {
+                        broadcastMessage.Status = EBroadcastMessageStatus.Failed;
+                        broadcastMessage.UpdatedAt = DateTime.Now;
+                    }
+
                 }
-                else
+                catch (Exception ex)
                 {
+                    broadcastMessage.ErrorMessage = ex.Message;
+                    broadcastMessage.UpdatedAt = DateTime.Now;
                     broadcastMessage.Status = EBroadcastMessageStatus.Failed;
                 }
-                await _broadcastMessageRepo.SaveChangesAsync();
-                //await _billTransactionRepo.SaveChangesAsync();
+                finally
+                {
+                    await _broadcastMessageRepo.SaveChangesAsync();
+                }
+
             }
         }
 

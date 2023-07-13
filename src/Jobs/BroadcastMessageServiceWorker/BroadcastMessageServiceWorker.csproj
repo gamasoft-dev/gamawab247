@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>dotnet-BroadcastMessageServiceWorker-5e5f86f7-22da-41aa-acff-dcd93685a555</UserSecretsId>
+    <DockerComposeProjectPath>../../../docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +20,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\Application\Application.csproj" />
-    <ProjectReference Include="..\..\Libraries\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 </Project>

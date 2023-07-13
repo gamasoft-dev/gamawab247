@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
-using Amazon.Auth.AccessControlPolicy;
-using Amazon.Runtime.Internal;
 using Application.DTOs;
-using Application.DTOs.PartnerContentDtos;
 using Application.Helpers;
 using Application.Services.Interfaces;
-using Domain.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -37,12 +32,11 @@ namespace Gamawabs247API.Controllers
             {
                 var result = await _broadcastMessage.CreateBroadcastMessage(model);
                 return Ok(result);
-                    //CreatedAtAction(nameof(GetBroadcastMessageById), new { id = result.Data.Id }, result);
             }
             catch (Exception ex)
             {
 
-                _logger.LogCritical(ex.Message, ex);
+                _logger.LogError(ex.Message, ex);
                 throw;
             }
         }
@@ -59,7 +53,7 @@ namespace Gamawabs247API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogCritical(ex.Message, ex);
+                _logger.LogError(ex.Message, ex);
                 throw;
             }
         }
@@ -75,7 +69,6 @@ namespace Gamawabs247API.Controllers
 
         [HttpGet(Name = nameof(GetAllBroadCastMessage))]
         [ProducesResponseType(typeof(SuccessResponse<BroadcastMessageDto>), (int)HttpStatusCode.OK)]
-
         public async Task<IActionResult> GetAllBroadCastMessage([FromQuery] ResourceParameter parameter)
         {
             try
@@ -86,7 +79,7 @@ namespace Gamawabs247API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogCritical(ex.Message, ex);
+                _logger.LogError(ex.Message, ex);
                 throw;
             }
         }
@@ -104,25 +97,25 @@ namespace Gamawabs247API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogCritical(ex.Message, ex);
+                _logger.LogError(ex.Message, ex);
                 throw;
             }
         }
 
         [HttpGet("business/{id}", Name = nameof(GetBroadcastMessageByBusinessId))]
         [ProducesResponseType(typeof(SuccessResponse<BroadcastMessageDto>), (int)HttpStatusCode.OK)]
-
         public async Task<IActionResult> GetBroadcastMessageByBusinessId([FromQuery] Guid id, ResourceParameter parameter)
         {
             try
             {
                 var result = await _broadcastMessage
                     .GetBroadcastMessageByBusinessId(id, parameter, nameof(GetBroadcastMessageByBusinessId), Url);
+
                 return Ok(result);
             }
             catch (Exception ex)
             {
-                _logger.LogCritical(ex.Message, ex);
+                _logger.LogError(ex.Message, ex);
                 throw;
             }
         }
