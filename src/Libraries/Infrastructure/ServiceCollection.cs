@@ -23,7 +23,8 @@ namespace Infrastructure
             services.AddScoped<IMessageLogRepository, MessageLogRepository>();
             services.AddScoped<IWhatsappUserRepository, WhatsappUserRepository>();
             services.AddScoped<ISessionManagement, SessionManagement>();
-           
+            services.AddScoped<ICutlyService, CutlyService>();
+
         }
 
         public static void AddHttpClientInfrastructure(this IServiceCollection services)
