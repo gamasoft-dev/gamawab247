@@ -59,7 +59,6 @@ namespace Gamasoft.Worker
             };
 
             services.AddHostedService<BgWorker>();
-            //  services.AddHostedService<FormProcessorBgTask>();
 
         }
 

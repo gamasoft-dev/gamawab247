@@ -23,6 +23,7 @@
     <None Remove="Microsoft.AspNetCore.JsonPatch" />
     <None Remove="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
     <None Remove="Validations\" />
+    <None Remove="LogFiles\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -66,5 +67,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Validations\" />
+    <Folder Include="LogFiles\" />
   </ItemGroup>
 </Project>
