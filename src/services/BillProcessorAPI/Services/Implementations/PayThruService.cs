@@ -23,6 +23,9 @@ using BillProcessorAPI.Dtos.Common;
 using System.Runtime.InteropServices;
 using Microsoft.EntityFrameworkCore;
 using BillProcessorAPI.Entities.PaythruEntities;
+using BillProcessorAPI.Dtos.BroadcastMessage;
+using Infrastructure.ShortLink;
+using BillProcessorAPI.Helpers.BroadcastMessage;
 
 namespace BillProcessorAPI.Services.Implementations
 {
@@ -37,6 +40,10 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IConfigurationService _configService;
         private readonly IMapper _mapper;
         private ILogger<PayThruService> _logger;
+        private readonly BusinessesPhoneNumber _phoneNumberOptions;
+        private readonly ReceiptBroadcastConfig _receiptBroadcastOptions;
+        private readonly ICutlyService _cutlyService;
+        private readonly ReceiptBroadcastConfig _receiptBroadcastConfig;
 
         public PayThruService(IRepository<BillPayerInfo> billPayerRepo,
             IRepository<BillTransaction> billTransactions,
@@ -45,18 +52,25 @@ namespace BillProcessorAPI.Services.Implementations
             IMapper mapper,
             IRepository<Invoice> invoiceRepo,
             IRepository<Receipt> receiptRepo,
-            ILogger<PayThruService> logger)
+            ILogger<PayThruService> logger, 
+            IOptions<BusinessesPhoneNumber> phoneNumberOptions, 
+            IOptions<ReceiptBroadcastConfig> receiptBroadcastOptions, 
+            ICutlyService cutlyService, IOptions<ReceiptBroadcastConfig> receiptBroadcastConfig)
         {
 
             _billPayerRepo = billPayerRepo;
             _billTransactionsRepo = billTransactions;
             PaythruOptions = paythruOptions.Value;
-            _httpService = httpService;
             _configService = configService;
             _mapper = mapper;
             _invoiceRepo = invoiceRepo;
             _receiptRepo = receiptRepo;
             _logger = logger;
+            _phoneNumberOptions = phoneNumberOptions.Value;
+            _receiptBroadcastOptions = receiptBroadcastOptions.Value;
+            _cutlyService = cutlyService;
+            _receiptBroadcastConfig = receiptBroadcastConfig.Value;
+            _httpService = httpService;
         }
 
 
@@ -294,6 +308,10 @@ namespace BillProcessorAPI.Services.Implementations
                 data.ResponseCode = ETransactionResponseCodes.Successful;
                 data.Description = "Transaction Successful";
             }
+
+            //Send customer receipt
+            await ReceiptBroadcast.SendReceipt(billTransaction, _phoneNumberOptions,
+                _cutlyService, _receiptBroadcastOptions, _httpService);
 
             //add the receipt to the invoice
             var invoice = await _invoiceRepo.FirstOrDefault(x => x.BillTransactionId == billTransaction.Id);
