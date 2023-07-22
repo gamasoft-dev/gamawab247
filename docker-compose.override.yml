@@ -107,3 +107,10 @@ services:
       - redis_data:/data
     ports:
       - "6370:6379"
+
+  formprocessingworker:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
+

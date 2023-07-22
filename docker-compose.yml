@@ -37,10 +37,17 @@ services:
       context: .
       dockerfile: src/Jobs/BroadcastMessageServiceWorker/Dockerfile
 
+  formprocessingworker:
+    image: ${DOCKER_REGISTRY-}formprocessingworker
+    build:
+      context: .
+      dockerfile: src/Jobs/FormProcessingWorker/Dockerfile
+
 volumes:
   gamawabs_data:
   postgresql_data:
   redis_data:
+
 
 
 
