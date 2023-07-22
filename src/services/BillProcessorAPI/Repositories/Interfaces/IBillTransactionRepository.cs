@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using Application.Helpers;
 using BillProcessorAPI.Dtos;
 using BillProcessorAPI.Entities;
 using Domain.Entities;
@@ -8,6 +9,6 @@ namespace BillProcessorAPI.Repositories.Interfaces
 {
     public interface IBillTransactionRepository : IRepository<BillTransaction>
     {
-        IQueryable<CollectionReportDto> GetCollectionAllReport(ReportParameters reportParameter);
+        IQueryable<CollectionReportDto> GetCollectionAllReport(ResourceParameter parameter, ReportParameters reportParameter);
     }
 }
