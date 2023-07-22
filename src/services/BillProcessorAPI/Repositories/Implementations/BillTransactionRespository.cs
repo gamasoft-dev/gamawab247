@@ -49,5 +49,7 @@ namespace BillProcessorAPI.Repositories.Implementations
             var collection = query.Select(n => (CollectionReportDto)n);
             return collection;
         }
+
+      
     }
 }

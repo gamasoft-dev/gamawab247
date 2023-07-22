@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Application.AutofacDI;
+using Application.Helpers;
 using BillProcessorAPI.Dtos;
 using BillProcessorAPI.Entities;
 using Domain.Entities;
