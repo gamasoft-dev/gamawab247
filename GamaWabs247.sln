@@ -43,6 +43,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Jobs", "Jobs", "{AABC7F44-4
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiCustomization", "src\Libraries\ApiCustomization\ApiCustomization.csproj", "{1B0C9114-5908-4398-8AAB-0D01F64BCC77}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BroadcastMessageServiceWorker", "src\Jobs\BroadcastMessageServiceWorker\BroadcastMessageServiceWorker.csproj", "{1951688A-D0BB-4448-8B65-33194DDFC156}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,10 @@ Global
 		{1B0C9114-5908-4398-8AAB-0D01F64BCC77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B0C9114-5908-4398-8AAB-0D01F64BCC77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B0C9114-5908-4398-8AAB-0D01F64BCC77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1951688A-D0BB-4448-8B65-33194DDFC156}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1951688A-D0BB-4448-8B65-33194DDFC156}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1951688A-D0BB-4448-8B65-33194DDFC156}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1951688A-D0BB-4448-8B65-33194DDFC156}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -112,6 +118,7 @@ Global
 		{601481FA-9776-4196-ABA3-F429FD1840B7} = {1B535B6B-4F4E-416C-8AF9-EE52FEF56307}
 		{AABC7F44-4B06-42CD-9C49-CBE4E59B6AC6} = {77843E14-558E-4B87-8911-C885DAB80857}
 		{1B0C9114-5908-4398-8AAB-0D01F64BCC77} = {ED12E783-BB84-4235-A3F2-E6ADD6F3F10B}
+		{1951688A-D0BB-4448-8B65-33194DDFC156} = {B0847017-9030-4481-9E3B-4524EFAD012F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {89A01E19-B045-4C2E-8876-F08DE5C5197D}

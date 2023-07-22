@@ -13,9 +13,11 @@ namespace Domain.Entities
         public Guid Id { get; set; }
         public string  To { get; set; }
         public string From { get; set; }
+
         public string Message { get; set; }
         public string ErrorMessage { get; set; }
         public EBroadcastMessageStatus  Status { get; set; }
+
         public Guid BusinessId { get; set; }
         public Business Business { get; set; }
 

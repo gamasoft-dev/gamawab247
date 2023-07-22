@@ -55,7 +55,7 @@ namespace API
                 .AddXmlDataContractSerializerFormatters();
 
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Information()
+                .MinimumLevel.Error()
                 .WriteTo.File("./LogFiles/GamawabsApiLogs.txt", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
 

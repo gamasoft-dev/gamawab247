@@ -31,10 +31,17 @@ services:
       context: .
       dockerfile: src/Jobs/Gamasoft.Worker/Dockerfile
 
+  broadcastmessageserviceworker:
+    image: ${DOCKER_REGISTRY-}broadcastmessageserviceworker
+    build:
+      context: .
+      dockerfile: src/Jobs/BroadcastMessageServiceWorker/Dockerfile
+
 volumes:
   gamawabs_data:
   postgresql_data:
   redis_data:
+
 
 
 

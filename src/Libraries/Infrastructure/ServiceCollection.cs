@@ -25,7 +25,6 @@ namespace Infrastructure
             services.AddScoped<ISessionManagement, SessionManagement>();
             services.AddScoped<ICutlyService, CutlyService>();
 
-
         }
 
         public static void AddHttpClientInfrastructure(this IServiceCollection services)
