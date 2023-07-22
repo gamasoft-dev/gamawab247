@@ -13,6 +13,7 @@ services:
     ports:
       - "8000:80"
       - "8001:443"
+    restart: always
     depends_on:
       - gamawabsdb
       - gamawabsredis
@@ -80,12 +81,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
     ports:
-      - "8045:80"
+      - "8046:80"
     depends_on:
       - gamawabsdb
       - gamawabsredis
-    volumes:
-      - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
 
   gamawabsdb:
     environment:
