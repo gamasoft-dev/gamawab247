@@ -12,6 +12,7 @@ using Domain.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BillProcessorAPI.Services.Implementations
 {
@@ -28,8 +29,18 @@ namespace BillProcessorAPI.Services.Implementations
 
         public async Task<PagedResponse<IEnumerable<CollectionReportDto>>> GetAllCollections(ResourceParameter parameter, ReportParameters reportParam, string endPointName, IUrlHelper url)
         {
-          
-            var queryProjection = _billTransactionRepo.GetCollectionAllReport(reportParam);
+
+            //int selectedStartYear = parameter.StartDate?.Year ?? 0;
+            //int selectedStartMonth = parameter.StartDate?.Month ?? 0;
+            //int selectedEndYear = parameter.EndDate?.Year ?? 0;
+            //int month = 1;
+            //var filterStartDate = new DateTime(selectedStartYear, selectedStartMonth, 01).ToUniversalTime();
+            //var filterEndDate = new DateTime(selectedEndYear, month, DateTime.DaysInMonth(selectedEndYear, month), 23, 59, 59).ToUniversalTime();
+           
+       
+           
+            
+            var queryProjection = _billTransactionRepo.GetCollectionAllReport(parameter, reportParam);
        
             if (queryProjection == null)
                 throw new RestException(System.Net.HttpStatusCode.BadRequest, ResponseMessages.Failed);
