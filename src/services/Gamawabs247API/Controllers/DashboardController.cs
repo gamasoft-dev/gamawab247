@@ -25,9 +25,9 @@ namespace Gamawabs247API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(SuccessResponse<GetStatisticsDto>), 200)]
-        public async Task<IActionResult> GetStatistics(DateTime? startDate, DateTime? endDate)
+        public async Task<IActionResult> GetStatistics()
         {
-            var stats = await _dashBoardStatService.GetStatistics(startDate,endDate);
+            var stats = await _dashBoardStatService.GetStatistics();
             return Ok(stats);
         }
     }

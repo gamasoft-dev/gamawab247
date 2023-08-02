@@ -12,6 +12,6 @@ namespace Application.Services.Interfaces.Dashboard
 {
     public interface IDashboardStatisticsService : IAutoDependencyService
     {
-        Task<SuccessResponse<GetStatisticsDto>> GetStatistics(DateTime? startDate, DateTime? endDate);
+        Task<SuccessResponse<GetStatisticsDto>> GetStatistics();
     }
 }
