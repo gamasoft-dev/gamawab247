@@ -4,6 +4,8 @@ using Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories.Implementations
 {
@@ -59,6 +61,11 @@ namespace Infrastructure.Repositories.Implementations
             }
 
             return query;
+        }
+
+        public async Task<int> MessageLogCountAsync()
+        {
+            return await _context.MessageLogs.CountAsync();
         }
     }
 }

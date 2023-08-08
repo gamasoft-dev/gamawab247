@@ -15,7 +15,7 @@ using System.Net;
 
 namespace BillProcessorAPI.Services.Implementations
 {
-	public class BillService : IBillService
+    public class BillService : IBillService
 	{
 		private readonly IConfiguration _config;
 		private readonly HttpClient _httpClient;

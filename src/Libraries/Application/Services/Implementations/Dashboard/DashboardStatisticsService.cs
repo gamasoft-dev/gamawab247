@@ -8,15 +8,20 @@ using System.Threading.Tasks;
 using Amazon.S3.Model;
 using Application.DTOs;
 using Application.DTOs.DashboardDtos;
+using Application.DTOs.RequestAndComplaintDtos;
 using Application.Helpers;
 using Application.Services.Interfaces.Dashboard;
+using Domain.Common;
 using Domain.Entities;
 using Domain.Entities.Identities;
 using Domain.Entities.RequestAndComplaints;
 using Domain.Enums;
+using Infrastructure.Http;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using static Amazon.S3.Util.S3EventNotification;
+
 
 namespace Application.Services.Implementations.Dashboard
 {
@@ -25,12 +30,16 @@ namespace Application.Services.Implementations.Dashboard
         private readonly IRepository<RequestAndComplaint> _requestAndComplaintRepo;
         private readonly IWhatsappUserRepository _whatsappUserRepo;
         private readonly IMessageLogRepository _messageLogRepo;
+        private readonly IHttpService _httpService;
+        private readonly TransactionOptions _transactionOptions;
 
-        public DashboardStatisticsService(IRepository<RequestAndComplaint> requestAndComplaintRepo, IWhatsappUserRepository whatsappUserRepo, IMessageLogRepository messageLogRepo)
+        public DashboardStatisticsService(IRepository<RequestAndComplaint> requestAndComplaintRepo, IWhatsappUserRepository whatsappUserRepo, IMessageLogRepository messageLogRepo, IHttpService httpService, IOptions<TransactionOptions> transactionOptions)
         {
             _requestAndComplaintRepo = requestAndComplaintRepo;
             _whatsappUserRepo = whatsappUserRepo;
             _messageLogRepo = messageLogRepo;
+            _httpService = httpService;
+            _transactionOptions = transactionOptions.Value;
         }
 
         //Get Request and complaint statistics
@@ -50,88 +59,97 @@ namespace Application.Services.Implementations.Dashboard
             var monthStartDate = new DateTime(currentDate.Year, 1, 1).ToUniversalTime().AddHours(1); // First day of the current year
             var monthEndDate = new DateTime(currentDate.Year, 12, DateTime.DaysInMonth(currentDate.Year, 12)).ToUniversalTime(); // Last day of the current year
 
+            var getAllrequestAndComplain = await _requestAndComplaintRepo.Query(x => x.Type == ERequestComplaintType.Request || x.Type == ERequestComplaintType.Complaint)
+                .Select(u => new RequestAndComplaintStat
+                {
+                    Id = u.Id,
+                    ResolutionStatus = u.ResolutionStatus,
+                    Type = u.Type
+                }).ToListAsync();
+            var rQ = getAllrequestAndComplain.GroupBy(x => x.Type);
 
-            var requestsAndComplaints = await _requestAndComplaintRepo.GetAllAsync();
-            var requests = requestsAndComplaints.Where(x => x.Type == ERequestComplaintType.Request);
-            var complaints = requestsAndComplaints.Where(x => x.Type == ERequestComplaintType.Complaint);
+            var request = rQ.Where(group => group.Key == ERequestComplaintType.Request)
+            .SelectMany(group => group.ToList())
+            .ToList();
 
-            var stats = new GetStatisticsDto
+            var complaint = rQ.Where(group => group.Key == ERequestComplaintType.Complaint)
+            .SelectMany(group => group.ToList())
+            .ToList();
+
+            try
             {
-                RequestCount = requests.Count(),
-                ComplaintCount = complaints.Count()
-            };
+                var stats = new GetStatisticsDto
+                {
+                    RequestCount = request.Count,
+                    ComplaintCount = complaint.Count
+                };
 
-            var requestChartData = GetResolutionStatus(requests);
-            var complaintChartData = GetResolutionStatus(complaints);
+                var requestChartData = GetResolutionStatus(request);
+                var complaintChartData = GetResolutionStatus(complaint);
 
-            //request and complaint stats
-            stats.RequestAndComplaintDataEnterPieChart.Add(new ChartSeries { Name = "Request", ResolutionChartData = requestChartData });
-            stats.RequestAndComplaintDataEnterPieChart.Add(new ChartSeries { Name = "Complaint", ResolutionChartData = complaintChartData });
+                ////request and complaint stats
+                stats.RequestAndComplaintDataEnterPieChart.Add(new ChartSeries { Name = "Request", ResolutionChartData = requestChartData });
+                stats.RequestAndComplaintDataEnterPieChart.Add(new ChartSeries { Name = "Complaint", ResolutionChartData = complaintChartData });
 
-            //user stats
-            stats.CustomerCountsByWeek = await GetWhatsappCustomerCountByWeek(weekStartDate,weekEndDate);
-            stats.CustomerCountsByMonth = await GetWhatsappCustomerCountByMonth(monthStartDate, monthEndDate);
-            stats.CustomerCountsByYear = await GetWhatsappCustomerCountByYear();
+                //user stats
+                stats.CustomerCountsByWeek = await GetWhatsappCustomerCountByWeek(weekStartDate, weekEndDate);
+                stats.CustomerCountsByMonth = await GetWhatsappCustomerCountByMonth(monthStartDate, monthEndDate);
+                stats.CustomerCountsByYear = await GetWhatsappCustomerCountByYear();
 
-            //message stats
-            stats.TotalMessageCount = await TotalWhatsappMessageCount();
-            stats.MessageLogStatByWeek = await WhatsappMessageStatsWeekly(weekStartDate, weekEndDate);
-            stats.MessageLogStatByMonth = await WhatsappMessageStatsForMonthsOfYear();
+                //message stats
+                stats.TotalMessageCount = await TotalWhatsappMessageCount();
+                stats.MessageLogStatByWeek = await WhatsappMessageStatsWeekly(weekStartDate, weekEndDate);
+                stats.MessageLogStatByMonth = await WhatsappMessageStatsForMonthsOfYear();
+                stats.MessageLogStatByYear = await WhatsappMessageStatsForYears();
 
-            //Get user statistics
+                //Get user statistics
+                stats.TransactionStats = await GetTransactionSummary();
 
-
-            return new SuccessResponse<GetStatisticsDto>
+                return new SuccessResponse<GetStatisticsDto>
+                {
+                    Message = "success",
+                    Data = stats
+                };
+            }
+            catch (Exception)
             {
-                Data = stats
-            };
+                throw new RestException(HttpStatusCode.RequestTimeout, "An error occured");
+            }
+
         }
-
-        private static ResolutionStatusDto GetResolutionStatus(IEnumerable<RequestAndComplaint> data)
-        {
-            var resolutionStatusData = new ResolutionStatusDto
-            {
-                PendingCount = data.Where(x => x.ResolutionStatus == EResolutionStatus.Pending.ToString()).Count(),
-                EscalatedCount = data.Where(x => x.ResolutionStatus == EResolutionStatus.Escalated.ToString()).Count(),
-                ProcessingCount = data.Where(x => x.ResolutionStatus == EResolutionStatus.Processing.ToString()).Count(),
-                CompletedCount = data.Where(x => x.ResolutionStatus == EResolutionStatus.Completed.ToString()).Count(),
-            };
-            return resolutionStatusData;
-        }
-
 
         //Customer Statistics
         #region WhatsAppUsers Count
 
         private async Task<List<WhatsappCustomerStatsByWeekDto>> GetWhatsappCustomerCountByWeek(DateTime weekStartDate, DateTime weekEndDate)
         {
+
             if (weekStartDate > weekEndDate)
             {
                 throw new RestException(HttpStatusCode.BadRequest, "Invalid date range. The start date must be before or equal to the end date.");
             }
 
             // Group users by the day of the week and get the counts for each day
-            var userCountsPerWeek = await _whatsappUserRepo.Query(u => u.CreatedAt >= weekStartDate && u.CreatedAt <= weekEndDate).ToListAsync();
+            var userCountsPerWeek = await _whatsappUserRepo.Query(u => u.CreatedAt >= weekStartDate && u.CreatedAt <= weekEndDate)
+                .GroupBy(u => u.CreatedAt.DayOfWeek)
+                .Select(group => new { DayOfWeek = group.Key, Count = group.Count() })
+                .ToListAsync();
 
-            // Initialize the user counts for each day to 0
-            var userCountPerWeek = await InitializeCountStatByWeek<WhatsappCustomerStatsByWeekDto>();
+            // Create a dictionary to store user counts for each day of the week
+            var userCountPerWeekDictionary = userCountsPerWeek.ToDictionary(
+                item => item.DayOfWeek,
+                item => new WhatsappCustomerStatsByWeekDto { DayOfWeek = item.DayOfWeek.ToString(), Count = item.Count }
+            );
 
-            // Add users to the list by days
-            foreach (var user in userCountsPerWeek)
-            {
-                var dayOfWeek = user.CreatedAt.DayOfWeek.ToString();
-                var userCountDto = userCountPerWeek.Find(dto => dto.DayOfWeek == dayOfWeek);
-                if (userCountDto != null)
-                {
-                    userCountDto.Count++;
-                }
-            }
+    
+            // Convert the dictionary values back to a list
+            var userCountPerWeek = userCountPerWeekDictionary.Values.ToList();
+
             return userCountPerWeek;
         }
 
         private async Task<List<WhatsappCustomerStatsByMonthDto>> GetWhatsappCustomerCountByMonth(DateTime startDate, DateTime endDate)
         {
-    
             if (startDate > endDate)
             {
                 throw new RestException(HttpStatusCode.BadRequest, "Invalid date range. The start date must be before or equal to the end date.");
@@ -140,49 +158,50 @@ namespace Application.Services.Implementations.Dashboard
             // Group users by the year and month and get the counts for each month
             var userCountsPerMonth = await _whatsappUserRepo.Query(u => u.CreatedAt >= startDate && u.CreatedAt <= endDate)
                 .GroupBy(u => new { u.CreatedAt.Year, u.CreatedAt.Month })
-                .Select(group => new WhatsappCustomerStatsByMonthDto  { Year = group.Key.Year, MonthOfYear = group.Key.Month, Count = group.Count() })
+                .Select(group => new { Year = group.Key.Year, MonthOfYear = group.Key.Month, Count = group.Count() })
                 .ToListAsync();
 
-            // Initialize the user counts for each month to 0
-            var userCountPerMonth = await InitializeCountStatByMonth<WhatsappCustomerStatsByMonthDto>();
-
-            // Add users to the list by months
-            foreach (var userCount in userCountsPerMonth)
-            {
-                var userCountDto = userCountPerMonth.Find(dto => dto.Year == userCount.Year && dto.MonthOfYear == userCount.MonthOfYear);
-                if (userCountDto != null)
+            // Create a dictionary to store user counts for each year-month combination
+            var userCountPerMonthDictionary = userCountsPerMonth.ToDictionary(
+                item => (item.Year, item.MonthOfYear),
+                item => new WhatsappCustomerStatsByMonthDto
                 {
-                    userCountDto.Count = userCount.Count;
+                    Year = item.Year,
+                    MonthOfYear = item.MonthOfYear,
+                    MonthName = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(item.MonthOfYear),
+                    Count = item.Count
                 }
-            }
+            );
+
+            // Convert the dictionary values back to a list
+            var userCountPerMonth = userCountPerMonthDictionary.Values.OrderBy(x => x.MonthOfYear).ToList();
+
             return userCountPerMonth;
         }
 
         private async Task<List<WhatsappCustomerStatsByYearDto>> GetWhatsappCustomerCountByYear()
         {
             var currentYear = 2023;
-            var startDate = new DateTime(currentYear, 1, 1).ToUniversalTime().AddHours(1); // First day of the current year
+            var startDate = new DateTime(currentYear, 1, 1).AddHours(1).ToUniversalTime(); // First day of the current year
 
             // Group users by the year and get the counts for each year
             var userCountsPerYear = await _whatsappUserRepo.Query(u => u.CreatedAt >= startDate)
                 .GroupBy(u => u.CreatedAt.Year)
-                .Select(group => new WhatsappCustomerStatsByYearDto { Year = group.Key, Count = group.Count() })
+                .Select(group => new { Year = group.Key, Count = group.Count() })
                 .ToListAsync();
 
-            // Initialize the user counts for each year to 0
-            var userCountPerYear = await InitializeCountStatByYear<WhatsappCustomerStatsByYearDto>();
+            // Initialize the dictionary with user counts for each year
+            var userCountPerYearDictionary = userCountsPerYear.ToDictionary(
+                item => item.Year,
+                item => new WhatsappCustomerStatsByYearDto { Year = item.Year, Count = item.Count }
+            );
 
-            // Add users to the list by years
-            foreach (var userCount in userCountsPerYear)
-            {
-                var userCountDto = userCountPerYear.Find(dto => dto.Year == userCount.Year);
-                if (userCountDto != null)
-                {
-                    userCountDto.Count = userCount.Count;
-                }
-            }
+            // Convert the dictionary values back to a list
+            var userCountPerYear = userCountPerYearDictionary.Values.OrderBy(x => x.Year).ToList();
+
             return userCountPerYear;
         }
+
         #endregion
 
 
@@ -190,10 +209,10 @@ namespace Application.Services.Implementations.Dashboard
         #region Message count statistics
         private async Task<MessageLogCountDto> TotalWhatsappMessageCount()
         {
-            var totalMessage =  await _messageLogRepo.GetAllAsync();
+            var totalMessage = await _messageLogRepo.MessageLogCountAsync();
             var totalCount = new MessageLogCountDto
             {
-                TotalMessageCount = totalMessage.Count()
+                TotalMessageCount = totalMessage
             };
             return totalCount;
         }
@@ -214,8 +233,9 @@ namespace Application.Services.Implementations.Dashboard
                 Count = userCountsPerWeek,
                 Channel = "WhatsApp"
             };
-            return userWeeklyCount; 
+            return userWeeklyCount;
         }
+
 
         private async Task<List<MessageLogStatByMonthDto>> WhatsappMessageStatsForMonthsOfYear()
         {
@@ -223,143 +243,93 @@ namespace Application.Services.Implementations.Dashboard
             var currentYear = 2023;
 
             // Get the earliest record date from the database
-            var earliestRecordDate = await _messageLogRepo.Query(u => u.CreatedAt != DateTime.MinValue).MinAsync(u => u.CreatedAt);
+            var earliestRecordDate = _messageLogRepo.Query(u => u.CreatedAt != DateTime.MinValue).Min(u => u.CreatedAt);
 
             // Determine the starting month from the earliest record date
             var startingMonth = earliestRecordDate.ToUniversalTime().Month;
 
-            // Initialize a list to store the monthly counts
-            var monthlyCounts = new List<MessageLogStatByMonthDto>();
+            // Calculate the start date of the first month
+            var firstMonthStartDate = new DateTime(currentYear, startingMonth, 1).ToUniversalTime();
 
-            for (int month = startingMonth; month <= 12; month++)
-            {
-                // Calculate the start date of the month
-                var monthStartDate = new DateTime(currentYear, month, 1).ToUniversalTime();
+            // Calculate the end date of the last month
+            var lastMonthEndDate = new DateTime(currentYear, 12, DateTime.DaysInMonth(currentYear, 12)).ToUniversalTime();
 
-                // Calculate the end date of the month
-                var monthEndDate = monthStartDate.AddMonths(1).AddDays(-1).ToUniversalTime();
-
-                // Count users within the current month
-                var userCount = await _messageLogRepo.Query(u => u.CreatedAt >= monthStartDate && u.CreatedAt <= monthEndDate).CountAsync();
-
-                // Create a new MessageLogStatDto object for the current month and count
-                var monthlyCountDto = new MessageLogStatByMonthDto
+            // Fetch all message counts for the year in a single database call
+            var monthlyCounts = await _messageLogRepo.Query(u => u.CreatedAt >= firstMonthStartDate && u.CreatedAt <= lastMonthEndDate)
+                .GroupBy(u => new { u.CreatedAt.Month })
+                .Select(group => new MessageLogStatByMonthDto
                 {
-                    Month = month,
+                    MonthOfYear = group.Key.Month,
+                    MonthName = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(group.Key.Month),
                     Year = currentYear,
-                    Count = userCount,
+                    Count = group.Count(),
                     Channel = "WhatsApp"
-                };
+                })
+                .ToListAsync();
 
-                // Add the monthly count to the list
-                monthlyCounts.Add(monthlyCountDto);
-            }
+            // Order the monthly counts by month
+            monthlyCounts = monthlyCounts.OrderBy(dto => dto.MonthOfYear).ToList();
 
             return monthlyCounts;
         }
 
-
         private async Task<List<MessageLogStatByYearDto>> WhatsappMessageStatsForYears()
         {
             // Get the current year
-            var currentYear = 2023;
+            var currentYear = DateTime.UtcNow.Year;
 
-            // Get the earliest record date from the database
-            var earliestRecordDate = await _messageLogRepo.Query(u => u.CreatedAt != DateTime.MinValue).MinAsync(u => u.CreatedAt);
-            var earliestRecordYear = earliestRecordDate.Year;
+            // Get the earliest record year from the database
+            var earliestRecordYear = _messageLogRepo.Query(u => u.CreatedAt != DateTime.MinValue).Min(u => u.CreatedAt.Year);
 
-            // Initialize a list to store the yearly counts
-            var yearlyCounts = new List<MessageLogStatByYearDto>();
-
-            // Loop through each year from the current year to the earliest record year
-            for (int year = currentYear; year >= earliestRecordYear; year--)
-            {
-                // Calculate the start date of the year
-                var yearStartDate = new DateTime(year, 1, 1);
-
-                // Calculate the end date of the year
-                var yearEndDate = yearStartDate.AddYears(1).AddDays(-1);
-
-                // Count users within the current year
-                var userCount = await _messageLogRepo.Query(u => u.CreatedAt >= yearStartDate && u.CreatedAt <= yearEndDate).CountAsync();
-
-                // Create a new MessageLogStatDto object for the current year and count
-                var yearlyCountDto = new MessageLogStatByYearDto
+            // Fetch all message counts for the years in a single database call
+            var yearlyCounts = await _messageLogRepo.Query(u => u.CreatedAt.Year >= earliestRecordYear && u.CreatedAt.Year <= currentYear)
+                .GroupBy(u => new MessageLogStatByYearDto { Year = u.CreatedAt.Year })
+                .Select(group => new MessageLogStatByYearDto
                 {
-                    Year = year,
-                    Count = userCount,
+                    Year = group.Key.Year,
+                    Count = group.Count(),
                     Channel = "WhatsApp"
-                };
-
-                // Add the yearly count to the list
-                yearlyCounts.Add(yearlyCountDto);
-            }
+                })
+                .ToListAsync();
 
             return yearlyCounts;
         }
 
         #endregion
 
-        //statistic count initializers
-        #region Statistics Initializers
-
-        private Task<List<T>> InitializeCountStatByWeek<T>() where T : new()
+        //Transaction statistics
+        private async Task<TransactionDashboardStatsDto> GetTransactionSummary()
         {
+            var url = _transactionOptions.TransactionSummaryUrl;
 
-            // Initialize the user counts for each day to 0
-            var userCountPerDay = new List<T>();
-            foreach (DayOfWeek dayOfWeek in Enum.GetValues(typeof(DayOfWeek)))
+            IDictionary<string, string> param = new Dictionary<string, string>();
+            param.Add(key: _transactionOptions.TrxHeaderKey, value: _transactionOptions.TrxHeaderValue);
+            var headerParam = new RequestHeader(param);
+
+            var getTransactionSummary = await _httpService.Get<TransactionDashboardStatsDto>(url, headerParam);
+            if (getTransactionSummary.Data == null)
+                throw new RestException(HttpStatusCode.BadRequest, "An error occured while processing your request");
+
+            var result = new TransactionDashboardStatsDto
             {
-                var entity = new T();
-                typeof(T).GetProperty("DayOfWeek")?.SetValue(entity, dayOfWeek.ToString());
-                typeof(T).GetProperty("Count")?.SetValue(entity, 0);
-                typeof(T).GetProperty("Channel")?.SetValue(entity, "Whatsapp");
-                userCountPerDay.Add(entity);
-            }
-
-            return Task.FromResult(userCountPerDay);
+                WeeklySummary = getTransactionSummary.Data.WeeklySummary,
+                MonthlyTransactionSummary = getTransactionSummary.Data.MonthlyTransactionSummary,
+                YearlyTransactionSummary = getTransactionSummary.Data.YearlyTransactionSummary
+            };
+            return result;
         }
 
-        private Task<List<T>> InitializeCountStatByMonth<T>() where T : new()
+        private static ResolutionStatusDto GetResolutionStatus(List<RequestAndComplaintStat> data)
         {
-
-            // Initialize the user counts for each day to 0
-            var userCountPerMonth = new List<T>();
-            for (int month = 1; month <= 12; month++)
+            var resolutionStatusData = new ResolutionStatusDto
             {
-
-                var entity = new T();
-                typeof(T).GetProperty("Year")?.SetValue(entity, DateTime.UtcNow.Year);
-                typeof(T).GetProperty("MonthOfYear")?.SetValue(entity, month);
-                typeof(T).GetProperty("MonthName")?.SetValue(entity, CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month));
-                typeof(T).GetProperty("Count")?.SetValue(entity, 0);
-                userCountPerMonth.Add(entity);
-            }
-            return Task.FromResult(userCountPerMonth);
+                PendingCount = data.Where(x => x.ResolutionStatus == EResolutionStatus.Pending.ToString()).Count(),
+                EscalatedCount = data.Where(x => x.ResolutionStatus == EResolutionStatus.Escalated.ToString()).Count(),
+                ProcessingCount = data.Where(x => x.ResolutionStatus == EResolutionStatus.Processing.ToString()).Count(),
+                CompletedCount = data.Where(x => x.ResolutionStatus == EResolutionStatus.Completed.ToString()).Count(),
+            };
+            return resolutionStatusData;
         }
-
-        private Task<List<T>> InitializeCountStatByYear<T>() where T : new()
-        {
-            var currentYear = 2023;
-            var startDate = new DateTime(currentYear, 1, 1).ToUniversalTime().AddHours(1); // First day of the current year
-            // Initialize the user counts for each day to 0
-            var userCountPerYear = new List<T>();
-            for (int year = startDate.Year; year <= 2033; year++)
-            {
-
-                var entity = new T();
-                typeof(T).GetProperty("Year")?.SetValue(entity, year);
-                typeof(T).GetProperty("Count")?.SetValue(entity, 0);
-                userCountPerYear.Add(entity);
-            }
-            return Task.FromResult(userCountPerYear);
-        }
-
-        #endregion
-
-       
-
-
 
     }
 }

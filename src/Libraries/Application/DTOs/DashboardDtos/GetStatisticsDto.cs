@@ -24,6 +24,7 @@ namespace Application.DTOs.DashboardDtos
 
             //message count
             MessageLogStatByMonth = new HashSet<MessageLogStatByMonthDto>();
+            MessageLogStatByYear = new HashSet<MessageLogStatByYearDto>();
 
         }
         public int RequestCount { get; set; }
@@ -35,6 +36,9 @@ namespace Application.DTOs.DashboardDtos
         public MessageLogCountDto TotalMessageCount { get; set; }
         public MessageLogStatByWeekDto MessageLogStatByWeek { get; set; }
         public ICollection<MessageLogStatByMonthDto> MessageLogStatByMonth { get; set; }
+        public ICollection<MessageLogStatByYearDto> MessageLogStatByYear { get; set; }
+
+        public TransactionDashboardStatsDto TransactionStats { get; set; }
 
 
     }
@@ -84,7 +88,8 @@ namespace Application.DTOs.DashboardDtos
     public class MessageLogStatByMonthDto : BaseCountDto
     {
         public int Year { get; set; }
-        public int Month { get; set; }
+        public int MonthOfYear { get; set; }
+        public string MonthName { get; set; }
         public string Channel { get; set; }
     }
 
@@ -92,6 +97,13 @@ namespace Application.DTOs.DashboardDtos
     {
         public int Year { get; set; }
         public string Channel { get; set; }
+    }
+
+    public class TransactionStatsDto
+    {
+        public decimal LowPayment { get; set; }
+        public decimal AveragePayment { get; set; }
+        public decimal HighestPayment { get; set; }
     }
 
 }

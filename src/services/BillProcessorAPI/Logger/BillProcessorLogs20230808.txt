@@ -1,0 +1,164 @@
+2023-08-08 06:48:00.946 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-08-08 06:48:03.292 +01:00 [INF] Now listening on: https://localhost:7253
+2023-08-08 06:48:03.292 +01:00 [INF] Now listening on: http://localhost:5273
+2023-08-08 06:48:03.300 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-08-08 06:48:03.301 +01:00 [INF] Hosting environment: Development
+2023-08-08 06:48:03.302 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-08-08 06:48:13.250 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-08-08 06:48:14.457 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1209.1518ms
+2023-08-08 06:48:14.535 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-08-08 06:48:14.546 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-08-08 06:48:14.611 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12364 application/javascript;+charset=utf-8 76.0283ms
+2023-08-08 06:48:14.760 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 214.5607ms
+2023-08-08 06:48:14.977 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-08-08 06:48:15.690 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 712.1999ms
+2023-08-08 06:48:19.842 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-08-08 06:48:19.844 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1.8435ms
+2023-08-08 16:05:58.874 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-08-08 16:05:59.465 +01:00 [INF] Now listening on: https://localhost:7253
+2023-08-08 16:05:59.465 +01:00 [INF] Now listening on: http://localhost:5273
+2023-08-08 16:05:59.473 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-08-08 16:05:59.475 +01:00 [INF] Hosting environment: Development
+2023-08-08 16:05:59.475 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-08-08 16:06:00.730 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-08-08 16:06:01.623 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-08-08 16:06:01.656 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-08-08 16:06:01.658 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 934.7822ms
+2023-08-08 16:06:01.662 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12364 application/javascript;+charset=utf-8 39.2762ms
+2023-08-08 16:06:01.773 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 117.1950ms
+2023-08-08 16:06:01.987 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-08-08 16:06:02.740 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 752.9486ms
+2023-08-08 16:06:03.792 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-08-08 16:06:03.794 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1.9623ms
+2023-08-08 16:06:52.292 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7253/v1/abc/bill-statistics - -
+2023-08-08 16:06:52.329 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI)'
+2023-08-08 16:06:52.371 +01:00 [INF] Route matched with {action = "CollectionsStats", controller = "BillHolder"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CollectionsStats() on controller BillProcessorAPI.Controllers.BillHolderController (BillProcessorAPI).
+2023-08-08 16:07:05.507 +01:00 [INF] Executing OkObjectResult, writing value of type 'BillProcessorAPI.Dtos.TransactionDashboardStatsDto'.
+2023-08-08 16:07:05.553 +01:00 [INF] Executed action BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI) in 13174.9092ms
+2023-08-08 16:07:05.557 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI)'
+2023-08-08 16:07:05.586 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7253/v1/abc/bill-statistics - - - 200 - application/json;+charset=utf-8 13293.3563ms
+2023-08-08 16:09:53.764 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7253/v1/abc/bill-statistics - -
+2023-08-08 16:09:53.767 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI)'
+2023-08-08 16:09:53.768 +01:00 [INF] Route matched with {action = "CollectionsStats", controller = "BillHolder"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CollectionsStats() on controller BillProcessorAPI.Controllers.BillHolderController (BillProcessorAPI).
+2023-08-08 16:09:58.468 +01:00 [INF] Executing OkObjectResult, writing value of type 'BillProcessorAPI.Dtos.TransactionDashboardStatsDto'.
+2023-08-08 16:09:58.468 +01:00 [INF] Executed action BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI) in 4700.8248ms
+2023-08-08 16:09:58.468 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI)'
+2023-08-08 16:09:58.469 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7253/v1/abc/bill-statistics - - - 200 - application/json;+charset=utf-8 4704.6415ms
+2023-08-08 16:10:06.323 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7253/v1/abc/bill-statistics - -
+2023-08-08 16:10:06.324 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI)'
+2023-08-08 16:10:06.324 +01:00 [INF] Route matched with {action = "CollectionsStats", controller = "BillHolder"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CollectionsStats() on controller BillProcessorAPI.Controllers.BillHolderController (BillProcessorAPI).
+2023-08-08 16:10:09.430 +01:00 [INF] Executing OkObjectResult, writing value of type 'BillProcessorAPI.Dtos.TransactionDashboardStatsDto'.
+2023-08-08 16:10:09.430 +01:00 [INF] Executed action BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI) in 3105.7832ms
+2023-08-08 16:10:09.430 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI)'
+2023-08-08 16:10:09.430 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7253/v1/abc/bill-statistics - - - 200 - application/json;+charset=utf-8 3107.0603ms
+2023-08-08 16:10:27.052 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7253/v1/abc/bill-statistics - -
+2023-08-08 16:10:27.053 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI)'
+2023-08-08 16:10:27.053 +01:00 [INF] Route matched with {action = "CollectionsStats", controller = "BillHolder"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CollectionsStats() on controller BillProcessorAPI.Controllers.BillHolderController (BillProcessorAPI).
+2023-08-08 16:10:30.155 +01:00 [INF] Executing OkObjectResult, writing value of type 'BillProcessorAPI.Dtos.TransactionDashboardStatsDto'.
+2023-08-08 16:10:30.156 +01:00 [INF] Executed action BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI) in 3102.6707ms
+2023-08-08 16:10:30.156 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI)'
+2023-08-08 16:10:30.156 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7253/v1/abc/bill-statistics - - - 200 - application/json;+charset=utf-8 3103.7699ms
+2023-08-08 16:21:18.361 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7253/v1/abc/bill-statistics - -
+2023-08-08 16:21:18.362 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI)'
+2023-08-08 16:21:18.362 +01:00 [INF] Route matched with {action = "CollectionsStats", controller = "BillHolder"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CollectionsStats() on controller BillProcessorAPI.Controllers.BillHolderController (BillProcessorAPI).
+2023-08-08 16:21:26.614 +01:00 [INF] Executing OkObjectResult, writing value of type 'BillProcessorAPI.Dtos.TransactionDashboardStatsDto'.
+2023-08-08 16:21:26.614 +01:00 [INF] Executed action BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI) in 8252.0631ms
+2023-08-08 16:21:26.614 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI)'
+2023-08-08 16:21:26.615 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7253/v1/abc/bill-statistics - - - 200 - application/json;+charset=utf-8 8255.2536ms
+2023-08-08 16:38:00.870 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7253/v1/abc/bill-statistics - -
+2023-08-08 16:38:00.878 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI)'
+2023-08-08 16:38:00.878 +01:00 [INF] Route matched with {action = "CollectionsStats", controller = "BillHolder"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CollectionsStats() on controller BillProcessorAPI.Controllers.BillHolderController (BillProcessorAPI).
+2023-08-08 16:40:17.978 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7253/v1/abc/bill-statistics - -
+2023-08-08 16:40:17.978 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI)'
+2023-08-08 16:40:17.978 +01:00 [INF] Route matched with {action = "CollectionsStats", controller = "BillHolder"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CollectionsStats() on controller BillProcessorAPI.Controllers.BillHolderController (BillProcessorAPI).
+2023-08-08 16:43:19.201 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-08-08 16:43:19.579 +01:00 [INF] Now listening on: https://localhost:7253
+2023-08-08 16:43:19.579 +01:00 [INF] Now listening on: http://localhost:5273
+2023-08-08 16:43:19.594 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-08-08 16:43:19.595 +01:00 [INF] Hosting environment: Development
+2023-08-08 16:43:19.595 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-08-08 16:43:21.064 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-08-08 16:43:21.804 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-08-08 16:43:21.828 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-08-08 16:43:21.829 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12364 application/javascript;+charset=utf-8 14.3113ms
+2023-08-08 16:43:21.832 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 777.0360ms
+2023-08-08 16:43:21.911 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 83.6217ms
+2023-08-08 16:43:21.960 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-08-08 16:43:21.961 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1.9007ms
+2023-08-08 16:43:22.073 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-08-08 16:43:22.509 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 435.9965ms
+2023-08-08 16:43:48.852 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/v1/abc/bill-statistics - -
+2023-08-08 16:43:48.898 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI)'
+2023-08-08 16:43:48.934 +01:00 [INF] Route matched with {action = "CollectionsStats", controller = "BillHolder"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CollectionsStats() on controller BillProcessorAPI.Controllers.BillHolderController (BillProcessorAPI).
+2023-08-08 16:53:56.929 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-08-08 16:53:57.827 +01:00 [INF] Now listening on: https://localhost:7253
+2023-08-08 16:53:57.827 +01:00 [INF] Now listening on: http://localhost:5273
+2023-08-08 16:53:57.835 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-08-08 16:53:57.836 +01:00 [INF] Hosting environment: Development
+2023-08-08 16:53:57.836 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-08-08 16:53:59.474 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-08-08 16:54:00.666 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1194.2305ms
+2023-08-08 16:54:00.695 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-08-08 16:54:00.711 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12364 application/javascript;+charset=utf-8 15.8915ms
+2023-08-08 16:54:00.717 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-08-08 16:54:00.832 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 114.2867ms
+2023-08-08 16:54:01.056 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-08-08 16:54:01.603 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 546.8407ms
+2023-08-08 16:54:01.880 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-08-08 16:54:01.883 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 2.4031ms
+2023-08-08 16:57:06.566 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-08-08 16:57:07.806 +01:00 [INF] Now listening on: https://localhost:7253
+2023-08-08 16:57:07.807 +01:00 [INF] Now listening on: http://localhost:5273
+2023-08-08 16:57:07.814 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-08-08 16:57:07.815 +01:00 [INF] Hosting environment: Development
+2023-08-08 16:57:07.816 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-08-08 16:57:09.458 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-08-08 16:57:10.278 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-08-08 16:57:10.282 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-08-08 16:57:10.294 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12364 application/javascript;+charset=utf-8 12.9058ms
+2023-08-08 16:57:10.294 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 862.4239ms
+2023-08-08 16:57:10.439 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 156.9601ms
+2023-08-08 16:57:10.464 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-08-08 16:57:10.465 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1.6242ms
+2023-08-08 16:57:10.598 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-08-08 16:57:11.040 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 441.9686ms
+2023-08-08 16:57:35.879 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7253/v1/abc/bill-statistics - -
+2023-08-08 16:57:35.931 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI)'
+2023-08-08 16:57:35.997 +01:00 [INF] Route matched with {action = "CollectionsStats", controller = "BillHolder"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CollectionsStats() on controller BillProcessorAPI.Controllers.BillHolderController (BillProcessorAPI).
+2023-08-08 16:59:53.037 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7253/v1/abc/bill-statistics - -
+2023-08-08 16:59:53.041 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI)'
+2023-08-08 16:59:53.041 +01:00 [INF] Route matched with {action = "CollectionsStats", controller = "BillHolder"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CollectionsStats() on controller BillProcessorAPI.Controllers.BillHolderController (BillProcessorAPI).
+2023-08-08 17:00:06.412 +01:00 [INF] Executing OkObjectResult, writing value of type 'BillProcessorAPI.Dtos.TransactionDashboardStatsDto'.
+2023-08-08 17:00:06.462 +01:00 [INF] Executed action BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI) in 13410.8559ms
+2023-08-08 17:00:06.467 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI)'
+2023-08-08 17:00:06.513 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7253/v1/abc/bill-statistics - - - 200 - application/json;+charset=utf-8 13475.6646ms
+2023-08-08 17:06:09.054 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7253/v1/abc/bill-statistics - -
+2023-08-08 17:06:09.056 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI)'
+2023-08-08 17:06:09.056 +01:00 [INF] Route matched with {action = "CollectionsStats", controller = "BillHolder"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CollectionsStats() on controller BillProcessorAPI.Controllers.BillHolderController (BillProcessorAPI).
+2023-08-08 17:06:15.798 +01:00 [INF] Executing OkObjectResult, writing value of type 'BillProcessorAPI.Dtos.TransactionDashboardStatsDto'.
+2023-08-08 17:06:15.799 +01:00 [INF] Executed action BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI) in 6742.1907ms
+2023-08-08 17:06:15.799 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI)'
+2023-08-08 17:06:15.799 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7253/v1/abc/bill-statistics - - - 200 - application/json;+charset=utf-8 6746.1499ms
+2023-08-08 22:12:30.057 +01:00 [INF] User profile is available. Using 'C:\Users\Sniper\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-08-08 22:12:30.722 +01:00 [INF] Now listening on: https://localhost:7253
+2023-08-08 22:12:30.722 +01:00 [INF] Now listening on: http://localhost:5273
+2023-08-08 22:12:30.733 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-08-08 22:12:30.736 +01:00 [INF] Hosting environment: Development
+2023-08-08 22:12:30.736 +01:00 [INF] Content root path: C:\Users\Sniper\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-08-08 22:12:32.367 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-08-08 22:12:33.683 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1323.7050ms
+2023-08-08 22:12:33.693 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-08-08 22:12:33.694 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-08-08 22:12:33.705 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12364 application/javascript;+charset=utf-8 11.3927ms
+2023-08-08 22:12:33.937 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-08-08 22:12:33.938 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1.7127ms
+2023-08-08 22:12:33.983 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 289.7058ms
+2023-08-08 22:12:35.583 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-08-08 22:12:36.116 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 533.6824ms
+2023-08-08 22:14:16.693 +01:00 [INF] Request starting HTTP/1.1 GET https://localhost:7253/v1/abc/bill-statistics - -
+2023-08-08 22:14:16.737 +01:00 [INF] Executing endpoint 'BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI)'
+2023-08-08 22:14:16.777 +01:00 [INF] Route matched with {action = "CollectionsStats", controller = "BillHolder"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] CollectionsStats() on controller BillProcessorAPI.Controllers.BillHolderController (BillProcessorAPI).
+2023-08-08 22:14:45.783 +01:00 [INF] Executing OkObjectResult, writing value of type 'BillProcessorAPI.Dtos.TransactionDashboardStatsDto'.
+2023-08-08 22:14:45.875 +01:00 [INF] Executed action BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI) in 29085.4598ms
+2023-08-08 22:14:45.882 +01:00 [INF] Executed endpoint 'BillProcessorAPI.Controllers.BillHolderController.CollectionsStats (BillProcessorAPI)'
+2023-08-08 22:14:45.930 +01:00 [INF] Request finished HTTP/1.1 GET https://localhost:7253/v1/abc/bill-statistics - - - 200 - application/json;+charset=utf-8 29237.4345ms

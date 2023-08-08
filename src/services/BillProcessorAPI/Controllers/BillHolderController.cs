@@ -44,10 +44,19 @@ namespace BillProcessorAPI.Controllers
 
         [HttpGet( "bill-report", Name = nameof(Collections))]
         [ProducesResponseType(typeof(SuccessResponse<CollectionReportDto>), 200)]
-        [SwaggerOperation(Summary = "Endpoint to get verify bill payment")]
+        [SwaggerOperation(Summary = "Endpoint to get get bill reports")]
         public async Task<IActionResult> Collections([FromQuery] ResourceParameter param,[FromQuery] ReportParameters reportParameters)
         {
-            var response = await _collectionReportService.GetAllCollections(param, reportParameters, nameof(Collections), Url);
+            var response = await _collectionReportService.GetAllPagedCollections(param, reportParameters, nameof(Collections), Url);
+            return Ok(response);
+        }
+
+        [HttpGet("bill-statistics", Name = nameof(CollectionsStats))]
+        [ProducesResponseType(typeof(SuccessResponse<TransactionDashboardStatsDto>), 200)]
+        [SwaggerOperation(Summary = "Endpoint to get stats for dashboard")]
+        public async Task<IActionResult> CollectionsStats()
+        {
+            var response = await _collectionReportService.GetAllCollections();
             return Ok(response);
         }
     }
