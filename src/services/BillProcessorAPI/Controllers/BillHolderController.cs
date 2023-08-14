@@ -24,10 +24,10 @@ namespace BillProcessorAPI.Controllers
             _collectionReportService = collection;
         }
 
-        [HttpGet("invoice/{billPaymentCode}")]
+        [HttpGet("invoice/{billPaymentCode}/{phone?}")]
         [ProducesResponseType(typeof(SuccessResponse<BillReferenceResponseDto>), 200)]
         [SwaggerOperation(Summary = "Endpoint to get bill payer reference")]
-        public async Task<IActionResult> ReferenceVerification([FromRoute] string billPaymentCode, [FromQuery] string phone)
+        public async Task<IActionResult> ReferenceVerification([FromRoute] string billPaymentCode, [FromRoute] string phone = null)
 		{
 			var response = await _revpay.ReferenceVerification(phone, billPaymentCode);
 			return Ok(response);

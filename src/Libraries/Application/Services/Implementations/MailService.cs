@@ -20,20 +20,28 @@ namespace Application.Services.Implementations
             _emailTemplateService = emailTemplateService;
         }
 
-        public async Task SendSingleMail(string reciepientAddress, string message, 
+        public async Task<bool> SendSingleMail(string reciepientAddress, string message, 
             string subject)
         {
             try
             {
                 //you'd already called email template at startegic points why call again here?'
-                var email = new MimeMessage();
-                email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
-                email.To.Add(MailboxAddress.Parse(reciepientAddress));
-                email.Subject = subject;
-                email.Body = new TextPart("html")
+                var email = new MimeMessage()
                 {
-                    Text = message
+                    Sender = MailboxAddress.Parse(_mailSettings.Mail),
+                    Subject = subject,
+                    Body = new TextPart("html")
+                    {
+                        Text = message
+                    }
                 };
+                //email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
+                email.To.Add(MailboxAddress.Parse(reciepientAddress));
+               // email.Subject = subject;
+                //email.Body = new TextPart("html")
+                //{
+                //    Text = message
+                //};
 
                 using (var client = new MailKit.Net.Smtp.SmtpClient())
                 {
@@ -47,6 +55,7 @@ namespace Application.Services.Implementations
 
                     client.Disconnect(true);
                 }
+                return true;
             }
             catch(SmtpException ex)
             {
