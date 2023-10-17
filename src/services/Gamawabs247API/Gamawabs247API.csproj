@@ -66,7 +66,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="wwwroot\" />
     <Folder Include="Validations\" />
     <Folder Include="LogFiles\" />
   </ItemGroup>
