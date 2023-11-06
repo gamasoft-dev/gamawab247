@@ -8,10 +8,10 @@
 		Escalated,
 		Resolved,
 		Pending_Feedback,
-		Pending
+		Pending,
 		//Escalated,
-		//Processing,
-		//Completed,
+		Processing,
+		Completed,
 	}
 
 }

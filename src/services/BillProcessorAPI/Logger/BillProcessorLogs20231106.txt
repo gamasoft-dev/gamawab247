@@ -1,0 +1,28 @@
+2023-11-06 16:32:21.755 +01:00 [INF] User profile is available. Using 'C:\Users\SMILE-TECH\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-11-06 16:32:22.412 +01:00 [INF] Now listening on: https://localhost:7253
+2023-11-06 16:32:22.412 +01:00 [INF] Now listening on: http://localhost:5273
+2023-11-06 16:32:22.420 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-06 16:32:22.421 +01:00 [INF] Hosting environment: Development
+2023-11-06 16:32:22.422 +01:00 [INF] Content root path: C:\Users\SMILE-TECH\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-11-06 16:32:23.483 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-11-06 16:32:24.822 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-11-06 16:32:25.026 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-11-06 16:32:25.030 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 1181.1507ms
+2023-11-06 16:32:25.030 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12364 application/javascript;+charset=utf-8 12.8999ms
+2023-11-06 16:32:25.284 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 257.9934ms
+2023-11-06 16:32:25.409 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-11-06 16:32:25.958 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 548.8305ms
+2023-11-06 16:35:33.367 +01:00 [INF] User profile is available. Using 'C:\Users\SMILE-TECH\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-11-06 16:35:33.767 +01:00 [INF] Now listening on: https://localhost:7253
+2023-11-06 16:35:33.768 +01:00 [INF] Now listening on: http://localhost:5273
+2023-11-06 16:35:33.777 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-06 16:35:33.778 +01:00 [INF] Hosting environment: Development
+2023-11-06 16:35:33.778 +01:00 [INF] Content root path: C:\Users\SMILE-TECH\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-11-06 16:35:34.582 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-11-06 16:35:35.357 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 778.7026ms
+2023-11-06 16:35:35.368 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-11-06 16:35:35.371 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-11-06 16:35:35.380 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12364 application/javascript;+charset=utf-8 12.2823ms
+2023-11-06 16:35:35.418 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 46.8202ms
+2023-11-06 16:35:35.557 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-11-06 16:35:35.986 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 428.4125ms
