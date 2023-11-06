@@ -78,43 +78,44 @@ namespace Application.Services.Implementations.Dashboard
 
             try
             {
-                var stats = new GetStatisticsDto
-                {
+            var stats = new GetStatisticsDto
+            {
                     RequestCount = request.Count,
                     ComplaintCount = complaint.Count
-                };
+            };
 
                 var requestChartData = GetResolutionStatus(request);
                 var complaintChartData = GetResolutionStatus(complaint);
 
                 ////request and complaint stats
-                stats.RequestAndComplaintDataEnterPieChart.Add(new ChartSeries { Name = "Request", ResolutionChartData = requestChartData });
-                stats.RequestAndComplaintDataEnterPieChart.Add(new ChartSeries { Name = "Complaint", ResolutionChartData = complaintChartData });
+            stats.RequestAndComplaintDataEnterPieChart.Add(new ChartSeries { Name = "Request", ResolutionChartData = requestChartData });
+            stats.RequestAndComplaintDataEnterPieChart.Add(new ChartSeries { Name = "Complaint", ResolutionChartData = complaintChartData });
 
-                //user stats
+            //user stats
                 stats.CustomerCountsByWeek = await GetWhatsappCustomerCountByWeek(weekStartDate, weekEndDate);
-                stats.CustomerCountsByMonth = await GetWhatsappCustomerCountByMonth(monthStartDate, monthEndDate);
-                stats.CustomerCountsByYear = await GetWhatsappCustomerCountByYear();
+            stats.CustomerCountsByMonth = await GetWhatsappCustomerCountByMonth(monthStartDate, monthEndDate);
+            stats.CustomerCountsByYear = await GetWhatsappCustomerCountByYear();
 
-                //message stats
-                stats.TotalMessageCount = await TotalWhatsappMessageCount();
-                stats.MessageLogStatByWeek = await WhatsappMessageStatsWeekly(weekStartDate, weekEndDate);
-                stats.MessageLogStatByMonth = await WhatsappMessageStatsForMonthsOfYear();
+            //message stats
+            stats.TotalMessageCount = await TotalWhatsappMessageCount();
+            stats.MessageLogStatByWeek = await WhatsappMessageStatsWeekly(weekStartDate, weekEndDate);
+            stats.MessageLogStatByMonth = await WhatsappMessageStatsForMonthsOfYear();
                 stats.MessageLogStatByYear = await WhatsappMessageStatsForYears();
 
-                //Get user statistics
+            //Get user statistics
                 stats.TransactionStats = await GetTransactionSummary();
 
-                return new SuccessResponse<GetStatisticsDto>
-                {
-                    Message = "success",
-                    Data = stats
-                };
-            }
-            catch (Exception)
+
+            return new SuccessResponse<GetStatisticsDto>
             {
+                    Message = "success",
+                Data = stats
+            };
+        }
+            catch (Exception)
+        {
                 throw new RestException(HttpStatusCode.RequestTimeout, "An error occured");
-            }
+        }
 
         }
 
@@ -150,6 +151,7 @@ namespace Application.Services.Implementations.Dashboard
 
         private async Task<List<WhatsappCustomerStatsByMonthDto>> GetWhatsappCustomerCountByMonth(DateTime startDate, DateTime endDate)
         {
+    
             if (startDate > endDate)
             {
                 throw new RestException(HttpStatusCode.BadRequest, "Invalid date range. The start date must be before or equal to the end date.");
@@ -165,7 +167,7 @@ namespace Application.Services.Implementations.Dashboard
             var userCountPerMonthDictionary = userCountsPerMonth.ToDictionary(
                 item => (item.Year, item.MonthOfYear),
                 item => new WhatsappCustomerStatsByMonthDto
-                {
+            {
                     Year = item.Year,
                     MonthOfYear = item.MonthOfYear,
                     MonthName = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(item.MonthOfYear),
@@ -233,7 +235,7 @@ namespace Application.Services.Implementations.Dashboard
                 Count = userCountsPerWeek,
                 Channel = "WhatsApp"
             };
-            return userWeeklyCount;
+            return userWeeklyCount; 
         }
 
 
@@ -273,6 +275,7 @@ namespace Application.Services.Implementations.Dashboard
             return monthlyCounts;
         }
 
+
         private async Task<List<MessageLogStatByYearDto>> WhatsappMessageStatsForYears()
         {
             // Get the current year
@@ -299,7 +302,7 @@ namespace Application.Services.Implementations.Dashboard
 
         //Transaction statistics
         private async Task<TransactionDashboardStatsDto> GetTransactionSummary()
-        {
+            {
             var url = _transactionOptions.TransactionSummaryUrl;
 
             IDictionary<string, string> param = new Dictionary<string, string>();
@@ -330,6 +333,12 @@ namespace Application.Services.Implementations.Dashboard
             };
             return resolutionStatusData;
         }
+
+        #endregion
+
+       
+
+
 
     }
 }

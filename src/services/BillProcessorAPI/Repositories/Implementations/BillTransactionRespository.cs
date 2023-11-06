@@ -21,19 +21,35 @@ namespace BillProcessorAPI.Repositories.Implementations
 
         }
 
-        public IQueryable<CollectionReportDto> GetCollectionAllReport(ReportParameters reportParameter)
+        public IQueryable<CollectionReportDto> GetCollectionAllReport(ResourceParameter parameter,ReportParameters reportParameter)
         {
+
             var query = _context.BillTransactions.OrderByDescending(x=>x.UpdatedAt).IgnoreQueryFilters() as IQueryable<BillTransaction>;
-            var collection = query.Select(n => (CollectionReportDto)n);
+
+            if (!string.IsNullOrEmpty(reportParameter.SearchText))
+            {
+                query = query.Where(x => x.PayerName.ToLower().Contains(reportParameter.SearchText.ToLower()));
+            }
+
             if (!string.IsNullOrEmpty(reportParameter.PaymentGateway))
             {
-                bool convertPaymentGateway = Enum.TryParse<EGatewayType>(value: reportParameter.PaymentGateway, ignoreCase: true, out _paymentGateway);
-                collection.Where(x => x.GatewayType == (int)_paymentGateway);
+                bool convertPaymentGateway = Enum.TryParse(value: reportParameter.PaymentGateway, ignoreCase: true, out _paymentGateway);
+                query = query.Where(x => x.GatewayType == _paymentGateway).IgnoreQueryFilters() as IQueryable<BillTransaction>;
 
             }
 
+            if (parameter.StartDate != null && parameter.EndDate != null)
+            {
+                var filterStartDate = parameter.StartDate?.ToUniversalTime().AddHours(1);
+                var filterEndDate = parameter.EndDate?.ToUniversalTime().AddDays(1).AddMinutes(59);
+                query = query.Where(x => x.CreatedAt >= filterStartDate && x.CreatedAt <= filterEndDate).IgnoreQueryFilters() as IQueryable<BillTransaction>;
+            }
 
+           
+            var collection = query.Select(n => (CollectionReportDto)n);
             return collection;
         }
+
+      
     }
 }

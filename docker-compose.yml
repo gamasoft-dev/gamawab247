@@ -37,10 +37,12 @@ services:
       context: .
       dockerfile: src/Jobs/BroadcastMessageServiceWorker/Dockerfile
 
+
 volumes:
   gamawabs_data:
   postgresql_data:
   redis_data:
+
 
 
 

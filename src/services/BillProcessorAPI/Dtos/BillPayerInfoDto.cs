@@ -27,7 +27,7 @@ namespace BillProcessorAPI.Dtos
         [JsonProperty("amount_due")]
         public string AmountDue { get; set; }
         [JsonProperty("status")]
-        public string Status { get; set; }
+        public string status { get; set; }
         [JsonProperty("credit_account")]
         public string CreditAccount { get; set; }
         [JsonProperty("payer_name")]
@@ -40,8 +40,8 @@ namespace BillProcessorAPI.Dtos
         public string OraAgencyRev { get; set; }
         [JsonProperty("state")]
         public string State { get; set; }
-        [JsonProperty("status_message")]
-        public string StatusMessage { get; set; }
+        [JsonProperty("statusMessage")]
+        public string statusMessage { get; set; }
         [JsonProperty("p_id")]
         public string Pid { get; set; }
         [JsonProperty("currency")]

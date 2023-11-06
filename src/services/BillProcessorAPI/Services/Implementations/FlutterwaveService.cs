@@ -4,13 +4,10 @@ using BillProcessorAPI.Dtos.BroadcastMessage;
 using BillProcessorAPI.Dtos.Common;
 using BillProcessorAPI.Dtos.Flutterwave;
 using BillProcessorAPI.Entities;
-using BillProcessorAPI.Entities.FlutterwaveEntities;
-using BillProcessorAPI.Entities.PaythruEntities;
 using BillProcessorAPI.Enums;
 using BillProcessorAPI.Helpers;
 using BillProcessorAPI.Helpers.BroadcastMessage;
 using BillProcessorAPI.Helpers.Flutterwave;
-using BillProcessorAPI.Helpers.Paythru;
 using BillProcessorAPI.Repositories.Interfaces;
 using BillProcessorAPI.Services.Interfaces;
 using Domain.Common;
@@ -31,7 +28,6 @@ namespace BillProcessorAPI.Services.Implementations
 
         private readonly IInvoiceRepository _invoiceRepo;
         private readonly IRepository<BillPayerInfo> _billPayerRepository;
-        private readonly IRepository<Receipt> _receipts;
         private readonly IRepository<WebhookNotification> _oldAppWebhook;
         private readonly ICutlyService _cutlyService;
 
@@ -53,7 +49,6 @@ namespace BillProcessorAPI.Services.Implementations
             IConfigurationService configService,
             IInvoiceRepository invoiceRepo,
             IMapper mapper,
-            IRepository<Receipt> receipts,
             ILogger<FlutterwaveService> logger,
             IHttpContextAccessor context,
             IRepository<WebhookNotification> oldAppWebhook,
@@ -68,7 +63,6 @@ namespace BillProcessorAPI.Services.Implementations
             _configService = configService;
             _invoiceRepo = invoiceRepo;
             _mapper = mapper;
-            _receipts = receipts;
             _logger = logger;
             _context = context;
             _oldAppWebhook = oldAppWebhook;
@@ -284,16 +278,16 @@ namespace BillProcessorAPI.Services.Implementations
                 invoice.GatewayTransactionReference = verificationReaponse.Data.Data.flw_ref;
 
                 // Create a receipt record
-                var receipt = _mapper.Map<Receipt>(transaction);
-                receipt.TransactionId = transaction.Id;
-                receipt.PaymentRef = transaction.TransactionReference;
-                receipt.InvoiceId = invoice.Id;
-                receipt.TransactionDate = transaction.DateCompleted;
-                receipt.GateWay = transaction.GatewayType.ToString();
-                receipt.ReceiptUrl = transaction.ReceiptUrl;
+                //var receipt = _mapper.Map<Receipt>(transaction);
+                //receipt.TransactionId = transaction.Id;
+                //receipt.PaymentRef = transaction.TransactionReference;
+                //receipt.InvoiceId = invoice.Id;
+                //receipt.TransactionDate = transaction.DateCompleted;
+                //receipt.GateWay = transaction.GatewayType.ToString();
+                //receipt.ReceiptUrl = transaction.ReceiptUrl;
 
-                await _receipts.AddAsync(receipt);
-                await _receipts.SaveChangesAsync();
+                //await _receipts.AddAsync(receipt);
+                //await _receipts.SaveChangesAsync();
 
             }
             catch (Exception ex)

@@ -1,15 +1,12 @@
 {
-    "profiles": {
-        "BroadcastMessageServiceWorker": {
-            "commandName": "Project",
-            "applicationUrl": "http://localhost:8015",
-            "environmentVariables": {
-                "DOTNET_ENVIRONMENT": "Development"
-            },
-            "Docker": {
-                "commandName": "Docker",
-                "environmentVariables": {}
-            }
-        }
+  "profiles": {
+    "BroadcastMessageServiceWorker": {
+      "commandName": "Project",
+      "applicationUrl": "http://localhost:8015",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true
     }
+  }
 }

@@ -1,31 +1,23 @@
-﻿using System.Net.Http;
-using System.Net;
+﻿using AutoMapper;
 using BillProcessorAPI.Dtos;
+using BillProcessorAPI.Dtos.BroadcastMessage;
+using BillProcessorAPI.Dtos.Common;
+using BillProcessorAPI.Dtos.Paythru;
 using BillProcessorAPI.Entities;
+using BillProcessorAPI.Enums;
 using BillProcessorAPI.Helpers;
-using BillProcessorAPI.Helpers.Revpay;
+using BillProcessorAPI.Helpers.BroadcastMessage;
+using BillProcessorAPI.Helpers.Paythru;
+using BillProcessorAPI.Repositories.Interfaces;
 using BillProcessorAPI.Services.Interfaces;
 using Domain.Common;
-using Newtonsoft.Json;
-using Microsoft.IdentityModel.Tokens;
-using AutoMapper;
-using BillProcessorAPI.Repositories.Interfaces;
-using BillProcessorAPI.Helpers.Paythru;
-using Microsoft.Extensions.Options;
-using Amazon.Runtime.Internal.Transform;
-using Infrastructure.Http;
-using Application.DTOs;
-using System;
-using BillProcessorAPI.Enums;
 using Domain.Exceptions;
-using BillProcessorAPI.Dtos.Paythru;
-using BillProcessorAPI.Dtos.Common;
-using System.Runtime.InteropServices;
-using Microsoft.EntityFrameworkCore;
-using BillProcessorAPI.Entities.PaythruEntities;
-using BillProcessorAPI.Dtos.BroadcastMessage;
+using Infrastructure.Http;
 using Infrastructure.ShortLink;
-using BillProcessorAPI.Helpers.BroadcastMessage;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using System.Net;
 
 namespace BillProcessorAPI.Services.Implementations
 {
@@ -34,7 +26,6 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IRepository<BillPayerInfo> _billPayerRepo;
         private readonly IRepository<BillTransaction> _billTransactionsRepo;
         private readonly IRepository<Invoice> _invoiceRepo;
-        private readonly IRepository<Receipt> _receiptRepo;
         private readonly PaythruOptions PaythruOptions;
         private readonly IHttpService _httpService;
         private readonly IConfigurationService _configService;
@@ -51,7 +42,6 @@ namespace BillProcessorAPI.Services.Implementations
             IHttpService httpService, IConfigurationService configService,
             IMapper mapper,
             IRepository<Invoice> invoiceRepo,
-            IRepository<Receipt> receiptRepo,
             ILogger<PayThruService> logger, 
             IOptions<BusinessesPhoneNumber> phoneNumberOptions, 
             IOptions<ReceiptBroadcastConfig> receiptBroadcastOptions, 
@@ -64,7 +54,6 @@ namespace BillProcessorAPI.Services.Implementations
             _configService = configService;
             _mapper = mapper;
             _invoiceRepo = invoiceRepo;
-            _receiptRepo = receiptRepo;
             _logger = logger;
             _phoneNumberOptions = phoneNumberOptions.Value;
             _receiptBroadcastOptions = receiptBroadcastOptions.Value;
@@ -326,16 +315,16 @@ namespace BillProcessorAPI.Services.Implementations
             invoice.GatewayTransactionReference = billTransaction.GatewayTransactionReference;
 
             // Create a receipt record
-            var receipt = _mapper.Map<Receipt>(billTransaction);
-            receipt.TransactionId = billTransaction.Id;
-            receipt.PaymentRef = billTransaction.TransactionReference;
-            receipt.InvoiceId = invoice.Id;
-            receipt.TransactionDate = billTransaction.DateCompleted;
-            receipt.GateWay = billTransaction.GatewayType.ToString();
-            receipt.ReceiptUrl = transactionNotification.TransactionDetails.ReceiptUrl;
+            //var receipt = _mapper.Map<Receipt>(billTransaction);
+            //receipt.TransactionId = billTransaction.Id;
+            //receipt.PaymentRef = billTransaction.TransactionReference;
+            //receipt.InvoiceId = invoice.Id;
+            //receipt.TransactionDate = billTransaction.DateCompleted;
+            //receipt.GateWay = billTransaction.GatewayType.ToString();
+            //receipt.ReceiptUrl = transactionNotification.TransactionDetails.ReceiptUrl;
 
-            await _receiptRepo.AddAsync(receipt);
-            await _receiptRepo.SaveChangesAsync();
+            //await _receiptRepo.AddAsync(receipt);
+            //await _receiptRepo.SaveChangesAsync();
 
             return new SuccessResponse<PaymentVerificationResponseDto>
             {

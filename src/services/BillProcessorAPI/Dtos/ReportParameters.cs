@@ -6,6 +6,7 @@ namespace BillProcessorAPI.Dtos
     public class ReportParameters
     {
         public string PaymentGateway { get; set; }
+        public string SearchText { get; set; }
         public string SearchType { get; set; }
     }
 }
