@@ -68,3 +68,17 @@
 2023-11-06 16:37:25.761 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 97.1483ms
 2023-11-06 16:37:25.852 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
 2023-11-06 16:37:26.265 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 413.0890ms
+2023-11-06 17:02:29.273 +01:00 [INF] User profile is available. Using 'C:\Users\SMILE-TECH\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-11-06 17:02:29.689 +01:00 [INF] Now listening on: https://localhost:7253
+2023-11-06 17:02:29.689 +01:00 [INF] Now listening on: http://localhost:5273
+2023-11-06 17:02:29.697 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-06 17:02:29.697 +01:00 [INF] Hosting environment: Development
+2023-11-06 17:02:29.697 +01:00 [INF] Content root path: C:\Users\SMILE-TECH\Desktop\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2023-11-06 17:02:30.545 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2023-11-06 17:02:31.327 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2023-11-06 17:02:31.328 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2023-11-06 17:02:31.329 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 794.3375ms
+2023-11-06 17:02:31.347 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12364 application/javascript;+charset=utf-8 20.0332ms
+2023-11-06 17:02:31.453 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 125.4096ms
+2023-11-06 17:02:31.561 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2023-11-06 17:02:31.979 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 417.7784ms

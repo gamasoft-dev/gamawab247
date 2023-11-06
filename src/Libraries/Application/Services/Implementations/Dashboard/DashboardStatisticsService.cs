@@ -334,8 +334,6 @@ namespace Application.Services.Implementations.Dashboard
             return resolutionStatusData;
         }
 
-        #endregion
-
        
 
 

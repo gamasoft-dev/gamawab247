@@ -38,7 +38,7 @@ namespace BillProcessorAPI.Services.Implementations
         public async Task<PagedResponse<IEnumerable<CollectionReportDto>>> GetAllPagedCollections(ResourceParameter parameter, ReportParameters reportParam, string endPointName, IUrlHelper url)
         {
 
-            var queryProjection = _billTransactionRepo.GetCollectionAllReport(reportParam);
+            var queryProjection = _billTransactionRepo.GetCollectionAllReport(parameter,reportParam);
 
             if (queryProjection == null)
                 throw new RestException(System.Net.HttpStatusCode.BadRequest, ResponseMessages.Failed);
