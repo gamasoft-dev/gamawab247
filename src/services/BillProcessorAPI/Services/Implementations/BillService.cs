@@ -74,20 +74,25 @@ namespace BillProcessorAPI.Services.Implementations
 				if (httpResponse.IsSuccessStatusCode)
 				{
 					var revPayRes = await httpResponse.ReadContentAs<BillReferenceResponseDto>();
-
+					
 					//current time update
 					revPayRes.CurrentDate = DateTime.Now;
 
 					var billPayerInfo = _mapper.Map<BillPayerInfo>(revPayRes);
 					billPayerInfo.PhoneNumber = phone;
+					
 
-					if (billPayerInfo.PayerName == null && billPayerInfo.Status == null)
-						throw new RestException(HttpStatusCode.NotFound, "Record not found for the bill-code provided");
-                 
-					// biller information response data
-					billPayerInfo.AccountInfoResponseData = JsonConvert.SerializeObject(revPayRes);
+					if (billPayerInfo.PayerName == null && billPayerInfo.Status == "FAILED")
+						throw new RestException(HttpStatusCode.NotFound, revPayRes.statusMessage);
+
+                    //update response
+                    revPayRes.statusMessage = "SUCCESS";
+                    revPayRes.status = "OK";
+
+                    // biller information response data
+                    billPayerInfo.AccountInfoResponseData = JsonConvert.SerializeObject(revPayRes);
 					billPayerInfo.billCode = billPaymentCode;
-					billPayerInfo.PhoneNumber = phone;
+					billPayerInfo.PhoneNumber = phone;	
 					
 
 					// bill-payer information request data
@@ -120,7 +125,7 @@ namespace BillProcessorAPI.Services.Implementations
 			}
 			catch (Exception ex)
 			{
-				throw new RestException(HttpStatusCode.InternalServerError, ex.Message);
+				throw new RestException(HttpStatusCode.BadRequest, ex.Message);
 			}
 		}
 
