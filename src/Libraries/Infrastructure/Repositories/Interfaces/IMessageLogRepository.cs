@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories.Interfaces
 {
@@ -9,5 +10,6 @@ namespace Infrastructure.Repositories.Interfaces
         IQueryable<MessageLog> GetMessageLogQuery(string search = null);
         IQueryable<MessageLog> CreateMessageLogQuerable(Guid waId, string search = null);
         IQueryable<MessageLog> CreateMessageLogQuerable(string waId, string search = null);
+        Task<int> MessageLogCountAsync();
     }
 }

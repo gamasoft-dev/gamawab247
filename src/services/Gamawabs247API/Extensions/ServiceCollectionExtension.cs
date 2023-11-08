@@ -31,6 +31,7 @@ using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Domain.Common.ShortLink.ValueObjects;
+using Application.DTOs.DashboardDtos;
 
 namespace API.Extensions
 {
@@ -68,6 +69,7 @@ namespace API.Extensions
             services.Configure<JwtConfigSettings>(configuration.GetSection("JwtSettings"));
             services.Configure<RedisCacheConfig>(configuration.GetSection("RedisCacheConfig"));
             services.Configure<CutlyOptions>(configuration.GetSection(nameof(CutlyOptions)));
+            services.AddOptions<TransactionOptions>().BindConfiguration("billProcessor");
         }
 
         public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration)

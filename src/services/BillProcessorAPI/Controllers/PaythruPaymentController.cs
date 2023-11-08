@@ -36,13 +36,13 @@ namespace BillProcessorAPI.Controllers
 			try
 			{
                 var response = await _paythruService.VerifyPayment(model);
+				return Ok(response);
             }
 			catch (PaymentVerificationException ex)
 			{
 				_logger.LogError(ex.ErrorMessage);
 				return Ok($"Payement verification didnot complete succesfully but notification was recieved {ex.ToString()}");
 			}
-			return Ok();
 		}
 
         [HttpPost("/paythru/payment-confirmation")]

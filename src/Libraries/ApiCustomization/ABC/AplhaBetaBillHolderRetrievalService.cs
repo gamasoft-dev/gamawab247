@@ -39,22 +39,29 @@ public class AplhaBetaBillHolderRetrievalService : IApiContentRetrievalService
 
     public async Task<RetrieveContentResponse> RetrieveContent<TRequest>(Guid businessId, string waId, TRequest request)
     {
-        var billHolerSummaryInfo = string.Empty;
-        var partnerConfigDetail = await partnerIntegrationRepo
-            .FirstOrDefault(x => x.PartnerContentProcessorKey.ToLower() == PartnerContentProcessorKey.ToLower());
+        string billPaymentCode = string.Empty;
+        Exception exception = null;
+        try {
+            var billHolerSummaryInfo = string.Empty;
+            var partnerConfigDetail = await partnerIntegrationRepo
+                .FirstOrDefault(x => x.PartnerContentProcessorKey.ToLower() == PartnerContentProcessorKey.ToLower());
 
-        var argumentKvpObj = partnerConfigDetail?.Parameters?.FirstOrDefault(x => x.Key?.ToLower() == alphaBetaConfig.LinkGeneratorUserParamKey?.ToLower());
-        if (argumentKvpObj is null)
-            throw new BackgroundException($"No value found in the Paramters property for this PartnerContentDeatil for key {PartnerContentProcessorKey}");
+            var argumentKvpObj = partnerConfigDetail?.Parameters?.FirstOrDefault(x => x.Key?.ToLower() == alphaBetaConfig.LinkGeneratorUserParamKey?.ToLower());
+            if (argumentKvpObj is null)
+                throw new BackgroundException($"No value found in the Paramters property for this PartnerContentDeatil for key {PartnerContentProcessorKey}");
 
-        var billPaymentCode = await customizationUtil.GetArgumentValueFromSession(argumentKvpObj, waId, PartnerContentProcessorKey);
+            billPaymentCode = await customizationUtil.GetArgumentValueFromSession(argumentKvpObj, waId, PartnerContentProcessorKey);
 
-        if (partnerConfigDetail is null)
-            throw new BackgroundException($"No partner integration detail could be found base on this processor key {PartnerContentProcessorKey}");
-        // make call to api cald holder information
+            if (partnerConfigDetail is null)
+                throw new BackgroundException($"No partner integration detail could be found base on this processor key {PartnerContentProcessorKey}");
+           
+        }
+        catch(Exception e) {
+            exception = e;
+        }
 
         return alphaBetaConfig.IsMockRequest ? DemoBillPaymentUserInfo() :
-            await MakeApiCallToAbc(billPaymentCode: billPaymentCode, phone: waId);
+               await MakeApiCallToAbc(billPaymentCode: billPaymentCode, phone: waId, exception);
     }
 
     private RetrieveContentResponse DemoBillPaymentUserInfo()
@@ -67,7 +74,7 @@ public class AplhaBetaBillHolderRetrievalService : IApiContentRetrievalService
 
     }
 
-    private async Task<RetrieveContentResponse> MakeApiCallToAbc(string billPaymentCode, string phone) {
+    private async Task<RetrieveContentResponse> MakeApiCallToAbc(string billPaymentCode, string phone, Exception exception = null) {
 
         var url = $"{alphaBetaConfig.BaseUrl}/{alphaBetaConfig.HolderVerificationEndpoint}/{billPaymentCode}/{phone}";
 
@@ -80,6 +87,9 @@ public class AplhaBetaBillHolderRetrievalService : IApiContentRetrievalService
 
         try
         {
+            if (exception is not null)
+                throw exception;
+
             httpResult = await httpService.Get<CustomizationSuccessResponse<BillReferenceResponse>>
                 (url: url, parameters: parameters, header: null);
 
@@ -98,16 +108,16 @@ public class AplhaBetaBillHolderRetrievalService : IApiContentRetrievalService
 
             success = false;
         }
-        catch (InternalServerException)
+        catch (InternalServerException e)
         {
-            message = $"User info could not be verified, kindly verify your billPaymentCode and try again." +
-                $"{Environment.NewLine}" +
-                $"You can contact admin for assistance." +
-                $" {Environment.NewLine} You can type 'end' to restart the session";
+            message = $"User info retreival issue! {Environment.NewLine}" +
+                $"User info could not be verified." +
+                $"{Environment.NewLine}Contact admin for assistance.";
 
             success = false;
             updatedSession = ESessionState.PLAINCONVERSATION;
-            
+
+            exception = e;
         }
 
         return new RetrieveContentResponse

@@ -7,8 +7,9 @@ namespace BillProcessorAPI.Services.Interfaces
 {
     public interface ICollectionReportService
     {
-        Task<PagedResponse<IEnumerable<CollectionReportDto>>> GetAllCollections(ResourceParameter parameter, ReportParameters reportParam,
+        Task<PagedResponse<IEnumerable<CollectionReportDto>>> GetAllPagedCollections(ResourceParameter parameter, ReportParameters reportParam,
             string endPointName, IUrlHelper url);
+        Task<TransactionDashboardStatsDto> GetAllCollections();
 
     }
 }
