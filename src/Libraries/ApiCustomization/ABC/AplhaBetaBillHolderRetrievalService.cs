@@ -76,7 +76,7 @@ public class AplhaBetaBillHolderRetrievalService : IApiContentRetrievalService
 
     private async Task<RetrieveContentResponse> MakeApiCallToAbc(string billPaymentCode, string phone, Exception exception = null) {
 
-        var url = $"{alphaBetaConfig.BaseUrl}/{alphaBetaConfig.HolderVerificationEndpoint}/{billPaymentCode}/{phone}";
+        var url = $"{alphaBetaConfig.BaseUrl}/{alphaBetaConfig.HolderVerificationEndpoint}/{billPaymentCode}";
 
         HttpMessageResponse<CustomizationSuccessResponse<BillReferenceResponse>> httpResult = null;
         var message = "";

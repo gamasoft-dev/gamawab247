@@ -249,7 +249,7 @@ namespace BillProcessorAPI.Services.Implementations
                 {
                     transaction.Status = ETransactionStatus.Failed.ToString();
                 }
-
+                
                 transaction.DateCompleted = verificationReaponse.Data.Data.created_at.ToString();
                 transaction.StatusMessage = verificationReaponse.Data.Data.status;
                 transaction.ReceiptUrl = model.ReceiptNumber;
@@ -257,6 +257,7 @@ namespace BillProcessorAPI.Services.Implementations
                 transaction.Hash = "N/A";
                 transaction.UpdatedAt = DateTime.UtcNow;
                 transaction.NotificationResponseData = JsonConvert.SerializeObject(model);
+                transaction.Email = verificationReaponse.Data.Data.customer.email;
 
                 await _billTransactionsRepo.SaveChangesAsync();
 

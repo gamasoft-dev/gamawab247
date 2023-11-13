@@ -30,7 +30,9 @@ namespace BillProcessorAPI.Helpers.BroadcastMessage
                 {
                     From = phoneNumberOptions.LUC.PhoneNumber,
                     Message = $"Please click on the link below to download your payment receipt.{Environment.NewLine}{Environment.NewLine}{shortReceiptUrl}",
-                    To = transaction.PhoneNumber
+                    To = transaction.PhoneNumber,
+                    FullName= transaction.PayerName,
+                    EmailAddress = transaction.Email
                 };
 
                 var gamawabsBroadcastUrl = receiptBroadcastOptions.Url;
