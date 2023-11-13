@@ -90,6 +90,9 @@ public class AplhaBetaBillHolderRetrievalService : IApiContentRetrievalService
             if (exception is not null)
                 throw exception;
 
+            if (billPaymentCode.Length != 10)
+                throw new BadRequestException("Invalid bill-code, please provide a 10 digit bill-code", (int)HttpStatusCode.Forbidden);
+
             httpResult = await httpService.Get<CustomizationSuccessResponse<BillReferenceResponse>>
                 (url: url, parameters: parameters, header: null);
 
@@ -101,9 +104,15 @@ public class AplhaBetaBillHolderRetrievalService : IApiContentRetrievalService
         catch (BadRequestException ex)
         {
             if (ex.StatusCode == 400 || ex.StatusCode == 404) {
-                 message = $"User info not found, kindly verify your billPaymentCode and try again." +
-                    $"{Environment.NewLine}" +
+                 message = $"User info not found, kindly verify your bank payment code and try again." +
+                    $"{Environment.NewLine}{Environment.NewLine}" +
                     " You can type 'end' to restart the session";
+            }
+            if (ex.StatusCode == 403)
+            {
+                message = $"Unrecognized payment code, kindly ensure that your bank payment code is *10 digits* and try again." +
+                   $"{Environment.NewLine}{Environment.NewLine}" +
+                   " You can type 'end' to restart the session";
             }
 
             success = false;

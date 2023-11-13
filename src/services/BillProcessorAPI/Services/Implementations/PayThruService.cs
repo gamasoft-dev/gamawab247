@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Application.DTOs;
+using AutoMapper;
 using BillProcessorAPI.Dtos;
 using BillProcessorAPI.Dtos.BroadcastMessage;
 using BillProcessorAPI.Dtos.Common;
@@ -79,8 +80,12 @@ namespace BillProcessorAPI.Services.Implementations
             {
                 throw new RestException(HttpStatusCode.BadRequest, "please enter a valid billCode");
             }
-          
+            if (billCode.Length != 10)
+            {
+                throw new RestException(HttpStatusCode.BadRequest, "Unrecognized payment code, kindly ensure that your bank payment code is 10 digits and try again.");
+            }
 
+            
             try
             {
                 // Get the offset from current time in UTC time
