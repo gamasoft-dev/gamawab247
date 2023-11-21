@@ -26,8 +26,13 @@ namespace BroadcastMessageServiceWorker.Services
         public async Task SendMessage()
         {
             // get paginated list of broacast messages on pending by order of FIFO using the createdTime
+            //var pendingBroadcastMessage = _broadcastMessageRepo
+            //    .Query(x => x.Status == EBroadcastMessageStatus.Pending).OrderBy(x => x.CreatedAt).ToList();
+
             var pendingBroadcastMessage = _broadcastMessageRepo
-                .Query(x => x.Status == EBroadcastMessageStatus.Pending).OrderBy(x => x.CreatedAt).ToList();
+                .Query(x => x.Status == EBroadcastMessageStatus.Failed && x.CreatedAt > DateTime.UtcNow.AddDays(-2)).OrderBy(x => x.CreatedAt).ToList();
+
+
 
             // iterate through the list and process message sending as below
             foreach (var broadcastMessage in pendingBroadcastMessage)
@@ -47,6 +52,23 @@ namespace BroadcastMessageServiceWorker.Services
                     broadcastMessage.Status = EBroadcastMessageStatus.Processing;
                     await _broadcastMessageRepo.SaveChangesAsync();
 
+                    
+                    if (!string.IsNullOrEmpty(broadcastMessage.EmailAddress))
+                    {
+                        var emailMessage = _emailTemplateService.GetReceiptBroadcastEmailTemplate(broadcastMessage.FullName, broadcastMessage.Message);
+
+                        var emailSendSuccess = await _mailService.SendSingleMail(broadcastMessage.EmailAddress, emailMessage, "LUC Payment Receipt");
+
+                        if (emailSendSuccess)
+                        {
+                            broadcastMessage.Status = EBroadcastMessageStatus.Sent;
+                        }
+                        else
+                        {
+                            throw new BackgroundException("An error occured while sending mail.");
+                        }
+                    }
+
                     // call the httpSendMessage service to send text based message;
                     //check that there is is receivers number before sending an http request
                     if (!string.IsNullOrEmpty(formRequest.To))
@@ -61,20 +83,7 @@ namespace BroadcastMessageServiceWorker.Services
                             throw new BackgroundException("invalid phone number");
                         }
                     }
-                    else
-                    {
-                        var emailMessage = _emailTemplateService.GetReceiptBroadcastEmailTemplate(broadcastMessage.FullName, broadcastMessage.Message);
-                        var emailSendSuccess = await _mailService.SendSingleMail(broadcastMessage.EmailAddress, emailMessage, "LUC Payment Receipt");
-
-                        if (emailSendSuccess)
-                        {
-                            broadcastMessage.Status = EBroadcastMessageStatus.Sent;
-                        }
-                        else
-                        {
-                            throw new BackgroundException("An error occured while sending mail.");
-                        }
-                    }
+                    
                 }
                 catch (Exception ex)
                 {
