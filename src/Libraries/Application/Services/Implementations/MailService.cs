@@ -28,7 +28,6 @@ namespace Application.Services.Implementations
                 //you'd already called email template at startegic points why call again here?'
                 var email = new MimeMessage()
                 {
-                    Sender = MailboxAddress.Parse(_mailSettings.Mail),
                     Subject = subject,
                     Body = new TextPart("html")
                     {
@@ -37,6 +36,7 @@ namespace Application.Services.Implementations
                 };
                 //email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
                 email.To.Add(MailboxAddress.Parse(reciepientAddress));
+                email.From.Add(new MailboxAddress("LASG Land Use Charge", _mailSettings.Mail));
                // email.Subject = subject;
                 //email.Body = new TextPart("html")
                 //{

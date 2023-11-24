@@ -47,6 +47,7 @@ namespace BroadcastMessageServiceWorker.Services
                     broadcastMessage.Status = EBroadcastMessageStatus.Processing;
                     await _broadcastMessageRepo.SaveChangesAsync();
 
+
                     // call the httpSendMessage service to send text based message;
                     //check that there is is receivers number before sending an http request
                     if (!string.IsNullOrEmpty(formRequest.To))
@@ -89,8 +90,6 @@ namespace BroadcastMessageServiceWorker.Services
 
             }
         }
-
-
 
     }
     public interface IBroadcastDispatchService
