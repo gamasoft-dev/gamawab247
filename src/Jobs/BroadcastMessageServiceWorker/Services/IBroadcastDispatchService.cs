@@ -50,6 +50,7 @@ namespace BroadcastMessageServiceWorker.Services
 
                     // call the httpSendMessage service to send text based message;
                     //check that there is is receivers number before sending an http request
+                    //check that there is a receiving mail before sending as a fall back when there is no phone number
                     if (!string.IsNullOrEmpty(formRequest.To))
                     {
                         var outboundBroadcast = await _outboundMesageService.HttpSendTextMessage(formRequest.To, formRequest);
