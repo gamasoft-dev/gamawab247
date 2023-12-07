@@ -49,6 +49,16 @@ namespace BroadcastMessageServiceWorker.Services
 
                     // call the httpSendMessage service to send text based message;
                     //check that there is is receivers number before sending an http request
+                    if (!string.IsNullOrEmpty(broadcastMessage.EmailAddress))
+                    {
+                        var emailMessage = _emailTemplateService.GetReceiptBroadcastEmailTemplate(broadcastMessage.FullName, broadcastMessage.Message);
+                        var emailSendSuccess = await _mailService.SendSingleMail(broadcastMessage.EmailAddress, emailMessage, "LUC Payment Receipt");
+
+                        if (emailSendSuccess)
+                        {
+                            broadcastMessage.Status = EBroadcastMessageStatus.Sent;
+                        }
+                    }
                     if (!string.IsNullOrEmpty(formRequest.To))
                     {
                         var outboundBroadcast = await _outboundMesageService.HttpSendTextMessage(formRequest.To, formRequest);
@@ -59,20 +69,6 @@ namespace BroadcastMessageServiceWorker.Services
                         else
                         {
                             throw new BackgroundException("invalid phone number");
-                        }
-                    }
-                    else
-                    {
-                        var emailMessage = _emailTemplateService.GetReceiptBroadcastEmailTemplate(broadcastMessage.FullName, broadcastMessage.Message);
-                        var emailSendSuccess = await _mailService.SendSingleMail(broadcastMessage.EmailAddress, emailMessage, "LUC Payment Receipt");
-
-                        if (emailSendSuccess)
-                        {
-                            broadcastMessage.Status = EBroadcastMessageStatus.Sent;
-                        }
-                        else
-                        {
-                            throw new BackgroundException("An error occured while sending mail.");
                         }
                     }
                 }
