@@ -3,7 +3,9 @@ using Application.Services.Interfaces;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using MimeKit.Text;
 using System.Net.Mail;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.Services.Implementations
@@ -25,17 +27,23 @@ namespace Application.Services.Implementations
         {
             try
             {
-                var email = new MimeMessage()
+                var x = Encoding.UTF8;
                 {
                     
+                };
+                var email = new MimeMessage()
+                {
+
                     Subject = subject,
                     Body = new TextPart("html")
                     {
-                        Text = message
-
+                        ContentTransferEncoding = ContentEncoding.Base64,
+                        Text = message,
+                        
+                        
                     }
                 };
-      
+                
                 email.To.Add(MailboxAddress.Parse(reciepientAddress));
                 email.From.Add(new MailboxAddress(_mailSettings.DisplayName, _mailSettings.Mail));
            
