@@ -35,13 +35,7 @@ namespace Application.Services.Implementations
                 {
 
                     Subject = subject,
-                    Body = new TextPart("html")
-                    {
-                        ContentTransferEncoding = ContentEncoding.Base64,
-                        Text = message,
-                        
-                        
-                    }
+                    Body = new TextPart("html",message)
                 };
                 
                 email.To.Add(MailboxAddress.Parse(reciepientAddress));
