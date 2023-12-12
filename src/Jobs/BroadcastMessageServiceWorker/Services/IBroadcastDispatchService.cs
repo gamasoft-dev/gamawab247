@@ -75,7 +75,7 @@ namespace BroadcastMessageServiceWorker.Services
                 }
                 catch (Exception ex)
                 {
-                    broadcastMessage.ErrorMessage = ex.Message;
+                    broadcastMessage.ErrorMessage = ex.StackTrace;
                     broadcastMessage.Status = EBroadcastMessageStatus.Failed;
                 }
                 finally

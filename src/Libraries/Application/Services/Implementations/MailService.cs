@@ -25,24 +25,20 @@ namespace Application.Services.Implementations
         {
             try
             {
-                //you'd already called email template at startegic points why call again here?'
                 var email = new MimeMessage()
                 {
-                    //Sender = MailboxAddress.Parse(_mailSettings.Mail),
+                    
                     Subject = subject,
                     Body = new TextPart("html")
                     {
                         Text = message
+
                     }
                 };
-                //email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
+      
                 email.To.Add(MailboxAddress.Parse(reciepientAddress));
                 email.From.Add(new MailboxAddress(_mailSettings.DisplayName, _mailSettings.Mail));
-               // email.Subject = subject;
-                //email.Body = new TextPart("html")
-                //{
-                //    Text = message
-                //};
+           
 
                 using (var client = new MailKit.Net.Smtp.SmtpClient())
                 {
