@@ -54,9 +54,9 @@ namespace Application.Services.Implementations
                 }
                 return true;
             }
-            catch(SmtpException ex)
+            catch(SmtpException)
             {
-                throw ex;
+                throw;
             }
         }
     }
