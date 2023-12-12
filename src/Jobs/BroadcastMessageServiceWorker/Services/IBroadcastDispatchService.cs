@@ -72,6 +72,11 @@ namespace BroadcastMessageServiceWorker.Services
                             throw new BackgroundException("invalid phone number");
                         }
                     }
+
+                    if (string.IsNullOrEmpty(broadcastMessage.EmailAddress) && string.IsNullOrEmpty(formRequest.To))
+                    {
+                        broadcastMessage.ErrorMessage = "email and phone number not found";
+                    }
                 }
                 catch (Exception ex)
                 {
