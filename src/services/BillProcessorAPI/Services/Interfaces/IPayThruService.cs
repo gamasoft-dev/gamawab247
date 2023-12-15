@@ -8,7 +8,7 @@ namespace BillProcessorAPI.Services.Interfaces
     public interface IPayThruService
     {
         Task<SuccessResponse<PaymentCreationResponse>> CreatePayment(int amount, string billCode);
-        Task<SuccessResponse<PaymentVerificationResponseDto>> VerifyPayment(NotificationRequestWrapper Url);
+        Task<SuccessResponse<PaymentVerificationResponseDto>> VerifyPayment(dynamic Url);
         Task<SuccessResponse<PaymentConfirmationResponse>> ConfirmPayment(ConfirmPaymentRequest model);
     }
 }

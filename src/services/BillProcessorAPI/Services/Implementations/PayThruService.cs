@@ -221,16 +221,17 @@ namespace BillProcessorAPI.Services.Implementations
         /// <returns></returns>
         /// <exception cref="PaymentVerificationException"></exception>
         /// <exception cref="RestException"></exception>
-        public async Task<SuccessResponse<PaymentVerificationResponseDto>> VerifyPayment(NotificationRequestWrapper transactionNotification)
+        public async Task<SuccessResponse<PaymentVerificationResponseDto>> VerifyPayment(dynamic model)
         {
             _logger.LogInformation($"Payment notification from Paythru just came in as at {DateTime.UtcNow}");
             _logger.LogInformation($"-------------------------------------------------------------------------");
 
-            _logger.LogInformation(message: $"Formatted string value of the notification :{transactionNotification.ToString()}");
-            _logger.LogInformation(message: $"Serialized json value of the notification :{JsonConvert.SerializeObject(transactionNotification)}");
+            _logger.LogInformation(message: $"Formatted string value of the notification :{model.ToString()}");
+            _logger.LogInformation(message: $"Serialized json value of the notification :{JsonConvert.SerializeObject(model)}");
 
             _logger.LogInformation($"-------------------------------------------------------------------------");
 
+            NotificationRequestWrapper transactionNotification = JsonConvert.DeserializeObject<NotificationRequestWrapper>(model.ToString());
             if (transactionNotification is null || transactionNotification.TransactionDetails is null)
                 throw new PaymentVerificationException(HttpStatusCode.BadRequest, "Transaction notification cannot be null");
 
@@ -273,7 +274,8 @@ namespace BillProcessorAPI.Services.Implementations
             billTransaction.SuccessIndicator = transactionNotification.TransactionDetails.ResultCode;
             billTransaction.Hash = transactionNotification.TransactionDetails.Hash;
             billTransaction.UpdatedAt = DateTime.UtcNow;
-            billTransaction.NotificationResponseData = JsonConvert.SerializeObject(transactionNotification);
+            //billTransaction.NotificationResponseData = JsonConvert.SerializeObject(transactionNotification);
+            billTransaction.NotificationResponseData = model.ToString();
 
             await _billTransactionsRepo.SaveChangesAsync();
 
