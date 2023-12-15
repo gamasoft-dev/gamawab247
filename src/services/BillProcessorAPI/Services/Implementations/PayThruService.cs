@@ -256,6 +256,7 @@ namespace BillProcessorAPI.Services.Implementations
             billTransaction.PaymentReference = transactionNotification.TransactionDetails.PaymentReference;
             billTransaction.FiName = transactionNotification.TransactionDetails.FiName;
             billTransaction.Narration = transactionNotification.TransactionDetails.Naration;
+            billTransaction.Email = transactionNotification.TransactionDetails.CustomerInfo.ProvidedEmail;
 
 
             if (transactionNotification?.TransactionDetails?.Status?.ToUpper()
