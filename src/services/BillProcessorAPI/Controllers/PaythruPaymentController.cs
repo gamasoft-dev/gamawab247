@@ -31,7 +31,7 @@ namespace BillProcessorAPI.Controllers
 		[HttpPost("/paythru/notify")]
 		[ProducesResponseType(typeof(PaymentVerificationResponseDto), 200)]
 		[SwaggerOperation(Summary = "Endpoint to verify paythru payment")]
-		public async Task<IActionResult> PaymentVerification([FromBody] NotificationRequestWrapper model)
+		public async Task<IActionResult> PaymentVerification([FromBody] dynamic model)
 		{
 			try
 			{
