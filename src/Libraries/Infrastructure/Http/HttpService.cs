@@ -155,7 +155,7 @@ public class HttpService: IHttpService
     private string AddParameter(string url, IDictionary<string, object> paramters)
     {
         if (string.IsNullOrEmpty(url))
-            throw new ArgumentNullException("url cannot benull");
+            throw new ArgumentNullException("url cannot be null");
 
         if (paramters is null || !paramters.Any())
             return url;
