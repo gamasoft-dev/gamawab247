@@ -31,7 +31,7 @@ jobs:
         port: ${{ secrets.DEV_PORT }} 
       
         script: |
-          cd ../var/www/html/gamasoft-dev/gamawabs247
+          cd ../var/www/html/gamawabs247
           git checkout prod
           git pull
           docker-compose up --build -d
