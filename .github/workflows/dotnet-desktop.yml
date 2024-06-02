@@ -1,0 +1,37 @@
+name: Deploy to DigitalOcean
+run-name: 
+  DEPLOYING_TO_DIGITAL_OCEAN
+
+env:
+  DEV_PATH: /var/www/html/gamasoft-dev/gamawabs247
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Echo some secrets
+      run: 
+        echo 'Echo environment variable'
+      
+    - name: Connect to DO via SSH and Run Commands
+      uses: appleboy/ssh-action@v1.0.3
+      with: 
+        host: ${{ secrets.DEV_HOST }}
+        username: ${{ secrets.DEV_USERNAME}}
+        key: ${{secrets.SSH_KEY}}
+        port: ${{ secrets.DEV_PORT }} 
+      
+        script: |
+          cd ../var/www/html/gamasoft-dev/gamawabs247
+          git checkout prod
+          git pull
+          docker-compose up --build -d
