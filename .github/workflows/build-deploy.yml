@@ -2,28 +2,30 @@
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 # This is for building and deploying to production
 
-name: build the api project and push to registry
+#Backup Up.
 
-on:
-  push:
-    branches: [ "prod" ]
+# name: build the api project and push to registry
 
-jobs:
-  build:
+# on:
+#   push:
+#     branches: [ "prod" ]
 
-    runs-on: ubuntu-latest
+# jobs:
+#   build:
 
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        ref: prod
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - uses: actions/checkout@v3
+#       with:
+#         ref: prod
     
-    - name: Push to server and deploy
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.DEV_HOST }}
-        username: ${{ secrets.DEV_USERNAME }}
-        port: ${{ secrets.DEV_PORT }}
-        password: ${{ secrets.SSH_KEY }}
-        script: cd ${{ secrets.DEV_Path }} && ls && git pull && ls && docker-compose -f docker-compose.yml -f docker-compose.override.yml up --build -d
+#     - name: Push to server and deploy
+#       uses: appleboy/ssh-action@master
+#       with:
+        # host: ${{ secrets.DEV_HOST }}
+        # username: ${{ secrets.DEV_USERNAME }}
+        # port: ${{ secrets.DEV_PORT }}
+        # password: ${{ secrets.SSH_KEY }}
+        # script: cd ${{ secrets.DEV_Path }} && ls && git pull && ls && docker-compose -f docker-compose.yml -f docker-compose.override.yml up --build -d
   
