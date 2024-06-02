@@ -3,7 +3,8 @@
     public enum ERequestComplaintType {
 
 		Request,
-		Complaint
+		Complaint,
+		UnSpecified
 	}
 
 }

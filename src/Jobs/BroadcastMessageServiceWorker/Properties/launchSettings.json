@@ -2,6 +2,7 @@
   "profiles": {
     "BroadcastMessageServiceWorker": {
       "commandName": "Project",
+      "applicationUrl": "http://localhost:8015",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
       },

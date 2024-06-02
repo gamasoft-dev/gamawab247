@@ -2,8 +2,14 @@
 {
     public enum EResolutionStatus
 	{
-		Pending,
+		Logged,
+		Under_Review,
+		Request_Treated,
 		Escalated,
+		Resolved,
+		Pending_Feedback,
+		Pending,
+		//Escalated,
 		Processing,
 		Completed,
 	}

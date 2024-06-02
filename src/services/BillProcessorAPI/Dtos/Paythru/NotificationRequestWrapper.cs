@@ -13,7 +13,8 @@
                 $" BankReference : {s.BankReference} \n" +
                 $" Commission: {s.Commission} \n" +
                 $" Currency: {s.Currency}\n" +
-                $" CustomerId: {s.CustomerId} Customer Name {s.CustomerName} \n" +
+                $" CustomerId: {s.CustomerId} Customer Name {s.CustomerInfo.ProvidedName} \n" +
+                $" CustomerEmail: {s.CustomerInfo.ProvidedEmail} \n" +
                 $" DateCompleted: {s.DateCompleted} \n" +
                 $" Date of Transaxtion {s.DateOfTransaction} {s.FiName} \n" +
                 $" Merchant Reference: {s.MerchantReference} " +
@@ -57,7 +58,7 @@
 
         public decimal Commission { get; set; }
         public decimal ResidualAmount { get; set; }
-        public string CustomerName { get; set; }
+        //public string CustomerName { get; set; }
 
         /// <summary>
         /// This should be compared to the success indicator parameter returned when the transaction request was made for single Open or Single Fixed transactions
@@ -69,6 +70,14 @@
         /// </summary>
         public string Hash { get; set; }
         public string ReceiptUrl { get; set; }
+        public CustomerInfo CustomerInfo { get; set; }
+    }
+
+    public class CustomerInfo
+    {
+        public string ProvidedName { get; set; }
+        public string ProvidedEmail { get; set; }
+        public string Remarks { get; set; }
     }
 }
 

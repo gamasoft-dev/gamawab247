@@ -31,6 +31,7 @@ namespace BroadcastMessageServiceWorker.ServiceExtension
             services.Configure<SystemSettingsConfig>(configuration.GetSection("Config"));
             services.Configure<Dialog360Settings>(configuration.GetSection("Dialog360Setting"));
             services.Configure<CutlyOptions>(configuration.GetSection("CutlyOptions"));
+            services.Configure<MailSettings>(configuration.GetSection("MailSettings"));
         }
 
         public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration)

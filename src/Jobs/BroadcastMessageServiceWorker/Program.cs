@@ -26,6 +26,8 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddHostedService<Worker>();
         services.AddScoped<IBroadcastDispatchService, BroadcastDispatchService>();
         services.AddScoped<IOutboundMesageService, OutboundMessageService>();
+        services.AddScoped<IMailService, MailService>();
+        services.AddScoped<IEmailTemplateService, EmailTemplateService>();
   }).Build();
 
 await host.RunAsync();

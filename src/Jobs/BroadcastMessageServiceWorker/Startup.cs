@@ -6,11 +6,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Http;
 using Application.Helpers;
-using ApiCustomization;
 using Infrastructure;
-using System.Text.Json;
 using BroadcastMessageServiceWorker.Middleware;
-using Microsoft.EntityFrameworkCore;
 using BroadcastMessageServiceWorker.ServiceExtension;
 
 namespace BroadcastMessageServiceWorker
@@ -55,6 +52,8 @@ namespace BroadcastMessageServiceWorker
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppDbContext dbContext)
         {
             app.UseErrorHandler();
+            app.UseErrorHandler();
+            WebHelper.Configure(app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
         }
     }
 }

@@ -16,6 +16,8 @@ namespace Application.DTOs
         public string From { get; set; }
         public string ApiKey { get; set; }
         public string Message { get; set; }
+        public string FullName { get; set; }
+        public string EmailAddress { get; set; }
         public EBroadcastMessageStatus Status { get; set; }
 
         public CreateBroadcastMessageDto()

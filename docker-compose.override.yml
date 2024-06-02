@@ -6,13 +6,10 @@ services:
     build:
       context: .
       dockerfile: src/services/Gamawabs247API/Dockerfile
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+
-
     ports:
       - "8000:80"
       - "8001:443"
+    restart: always
     depends_on:
       - gamawabsdb
       - gamawabsredis
@@ -20,17 +17,21 @@ services:
       - ~/.aspnet/https:/root/.aspnet/https:ro
       - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
       - ~/.aspnet/https:/https/
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+
+      - ConnectionStrings__ConnectionString=Server=gamawabsdb:5432;Database=gamawabsdb;User Id=admin;Password=Password@123
   
   billprocessorapi:
     image: ${DOCKER_REGISTRY-}billprocessorapi
     build:
       context: .
       dockerfile: src/services/BillProcessorAPI/Dockerfile
-
     restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+
+      - ConnectionStrings__ConnectionString=Server=gamawabsdb:5432;Database=billprocessordb;User Id=admin;Password=Password@123
     ports:
       - "8020:80"
       - "8021:443"
@@ -51,6 +52,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__ConnectionString=Server=gamawabsdb:5432;Database=gamawabsdb;User Id=admin;Password=Password@123
     ports:
       - "8030:80"
     volumes:
@@ -65,11 +67,26 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__ConnectionString=Server=gamawabsdb:5432;Database=gamawabsdb;User Id=admin;Password=Password@123
     ports:
       - "8040:80"
     volumes:
       - ~/.aspnet/https:/root/.aspnet/https:ro
       - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
+
+  broadcastmessageserviceworker:
+    image: ${DOCKER_REGISTRY-}broadcastmessageserviceworker
+    build:
+      context: .
+      dockerfile: src/Jobs/BroadcastMessageServiceWorker/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "8046:80"
+    depends_on:
+      - gamawabsdb
+      - gamawabsredis
 
   gamawabsdb:
     environment:
@@ -94,19 +111,4 @@ services:
       - "6370:6379"
 
 
-  broadcastmessageserviceworker:
-    image: ${DOCKER_REGISTRY-}broadcastmessageserviceworker
-    build:
-      context: .
-      dockerfile: src/Jobs/BroadcastMessageServiceWorker/Dockerfile
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
-    ports:
-      - "8045:80"
-    depends_on:
-      - gamawabsdb
-      - gamawabsredis
-    volumes:
-      - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
 

@@ -29,5 +29,21 @@ namespace Application.Services.Implementations
 
             return msgBody;
         }
+
+        public string GetReceiptBroadcastEmailTemplate(string fullName, string message)
+        {
+            string body;
+            var folderName = Path.Combine("wwwroot", "SendReceiptTemplate.html");
+            var filepath = Path.Combine(Directory.GetCurrentDirectory(), folderName).Replace("\\", "/");
+            if (File.Exists(filepath))
+                body = File.ReadAllText(filepath);
+            else
+                return null;
+
+            string msgBody = body.Replace("{full_name}", fullName)
+                .Replace("{message}", message);
+
+            return msgBody;
+        }
     }
 }

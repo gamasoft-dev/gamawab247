@@ -6,6 +6,6 @@ namespace Application.Services.Interfaces
 {
     public interface IMailService : IAutoDependencyService
     {
-        Task SendSingleMail(string reciepientAddress, string message, string subject);    
+        Task<bool> SendSingleMail(string reciepientAddress, string message, string subject);    
     }
 }

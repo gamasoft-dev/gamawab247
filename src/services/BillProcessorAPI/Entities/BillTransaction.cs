@@ -1,5 +1,6 @@
 ﻿using BillProcessorAPI.Dtos;
 using BillProcessorAPI.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BillProcessorAPI.Entities
 {
@@ -41,6 +42,8 @@ namespace BillProcessorAPI.Entities
         public Guid? BillPayerInfoId { get; set; }
         public BillPayerInfo BillPayerInfo { get; set; }
         public string ErrorMessage { get; set; }
+        [NotMapped]
+        public string Email { get; set; }
         //public Guid? InvoiceId  { get; set; }
         //public Invoice Invoice { get; set; }
     }

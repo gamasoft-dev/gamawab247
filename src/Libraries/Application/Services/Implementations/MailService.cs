@@ -3,7 +3,9 @@ using Application.Services.Interfaces;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using MimeKit.Text;
 using System.Net.Mail;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.Services.Implementations
@@ -20,20 +22,25 @@ namespace Application.Services.Implementations
             _emailTemplateService = emailTemplateService;
         }
 
-        public async Task SendSingleMail(string reciepientAddress, string message, 
+        public async Task<bool> SendSingleMail(string reciepientAddress, string message, 
             string subject)
         {
             try
             {
-                //you'd already called email template at startegic points why call again here?'
-                var email = new MimeMessage();
-                email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
-                email.To.Add(MailboxAddress.Parse(reciepientAddress));
-                email.Subject = subject;
-                email.Body = new TextPart("html")
+                var x = Encoding.UTF8;
                 {
-                    Text = message
+                    
                 };
+                var email = new MimeMessage()
+                {
+
+                    Subject = subject,
+                    Body = new TextPart("html",message)
+                };
+                
+                email.To.Add(MailboxAddress.Parse(reciepientAddress));
+                email.From.Add(new MailboxAddress(_mailSettings.DisplayName, _mailSettings.Mail));
+           
 
                 using (var client = new MailKit.Net.Smtp.SmtpClient())
                 {
@@ -47,10 +54,11 @@ namespace Application.Services.Implementations
 
                     client.Disconnect(true);
                 }
+                return true;
             }
-            catch(SmtpException ex)
+            catch(SmtpException)
             {
-                throw ex;
+                throw;
             }
         }
     }

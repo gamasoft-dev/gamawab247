@@ -3,6 +3,7 @@ using Application.Services.Interfaces;
 using Domain.Entities;
 using Domain.Entities.FormProcessing;
 using Domain.Enums;
+using Domain.Exceptions;
 using Infrastructure.Repositories.Interfaces;
 
 namespace BroadcastMessageServiceWorker.Services
@@ -11,11 +12,15 @@ namespace BroadcastMessageServiceWorker.Services
     {
         private readonly IRepository<BroadcastMessage> _broadcastMessageRepo;
         private readonly IOutboundMesageService _outboundMesageService;
+        private readonly IMailService _mailService;
+        private readonly IEmailTemplateService _emailTemplateService;
 
-        public BroadcastDispatchService(IRepository<BroadcastMessage> broadcastMessageRepo, IOutboundMesageService outboundMesageService)
+        public BroadcastDispatchService(IRepository<BroadcastMessage> broadcastMessageRepo, IOutboundMesageService outboundMesageService, IMailService mailService, IEmailTemplateService emailTemplateService)
         {
             _broadcastMessageRepo = broadcastMessageRepo;
             _outboundMesageService = outboundMesageService;
+            _mailService = mailService;
+            _emailTemplateService = emailTemplateService;
         }
 
         public async Task SendMessage()
@@ -23,7 +28,7 @@ namespace BroadcastMessageServiceWorker.Services
             // get paginated list of broacast messages on pending by order of FIFO using the createdTime
             var pendingBroadcastMessage = _broadcastMessageRepo
                 .Query(x => x.Status == EBroadcastMessageStatus.Pending).OrderBy(x => x.CreatedAt).ToList();
-            
+
             // iterate through the list and process message sending as below
             foreach (var broadcastMessage in pendingBroadcastMessage)
             {
@@ -42,37 +47,50 @@ namespace BroadcastMessageServiceWorker.Services
                     broadcastMessage.Status = EBroadcastMessageStatus.Processing;
                     await _broadcastMessageRepo.SaveChangesAsync();
 
+
                     // call the httpSendMessage service to send text based message;
-                    var outboundBroadcast = await _outboundMesageService.HttpSendTextMessage(formRequest.To, formRequest);
-
-                    // if response ok message is received from httpMessageSend service, update status
-                    if (outboundBroadcast.Data)
+                    //check that there is is receivers number before sending an http request
+                    if (!string.IsNullOrEmpty(broadcastMessage.EmailAddress))
                     {
-                        broadcastMessage.Status = EBroadcastMessageStatus.Sent;
-                        broadcastMessage.UpdatedAt = DateTime.Now;
+                        var emailMessage = _emailTemplateService.GetReceiptBroadcastEmailTemplate(broadcastMessage.FullName, broadcastMessage.Message);
+                        var emailSendSuccess = await _mailService.SendSingleMail(broadcastMessage.EmailAddress, emailMessage, "LUC Payment Receipt");
+
+                        if (emailSendSuccess)
+                        {
+                            broadcastMessage.Status = EBroadcastMessageStatus.Sent;
+                        }
                     }
-                    else
+                    if (!string.IsNullOrEmpty(formRequest.To))
                     {
-                        broadcastMessage.Status = EBroadcastMessageStatus.Failed;
-                        broadcastMessage.UpdatedAt = DateTime.Now;
+                        var outboundBroadcast = await _outboundMesageService.HttpSendTextMessage(formRequest.To, formRequest);
+                        if (outboundBroadcast.Data)
+                        {
+                            broadcastMessage.Status = EBroadcastMessageStatus.Sent;
+                        }
+                        else
+                        {
+                            throw new BackgroundException("invalid phone number");
+                        }
                     }
 
+                    if (string.IsNullOrEmpty(broadcastMessage.EmailAddress) && string.IsNullOrEmpty(formRequest.To))
+                    {
+                        broadcastMessage.ErrorMessage = "email and phone number not found";
+                    }
                 }
                 catch (Exception ex)
                 {
-                    broadcastMessage.ErrorMessage = ex.Message;
-                    broadcastMessage.UpdatedAt = DateTime.Now;
+                    broadcastMessage.ErrorMessage = ex.StackTrace;
                     broadcastMessage.Status = EBroadcastMessageStatus.Failed;
                 }
                 finally
                 {
+                    broadcastMessage.UpdatedAt = DateTime.Now;
                     await _broadcastMessageRepo.SaveChangesAsync();
                 }
 
             }
         }
-
-       
 
     }
     public interface IBroadcastDispatchService

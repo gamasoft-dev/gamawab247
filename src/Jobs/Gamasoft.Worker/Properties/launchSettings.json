@@ -5,9 +5,9 @@
       "applicationUrl": "http://localhost:8015",
       "environmentVariables": {}
     },
-    "Docker": {
-      "commandName": "Docker",
-      "environmentVariables": {}
-    }
+        "Docker": {
+          "commandName": "Docker",
+          "environmentVariables": {}
+        }
   }
 }

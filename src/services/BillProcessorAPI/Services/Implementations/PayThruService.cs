@@ -1,28 +1,24 @@
-﻿using System.Net.Http;
-using System.Net;
+﻿using Application.DTOs;
+using AutoMapper;
 using BillProcessorAPI.Dtos;
+using BillProcessorAPI.Dtos.BroadcastMessage;
+using BillProcessorAPI.Dtos.Common;
+using BillProcessorAPI.Dtos.Paythru;
 using BillProcessorAPI.Entities;
+using BillProcessorAPI.Enums;
 using BillProcessorAPI.Helpers;
-using BillProcessorAPI.Helpers.Revpay;
+using BillProcessorAPI.Helpers.BroadcastMessage;
+using BillProcessorAPI.Helpers.Paythru;
+using BillProcessorAPI.Repositories.Interfaces;
 using BillProcessorAPI.Services.Interfaces;
 using Domain.Common;
-using Newtonsoft.Json;
-using Microsoft.IdentityModel.Tokens;
-using AutoMapper;
-using BillProcessorAPI.Repositories.Interfaces;
-using BillProcessorAPI.Helpers.Paythru;
-using Microsoft.Extensions.Options;
-using Amazon.Runtime.Internal.Transform;
-using Infrastructure.Http;
-using Application.DTOs;
-using System;
-using BillProcessorAPI.Enums;
 using Domain.Exceptions;
-using BillProcessorAPI.Dtos.Paythru;
-using BillProcessorAPI.Dtos.Common;
-using System.Runtime.InteropServices;
+using Infrastructure.Http;
+using Infrastructure.ShortLink;
 using Microsoft.EntityFrameworkCore;
-using BillProcessorAPI.Entities.PaythruEntities;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using System.Net;
 
 namespace BillProcessorAPI.Services.Implementations
 {
@@ -31,12 +27,15 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IRepository<BillPayerInfo> _billPayerRepo;
         private readonly IRepository<BillTransaction> _billTransactionsRepo;
         private readonly IRepository<Invoice> _invoiceRepo;
-        private readonly IRepository<Receipt> _receiptRepo;
         private readonly PaythruOptions PaythruOptions;
         private readonly IHttpService _httpService;
         private readonly IConfigurationService _configService;
         private readonly IMapper _mapper;
         private ILogger<PayThruService> _logger;
+        private readonly BusinessesPhoneNumber _phoneNumberOptions;
+        private readonly ReceiptBroadcastConfig _receiptBroadcastOptions;
+        private readonly ICutlyService _cutlyService;
+        private readonly ReceiptBroadcastConfig _receiptBroadcastConfig;
 
         public PayThruService(IRepository<BillPayerInfo> billPayerRepo,
             IRepository<BillTransaction> billTransactions,
@@ -44,19 +43,24 @@ namespace BillProcessorAPI.Services.Implementations
             IHttpService httpService, IConfigurationService configService,
             IMapper mapper,
             IRepository<Invoice> invoiceRepo,
-            IRepository<Receipt> receiptRepo,
-            ILogger<PayThruService> logger)
+            ILogger<PayThruService> logger, 
+            IOptions<BusinessesPhoneNumber> phoneNumberOptions, 
+            IOptions<ReceiptBroadcastConfig> receiptBroadcastOptions, 
+            ICutlyService cutlyService, IOptions<ReceiptBroadcastConfig> receiptBroadcastConfig)
         {
 
             _billPayerRepo = billPayerRepo;
             _billTransactionsRepo = billTransactions;
             PaythruOptions = paythruOptions.Value;
-            _httpService = httpService;
             _configService = configService;
             _mapper = mapper;
             _invoiceRepo = invoiceRepo;
-            _receiptRepo = receiptRepo;
             _logger = logger;
+            _phoneNumberOptions = phoneNumberOptions.Value;
+            _receiptBroadcastOptions = receiptBroadcastOptions.Value;
+            _cutlyService = cutlyService;
+            _receiptBroadcastConfig = receiptBroadcastConfig.Value;
+            _httpService = httpService;
         }
 
 
@@ -76,8 +80,12 @@ namespace BillProcessorAPI.Services.Implementations
             {
                 throw new RestException(HttpStatusCode.BadRequest, "please enter a valid billCode");
             }
-          
+            if (billCode.Length != 10)
+            {
+                throw new RestException(HttpStatusCode.BadRequest, "Unrecognized payment code, kindly ensure that your bank payment code is 10 digits and try again.");
+            }
 
+            
             try
             {
                 // Get the offset from current time in UTC time
@@ -213,16 +221,17 @@ namespace BillProcessorAPI.Services.Implementations
         /// <returns></returns>
         /// <exception cref="PaymentVerificationException"></exception>
         /// <exception cref="RestException"></exception>
-        public async Task<SuccessResponse<PaymentVerificationResponseDto>> VerifyPayment(NotificationRequestWrapper transactionNotification)
+        public async Task<SuccessResponse<PaymentVerificationResponseDto>> VerifyPayment(dynamic model)
         {
             _logger.LogInformation($"Payment notification from Paythru just came in as at {DateTime.UtcNow}");
             _logger.LogInformation($"-------------------------------------------------------------------------");
 
-            _logger.LogInformation(message: $"Formatted string value of the notification :{transactionNotification.ToString()}");
-            _logger.LogInformation(message: $"Serialized json value of the notification :{JsonConvert.SerializeObject(transactionNotification)}");
+            _logger.LogInformation(message: $"Formatted string value of the notification :{model.ToString()}");
+            _logger.LogInformation(message: $"Serialized json value of the notification :{JsonConvert.SerializeObject(model)}");
 
             _logger.LogInformation($"-------------------------------------------------------------------------");
 
+            NotificationRequestWrapper transactionNotification = JsonConvert.DeserializeObject<NotificationRequestWrapper>(model.ToString());
             if (transactionNotification is null || transactionNotification.TransactionDetails is null)
                 throw new PaymentVerificationException(HttpStatusCode.BadRequest, "Transaction notification cannot be null");
 
@@ -247,6 +256,7 @@ namespace BillProcessorAPI.Services.Implementations
             billTransaction.PaymentReference = transactionNotification.TransactionDetails.PaymentReference;
             billTransaction.FiName = transactionNotification.TransactionDetails.FiName;
             billTransaction.Narration = transactionNotification.TransactionDetails.Naration;
+            billTransaction.Email = transactionNotification.TransactionDetails.CustomerInfo.ProvidedEmail;
 
 
             if (transactionNotification?.TransactionDetails?.Status?.ToUpper()
@@ -265,7 +275,8 @@ namespace BillProcessorAPI.Services.Implementations
             billTransaction.SuccessIndicator = transactionNotification.TransactionDetails.ResultCode;
             billTransaction.Hash = transactionNotification.TransactionDetails.Hash;
             billTransaction.UpdatedAt = DateTime.UtcNow;
-            billTransaction.NotificationResponseData = JsonConvert.SerializeObject(transactionNotification);
+            //billTransaction.NotificationResponseData = JsonConvert.SerializeObject(transactionNotification);
+            billTransaction.NotificationResponseData = model.ToString();
 
             await _billTransactionsRepo.SaveChangesAsync();
 
@@ -295,6 +306,10 @@ namespace BillProcessorAPI.Services.Implementations
                 data.Description = "Transaction Successful";
             }
 
+            //Send customer receipt
+            await ReceiptBroadcast.SendReceipt(billTransaction, _phoneNumberOptions,
+                _cutlyService, _receiptBroadcastOptions, _httpService);
+
             //add the receipt to the invoice
             var invoice = await _invoiceRepo.FirstOrDefault(x => x.BillTransactionId == billTransaction.Id);
             if (invoice is null)
@@ -308,16 +323,16 @@ namespace BillProcessorAPI.Services.Implementations
             invoice.GatewayTransactionReference = billTransaction.GatewayTransactionReference;
 
             // Create a receipt record
-            var receipt = _mapper.Map<Receipt>(billTransaction);
-            receipt.TransactionId = billTransaction.Id;
-            receipt.PaymentRef = billTransaction.TransactionReference;
-            receipt.InvoiceId = invoice.Id;
-            receipt.TransactionDate = billTransaction.DateCompleted;
-            receipt.GateWay = billTransaction.GatewayType.ToString();
-            receipt.ReceiptUrl = transactionNotification.TransactionDetails.ReceiptUrl;
+            //var receipt = _mapper.Map<Receipt>(billTransaction);
+            //receipt.TransactionId = billTransaction.Id;
+            //receipt.PaymentRef = billTransaction.TransactionReference;
+            //receipt.InvoiceId = invoice.Id;
+            //receipt.TransactionDate = billTransaction.DateCompleted;
+            //receipt.GateWay = billTransaction.GatewayType.ToString();
+            //receipt.ReceiptUrl = transactionNotification.TransactionDetails.ReceiptUrl;
 
-            await _receiptRepo.AddAsync(receipt);
-            await _receiptRepo.SaveChangesAsync();
+            //await _receiptRepo.AddAsync(receipt);
+            //await _receiptRepo.SaveChangesAsync();
 
             return new SuccessResponse<PaymentVerificationResponseDto>
             {

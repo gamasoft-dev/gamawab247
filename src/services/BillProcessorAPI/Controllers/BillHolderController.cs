@@ -27,7 +27,7 @@ namespace BillProcessorAPI.Controllers
         [HttpGet("invoice/{billPaymentCode}")]
         [ProducesResponseType(typeof(SuccessResponse<BillReferenceResponseDto>), 200)]
         [SwaggerOperation(Summary = "Endpoint to get bill payer reference")]
-        public async Task<IActionResult> ReferenceVerification([FromRoute] string billPaymentCode, [FromQuery] string phone)
+        public async Task<IActionResult> ReferenceVerification([FromRoute] string billPaymentCode, [FromQuery] string phone = null)
 		{
 			var response = await _revpay.ReferenceVerification(phone, billPaymentCode);
 			return Ok(response);
@@ -44,10 +44,19 @@ namespace BillProcessorAPI.Controllers
 
         [HttpGet( "bill-report", Name = nameof(Collections))]
         [ProducesResponseType(typeof(SuccessResponse<CollectionReportDto>), 200)]
-        [SwaggerOperation(Summary = "Endpoint to get verify bill payment")]
+        [SwaggerOperation(Summary = "Endpoint to get get bill reports")]
         public async Task<IActionResult> Collections([FromQuery] ResourceParameter param,[FromQuery] ReportParameters reportParameters)
         {
-            var response = await _collectionReportService.GetAllCollections(param, reportParameters, nameof(Collections), Url);
+            var response = await _collectionReportService.GetAllPagedCollections(param, reportParameters, nameof(Collections), Url);
+            return Ok(response);
+        }
+
+        [HttpGet("bill-statistics", Name = nameof(CollectionsStats))]
+        [ProducesResponseType(typeof(SuccessResponse<TransactionDashboardStatsDto>), 200)]
+        [SwaggerOperation(Summary = "Endpoint to get stats for dashboard")]
+        public async Task<IActionResult> CollectionsStats()
+        {
+            var response = await _collectionReportService.GetAllCollections();
             return Ok(response);
         }
     }

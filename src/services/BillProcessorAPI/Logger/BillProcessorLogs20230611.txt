@@ -1,1 +1,0 @@
-2023-06-11 07:59:52.378 +01:00 [INF] User profile is available. Using '/Users/christopher.ogbosuka/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.

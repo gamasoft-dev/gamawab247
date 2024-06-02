@@ -1,5 +1,6 @@
 using Autofac.Core;
 using BillProcessorAPI.Data;
+using BillProcessorAPI.Dtos;
 using BillProcessorAPI.Dtos.BroadcastMessage;
 using BillProcessorAPI.Extensions;
 using BillProcessorAPI.Helpers;
@@ -41,6 +42,7 @@ builder.Services.Configure<CutlyOptions>(builder.Configuration.GetSection(nameof
 builder.Services.Configure<FlutterwaveOptions>(builder.Configuration.GetSection("FlutterWaveOptions"));
 builder.Services.AddOptions<BusinessesPhoneNumber>().BindConfiguration("businessesPhoneNumberConfig");
 builder.Services.AddOptions<ReceiptBroadcastConfig>().BindConfiguration("receiptBroadcastSettings");
+builder.Services.AddOptions<TransactionOptions>().BindConfiguration("transactionOptions");
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.ConfigureHttpPollyExtension();
 builder.Services.AddEndpointsApiExplorer();

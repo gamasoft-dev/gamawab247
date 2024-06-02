@@ -305,6 +305,14 @@ namespace Application.Services.Cron
                 _logger.LogError(ex.Message, ex);
             }
         }
+
+        private void getDate()
+        {
+            DateTime dateTime = new DateTime(2023, 07, 14, 16, 03, 21, 417);
+            Console.WriteLine(dateTime.ToString("yyyy-MM-ddTHH:mm:ss.fff"));
+
+           // DateTime dateTime = new DateTime(2023, 07, 14, 16, 03, 21, 417);
+        }
     }
 }
 
