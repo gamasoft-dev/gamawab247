@@ -34,4 +34,4 @@ jobs:
           cd ../var/www/html/gamawab247
           git checkout prod
           git pull
-          docker-compose -f docker-compose.yml -f docker-compose.override.yml up --build -d
+          docker compose up --build -d
