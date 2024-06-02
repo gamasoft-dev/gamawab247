@@ -3,11 +3,7 @@ run-name:
   DEPLOYING_TO_DIGITAL_OCEAN
 
 env:
-  STAGING_HOST: {{ secrets.DEV_HOST }}
-  STAGING_PORT: {{secrets.DEV_PORT}}
   DEV_PATH: /var/www/html/gamasoft-dev/gamawabs247
-  USERNAME: root
-  KEY: ${{secrets.SSH_KEY}}
 
 on:
   push:
@@ -29,13 +25,13 @@ jobs:
     - name: Connect to DO via SSH and Run Commands
       uses: appleboy/ssh-action@v1.0.3
       with: 
-        host: ${{ env.STAGING_HOST }}
-        username: ${{ env.USERNAME}}
-        key: ${{secrets.SSH_PRIVATE_KEY}}
-        port: ${{ env.STAGING_PORT }} 
+        host: ${{ secrets.DEV_HOST }}
+        username: ${{ secrets.DEV_USERNAME}}
+        key: ${{secrets.SSH_KEY}}
+        port: ${{ secrets.DEV_PORT }} 
       
         script: |
           cd ../var/www/html/gamasoft-dev/gamawabs247
           git checkout prod
           git pull
-          docker-compose up --build -d hrms-backend-api
+          docker-compose up --build -d
