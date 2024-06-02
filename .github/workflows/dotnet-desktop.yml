@@ -1,0 +1,41 @@
+name: Deploy to DigitalOcean
+run-name: 
+  DEPLOYING_TO_DIGITAL_OCEAN
+
+env:
+  STAGING_HOST: {{ secrets.DEV_HOST }}
+  STAGING_PORT: {{secrets.DEV_PORT}}
+  DEV_PATH: /var/www/html/gamasoft-dev/gamawabs247
+  USERNAME: root
+  KEY: ${{secrets.SSH_KEY}}
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Echo some secrets
+      run: 
+        echo 'Echo environment variable'
+      
+    - name: Connect to DO via SSH and Run Commands
+      uses: appleboy/ssh-action@v1.0.3
+      with: 
+        host: ${{ env.STAGING_HOST }}
+        username: ${{ env.USERNAME}}
+        key: ${{secrets.SSH_PRIVATE_KEY}}
+        port: ${{ env.STAGING_PORT }} 
+      
+        script: |
+          cd ../var/www/html/gamasoft-dev/gamawabs247
+          git checkout prod
+          git pull
+          docker-compose up --build -d hrms-backend-api
