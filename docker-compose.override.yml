@@ -20,7 +20,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+
-      - ConnectionStrings__ConnectionString=Server=gamawabsdb:5432;Database=gamawabsdb;User Id=admin;Password=Password@123
+      - ConnectionStrings__ConnectionString=Server=gamawabsdb:5432;Database=gamawabs_db;User Id=admin;Password=Password@123
   
   billprocessorapi:
     image: ${DOCKER_REGISTRY-}billprocessorapi
@@ -31,7 +31,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+
-      - ConnectionStrings__ConnectionString=Server=gamawabsdb:5432;Database=billprocessordb;User Id=admin;Password=Password@123
+      - ConnectionStrings__ConnectionString=Server=gamawabsdb:5432;Database=billprocessor_db;User Id=admin;Password=Password@123
     ports:
       - "8020:80"
       - "8021:443"
@@ -52,7 +52,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - ConnectionStrings__ConnectionString=Server=gamawabsdb:5432;Database=gamawabsdb;User Id=admin;Password=Password@123
+      - ConnectionStrings__ConnectionString=Server=gamawabsdb:5432;Database=gamawabs_db;User Id=admin;Password=Password@123
     ports:
       - "8030:80"
     volumes:
@@ -67,7 +67,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - ConnectionStrings__ConnectionString=Server=gamawabsdb:5432;Database=gamawabsdb;User Id=admin;Password=Password@123
+      - ConnectionStrings__ConnectionString=Server=gamawabsdb:5432;Database=gamawabs_db;User Id=admin;Password=Password@123
     ports:
       - "8040:80"
     volumes:
@@ -82,7 +82,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - ConnectionStrings__ConnectionString=Server=gamawabsdb:5432;Database=gamawabsdb;User Id=admin;Password=Password@123
+      - ConnectionStrings__ConnectionString=Server=gamawabsdb:5432;Database=gamawabs_db;User Id=admin;Password=Password@123
     ports:
       - "8046:80"
     depends_on:
@@ -93,7 +93,7 @@ services:
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=Password@123
-      - POSTGRES_DB=gamawabsdb
+      - POSTGRES_DB=gamawabs_db
     restart: always
     ports:
       - "5432:5432"
