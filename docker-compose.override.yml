@@ -82,6 +82,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__ConnectionString=Server=gamawabsdb:5432;Database=gamawabsdb;User Id=admin;Password=Password@123
     ports:
       - "8046:80"
     depends_on:
