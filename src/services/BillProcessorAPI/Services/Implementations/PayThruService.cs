@@ -70,7 +70,7 @@ namespace BillProcessorAPI.Services.Implementations
 
             if (amount >=0 || billCode.Length >= 0)
             {
-                throw new RestException(HttpStatusCode.PreconditionFailed, "This payment option is currently unavailable .. Kindly use flutterwave as your  a payment option.");
+                throw new RestException(HttpStatusCode.PreconditionFailed, "This payment option is currently unavailable. Kindly select another payment option.");
             }
             if (PaythruOptions is null)
             {
