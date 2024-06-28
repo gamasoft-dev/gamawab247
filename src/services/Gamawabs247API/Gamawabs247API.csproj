@@ -68,6 +68,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\" />
     <Folder Include="wwwroot\" />
+    <Folder Include="wwwroot\" />
     <Folder Include="Template\" />
     <Folder Include="Validations\" />
     <Folder Include="wwwroot\" />

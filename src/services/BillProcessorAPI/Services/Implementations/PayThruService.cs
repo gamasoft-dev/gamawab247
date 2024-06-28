@@ -67,6 +67,11 @@ namespace BillProcessorAPI.Services.Implementations
         public async Task<SuccessResponse<PaymentCreationResponse>> CreatePayment(int amount, string billCode)
         {
 
+
+            if (amount >=0 || billCode.Length >= 0)
+            {
+                throw new RestException(HttpStatusCode.PreconditionFailed, "This payment option is currently unavailable .. Kindly use flutterwave as your  a payment option.");
+            }
             if (PaythruOptions is null)
             {
                 throw new RestException(System.Net.HttpStatusCode.PreconditionFailed, "Kindly configure the required application settings");
