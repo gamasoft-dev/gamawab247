@@ -30,6 +30,13 @@ namespace Infrastructure.Repositories.Implementations
 
             await _context.Set<TEntity>().AddRangeAsync(entity);
         }
+        
+        public void RemoveRange(IEnumerable<TEntity> entity)
+        {
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+
+             _context.Set<TEntity>().RemoveRange(entity);
+        }
 
         public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
         {

@@ -239,11 +239,13 @@ namespace Application.Services.Implementations
         }
 
         public async Task<SuccessResponse<bool>> HttpSendTextMessage(string wa_Id, 
-            BusinessMessageDto<BaseInteractiveDto> model, InboundMessage inboundMessage)
+            BusinessMessageDto<BaseInteractiveDto> model, InboundMessage inboundMessage = null)
         {
             var businessSettings = await _businessSettingsService.GetByBusinessId(model.BusinessId);
             var whatsappUser = await _whatsappUserService.GetWhatsappUserByWaId(wa_Id);
             var business = await _businessService.GetBusinessByBusinessId(model.BusinessId);
+
+            var userName = inboundMessage == null ? whatsappUser?.Data?.Name : inboundMessage?.WhatsUserName;
 
             if (businessSettings is null)
                 throw new RestException(System.Net.HttpStatusCode.NotFound,
@@ -255,12 +257,12 @@ namespace Application.Services.Implementations
 
             var msgBody = model.Position == (int)ESystemMessagePosition.Initial
                 ? BusinessSettingsUtility.GetFirstMessage(
-                    businessSettings.Data.BotName, businessSettings.Data.BotDescription, inboundMessage.WhatsUserName) + $"{Environment.NewLine}{businessSettings.Data?.ExtraInfo}"
+                    businessSettings.Data.BotName, businessSettings.Data.BotDescription, userName) + $"{Environment.NewLine}{businessSettings.Data?.ExtraInfo}"
                 : model?.MessageTypeObject?.Body;
 
             if(model.Position == (int)ESystemMessagePosition.Welcome_Back)
             {
-                msgBody = msgBody.Replace("{{name}}", inboundMessage.WhatsUserName);
+                msgBody = msgBody.Replace("{{name}}", userName);
             }
 
 

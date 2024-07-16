@@ -25,4 +25,5 @@ public abstract class BusinessMessageServiceAbs:
 
     public abstract Task<SuccessResponse<bool>> HttpSendBusinessMessage(string wa_Id,
         BusinessMessageDto<BaseInteractiveDto> model, InboundMessage inboundMessage);
+
 }

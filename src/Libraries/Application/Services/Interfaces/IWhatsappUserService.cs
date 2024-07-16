@@ -14,5 +14,6 @@ namespace Application.Services.Interfaces
         Task<SuccessResponse<bool>> DeleteWhatsappUserById(string waId);
         Task<SuccessResponse<WhatsappUserDto>> GetWhatsappUserByWaId(string waId);
         Task<PagedResponse<IEnumerable<WhatsappUserDto>>> GetWhatsappUsers(ResourceParameter parameter, string name, IUrlHelper urlHelper);
+        Task<SuccessResponse<bool>> DisableAutomatedResponse(string waId, Guid businessId);
     }
 }

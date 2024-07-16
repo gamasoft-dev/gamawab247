@@ -35,6 +35,11 @@ public class CreateBusinessMessageDto<T>
     public Guid? ExternalContentRetrievalId { get; set; }
 
     /// <summary>
+    /// This means that the conversation is to be taken over by an admin at this point, and automated response is sent to the user to notify them about this action
+    /// </summary>
+    public bool IsAdminResponseTriggered { get; set; }
+
+    /// <summary>
     /// This is the object of the specific type of message that needs to be created
     /// </summary>
     public T? MessageTypeObject { get; set; }

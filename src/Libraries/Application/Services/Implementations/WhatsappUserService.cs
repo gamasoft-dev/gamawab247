@@ -1,11 +1,14 @@
 ﻿using Application.DTOs;
+using Application.DTOs.CreateDialogDtos;
 using Application.Helpers;
 using Application.Services.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.Common;
 using Domain.Entities;
+using Domain.Enums;
 using Infrastructure.Repositories.Interfaces;
+using Infrastructure.Sessions;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -17,13 +20,22 @@ namespace Application.Services.Implementations
     public class WhatsappUserService : IWhatsappUserService
     {
         private readonly IWhatsappUserRepository _waUserRepository;
+        private readonly ISessionManagement _sessionMgt;
         private readonly IMapper _mapper;
+        private readonly IRepository<Business> _businessRepo;
+        private readonly IOutboundMesageService _outboundMesageService;
 
         public WhatsappUserService(IWhatsappUserRepository waUserRepository,
-            IMapper mapper)
+            IMapper mapper,
+            ISessionManagement sessionMgt,
+            IRepository<Business> businessRepo,
+            IOutboundMesageService outboundMesageService)
         {
             _waUserRepository = waUserRepository;
             _mapper = mapper;
+            _sessionMgt = sessionMgt;
+            _businessRepo = businessRepo;
+            _outboundMesageService = outboundMesageService;
         }
 
         #region CRUD Service Methods
@@ -95,6 +107,57 @@ namespace Application.Services.Implementations
             };
         }
 
+
+        public async Task<SuccessResponse<bool>> DisableAutomatedResponse(string waId, Guid businessId)
+        {
+            var waUser = await _waUserRepository.FirstOrDefault(x => x.WaId == waId);
+
+            if (waUser == null)
+                throw new RestException(HttpStatusCode.NotFound, ResponseMessages.UserNotFound);
+
+            var business = await _businessRepo.FirstOrDefault(x=>x.Id ==  businessId)
+               ?? throw new RestException(HttpStatusCode.NotFound, "Business not found");
+
+            var session = await _sessionMgt.GetByWaId(waId);
+
+            if (session is null)
+            {
+                session = await _sessionMgt.CreateNewSession(waId, null, waUser.Name, business, DateTime.Now,
+                    ESessionState.CONVERSATION_WITH_ADMIN, null, null);
+
+                var message = new BusinessMessageDto<BaseInteractiveDto>
+                {
+                    RecipientType = "individual",
+                    BusinessId = businessId,
+                    MessageTypeObject = new BaseInteractiveDto
+                    {
+                        Body = "An admin will get in contact shortly"
+                    }
+                };
+                await _outboundMesageService.SendMessage(EMessageType.Text.ToString(), waId, message, null);
+            }
+            else
+            {
+                session.SessionState = ESessionState.CONVERSATION_WITH_ADMIN;
+                var message = new BusinessMessageDto<BaseInteractiveDto>
+                {
+                    RecipientType = "individual",
+                    BusinessId = businessId,
+                    MessageTypeObject = new BaseInteractiveDto
+                    {
+                        Body = "An admin will get in contact shortly"
+                    }
+                };
+                await _outboundMesageService.SendMessage(EMessageType.Text.ToString(), waId, message, null);
+                await _sessionMgt.Update(waId, session);
+            }
+
+            return new SuccessResponse<bool>
+            {
+                Message = ResponseMessages.UpdateResponse,
+                Data = true
+            };          
+        }
 
 
         public async Task<PagedResponse<IEnumerable<WhatsappUserDto>>> GetWhatsappUsers(ResourceParameter parameter, string name, IUrlHelper urlHelper)

@@ -23,5 +23,12 @@ namespace Application.Services.Interfaces
         Task<SuccessResponse<object>> SetPassword(SetPasswordDTO model);
         Task<SuccessResponse<bool>> ValidateRefreshToken(string token);
         Task<SuccessResponse<bool>> DeleteUser(Guid userId);
+        Task<SuccessResponse<bool>> CreateRoleAsync(string roleName);
+        Task<SuccessResponse<bool>> DeleteRoleAsync(Guid roleId);
+        Task<SuccessResponse<List<RoleDto>>> GetAllRolesAsync();
+        Task<SuccessResponse<bool>> AddUserToRoleAsync(AddUserToRoleDto model);
+        Task<SuccessResponse<bool>> RemoveUserFromRoleAsync(RemoveUserFromRoleDto model);
+        Task<SuccessResponse<IList<string>>> GetUserRolesAsync(Guid userId);
+        Task<SuccessResponse<RoleDto>> GetRoleAsync(Guid roleId);
     }
 }

@@ -33,4 +33,5 @@ public class BusinessMessageFactory: IBusinessMessageFactory
             string.Equals(x.GetMessageType, EMessageType.Text.ToString(),
                 StringComparison.CurrentCultureIgnoreCase));
     }
+
 }

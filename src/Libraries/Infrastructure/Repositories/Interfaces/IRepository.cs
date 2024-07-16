@@ -28,6 +28,6 @@ namespace Infrastructure.Repositories.Interfaces
         Task<TEntity> AddAndReturnValue(TEntity entity);
 
         Task BeginTransaction(Func<Task> action, bool shouldCommitToDatabase = true);
-
+        void RemoveRange(IEnumerable<TEntity> entity);
     }
 }

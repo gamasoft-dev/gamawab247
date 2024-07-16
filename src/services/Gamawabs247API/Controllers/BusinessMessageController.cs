@@ -149,6 +149,22 @@ namespace API.Controllers
             return Ok(response);
         }
 
+
+        ///// <summary>
+        ///// Endpoint to get update a whatsapp user session
+        ///// </summary>
+        ///// <param name="waId"></param>
+        ///// <param name="businessId"></param>
+        ///// <returns></returns>
+        //[HttpPost("{waId}/session", Name = nameof(UpsertUserSession))]
+        //[ProducesResponseType(typeof(SuccessResponse<bool>), 200)]
+        //public async Task<IActionResult> UpsertUserSession(string waId, Guid businessId)
+        //{
+        //    var response = await _whatsappUsersService.DisableAutomatedResponse(waId, businessId);
+        //    return Ok(response);
+        //}
+
+
         // /// <summary>
         // /// Endpoint to create list message
         // /// </summary>

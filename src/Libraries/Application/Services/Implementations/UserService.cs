@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Application.DTOs;
@@ -19,7 +20,7 @@ using SendGrid.Helpers.Errors.Model;
 
 namespace Application.Services.Implementations
 {
-    public class UserService : IUserService
+    public partial class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
         private readonly IRepository<UserActivity> _userActivityRepository;
@@ -32,9 +33,10 @@ namespace Application.Services.Implementations
         private readonly IEmailTemplateService _emailTemplateService;
         private readonly RoleManager<Role> _roleManager;
         private readonly IBusinessService _businessService;
+        private readonly IRepository<UserRole> _userRole;
 
         public UserService(
-            IUserRepository userRepository, 
+            IUserRepository userRepository,
             IRepository<UserActivity> userActivityRepository,
             IJwtAuthenticationManager jwtAuthenticationManager,
             UserManager<User> userManager,
@@ -44,7 +46,8 @@ namespace Application.Services.Implementations
             IMailService mailService,
             IEmailTemplateService emailTemplateService,
             RoleManager<Role> roleManager,
-            IBusinessService businessService)
+            IBusinessService businessService,
+            IRepository<UserRole> userRole)
         {
             _userRepository = userRepository;
             _userActivityRepository = userActivityRepository;
@@ -57,6 +60,7 @@ namespace Application.Services.Implementations
             _emailTemplateService = emailTemplateService;
             _roleManager = roleManager;
             _businessService = businessService;
+            _userRole = userRole;
         }
 
         public async Task<SuccessResponse<CreateUserResponse>> CreateUser(CreateUserDTO model, List<string> roles = null)
