@@ -48,7 +48,7 @@ namespace Domain.Entities.DialogMessageEntitties
         /// <summary>
         /// This means that the conversation is to be taken over by an admin at this point, and automated response is sent to the user to notify them about this action
         /// </summary>
-        public string AdminResponseStatus { get; set; } = EAdminResponseStatus.Completed.ToString();
+        public string AdminResponseStatus { get; set; } = EAdminResponseStatus.Initiated.ToString();
         public string ContentRetrievalProcessorKey { get; set; }
 
         // navigation properties

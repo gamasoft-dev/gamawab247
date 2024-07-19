@@ -1,0 +1,19 @@
+2024-07-16 13:11:46.620 +01:00 [ERR] Server Error
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at Application.Services.Implementations.WhatsappMessageService.GetDisableAutomatedResponsePrompt(Guid businessId) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Application\Services\Implementations\WhatsappMessageService.cs:line 84
+   at Application.Services.Implementations.WhatsappMessageService.DisableAutomatedResponse(String waId, Guid businessId) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Application\Services\Implementations\WhatsappMessageService.cs:line 62
+   at API.Controllers.BusinessesController.DisableAutomatedResponse(String waId, Guid businessId) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Controllers\BusinessMessageController.cs:line 165
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at API.Middlewares.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Middlewares\ErrorHandlingMiddleware.cs:line 28

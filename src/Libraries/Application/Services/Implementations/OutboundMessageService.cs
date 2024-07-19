@@ -265,6 +265,11 @@ namespace Application.Services.Implementations
                 msgBody = msgBody.Replace("{{name}}", userName);
             }
 
+            //if (model.Position == 301)
+            //{
+            //    msgBody = msgBody.Replace("{{name}}", userName);
+            //}
+
 
             if (model.MessageTypeObject is not null)
             {

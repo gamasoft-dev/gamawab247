@@ -25,7 +25,7 @@ namespace Application.Services.Implementations
         private readonly IRepository<User> _userRepo;
         private readonly IMapper _mapper;
         private readonly IOutboundMesageService _outboundMesageService;
-        public WhatsappMessageService(IRepository<WhatsappUser> waUserRepository, ISessionManagement sessionMgt, IRepository<Business> businessRepo, IRepository<BusinessMessage> businessMessageRepo, IMapper mapper, IOutboundMesageService outboundMesageService, IRepository<User> userRepo)
+        public WhatsappMessageService(IRepository<WhatsappUser> waUserRepository, ISessionManagement sessionMgt, IRepository<Business> businessRepo, IRepository<BusinessMessage> businessMessageRepo, IMapper mapper, IOutboundMesageService outboundMesageService, IRepository<User> userRepo, IRepository<TextMessage> textMessageRepo)
         {
             _waUserRepository = waUserRepository;
             _sessionMgt = sessionMgt;
@@ -34,6 +34,7 @@ namespace Application.Services.Implementations
             _mapper = mapper;
             _outboundMesageService = outboundMesageService;
             _userRepo = userRepo;
+            _textMessageRepo = textMessageRepo;
         }
 
         public async Task<SuccessResponse<bool>> DisableAutomatedResponse(string waId, Guid businessId)
@@ -59,7 +60,7 @@ namespace Application.Services.Implementations
                 session.SessionState = ESessionState.CONVERSATION_WITH_ADMIN; 
                 await _sessionMgt.Update(waId, session);
             }
-            var message = await GetDisableAutomatedResponsePrompt(businessId);
+            var message = await GetAutomatedResponsePrompt(businessId, EAdminResponseStatus.Initiated);
             if (message is null)
                 throw new RestException(HttpStatusCode.NotFound, "No 'speak to admin' prompt configured");
 
@@ -69,14 +70,54 @@ namespace Application.Services.Implementations
             await SendAutomatedResponse(waId,message,adminInfo.FirstName);
             return new SuccessResponse<bool>
             {
-                Message = ResponseMessages.UpdateResponse,
+                Message = "Automated response deactivated",
                 Data = true
             };
         }
 
-        public async Task<BusinessMessageDto<BaseInteractiveDto>> GetDisableAutomatedResponsePrompt(Guid businessId)
+
+        public async Task<SuccessResponse<bool>> EnableAutomatedResponse(string waId, Guid businessId)
         {
-            var businessMessage = await _businessMessageRepo.FirstOrDefault(x => x.BusinessId == businessId && x.AdminResponseStatus == EAdminResponseStatus.Initiated.ToString());
+            var waUser = await _waUserRepository.FirstOrDefault(x => x.WaId == waId);
+
+            if (waUser == null)
+                throw new RestException(HttpStatusCode.NotFound, ResponseMessages.UserNotFound);
+
+            var business = await _businessRepo.FirstOrDefault(x => x.Id == businessId)
+               ?? throw new RestException(HttpStatusCode.NotFound, "Business not found");
+
+            var session = await _sessionMgt.GetByWaId(waId);
+
+            if (session is null)
+            {
+                session = await _sessionMgt.CreateNewSession(waId, null, waUser.Name, business, DateTime.Now,
+                    ESessionState.PLAINCONVERSATION, null, null);
+
+            }
+            else
+            {
+                session.SessionState = ESessionState.PLAINCONVERSATION;
+                await _sessionMgt.Update(waId, session);
+            }
+            var message = await GetAutomatedResponsePrompt(businessId, EAdminResponseStatus.Completed);
+            if (message is null)
+                throw new RestException(HttpStatusCode.NotFound, "No 'speak to admin' completion prompt configured");
+
+            var adminInfo = await _userRepo.FirstOrDefault(x => x.Id == WebHelper.UserId)
+                ?? throw new RestException(HttpStatusCode.NotFound, "Admin user not found");
+
+            await SendAutomatedResponse(waId, message, adminInfo.FirstName);
+            return new SuccessResponse<bool>
+            {
+                Message = "Automated response activated",
+                Data = true
+            };
+        }
+
+        #region Private region
+        private async Task<BusinessMessageDto<BaseInteractiveDto>> GetAutomatedResponsePrompt(Guid businessId, EAdminResponseStatus adminResponseStatus)
+        {
+            var businessMessage = await _businessMessageRepo.FirstOrDefault(x => x.BusinessId == businessId && x.AdminResponseStatus == adminResponseStatus.ToString());
 
             if (businessMessage is null)
                 throw new RestException(System.Net.HttpStatusCode.BadRequest, ResponseMessages.BusinessNotFound);
@@ -103,10 +144,11 @@ namespace Application.Services.Implementations
 
         private async Task SendAutomatedResponse(string waId,BusinessMessageDto<BaseInteractiveDto> model, string adminName)
         {
-            model.MessageTypeObject.Body.Replace("{adminName}", adminName);
+            var message = model.MessageTypeObject.Body.Replace("{{name}}", adminName);
+            model.MessageTypeObject.Body = message;
             await _outboundMesageService.HttpSendTextMessage(waId, model,null);
         }
 
-
+        #endregion
     }
 }
