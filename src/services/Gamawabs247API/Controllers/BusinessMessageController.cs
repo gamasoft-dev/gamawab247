@@ -59,6 +59,10 @@ namespace API.Controllers
         {
             try{
 
+                //string testStr = "" + message;
+                //if (!testStr.Contains("2348091965706"))
+                //    return Ok();
+
                 await _messageProcessor.ValidateInboundMessage(id, message);
 
                 IInboundMessageService inboundService = _inboundMessageService.ResolveBaseMessageType(message);

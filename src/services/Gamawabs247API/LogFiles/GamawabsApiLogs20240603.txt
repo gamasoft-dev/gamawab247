@@ -1,0 +1,548 @@
+2024-06-03 08:16:14.163 +01:00 [ERR] Rest Error
+Application.Helpers.RestException: Wrong email or password provided
+   at Application.Services.Implementations.UserService.Login(UserLoginDTO model) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Application\Services\Implementations\UserService.cs:line 175
+   at API.Controllers.AuthController.LoginUser(UserLoginDTO model) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Controllers\AuthController.cs:line 65
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at API.Middlewares.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Middlewares\ErrorHandlingMiddleware.cs:line 28
+2024-06-03 08:21:57.116 +01:00 [ERR] Rest Error
+Application.Helpers.RestException: Wrong email or password provided
+   at Application.Services.Implementations.UserService.Login(UserLoginDTO model) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Application\Services\Implementations\UserService.cs:line 175
+   at API.Controllers.AuthController.LoginUser(UserLoginDTO model) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Controllers\AuthController.cs:line 65
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at API.Middlewares.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Middlewares\ErrorHandlingMiddleware.cs:line 28
+2024-06-03 08:35:35.566 +01:00 [ERR] Rest Error
+Application.Helpers.RestException: Wrong email or password provided
+   at Application.Services.Implementations.UserService.Login(UserLoginDTO model) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Application\Services\Implementations\UserService.cs:line 175
+   at API.Controllers.AuthController.LoginUser(UserLoginDTO model) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Controllers\AuthController.cs:line 65
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at API.Middlewares.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Middlewares\ErrorHandlingMiddleware.cs:line 28
+2024-06-03 10:47:01.201 +01:00 [FTL] Unexpected character encountered while parsing value: s. Path '', line 0, position 0.
+2024-06-03 10:47:01.583 +01:00 [ERR] Unexpected character encountered while parsing value: s. Path '', line 0, position 0.
+2024-06-03 10:47:02.077 +01:00 [ERR] Rest Error
+Application.Helpers.RestException: Unexpected character encountered while parsing value: s. Path '', line 0, position 0.
+   at Application.Services.Implementations.Dialog360MessageProcessor.ValidateInboundMessage(Guid businessId, Object request) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Application\Services\Implementations\Dialog360MessageProcessor.cs:line 122
+   at System.Dynamic.UpdateDelegates.UpdateAndExecuteVoid1[T0](CallSite site, T0 arg0)
+   at API.Controllers.BusinessesController.ProcessMessage(Guid id, Object message) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Controllers\BusinessMessageController.cs:line 62
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at API.Middlewares.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Middlewares\ErrorHandlingMiddleware.cs:line 28
+2024-06-03 10:49:06.097 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisExtensions.HashMemberGetAsync(IDatabase cache, String key, String[] members)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at Infrastructure.Cache.CacheService.ReadFromCacheAsync[T](String key) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 51
+2024-06-03 10:49:06.103 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisExtensions.HashMemberGetAsync(IDatabase cache, String key, String[] members)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at Infrastructure.Cache.CacheService.ReadFromCacheAsync[T](String key) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 51
+2024-06-03 10:49:06.106 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisExtensions.HashMemberGetAsync(IDatabase cache, String key, String[] members)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at Infrastructure.Cache.CacheService.ReadFromCacheAsync[T](String key) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 51
+2024-06-03 10:49:06.486 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisExtensions.HashMemberGetAsync(IDatabase cache, String key, String[] members)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at Infrastructure.Cache.CacheService.ReadFromCacheAsync[T](String key) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 51
+2024-06-03 10:49:06.495 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisExtensions.HashMemberGetAsync(IDatabase cache, String key, String[] members)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at Infrastructure.Cache.CacheService.ReadFromCacheAsync[T](String key) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 51
+2024-06-03 10:49:06.497 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisExtensions.HashMemberGetAsync(IDatabase cache, String key, String[] members)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at Infrastructure.Cache.CacheService.ReadFromCacheAsync[T](String key) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 51
+2024-06-03 10:49:06.904 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisCache.SetAsync(String key, Byte[] value, DistributedCacheEntryOptions options, CancellationToken token)
+   at Infrastructure.Cache.CacheService.AddToCacheAsync[T](String key, T payload) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 37
+2024-06-03 10:49:06.909 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisCache.SetAsync(String key, Byte[] value, DistributedCacheEntryOptions options, CancellationToken token)
+   at Infrastructure.Cache.CacheService.AddToCacheAsync[T](String key, T payload) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 37
+2024-06-03 10:49:06.915 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisCache.SetAsync(String key, Byte[] value, DistributedCacheEntryOptions options, CancellationToken token)
+   at Infrastructure.Cache.CacheService.AddToCacheAsync[T](String key, T payload) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 37
+2024-06-03 10:49:09.029 +01:00 [FTL] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+2024-06-03 10:49:09.211 +01:00 [FTL] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+2024-06-03 10:49:09.737 +01:00 [FTL] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+2024-06-03 10:49:09.994 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+2024-06-03 10:49:10.565 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+2024-06-03 10:49:10.586 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+2024-06-03 10:49:11.706 +01:00 [ERR] Rest Error
+Application.Helpers.RestException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   at Application.Services.Implementations.Dialog360MessageProcessor.ValidateInboundMessage(Guid businessId, Object request) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Application\Services\Implementations\Dialog360MessageProcessor.cs:line 122
+   at API.Controllers.BusinessesController.ProcessMessage(Guid id, Object message) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Controllers\BusinessMessageController.cs:line 62
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at API.Middlewares.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Middlewares\ErrorHandlingMiddleware.cs:line 28
+2024-06-03 10:49:11.718 +01:00 [ERR] Rest Error
+Application.Helpers.RestException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   at Application.Services.Implementations.Dialog360MessageProcessor.ValidateInboundMessage(Guid businessId, Object request) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Application\Services\Implementations\Dialog360MessageProcessor.cs:line 122
+   at API.Controllers.BusinessesController.ProcessMessage(Guid id, Object message) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Controllers\BusinessMessageController.cs:line 62
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at API.Middlewares.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Middlewares\ErrorHandlingMiddleware.cs:line 28
+2024-06-03 10:49:11.724 +01:00 [ERR] Rest Error
+Application.Helpers.RestException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 33709s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   at Application.Services.Implementations.Dialog360MessageProcessor.ValidateInboundMessage(Guid businessId, Object request) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Application\Services\Implementations\Dialog360MessageProcessor.cs:line 122
+   at API.Controllers.BusinessesController.ProcessMessage(Guid id, Object message) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Controllers\BusinessMessageController.cs:line 62
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at API.Middlewares.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Middlewares\ErrorHandlingMiddleware.cs:line 28
+2024-06-03 10:58:33.471 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisExtensions.HashMemberGetAsync(IDatabase cache, String key, String[] members)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at Infrastructure.Cache.CacheService.ReadFromCacheAsync[T](String key) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 51
+2024-06-03 10:58:33.471 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisExtensions.HashMemberGetAsync(IDatabase cache, String key, String[] members)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at Infrastructure.Cache.CacheService.ReadFromCacheAsync[T](String key) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 51
+2024-06-03 10:58:33.471 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisExtensions.HashMemberGetAsync(IDatabase cache, String key, String[] members)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at Infrastructure.Cache.CacheService.ReadFromCacheAsync[T](String key) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 51
+2024-06-03 10:58:34.607 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisExtensions.HashMemberGetAsync(IDatabase cache, String key, String[] members)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at Infrastructure.Cache.CacheService.ReadFromCacheAsync[T](String key) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 51
+2024-06-03 10:58:34.609 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisExtensions.HashMemberGetAsync(IDatabase cache, String key, String[] members)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at Infrastructure.Cache.CacheService.ReadFromCacheAsync[T](String key) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 51
+2024-06-03 10:58:35.261 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisCache.SetAsync(String key, Byte[] value, DistributedCacheEntryOptions options, CancellationToken token)
+   at Infrastructure.Cache.CacheService.AddToCacheAsync[T](String key, T payload) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 37
+2024-06-03 10:58:35.271 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisCache.SetAsync(String key, Byte[] value, DistributedCacheEntryOptions options, CancellationToken token)
+   at Infrastructure.Cache.CacheService.AddToCacheAsync[T](String key, T payload) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 37
+2024-06-03 10:58:37.079 +01:00 [FTL] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+2024-06-03 10:58:37.090 +01:00 [FTL] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+2024-06-03 10:58:37.703 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+2024-06-03 10:58:38.037 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+2024-06-03 10:58:39.286 +01:00 [ERR] Rest Error
+Application.Helpers.RestException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   at Application.Services.Implementations.Dialog360MessageProcessor.ValidateInboundMessage(Guid businessId, Object request) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Application\Services\Implementations\Dialog360MessageProcessor.cs:line 122
+   at API.Controllers.BusinessesController.ProcessMessage(Guid id, Object message) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Controllers\BusinessMessageController.cs:line 62
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at API.Middlewares.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Middlewares\ErrorHandlingMiddleware.cs:line 28
+2024-06-03 10:58:39.289 +01:00 [ERR] Rest Error
+Application.Helpers.RestException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   at Application.Services.Implementations.Dialog360MessageProcessor.ValidateInboundMessage(Guid businessId, Object request) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Application\Services\Implementations\Dialog360MessageProcessor.cs:line 122
+   at API.Controllers.BusinessesController.ProcessMessage(Guid id, Object message) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Controllers\BusinessMessageController.cs:line 62
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at API.Middlewares.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Middlewares\ErrorHandlingMiddleware.cs:line 28
+2024-06-03 10:58:53.888 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisExtensions.HashMemberGetAsync(IDatabase cache, String key, String[] members)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at Infrastructure.Cache.CacheService.ReadFromCacheAsync[T](String key) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 51
+2024-06-03 10:58:54.043 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisExtensions.HashMemberGetAsync(IDatabase cache, String key, String[] members)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at Infrastructure.Cache.CacheService.ReadFromCacheAsync[T](String key) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 51
+2024-06-03 10:58:54.229 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisCache.SetAsync(String key, Byte[] value, DistributedCacheEntryOptions options, CancellationToken token)
+   at Infrastructure.Cache.CacheService.AddToCacheAsync[T](String key, T payload) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 37
+2024-06-03 10:58:54.833 +01:00 [FTL] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+2024-06-03 10:58:55.071 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+2024-06-03 10:58:55.573 +01:00 [ERR] Rest Error
+Application.Helpers.RestException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 34627s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   at Application.Services.Implementations.Dialog360MessageProcessor.ValidateInboundMessage(Guid businessId, Object request) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Application\Services\Implementations\Dialog360MessageProcessor.cs:line 122
+   at API.Controllers.BusinessesController.ProcessMessage(Guid id, Object message) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Controllers\BusinessMessageController.cs:line 62
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at API.Middlewares.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Middlewares\ErrorHandlingMiddleware.cs:line 28
+2024-06-03 11:19:51.197 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisExtensions.HashMemberGetAsync(IDatabase cache, String key, String[] members)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at Infrastructure.Cache.CacheService.ReadFromCacheAsync[T](String key) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 51
+2024-06-03 11:19:51.464 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisExtensions.HashMemberGetAsync(IDatabase cache, String key, String[] members)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at Infrastructure.Cache.CacheService.ReadFromCacheAsync[T](String key) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 51
+2024-06-03 11:19:51.731 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisCache.SetAsync(String key, Byte[] value, DistributedCacheEntryOptions options, CancellationToken token)
+   at Infrastructure.Cache.CacheService.AddToCacheAsync[T](String key, T payload) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 37
+2024-06-03 11:19:52.144 +01:00 [FTL] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+2024-06-03 11:19:52.376 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+2024-06-03 11:19:52.906 +01:00 [ERR] Rest Error
+Application.Helpers.RestException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   at Application.Services.Implementations.Dialog360MessageProcessor.ValidateInboundMessage(Guid businessId, Object request) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Application\Services\Implementations\Dialog360MessageProcessor.cs:line 122
+   at System.Dynamic.UpdateDelegates.UpdateAndExecuteVoid1[T0](CallSite site, T0 arg0)
+   at API.Controllers.BusinessesController.ProcessMessage(Guid id, Object message) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Controllers\BusinessMessageController.cs:line 62
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at API.Middlewares.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Middlewares\ErrorHandlingMiddleware.cs:line 28
+2024-06-03 11:20:16.896 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisExtensions.HashMemberGetAsync(IDatabase cache, String key, String[] members)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at Infrastructure.Cache.CacheService.ReadFromCacheAsync[T](String key) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 51
+2024-06-03 11:20:17.032 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisExtensions.HashMemberGetAsync(IDatabase cache, String key, String[] members)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at Infrastructure.Cache.CacheService.ReadFromCacheAsync[T](String key) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 51
+2024-06-03 11:20:17.160 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisCache.SetAsync(String key, Byte[] value, DistributedCacheEntryOptions options, CancellationToken token)
+   at Infrastructure.Cache.CacheService.AddToCacheAsync[T](String key, T payload) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 37
+2024-06-03 11:20:17.556 +01:00 [FTL] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+2024-06-03 11:20:17.899 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+2024-06-03 11:20:18.304 +01:00 [ERR] Rest Error
+Application.Helpers.RestException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   at Application.Services.Implementations.Dialog360MessageProcessor.ValidateInboundMessage(Guid businessId, Object request) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Application\Services\Implementations\Dialog360MessageProcessor.cs:line 122
+   at API.Controllers.BusinessesController.ProcessMessage(Guid id, Object message) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Controllers\BusinessMessageController.cs:line 62
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at API.Middlewares.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Middlewares\ErrorHandlingMiddleware.cs:line 28
+2024-06-03 11:22:47.883 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisExtensions.HashMemberGetAsync(IDatabase cache, String key, String[] members)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at Infrastructure.Cache.CacheService.ReadFromCacheAsync[T](String key) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 51
+2024-06-03 11:23:26.007 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisExtensions.HashMemberGetAsync(IDatabase cache, String key, String[] members)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at Infrastructure.Cache.CacheService.ReadFromCacheAsync[T](String key) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 51
+2024-06-03 11:23:26.150 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisCache.SetAsync(String key, Byte[] value, DistributedCacheEntryOptions options, CancellationToken token)
+   at Infrastructure.Cache.CacheService.AddToCacheAsync[T](String key, T payload) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 37
+2024-06-03 11:23:26.658 +01:00 [FTL] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+2024-06-03 11:23:26.865 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+2024-06-03 11:23:27.185 +01:00 [ERR] Rest Error
+Application.Helpers.RestException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   at Application.Services.Implementations.Dialog360MessageProcessor.ValidateInboundMessage(Guid businessId, Object request) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Application\Services\Implementations\Dialog360MessageProcessor.cs:line 122
+   at API.Controllers.BusinessesController.ProcessMessage(Guid id, Object message) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Controllers\BusinessMessageController.cs:line 62
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|6_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at API.Middlewares.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\Gamawabs247API\Middlewares\ErrorHandlingMiddleware.cs:line 28
+2024-06-03 11:24:39.846 +01:00 [ERR] No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+StackExchange.Redis.RedisConnectionException: No connection is available to service this operation: EVAL; SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+ ---> StackExchange.Redis.RedisConnectionException: SocketFailure on 165.227.181.89:6370/Subscription, origin: Error, input-buffer: 0, outstanding: 0, last-read: 21s ago, last-write: 21s ago, unanswered-write: 35905s ago, keep-alive: 60s, pending: 0, state: Connecting, last-heartbeat: never, last-mbeat: -1s ago, global: 21s ago
+   --- End of inner exception stack trace ---
+   at StackExchange.Redis.ConnectionMultiplexer.ThrowFailed[T](TaskCompletionSource`1 source, Exception unthrownException) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2000
+--- End of stack trace from previous location ---
+   at Microsoft.Extensions.Caching.Redis.RedisExtensions.HashMemberGetAsync(IDatabase cache, String key, String[] members)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAndRefreshAsync(String key, Boolean getData, CancellationToken token)
+   at Microsoft.Extensions.Caching.Redis.RedisCache.GetAsync(String key, CancellationToken token)
+   at Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions.GetStringAsync(IDistributedCache cache, String key, CancellationToken token)
+   at Infrastructure.Cache.CacheService.ReadFromCacheAsync[T](String key) in C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\Libraries\Infrastructure\Cache\CacheService.cs:line 51

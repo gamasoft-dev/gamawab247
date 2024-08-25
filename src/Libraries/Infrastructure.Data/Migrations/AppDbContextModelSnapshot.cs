@@ -42,10 +42,16 @@ namespace Infrastructure.Data.Migrations
                     b.Property<Guid?>("CreatedById")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("EmailAddress")
+                        .HasColumnType("text");
+
                     b.Property<string>("ErrorMessage")
                         .HasColumnType("text");
 
                     b.Property<string>("From")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FullName")
                         .HasColumnType("text");
 
                     b.Property<string>("Message")

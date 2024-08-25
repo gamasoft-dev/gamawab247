@@ -70,6 +70,8 @@ namespace Application.Services.Implementations
 
                 // remove this is session and validatoin middle ware is being used.
                 _360MessageDto requestPayload = GetDialo360Message(request.ToString());
+
+
                 var session = await _session.GetByWaId(requestPayload.contacts.FirstOrDefault()?.wa_id);
                 var messageTime = DateTimeHelper.GetDateTimeFromTimeStamp(requestPayload.messages.FirstOrDefault()?.timestamp);
 

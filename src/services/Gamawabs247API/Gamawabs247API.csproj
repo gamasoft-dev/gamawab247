@@ -67,9 +67,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\" />
+    <Folder Include="wwwroot\" />
+    <Folder Include="wwwroot\" />
     <Folder Include="Template\" />
     <Folder Include="Validations\" />
-    <Folder Include="LogFiles\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 </Project>
