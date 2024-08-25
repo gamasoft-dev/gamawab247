@@ -46,7 +46,7 @@ namespace BillProcessorAPI.Services.Implementations
         public async Task<SuccessResponse<BillReferenceResponseDto>> ReferenceVerification(string phone, string billPaymentCode)
 		{
 
-			if (string.IsNullOrEmpty(billPaymentCode) || string.IsNullOrEmpty(phone))
+			if (string.IsNullOrEmpty(billPaymentCode))
 			{
 				throw new RestException(HttpStatusCode.BadRequest, "phone number and bill code are required");
 			}

@@ -28,7 +28,7 @@ namespace BillProcessorAPI.Controllers
         [HttpGet("invoice/{billPaymentCode}")]
         [ProducesResponseType(typeof(SuccessResponse<BillReferenceResponseDto>), 200)]
         [SwaggerOperation(Summary = "Endpoint to get bill payer reference")]
-        public async Task<IActionResult> ReferenceVerification([FromRoute] string billPaymentCode, [FromQuery][Required(ErrorMessage = "Kindly provide a phone number")] string phone)
+        public async Task<IActionResult> ReferenceVerification([FromRoute] string billPaymentCode, [FromQuery]/*[Required(ErrorMessage = "Kindly provide a phone number")]*/ string phone = null)
 		{
 			var response = await _revpay.ReferenceVerification(phone, billPaymentCode);
 			return Ok(response);
