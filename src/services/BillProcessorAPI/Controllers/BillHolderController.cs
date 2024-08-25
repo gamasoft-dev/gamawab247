@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace BillProcessorAPI.Controllers
 {
@@ -27,7 +28,7 @@ namespace BillProcessorAPI.Controllers
         [HttpGet("invoice/{billPaymentCode}")]
         [ProducesResponseType(typeof(SuccessResponse<BillReferenceResponseDto>), 200)]
         [SwaggerOperation(Summary = "Endpoint to get bill payer reference")]
-        public async Task<IActionResult> ReferenceVerification([FromRoute] string billPaymentCode, [FromQuery] string phone = null)
+        public async Task<IActionResult> ReferenceVerification([FromRoute] string billPaymentCode, [FromQuery][Required(ErrorMessage = "Kindly provide a phone number")] string phone)
 		{
 			var response = await _revpay.ReferenceVerification(phone, billPaymentCode);
 			return Ok(response);
