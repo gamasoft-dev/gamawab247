@@ -5,7 +5,6 @@ using BillProcessorAPI.Dtos.Flutterwave;
 using BillProcessorAPI.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using System.ComponentModel.DataAnnotations;
 
 namespace BillProcessorAPI.Controllers
 {
@@ -16,9 +15,7 @@ namespace BillProcessorAPI.Controllers
         [ProducesResponseType(typeof(PaymentCreationResponse), 200)]
         [SwaggerOperation(Summary = "Endpoint to create transaction")]
         public async Task<IActionResult> CreateFlutterwavePayment(string email,  
-            decimal amount, 
-            string billPaymentCode, 
-            string phoneNumber)
+            decimal amount, string billPaymentCode, string phoneNumber)
         {
             var response = await _flutterwaveMgtService.CreateTransaction(email, amount, billPaymentCode, phoneNumber);
             return Ok(response);
@@ -35,7 +32,6 @@ namespace BillProcessorAPI.Controllers
         [SwaggerOperation(Summary = "Webhook endpoint")]
         public IActionResult FlutterwavePaymentNotification([FromBody] WebHookNotificationWrapper model)
         {
-           
             _logger.LogInformation("Flutter wave request received");
                 
             _flutterwaveMgtService.PaymentNotification(model).SafeFireAndForget(exception =>
@@ -45,7 +41,7 @@ namespace BillProcessorAPI.Controllers
 
             return Ok("Transaction Status received");
         }
-
+        
         [HttpPost("/flutterwave/resend-webhook")]
         [ProducesResponseType(typeof(FailedWebhookResponseModel), 200)]
         [SwaggerOperation(Summary = "Endpoint for resending failed webhooks")]
