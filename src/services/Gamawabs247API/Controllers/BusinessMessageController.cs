@@ -24,6 +24,7 @@ namespace API.Controllers
         private readonly IMessageTypeResolver _messageTypeResolver;
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
+        private readonly IWhatsappMessageService _whatsappMesaageService;
 
         public BusinessesController(
             IBusinessSettingsService businessSettingsService,
@@ -32,7 +33,7 @@ namespace API.Controllers
             IInboundMessageService messageService,
             IMapper mapper,
             ILogger<BusinessesController> logger,
-            IMessageProcessor messageProcessor, IMessageTypeResolver messageTypeResolver, IUserService userService)
+            IMessageProcessor messageProcessor, IMessageTypeResolver messageTypeResolver, IUserService userService, IWhatsappMessageService whatsappMesaageService)
         {
             _businessSettingsService = businessSettingsService;
             _businessService = businessService;
@@ -43,6 +44,7 @@ namespace API.Controllers
             _messageTypeResolver = messageTypeResolver;
             _businessMessageFactory = businessMessageFactory;
             _userService = userService;
+            _whatsappMesaageService = whatsappMesaageService;
         }
 
         /// <summary>
@@ -148,6 +150,38 @@ namespace API.Controllers
 
             return Ok(response);
         }
+
+
+        /// <summary>
+        /// Endpoint to create text message
+        /// </summary>
+        /// <param name="businessId"></param>
+        /// <param name="waId"></param>
+        /// <returns></returns>
+        [HttpPost("disable-auto-response")]
+        [ProducesResponseType(typeof(BusinessMessageDto<TextMessageDto>), 200)]
+        public async Task<IActionResult> DisableAutomatedResponse(string waId, Guid businessId)
+        {
+            var response = await _whatsappMesaageService.DisableAutomatedResponse(waId,businessId);
+
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Endpoint to create text message
+        /// </summary>
+        /// <param name="businessId"></param>
+        /// <param name="waId"></param>
+        /// <returns></returns>
+        [HttpPost("enable-auto-response")]
+        [ProducesResponseType(typeof(BusinessMessageDto<TextMessageDto>), 200)]
+        public async Task<IActionResult> EnableAutomatedResponse(string waId, Guid businessId)
+        {
+            var response = await _whatsappMesaageService.DisableAutomatedResponse(waId, businessId);
+
+            return Ok(response);
+        }
+
 
         // /// <summary>
         // /// Endpoint to create list message

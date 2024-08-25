@@ -20,7 +20,8 @@ namespace Application.Services.Implementations
         private readonly IMapper _mapper;
 
         public WhatsappUserService(IWhatsappUserRepository waUserRepository,
-            IMapper mapper)
+            IMapper mapper
+          )
         {
             _waUserRepository = waUserRepository;
             _mapper = mapper;
@@ -94,8 +95,6 @@ namespace Application.Services.Implementations
                 Data = response
             };
         }
-
-
 
         public async Task<PagedResponse<IEnumerable<WhatsappUserDto>>> GetWhatsappUsers(ResourceParameter parameter, string name, IUrlHelper urlHelper)
         {

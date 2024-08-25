@@ -1,6 +1,7 @@
 ﻿using System;
 using Domain.Common;
 using Domain.Entities.FormProcessing;
+using Domain.Enums;
 
 namespace Domain.Entities.DialogMessageEntitties
 {
@@ -40,7 +41,14 @@ namespace Domain.Entities.DialogMessageEntitties
         /// external integration (local funciton or external api)
         /// When this value is set it would be likely that the InteractiveMessageId will be empty
         /// </summary>
+        /// 
+
         public bool ShouldRetrieveContentAtRuntime { get; set; }
+
+        /// <summary>
+        /// This means that the conversation is to be taken over by an admin at this point, and automated response is sent to the user to notify them about this action
+        /// </summary>
+        public string AdminResponseStatus { get; set; } = EAdminResponseStatus.Initiated.ToString();
         public string ContentRetrievalProcessorKey { get; set; }
 
         // navigation properties

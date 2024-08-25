@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/wausers")]
@@ -24,6 +24,7 @@ namespace API.Controllers
             _messageLogService = messageLogService;
         }
 
+
         /// <summary>
         /// Endpoint to get a whatsapp user by whatsapp id
         /// </summary>
@@ -37,6 +38,8 @@ namespace API.Controllers
 
             return Ok(response);
         }
+
+        
 
         /// <summary>
         /// Endpoint to get a list of whatsapp users

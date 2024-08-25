@@ -23,4 +23,5 @@ public interface IBusinessMessageMgtService<TRequest, TResponse>
     
     Task<SuccessResponse<bool>> HttpSendBusinessMessage(string wa_Id,
         BusinessMessageDto<BaseInteractiveDto> model, InboundMessage inboundMessage);
+
 }

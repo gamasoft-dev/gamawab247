@@ -21,6 +21,7 @@ namespace Domain.Entities
         public string ResponseProcessingStatus { get; set; }
         public int SendAttempt { get; set; }
         public Guid BusinessId { get; set; }
+        public string IsRespondedBy { get; set; } = ERespondedBy.BOT.ToString();
         public bool CanUseNLPMapping { get; set; }
         public string Language { get; set; } = "en";
         //public bool ShouldProcessInbound { get; set; } = true;

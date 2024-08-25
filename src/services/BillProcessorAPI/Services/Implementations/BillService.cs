@@ -50,7 +50,11 @@ namespace BillProcessorAPI.Services.Implementations
 			{
 				throw new RestException(HttpStatusCode.BadRequest, ResponseMessages.Failed);
 			}
-			if (RevpayOptions is null)
+            if (string.IsNullOrEmpty(phone))
+            {
+                throw new RestException(HttpStatusCode.BadRequest, ResponseMessages.Failed);
+            }
+            if (RevpayOptions is null)
 			{
 				throw new RestException(System.Net.HttpStatusCode.PreconditionFailed, "Kindly configure the required application settings");
 			}
@@ -92,7 +96,7 @@ namespace BillProcessorAPI.Services.Implementations
                     // biller information response data
                     billPayerInfo.AccountInfoResponseData = JsonConvert.SerializeObject(revPayRes);
 					billPayerInfo.billCode = billPaymentCode;
-					billPayerInfo.PhoneNumber = phone;	
+					//billPayerInfo.PhoneNumber = phone;	
 					
 
 					// bill-payer information request data

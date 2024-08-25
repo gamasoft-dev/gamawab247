@@ -76,7 +76,7 @@ public class ResponsePreProcessingCron : IResponsePreProcessingCron
         // get the list of pending inbound messages for processing.
         var pendingInbounds = await _inboundMessageRepo.Query(
             x => x.ResponseProcessingStatus.ToLower() ==
-                 EResponseProcessingStatus.Pending.ToString().ToLower()
+                 EResponseProcessingStatus.Pending.ToString().ToLower() && x.IsRespondedBy == ERespondedBy.BOT.ToString()
                  && x.CreatedAt < now).Skip(0).Take(20).ToListAsync();
 
         if (pendingInbounds.Any())
