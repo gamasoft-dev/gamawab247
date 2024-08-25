@@ -19,7 +19,7 @@ namespace BillProcessorAPI.Helpers.BroadcastMessage
         {
             if (string.IsNullOrEmpty(phoneNumberOptions.LUC.PhoneNumber))
             {
-                throw new RestException(HttpStatusCode.PreconditionFailed, "LUC business phone number not cconfigured");
+                throw new RestException(HttpStatusCode.PreconditionFailed, "LUC business phone number not configured");
             }
 
             if (!string.IsNullOrEmpty(transaction.ReceiptUrl))

@@ -16,6 +16,12 @@ namespace BillProcessorAPI.Dtos
     {
         public decimal Amount { get; set; }
         internal string Channel { get; set; }
+
+        public ChargesInputDto(decimal amount, string channel)
+        {
+            this.Amount = amount;
+            this.Channel = channel;
+        }
     }
     public record LucChargesInputDto
     {

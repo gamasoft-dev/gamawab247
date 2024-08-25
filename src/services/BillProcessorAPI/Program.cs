@@ -2,6 +2,7 @@ using Autofac.Core;
 using BillProcessorAPI.Data;
 using BillProcessorAPI.Dtos;
 using BillProcessorAPI.Dtos.BroadcastMessage;
+using BillProcessorAPI.Dtos.Configs;
 using BillProcessorAPI.Extensions;
 using BillProcessorAPI.Helpers;
 using BillProcessorAPI.Helpers.Flutterwave;
@@ -39,6 +40,8 @@ builder.Services.Configure<BillTransactionSettings>(builder.Configuration.GetSec
 builder.Services.Configure<RevpayOptions>(builder.Configuration.GetSection("RevpayConfig"));
 builder.Services.Configure<PaythruOptions>(builder.Configuration.GetSection("PaythruOptions"));
 builder.Services.Configure<CutlyOptions>(builder.Configuration.GetSection(nameof(CutlyOptions)));
+builder.Services.Configure<PaymentConfirmationDelayInSec>(
+    builder.Configuration.GetSection(nameof(PaymentConfirmationDelayInSec)));
 builder.Services.Configure<FlutterwaveOptions>(builder.Configuration.GetSection("FlutterWaveOptions"));
 builder.Services.AddOptions<BusinessesPhoneNumber>().BindConfiguration("businessesPhoneNumberConfig");
 builder.Services.AddOptions<ReceiptBroadcastConfig>().BindConfiguration("receiptBroadcastSettings");

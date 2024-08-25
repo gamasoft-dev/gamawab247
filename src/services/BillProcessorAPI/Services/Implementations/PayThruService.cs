@@ -184,11 +184,7 @@ namespace BillProcessorAPI.Services.Implementations
                     _logger.LogInformation("about to save invoice record");
                     await _invoiceRepo.SaveChangesAsync();
 
-                    var chargeModel = new ChargesInputDto
-                    {
-                        Channel = "Paythru",
-                        Amount = paymentCreationPayload.amount
-                    };
+                    //var chargeModel = new ChargesInputDto(paymentCreationPayload.amount, "Paythru");
 
                     decimal systemChargeCalculation = PaythruOptions.TransactionCharge;
                     createTransactionResponse.Data.systemCharge = systemChargeCalculation;
@@ -232,8 +228,6 @@ namespace BillProcessorAPI.Services.Implementations
             _logger.LogInformation($"-------------------------------------------------------------------------");
 
             _logger.LogInformation(message: $"Formatted string value of the notification :{model.ToString()}");
-            _logger.LogInformation(message: $"Serialized json value of the notification :{JsonConvert.SerializeObject(model)}");
-
             _logger.LogInformation($"-------------------------------------------------------------------------");
 
             NotificationRequestWrapper transactionNotification = JsonConvert.DeserializeObject<NotificationRequestWrapper>(model.ToString());
@@ -309,12 +303,13 @@ namespace BillProcessorAPI.Services.Implementations
                 verificationSuccess = true;
                 data.ResponseCode = ETransactionResponseCodes.Successful;
                 data.Description = "Transaction Successful";
+                
+                //Send customer receipt
+                await ReceiptBroadcast.SendReceipt(billTransaction, _phoneNumberOptions,
+                    _cutlyService, _receiptBroadcastOptions, _httpService);
             }
 
-            //Send customer receipt
-            await ReceiptBroadcast.SendReceipt(billTransaction, _phoneNumberOptions,
-                _cutlyService, _receiptBroadcastOptions, _httpService);
-
+          
             //add the receipt to the invoice
             var invoice = await _invoiceRepo.FirstOrDefault(x => x.BillTransactionId == billTransaction.Id);
             if (invoice is null)
