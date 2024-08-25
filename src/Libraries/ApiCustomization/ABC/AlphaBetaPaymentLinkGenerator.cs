@@ -6,6 +6,7 @@ using Domain.Enums;
 using Domain.Exceptions;
 using Infrastructure.Repositories.Interfaces;
 using Infrastructure.ShortLink;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace ApiCustomization.ABC
@@ -16,16 +17,19 @@ namespace ApiCustomization.ABC
         private readonly IRepository<PartnerIntegrationDetails> partnerIntegrationRepo;
         private readonly AlphaBetaConfig alphaBetaConfig;
         private readonly ICutlyService _cutlyService;
+        private readonly ILogger<AlphaBetaPaymentLinkGenerator> _logger;
 
         public AlphaBetaPaymentLinkGenerator(IApiCustomizationUtil customizationUtil,
             IRepository<PartnerIntegrationDetails> partnerIntegrationRepo,
             IOptions<AlphaBetaConfig> options,
-            ICutlyService cutlyService)
+            ICutlyService cutlyService,
+            ILogger<AlphaBetaPaymentLinkGenerator> logger)
         {
             this.customizationUtil = customizationUtil;
             this.partnerIntegrationRepo = partnerIntegrationRepo;
             alphaBetaConfig = options.Value;
             _cutlyService = cutlyService;
+            _logger = logger;
         }
 
         public string PartnerContentProcessorKey => EExternalPartnerContentProcessorKey
@@ -59,6 +63,7 @@ namespace ApiCustomization.ABC
             var endPointParams = $"?billCode={billCode}&phoneNumber={waId}";
             var paymentLink = $"{alphaBetaConfig.BillCodePaymentPageLink}{endPointParams}";
             var shortLink = await _cutlyService.ShortLink(paymentLink);
+            _logger.LogInformation($"system generated payment link: {paymentLink}");
 
 
             return new RetrieveContentResponse
