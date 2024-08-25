@@ -20,7 +20,7 @@ namespace BillProcessorAPI.Controllers
             string billPaymentCode, 
             string phoneNumber)
         {
-            var response = await _transactionService.CreateTransaction(email, amount, billPaymentCode,phoneNumber);
+            var response = await _flutterwaveMgtService.CreateTransaction(email, amount, billPaymentCode, phoneNumber);
             return Ok(response);
         }
 
@@ -55,14 +55,14 @@ namespace BillProcessorAPI.Controllers
             return Ok(response);
         }
 
-        [HttpGet("/flutterwave/verify/{tx_ref}")]
+        [HttpGet("/flutterwave/verify/{tranRef}")]
         [ProducesResponseType(typeof(object), 200)]
         [SwaggerOperation(Summary = "Endpoint for transaction verification")]
-        public async Task<IActionResult> VerifyPayment([FromRoute] string tx_ref)
+        public async Task<IActionResult> VerifyPayment([FromRoute] string tranRef)
         {
             try
             {
-                var response = await _flutterwaveMgtService.VerifyTransaction(tx_ref);
+                var response = await _flutterwaveMgtService.VerifyTransaction(tranRef);
                 return Ok(response);
             }
             catch (PaymentVerificationException ex)
@@ -70,7 +70,6 @@ namespace BillProcessorAPI.Controllers
                 _logger.LogError(ex.ErrorMessage);
                 return Ok($"Payment verification did not complete successfully but notification was received {ex}");
             }
-            
         }
 
         [HttpGet("/flutterwave/payment-confirmation/{status}/{tx_ref}/{transaction_id}")]
@@ -80,7 +79,7 @@ namespace BillProcessorAPI.Controllers
         {
             await Task.Delay(paymentConfirmationDelayInSec.Flutterwave);
             
-            var response = await _flutterwaveMgtService.PaymentConfirmation(status,tx_ref,transaction_id);
+            var response = await _flutterwaveMgtService.PaymentConfirmation(status, tx_ref, transaction_id);
             return Ok(response);
         }
     }

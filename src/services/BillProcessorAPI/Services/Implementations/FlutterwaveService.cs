@@ -17,7 +17,6 @@ using Infrastructure.ShortLink;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using System;
 using System.Net;
 
 namespace BillProcessorAPI.Services.Implementations
@@ -196,7 +195,6 @@ namespace BillProcessorAPI.Services.Implementations
 
         public async Task<SuccessResponse<string>> PaymentNotification(WebHookNotificationWrapper model)
         {
-
             BillTransaction transaction = null;
             try
             {
@@ -204,10 +202,8 @@ namespace BillProcessorAPI.Services.Implementations
                     throw new RestException(HttpStatusCode.BadRequest, "invalid transaction, notification content is null and empty");
 
                 transaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == model.TransactionReference);
-
-
+                
                 _logger.LogCritical($"Payment notification from Flutterwave just came in as at: {DateTime.UtcNow}");
-
                 _logger.LogCritical($"Details of notification : {JsonConvert.SerializeObject(model)}");
 
 
@@ -217,7 +213,7 @@ namespace BillProcessorAPI.Services.Implementations
                     webhook.Data = JsonConvert.SerializeObject(model);
                     webhook.GatewayType = "Flutterwave";
                     webhook.Remark = "This webhook transaction is not found on the billTransaction";
-                    //saving the webhook to the database since no transaction was retrieved for the webhook to update
+                    // saving the webhook to the database since no transaction was retrieved for the webhook to update
                     await _oldAppWebhook.AddAsync(webhook);
                     await _oldAppWebhook.SaveChangesAsync();
                     return new SuccessResponse<string>
