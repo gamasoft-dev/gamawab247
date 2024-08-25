@@ -269,7 +269,7 @@ namespace BillProcessorAPI.Services.Implementations
                 if (verificationResponse?.Data?.Status?.ToUpper() == "SUCCESS")
                 {
                     await ReceiptBroadcast.SendReceipt(transaction,_phoneNumberOptions,_cutlyService,
-                        _receiptBroadcastOptions,_httpService);   
+                        _receiptBroadcastOptions,_httpService);
                 }
 
                 //add the receipt to the invoice

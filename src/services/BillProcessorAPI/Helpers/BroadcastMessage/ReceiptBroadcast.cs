@@ -14,8 +14,7 @@ namespace BillProcessorAPI.Helpers.BroadcastMessage
         public static async Task SendReceipt
             (BillTransaction transaction, BusinessesPhoneNumber phoneNumberOptions,
              ICutlyService cutlyService, ReceiptBroadcastConfig receiptBroadcastOptions,
-             IHttpService httpService
-            )
+             IHttpService httpService)
         {
             if (string.IsNullOrEmpty(phoneNumberOptions.LUC.PhoneNumber))
             {
