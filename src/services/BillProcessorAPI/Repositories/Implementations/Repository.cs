@@ -116,5 +116,31 @@ namespace BillProcessorAPI.Repositories.Implementations
             await SaveChangesAsync();
             return propertyInfo;
         }
+        
+        public virtual async Task BeginTransaction(Func<Task> action, bool shouldCommitTransaction = true)
+        {
+            var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                await action().ConfigureAwait(false);
+
+                await SaveChangesAsync().ConfigureAwait(false);
+
+                if(shouldCommitTransaction)
+                    await transaction.CommitAsync().ConfigureAwait(false);
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                await transaction.RollbackAsync();
+                throw;
+            }
+            finally
+            {
+                await transaction.DisposeAsync();
+            }
+        }
+
     }
 }

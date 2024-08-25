@@ -1,11 +1,10 @@
-﻿using BillProcessorAPI.Dtos;
+﻿using AsyncAwaitBestPractices;
+using BillProcessorAPI.Dtos;
 using BillProcessorAPI.Dtos.Common;
 using BillProcessorAPI.Dtos.Flutterwave;
 using BillProcessorAPI.Helpers;
-using BillProcessorAPI.Services.Implementations;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using System.ComponentModel.DataAnnotations;
 
 namespace BillProcessorAPI.Controllers
 {
@@ -16,11 +15,9 @@ namespace BillProcessorAPI.Controllers
         [ProducesResponseType(typeof(PaymentCreationResponse), 200)]
         [SwaggerOperation(Summary = "Endpoint to create transaction")]
         public async Task<IActionResult> CreateFlutterwavePayment(string email,  
-            decimal amount, 
-            string billPaymentCode, 
-            string phoneNumber)
+            decimal amount, string billPaymentCode, string phoneNumber)
         {
-            var response = await _transactionService.CreateTransaction(email, amount, billPaymentCode,phoneNumber);
+            var response = await _flutterwaveMgtService.CreateTransaction(email, amount, billPaymentCode, phoneNumber);
             return Ok(response);
         }
 
@@ -33,49 +30,42 @@ namespace BillProcessorAPI.Controllers
         [HttpPost("/flutterwave/notify")]
         [ProducesResponseType(typeof(TransactionVerificationResponseDto), 200)]
         [SwaggerOperation(Summary = "Webhook endpoint")]
-        public async Task<IActionResult> FlutterwavePaymentNotification([FromBody] WebHookNotificationWrapper model)
+        public IActionResult FlutterwavePaymentNotification([FromBody] WebHookNotificationWrapper model)
         {
-           
-            try
+            _logger.LogInformation("Flutter wave request received");
+                
+            _flutterwaveMgtService.PaymentNotification(model).SafeFireAndForget(exception =>
             {
-                _logger.LogInformation("Flutter wave request received");
+                _logger.LogError($"An error occurred on receipt of flutter wave payment notification {exception}");
+            }, continueOnCapturedContext: false);
 
-                var response = await _transactionService.PaymentNotification(model);
-                return Ok(response);
-            }
-            catch (PaymentVerificationException ex)
-            {
-                _logger.LogError(ex.ErrorMessage);
-                return Ok($"Payement verification didnot complete succesfully but notification was recieved {ex.ToString()}");
-
-            }
+            return Ok("Transaction Status received");
         }
-
+        
         [HttpPost("/flutterwave/resend-webhook")]
         [ProducesResponseType(typeof(FailedWebhookResponseModel), 200)]
         [SwaggerOperation(Summary = "Endpoint for resending failed webhooks")]
         public async Task<IActionResult> ResendWebhook([FromBody] FailedWebhookRequest model)
         {
-            var response = await _transactionService.ResendWebhook(model);
+            var response = await _flutterwaveMgtService.ResendWebhook(model);
             return Ok(response);
         }
 
-        [HttpGet("/flutterwave/verify/{tx_ref}")]
+        [HttpGet("/flutterwave/verify/{tranRef}")]
         [ProducesResponseType(typeof(object), 200)]
         [SwaggerOperation(Summary = "Endpoint for transaction verification")]
-        public async Task<IActionResult> VerifyPayment([FromRoute] string tx_ref)
+        public async Task<IActionResult> VerifyPayment([FromRoute] string tranRef)
         {
             try
             {
-                var response = await _transactionService.VerifyTransaction(tx_ref);
+                var response = await _flutterwaveMgtService.VerifyTransaction(tranRef);
                 return Ok(response);
             }
             catch (PaymentVerificationException ex)
             {
                 _logger.LogError(ex.ErrorMessage);
-                return Ok($"Payement verification didnot complete succesfully but notification was recieved {ex.ToString()}");
+                return Ok($"Payment verification did not complete successfully but notification was received {ex}");
             }
-            
         }
 
         [HttpGet("/flutterwave/payment-confirmation/{status}/{tx_ref}/{transaction_id}")]
@@ -83,11 +73,10 @@ namespace BillProcessorAPI.Controllers
         [SwaggerOperation(Summary = "Endpoint for redirect url")]
         public async Task<IActionResult> PaymentConfirmation([FromRoute] string status, string tx_ref, string transaction_id)
         {
-            var response = await _transactionService.PaymentConfirmation(status,tx_ref,transaction_id);
+            await Task.Delay(paymentConfirmationDelayInSec.Flutterwave);
+            
+            var response = await _flutterwaveMgtService.PaymentConfirmation(status, tx_ref, transaction_id);
             return Ok(response);
         }
-
-       
-
     }
 }

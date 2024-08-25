@@ -22,5 +22,8 @@ namespace BillProcessorAPI.Repositories.Interfaces
         Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate);
         IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> expression);
         Task<TEntity> AddAndReturnValue(TEntity entity);
+        
+        Task BeginTransaction(Func<Task> action, bool shouldCommitTransaction = true);
+
     }
 }

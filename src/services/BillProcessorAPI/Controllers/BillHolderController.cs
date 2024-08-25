@@ -1,9 +1,6 @@
 ﻿using Application.Helpers;
 using BillProcessorAPI.Dtos;
-using BillProcessorAPI.Entities.ValueObjects;
 using BillProcessorAPI.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;

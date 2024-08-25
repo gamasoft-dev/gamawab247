@@ -1,7 +1,9 @@
-﻿using BillProcessorAPI.Services.Implementations;
+﻿using BillProcessorAPI.Dtos.Configs;
+using BillProcessorAPI.Services.Implementations;
 using BillProcessorAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace BillProcessorAPI.Controllers
 {
@@ -11,15 +13,17 @@ namespace BillProcessorAPI.Controllers
     public partial class PaymentController : ControllerBase
     {
         private readonly IPayThruService _paythruService;
-        private readonly IFlutterwaveService _transactionService;
+        private readonly IFlutterwaveMgtService _flutterwaveMgtService;
         private readonly ILogger<PaymentController> _logger;
+        private readonly PaymentConfirmationDelayInSec paymentConfirmationDelayInSec;
         public PaymentController(IPayThruService paythruService,
-            IFlutterwaveService transactionService,
-            ILogger<PaymentController> logger)
+            IFlutterwaveMgtService flutterwaveMgtService,
+            ILogger<PaymentController> logger, IOptions<PaymentConfirmationDelayInSec> options)
         {
             _paythruService = paythruService;
-            _transactionService = transactionService;
+            _flutterwaveMgtService = flutterwaveMgtService;
             _logger = logger;
+            this.paymentConfirmationDelayInSec = options.Value;
         }
     }
 }

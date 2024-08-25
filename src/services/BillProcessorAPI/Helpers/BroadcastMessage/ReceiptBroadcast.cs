@@ -14,12 +14,11 @@ namespace BillProcessorAPI.Helpers.BroadcastMessage
         public static async Task SendReceipt
             (BillTransaction transaction, BusinessesPhoneNumber phoneNumberOptions,
              ICutlyService cutlyService, ReceiptBroadcastConfig receiptBroadcastOptions,
-             IHttpService httpService
-            )
+             IHttpService httpService)
         {
             if (string.IsNullOrEmpty(phoneNumberOptions.LUC.PhoneNumber))
             {
-                throw new RestException(HttpStatusCode.PreconditionFailed, "LUC business phone number not cconfigured");
+                throw new RestException(HttpStatusCode.PreconditionFailed, "LUC business phone number not configured");
             }
 
             if (!string.IsNullOrEmpty(transaction.ReceiptUrl))

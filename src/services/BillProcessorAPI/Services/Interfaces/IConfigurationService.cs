@@ -1,5 +1,4 @@
-﻿using Application.AutofacDI;
-using BillProcessorAPI.Dtos;
+﻿using BillProcessorAPI.Dtos;
 using BillProcessorAPI.Helpers;
 
 namespace BillProcessorAPI.Services.Interfaces
