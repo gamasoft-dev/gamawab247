@@ -2,9 +2,9 @@
 using BillProcessorAPI.Dtos.Common;
 using BillProcessorAPI.Dtos.Flutterwave;
 using BillProcessorAPI.Helpers;
-using BillProcessorAPI.Services.Implementations;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace BillProcessorAPI.Controllers
 {
@@ -14,9 +14,12 @@ namespace BillProcessorAPI.Controllers
         [HttpPost("/flutterwave")]
         [ProducesResponseType(typeof(PaymentCreationResponse), 200)]
         [SwaggerOperation(Summary = "Endpoint to create transaction")]
-        public async Task<IActionResult> CreateFlutterwavePayment(string email,  decimal amount, string billPaymentCode)
+        public async Task<IActionResult> CreateFlutterwavePayment([Required]string email
+            ,[Required]decimal amount, 
+            [Required]string billPaymentCode, 
+            [Required(ErrorMessage ="Kindly provide a phone number")]string phoneNumber)
         {
-            var response = await _transactionService.CreateTransaction(email, amount, billPaymentCode);
+            var response = await _transactionService.CreateTransaction(email, amount, billPaymentCode, phoneNumber);
             return Ok(response);
         }
 

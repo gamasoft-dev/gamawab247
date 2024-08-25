@@ -2,16 +2,14 @@
 using Application.Helpers;
 using Application.Services.Interfaces;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Domain.Common;
 using Domain.Entities;
 using Infrastructure.Repositories.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Application.DTOs.BusinessDtos;
-using AutoMapper.QueryableExtensions;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Services.Implementations
 {

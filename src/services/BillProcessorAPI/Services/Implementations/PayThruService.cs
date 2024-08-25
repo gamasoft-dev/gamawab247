@@ -349,6 +349,7 @@ namespace BillProcessorAPI.Services.Implementations
 
         public async Task<SuccessResponse<PaymentConfirmationResponse>> ConfirmPayment(ConfirmPaymentRequest model)
         {
+            await Task.Delay(5000);
             if (string.IsNullOrEmpty(model.Status))
                 throw new RestException(HttpStatusCode.BadRequest, "success indicator cannot be null");
 

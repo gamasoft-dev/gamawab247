@@ -1,0 +1,42 @@
+2024-08-25 15:49:09.967 +01:00 [INF] User profile is available. Using 'C:\Users\Snipercadet\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-08-25 15:49:10.369 +01:00 [INF] Now listening on: https://localhost:7253
+2024-08-25 15:49:10.369 +01:00 [INF] Now listening on: http://localhost:5273
+2024-08-25 15:49:10.374 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-08-25 15:49:10.374 +01:00 [INF] Hosting environment: Development
+2024-08-25 15:49:10.374 +01:00 [INF] Content root path: C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2024-08-25 15:49:11.122 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger - -
+2024-08-25 15:49:11.348 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger - - - 301 0 - 231.4736ms
+2024-08-25 15:49:11.353 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2024-08-25 15:49:11.557 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 204.2647ms
+2024-08-25 15:49:11.562 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/swagger-ui.css - -
+2024-08-25 15:49:11.562 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/swagger-ui-bundle.js - -
+2024-08-25 15:49:11.562 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/swagger-ui-standalone-preset.js - -
+2024-08-25 15:49:11.563 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2024-08-25 15:49:11.566 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 3.7193ms
+2024-08-25 15:49:11.580 +01:00 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2024-08-25 15:49:11.639 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/swagger-ui.css - - - 200 143632 text/css 76.7147ms
+2024-08-25 15:49:11.644 +01:00 [INF] Sending file. Request path: '/swagger-ui-standalone-preset.js'. Physical path: 'N/A'
+2024-08-25 15:49:11.650 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/swagger-ui-standalone-preset.js - - - 200 337162 application/javascript 87.5181ms
+2024-08-25 15:49:11.659 +01:00 [INF] Sending file. Request path: '/swagger-ui-bundle.js'. Physical path: 'N/A'
+2024-08-25 15:49:11.659 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/swagger-ui-bundle.js - - - 200 1092889 application/javascript 96.7560ms
+2024-08-25 15:49:12.053 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2024-08-25 15:49:12.127 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 74.1251ms
+2024-08-25 15:49:12.292 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/favicon-32x32.png - -
+2024-08-25 15:49:12.292 +01:00 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2024-08-25 15:49:12.293 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/favicon-32x32.png - - - 200 628 image/png 0.4103ms
+2024-08-25 15:49:12.330 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2024-08-25 15:49:12.536 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 206.1497ms
+2024-08-25 15:50:42.344 +01:00 [INF] User profile is available. Using 'C:\Users\Snipercadet\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2024-08-25 15:50:42.607 +01:00 [INF] Now listening on: https://localhost:7253
+2024-08-25 15:50:42.607 +01:00 [INF] Now listening on: http://localhost:5273
+2024-08-25 15:50:42.610 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-08-25 15:50:42.610 +01:00 [INF] Hosting environment: Development
+2024-08-25 15:50:42.610 +01:00 [INF] Content root path: C:\Users\Snipercadet\Desktop\The_Job\Gamasoft\gamawab247\src\services\BillProcessorAPI\
+2024-08-25 15:50:43.320 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/index.html - -
+2024-08-25 15:50:43.712 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/index.html - - - 200 - text/html;charset=utf-8 396.7976ms
+2024-08-25 15:50:43.719 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - -
+2024-08-25 15:50:43.722 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 3.0285ms
+2024-08-25 15:50:44.181 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/_vs/browserLink - -
+2024-08-25 15:50:44.273 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 91.5859ms
+2024-08-25 15:50:44.424 +01:00 [INF] Request starting HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - -
+2024-08-25 15:50:44.610 +01:00 [INF] Request finished HTTP/2 GET https://localhost:7253/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 185.9902ms
