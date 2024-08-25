@@ -9,8 +9,6 @@ namespace Application.DTOs.BusinessDtos
         public Guid IndustryId { get; set; }
         public string AvatarUrl { get; set; }
         public string PhoneNumber { get; set; }
-
-
         public string AdminFirstName { get; set; }
         public string AdminLastName { get; set; }
         public string BusinessAdminEmail { get; set; }

@@ -27,10 +27,6 @@ namespace Application.Services.Implementations
         {
             try
             {
-                var x = Encoding.UTF8;
-                {
-                    
-                };
                 var email = new MimeMessage()
                 {
 
