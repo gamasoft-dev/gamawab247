@@ -32,6 +32,7 @@ jobs:
       
         script: |
           cd ../var/www/html/gamawab247
+          git status
           git checkout prod
           git pull
           docker compose up --build -d

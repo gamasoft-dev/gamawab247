@@ -71,8 +71,10 @@ namespace BillProcessorAPI.Services.Implementations
             _cutlyService = cutlyService;
         }
 
-        public async Task<SuccessResponse<PaymentCreationResponse>> CreateTransaction(string email, decimal amount, string billPaymentCode)
+        public async Task<SuccessResponse<PaymentCreationResponse>> CreateTransaction(string email, decimal amount, string billPaymentCode, string phoneNumber)
         {
+            await Task.Delay(7000);
+
             if (_flutterOptions == null)
                 throw new RestException(HttpStatusCode.BadRequest, "please update your application setting file");
 
@@ -133,7 +135,7 @@ namespace BillProcessorAPI.Services.Implementations
                     BillNumber = billPayer.billCode,
                     Pid = billPayer.Pid,
                     RevName = billPayer.RevName,
-                    PhoneNumber = billPayer.PhoneNumber,
+                    PhoneNumber = phoneNumber,
                     DueDate = billPayer.AcctCloseDate,
                     TransactionReference = trxReference,
                     TransactionCharge = _configService.CalculateBillChargesOnAmount(charge).Data.AmountCharge,
@@ -154,7 +156,7 @@ namespace BillProcessorAPI.Services.Implementations
                 billInvoice.DueDate = billPayer.AcctCloseDate;
                 billInvoice.BillNumber = billPaymentCode;
                 billInvoice.GatewayType = EGatewayType.Flutterwave;
-                billInvoice.PhoneNumber = billPayer.PhoneNumber;
+                billInvoice.PhoneNumber = phoneNumber;
                 billInvoice.TransactionCharge = _configService.CalculateBillChargesOnAmount(charge).Data.AmountCharge;
 
 
