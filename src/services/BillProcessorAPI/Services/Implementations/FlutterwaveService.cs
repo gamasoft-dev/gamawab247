@@ -149,17 +149,22 @@ namespace BillProcessorAPI.Services.Implementations
                     billTransaction.PaymentUrl = paymentCreationResponse.Data.Data.Link;
                     billTransaction.PaymentInfoResponseData = JsonConvert.SerializeObject(paymentCreationResponse.Data);
                     billTransaction.PaymentInfoRequestData = JsonConvert.SerializeObject(flutterwaveRequestPayload);
+                    // TODO Add error message gotten from api call if it failed.
+
+                    if (paymentCreationResponse.Data.Status == "success")
+                    {
+                        billInvoice = _mapper.Map<Invoice>(billPayer);
+                        billInvoice.BillTransactionId = billTransaction.Id;
+                        billInvoice.TransactionReference = trxReference;
+                        billInvoice.DueDate = billPayer.AcctCloseDate;
+                        billInvoice.BillNumber = billPaymentCode;
+                        billInvoice.GatewayType = EGatewayType.Flutterwave;
+                        billInvoice.PhoneNumber = billPayer.PhoneNumber;
+                        billInvoice.TransactionCharge = _configService.CalculateBillChargesOnAmount(charge).Data.AmountCharge;
                     
-                    billInvoice = _mapper.Map<Invoice>(billPayer);
-                    billInvoice.BillTransactionId = billTransaction.Id;
-                    billInvoice.TransactionReference = trxReference;
-                    billInvoice.DueDate = billPayer.AcctCloseDate;
-                    billInvoice.BillNumber = billPaymentCode;
-                    billInvoice.GatewayType = EGatewayType.Flutterwave;
-                    billInvoice.PhoneNumber = billPayer.PhoneNumber;
-                    billInvoice.TransactionCharge = _configService.CalculateBillChargesOnAmount(charge).Data.AmountCharge;
-                    
-                    await _invoiceRepo.AddAsync(billInvoice);
+                        await _invoiceRepo.AddAsync(billInvoice);
+                    }
+                   
                 };
                 
                 await _invoiceRepo.BeginTransaction(TransactionCommitAction);
@@ -243,17 +248,16 @@ namespace BillProcessorAPI.Services.Implementations
                 transaction.FiName = "N/A";
                 transaction.Narration = verificationResponse.Data.Data.narration;
 
-                if (verificationResponse?.Data?.Status?.ToUpper()
-                    == "SUCCESS")
+                if (verificationResponse?.Data?.Status?.ToUpper() == "SUCCESS")
                 {
                     transaction.Status = ETransactionStatus.Successful.ToString();
                 }
                 else
                 {
-                    transaction.Status = ETransactionStatus.Failed.ToString();
+                    transaction.Status = ETransactionStatus.Unsuccessful.ToString();
                 }
                 
-                transaction.DateCompleted = verificationResponse.Data.Data.created_at.ToString();
+                transaction.DateCompleted = verificationResponse?.Data?.Data?.created_at.ToString();
                 transaction.StatusMessage = verificationResponse.Data.Data.status;
                 transaction.ReceiptUrl = model.ReceiptNumber;
                 transaction.SuccessIndicator = verificationResponse.Data.Data.status;
@@ -271,6 +275,10 @@ namespace BillProcessorAPI.Services.Implementations
                     await ReceiptBroadcast.SendReceipt(transaction,_phoneNumberOptions,_cutlyService,
                         _receiptBroadcastOptions,_httpService);
                 }
+                else
+                {
+                  // TODO Send a friendly message for failed transaction to the user.   
+                }
 
                 //add the receipt to the invoice
                 var invoice = await _invoiceRepo.FirstOrDefault(x => x.BillTransactionId == transaction.Id);
@@ -278,9 +286,9 @@ namespace BillProcessorAPI.Services.Implementations
                     throw new PaymentVerificationException(HttpStatusCode.NotFound, "No invoice found for this transaction");
 
                 invoice.ReceiptUrl = model.ReceiptNumber;
-                invoice.AmountPaid = verificationResponse.Data.Data.amount;
+                invoice.AmountPaid = verificationResponse?.Data?.Data?.amount ?? 0.0m;
                 invoice.AmountDue = transaction.AmountDue;
-                invoice.GatewayTransactionCharge = (decimal)verificationResponse.Data.Data.app_fee;
+                invoice.GatewayTransactionCharge =  (decimal)verificationResponse.Data.Data.app_fee;
                 invoice.UpdatedAt = DateTime.UtcNow;
                 invoice.GatewayTransactionReference = verificationResponse.Data.Data.flw_ref;
 

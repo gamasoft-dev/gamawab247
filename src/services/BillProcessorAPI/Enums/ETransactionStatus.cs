@@ -5,6 +5,7 @@
         Pending = 1,
         Successful,
         Created,
-        Failed
+        Failed,
+        Unsuccessful
     }
 }
