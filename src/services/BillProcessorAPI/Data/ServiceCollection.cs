@@ -25,8 +25,7 @@ namespace BillProcessorAPI.Data
                     .UseLoggerFactory(contextLoggerFactory);
             });
         }
-
-
+        
         public static void ConfigService(this IServiceCollection services, IConfiguration config)
         {
             services.AddScoped<IBillService, BillService>();
