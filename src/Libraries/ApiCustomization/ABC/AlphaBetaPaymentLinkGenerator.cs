@@ -59,6 +59,7 @@ namespace ApiCustomization.ABC
             var endPointParams = $"?billCode={billCode}&phoneNumber={waId}";
             var paymentLink = $"{alphaBetaConfig.BillCodePaymentPageLink}{endPointParams}";
             var shortLink = await _cutlyService.ShortLink(paymentLink);
+            _logger.LogInformation($"system generated payment link{paymentLink}");
 
 
             return new RetrieveContentResponse
