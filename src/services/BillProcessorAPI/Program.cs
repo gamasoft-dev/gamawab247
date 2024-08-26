@@ -30,8 +30,8 @@ builder.Services.AddControllers()
     });
 builder.Services.AddSerilog();
 Log.Logger = new LoggerConfiguration()
+    // .WriteTo.File("./Logger/BillProcessorLogs.txt", rollingInterval: RollingInterval.Day)
     .MinimumLevel.Information()
-    .WriteTo.File("./Logger/BillProcessorLogs.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
 //builder.Services.AddControllers().AddNewtonsoftJson();

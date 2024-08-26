@@ -118,7 +118,7 @@ namespace BillProcessorAPI.Services.Implementations
 					};
 				}
 
-				throw new RestException(HttpStatusCode.BadRequest, "Invalid Request");
+				throw new RestException(HttpStatusCode.BadRequest, httpResponse?.ReasonPhrase ?? "Invalid request");
 			}
 			catch (Exception ex)
 			{
