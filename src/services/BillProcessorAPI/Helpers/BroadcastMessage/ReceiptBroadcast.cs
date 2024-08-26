@@ -14,7 +14,7 @@ namespace BillProcessorAPI.Helpers.BroadcastMessage
         public static async Task SendReceipt
             (BillTransaction transaction, BusinessesPhoneNumber phoneNumberOptions,
              ICutlyService cutlyService, ReceiptBroadcastConfig receiptBroadcastOptions,
-             IHttpService httpService)
+             IHttpService httpService, string failureMessage = null)
         {
             if (string.IsNullOrEmpty(phoneNumberOptions.LUC.PhoneNumber))
             {
@@ -28,7 +28,9 @@ namespace BillProcessorAPI.Helpers.BroadcastMessage
                 var broadcastMessage = new CreateBroadcastMessageDto
                 {
                     From = phoneNumberOptions.LUC.PhoneNumber,
-                    Message = $"Please click on the link below to download your payment receipt.{Environment.NewLine}{Environment.NewLine}{shortReceiptUrl}",
+                    Message = string.IsNullOrEmpty(failureMessage) 
+                        ? $"Please click on the link below to download your payment receipt.{Environment.NewLine}{Environment.NewLine}{shortReceiptUrl}" 
+                        : failureMessage,
                     To = transaction.PhoneNumber,
                     FullName= transaction.PayerName,
                     EmailAddress = transaction.Email

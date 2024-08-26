@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Net;
+using AsyncAwaitBestPractices;
 
 namespace BillProcessorAPI.Services.Implementations
 {
@@ -221,7 +222,7 @@ namespace BillProcessorAPI.Services.Implementations
                         Data = "Transaction Completed"
                     };
                 }
-                _logger.LogInformation($"No transaction was found for the webhok received, webhook saved to the database");
+                _logger.LogInformation($"No transaction was found for the webhook received, webhook saved to the database");
 
                 //verify transaction with flutterwave using the transactionId from the webhook
                 IDictionary<string, string> param = new Dictionary<string, string>();
@@ -247,6 +248,13 @@ namespace BillProcessorAPI.Services.Implementations
                 if (verificationResponse?.Data?.Status?.ToUpper() == "SUCCESS")
                 {
                     transaction.Status = ETransactionStatus.Successful.ToString();
+                    transaction.ReceiptUrl = model.ReceiptNumber;
+                    
+                    ReceiptBroadcast.SendReceipt(transaction, _phoneNumberOptions,_cutlyService,
+                        _receiptBroadcastOptions,_httpService).SafeFireAndForget(onException: exception =>
+                    {
+                        _logger.LogError($"Error occurred on sending receipt {exception}");
+                    }, continueOnCapturedContext: true);
                 }
                 else
                 {
@@ -255,26 +263,14 @@ namespace BillProcessorAPI.Services.Implementations
                 
                 transaction.DateCompleted = verificationResponse?.Data?.Data?.created_at.ToString();
                 transaction.StatusMessage = verificationResponse.Data.Data.status;
-                transaction.ReceiptUrl = model.ReceiptNumber;
                 transaction.SuccessIndicator = verificationResponse.Data.Data.status;
                 transaction.Hash = "N/A";
                 transaction.UpdatedAt = DateTime.UtcNow;
                 transaction.NotificationResponseData = JsonConvert.SerializeObject(model);
                 transaction.Email = verificationResponse.Data.Data.customer.email;
+                transaction.isReceiptSent = true;
 
                 await _billTransactionsRepo.SaveChangesAsync();
-
-
-                //Send customer receipt
-                if (verificationResponse?.Data?.Status?.ToUpper() == "SUCCESS")
-                {
-                    await ReceiptBroadcast.SendReceipt(transaction,_phoneNumberOptions,_cutlyService,
-                        _receiptBroadcastOptions,_httpService);
-                }
-                else
-                {
-                  // TODO Send a friendly message for failed transaction to the user.   
-                }
 
                 //add the receipt to the invoice
                 var invoice = await _invoiceRepo.FirstOrDefault(x => x.BillTransactionId == transaction.Id);
@@ -288,24 +284,12 @@ namespace BillProcessorAPI.Services.Implementations
                 invoice.UpdatedAt = DateTime.UtcNow;
                 invoice.GatewayTransactionReference = verificationResponse.Data.Data.flw_ref;
 
-                // Create a receipt record
-                //var receipt = _mapper.Map<Receipt>(transaction);
-                //receipt.TransactionId = transaction.Id;
-                //receipt.PaymentRef = transaction.TransactionReference;
-                //receipt.InvoiceId = invoice.Id;
-                //receipt.TransactionDate = transaction.DateCompleted;
-                //receipt.GateWay = transaction.GatewayType.ToString();
-                //receipt.ReceiptUrl = transaction.ReceiptUrl;
-
-                //await _receipts.AddAsync(receipt);
-                //await _receipts.SaveChangesAsync();
-
             }
             catch (Exception ex)
             {
                 _logger.LogError($"An error occurred on receipt of payment notification from flutterwave: {ex.Message}", ex);
 
-                transaction.ErrorMessage = ex.ToString();
+                if(transaction is not null) transaction.ErrorMessage = ex.ToString();
                 throw;
             }
             finally
@@ -328,9 +312,7 @@ namespace BillProcessorAPI.Services.Implementations
                 throw new RestException(HttpStatusCode.BadGateway, "bad request, status param and transaction reference cannot be null");
 
             var invoiceResponse = new SuccessResponse<PaymentConfirmationResponse>();
-
-            await Task.Delay(2000);
-
+            
             try
             {
                 var billTransaction = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == tx_ref);
@@ -358,13 +340,29 @@ namespace BillProcessorAPI.Services.Implementations
                     invoiceResponse.Success = false;
                     invoiceResponse.Message = "Unable to fetch transaction: transaction failed";
                     invoiceResponse.Data = null;
+                    
+                    // send email of the transaction not being successful and should be resolved in 24hrs.
+                    var failureMessage = $"Dear bill payer {billTransaction.PayerName}, {Environment.NewLine} {Environment.NewLine} " +
+                                         $"We are unable to successfully complete your transaction at this time." +
+                                         $" {Environment.NewLine} Kindly be patient as this transaction will be resolved within 24hrs." +
+                                         $"{Environment.NewLine} Thank you for your patience. Transaction Reference Number : {billTransaction.TransactionReference} ";
+                    
+                    ReceiptBroadcast.SendReceipt(billTransaction, _phoneNumberOptions,_cutlyService,
+                        _receiptBroadcastOptions,_httpService, failureMessage).SafeFireAndForget(onException: exception =>
+                    {
+                        _logger.LogError($"Error occurred on sending receipt  {exception}");
+                    }, continueOnCapturedContext: true);
+                    
                     return invoiceResponse;
                 }
 
                 var invoice = await _invoiceRepo.Query(x => x.BillTransactionId == billTransaction.Id)
                     .Include(x => x.Receipts).FirstOrDefaultAsync();
                 if (invoice is null)
+                {
+                    // create invoice here. as far as the transaction exist on our system. You should not throw exception here
                     throw new RestException(HttpStatusCode.NotFound, "Unable to retrieve invoice for this transaction");
+                }
 
                 var invoiceDto = _mapper.Map<PaymentConfirmationResponse>(invoice);
                 invoiceDto.DateCompleted = billTransaction.DateCompleted;
@@ -373,7 +371,22 @@ namespace BillProcessorAPI.Services.Implementations
                 invoiceResponse.Success = true;
                 invoiceResponse.Message = "Transaction Successful";
 
+                
+                //Send customer receipt if receipt is available and still
+                if (!billTransaction.isReceiptSent && string.IsNullOrEmpty(billTransaction.ReceiptUrl))
+                {
+                    ReceiptBroadcast.SendReceipt(billTransaction, _phoneNumberOptions,_cutlyService,
+                        _receiptBroadcastOptions,_httpService).SafeFireAndForget(onException: exception =>
+                    {
+                        _logger.LogError($"Error occurred on sending receipt  {exception}");
+                    }, continueOnCapturedContext: true);
+
+                    billTransaction.isReceiptSent = true;
+                    await _billTransactionsRepo.SaveChangesAsync();
+                }
+               
                 return invoiceResponse;
+
             }
             catch (Exception ex)
             {
@@ -389,7 +402,7 @@ namespace BillProcessorAPI.Services.Implementations
             param.Add(key: "Authorization", _flutterOptions.SecretKey);
 
             var headerParam = new RequestHeader(param);
-            var billTransationRecord = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == transactionReference);
+            var billTransactionRecord = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == transactionReference);
             var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.VerifyByReference}/?tx_ref={transactionReference}";
 
             var transaction = await _httpService.Get<FlutterwaveResponse<FlutterwaveResponseData>>(url, headerParam);
@@ -397,7 +410,7 @@ namespace BillProcessorAPI.Services.Implementations
                 throw new RestException(HttpStatusCode.BadRequest, "Unable to fetch transaction for this reference");
 
             if (transaction.Data.Data.status != "successful"
-                || transaction.Data.Data.amount != billTransationRecord.AmountPaid
+                || transaction.Data.Data.amount != billTransactionRecord.AmountPaid
                 || transaction.Data.Data.currency != "NGN")
             {
                 response = false;
