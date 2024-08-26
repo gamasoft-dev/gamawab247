@@ -52,7 +52,8 @@ namespace Application.Services.Implementations
 
             if (businessId == Guid.Empty)
             {
-                throw new RestException(HttpStatusCode.NotFound, $"unable to retrieve business for ApiKey");
+                throw new RestException(HttpStatusCode.NotFound, $"unable to resolve business by apikey nor phone-number." +
+                                                                 $" sender unknown");
             }
             var broadcastMessage = _mapper.Map<BroadcastMessage>(model);
             broadcastMessage.BusinessId = businessId;
