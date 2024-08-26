@@ -31,7 +31,7 @@ namespace BillProcessorAPI.Data
             services.AddScoped<IBillService, BillService>();
             services.AddScoped<ILoggerManager, LoggerManager>();
             services.AddScoped<IPayThruService, PayThruService>();
-            services.AddScoped<IConfigurationService, ConfigurationService>();
+            services.AddScoped<IChargeService, ChargeService>();
             services.AddScoped<IFlutterwaveService, FlutterwaveService>();
             services.AddScoped<IFlutterwaveMgtService, FlutterwaveMgtService>();
             services.AddScoped<ICollectionReportService, CollectionReportService>();

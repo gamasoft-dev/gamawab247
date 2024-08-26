@@ -32,7 +32,7 @@ namespace BillProcessorAPI.Services.Implementations
 
         private readonly FlutterwaveOptions _flutterOptions;
         private readonly IHttpService _httpService;
-        private readonly IConfigurationService _configService;
+        private readonly IChargeService _chargeService;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _context;
         private ILogger<FlutterwaveService> _logger;
@@ -45,7 +45,7 @@ namespace BillProcessorAPI.Services.Implementations
             IRepository<BillPayerInfo> billPayerRepository,
             IOptions<FlutterwaveOptions> flutterOptions,
             IHttpService httpService,
-            IConfigurationService configService,
+            IChargeService chargeService,
             IInvoiceRepository invoiceRepo,
             IMapper mapper,
             ILogger<FlutterwaveService> logger,
@@ -59,7 +59,7 @@ namespace BillProcessorAPI.Services.Implementations
             _billPayerRepository = billPayerRepository;
             _flutterOptions = flutterOptions.Value;
             _httpService = httpService;
-            _configService = configService;
+            _chargeService = chargeService;
             _invoiceRepo = invoiceRepo;
             _mapper = mapper;
             _logger = logger;
@@ -124,7 +124,7 @@ namespace BillProcessorAPI.Services.Implementations
                     PhoneNumber = phoneNumber,
                     DueDate = billPayer.AcctCloseDate,
                     TransactionReference = trxReference,
-                    TransactionCharge = _configService.CalculateBillChargesOnAmount(charge).Data.AmountCharge,
+                    TransactionCharge = _chargeService.CalculateBillChargesOnAmount(charge).Data.AmountCharge,
                     AmountDue = billPayer.AmountDue,
                     AmountPaid = amount,
                     PaymentInfoRequestData = JsonConvert.SerializeObject(flutterwaveRequestPayload)

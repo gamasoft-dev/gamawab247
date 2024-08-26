@@ -4,7 +4,7 @@ using BillProcessorAPI.Helpers;
 namespace BillProcessorAPI.Services.Interfaces
 {
     // useful for all configurational settings to the db
-    public interface IConfigurationService
+    public interface IChargeService
     {
         Task<SuccessResponse<IEnumerable<ChargesResponseDto>>> GetBillChargesByBusiness(Guid businessId);
         SuccessResponse<ChargesResponseDto> CalculateBillChargesOnAmount(ChargesInputDto input);
