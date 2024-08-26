@@ -12,7 +12,7 @@ using System.Net;
 
 namespace BillProcessorAPI.Services.Implementations
 {
-    public class ConfigurationService : IConfigurationService
+    public class ChargeService : IChargeService
     {
         private readonly IRepository<BillCharge> _billChargeRepository;
         private readonly IRepository<Business> _businessRepository;
@@ -20,7 +20,7 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IMapper _mapper;
         private readonly RevpayOptions _options;
 
-        public ConfigurationService(IRepository<BillCharge> billChargeRepository,
+        public ChargeService(IRepository<BillCharge> billChargeRepository,
             ILoggerManager logger,
             IMapper mapper,
             IRepository<Business> businessRepository,

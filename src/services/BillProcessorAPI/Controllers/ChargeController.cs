@@ -1,7 +1,5 @@
 ﻿using BillProcessorAPI.Dtos;
-using BillProcessorAPI.Services.Implementations;
 using BillProcessorAPI.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -9,11 +7,11 @@ namespace BillProcessorAPI.Controllers
 {
     [Route("api/v1/charge")]
     [ApiController]
-    public class ConfigurationsController : ControllerBase
+    public class ChargeController : ControllerBase
     {
-        private readonly IConfigurationService _configurationService;
+        private readonly IChargeService _configurationService;
 
-        public ConfigurationsController(IConfigurationService configurationService)
+        public ChargeController(IChargeService configurationService)
         {
             _configurationService = configurationService;
         }
