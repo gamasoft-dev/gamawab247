@@ -33,13 +33,14 @@ namespace Application.Services.Implementations
 
         public string GetReceiptBroadcastEmailTemplate(string fullName, string message)
         {
-            var body = "Dear Bill Payer {full_name}, " + Environment.NewLine + "";
+            var body = "Dear Bill Payer {full_name}, " + Environment.NewLine + 
+            "{message}";
             var folderName = Path.Combine("wwwroot", "SendReceiptTemplate.html");
             var filepath = Path.Combine(Directory.GetCurrentDirectory(), folderName).Replace("\\", "/");
             if (File.Exists(filepath))
                 body = File.ReadAllText(filepath);
 
-            var msgBody = body.Replace("{full_name}", fullName) + Environment.NewLine + message;
+            var msgBody = body.Replace("{full_name}", fullName).Replace("{message}", message);
 
             return msgBody;
         }

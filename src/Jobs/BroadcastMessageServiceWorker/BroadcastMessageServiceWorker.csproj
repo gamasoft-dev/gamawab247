@@ -23,4 +23,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\Application\Application.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Update="wwwroot\SendReceiptTemplate.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>
