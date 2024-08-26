@@ -16,7 +16,7 @@ namespace Application.Services.Implementations
         public string GetConfirmEmailTemplate(string otp, string email, string firstName, string title)
         {
             string body;
-            var folderName = Path.Combine("wwwroot", "ComfirmEmail.html");
+            var folderName = Path.Combine("wwwroot", "ConfirmEmail.html");
             var filepath = Path.Combine(Directory.GetCurrentDirectory(), folderName);
             if (File.Exists(filepath))
                 body = File.ReadAllText(filepath);

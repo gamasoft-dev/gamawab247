@@ -10,7 +10,9 @@ public class Worker : BackgroundService
     private readonly IBroadcastDispatchService _broadcastDispatch;
     private readonly SystemSettingsConfig _config;
 
-    public Worker(ILogger<Worker> logger, IBroadcastDispatchService broadcastDispatch, IOptions<SystemSettingsConfig> config)
+    public Worker(ILogger<Worker> logger,
+        IBroadcastDispatchService broadcastDispatch,
+        IOptions<SystemSettingsConfig> config)
     {
         _logger = logger;
         _broadcastDispatch = broadcastDispatch;
@@ -21,20 +23,25 @@ public class Worker : BackgroundService
     {
         while (!stoppingToken.IsCancellationRequested)
         {
+            await Task.Delay(_config.BgDelayIntervalMilliseconds, CancellationToken.None);
+            _logger.LogInformation("Worker starting process at: {time}", DateTimeOffset.Now);
+
             try
             {
-                await _broadcastDispatch.SendMessage();
 
-                await Task.Delay(_config.MessageResponseInMilliseconds, CancellationToken.None);
+                await _broadcastDispatch.SendMessage();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 continue;
             }
-            _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+            _logger.LogInformation("Worker ending process at: {time}", DateTimeOffset.Now);
             await Task.Delay(1000, stoppingToken);
         }
+        
+        _logger.LogInformation("Background Job exiting and closing down at: {time}", DateTimeOffset.Now);
+
     }
 }
 
