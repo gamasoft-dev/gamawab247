@@ -159,7 +159,7 @@ namespace BillProcessorAPI.Services.Implementations
                         billInvoice.BillNumber = billPaymentCode;
                         billInvoice.GatewayType = EGatewayType.Flutterwave;
                         billInvoice.PhoneNumber = billPayer.PhoneNumber;
-                        billInvoice.TransactionCharge = _configService.CalculateBillChargesOnAmount(charge).Data.AmountCharge;
+                        billInvoice.TransactionCharge = _chargeService.CalculateBillChargesOnAmount(charge).Data.AmountCharge;
                     
                         await _invoiceRepo.AddAsync(billInvoice);
                     }
