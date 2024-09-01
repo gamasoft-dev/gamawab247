@@ -1,8 +1,4 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Infrastructure.Cache;
-using Infrastructure.Http;
+﻿using Infrastructure.Http;
 using Infrastructure.Repositories.Implementations;
 using Infrastructure.Repositories.Interfaces;
 using Infrastructure.Sessions;
@@ -11,6 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using Polly.Extensions.Http;
 using Polly.Retry;
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Infrastructure
 {
