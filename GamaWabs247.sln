@@ -45,7 +45,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiCustomization", "src\Lib
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BroadcastMessageServiceWorker", "src\Jobs\BroadcastMessageServiceWorker\BroadcastMessageServiceWorker.csproj", "{1951688A-D0BB-4448-8B65-33194DDFC156}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionMonitoringService", "..\TransactionMonitoringService\TransactionMonitoringService.csproj", "{E8AC0B40-297D-4B88-91FB-0142F3A98FEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransactionMonitoringService", "..\TransactionMonitoringService\TransactionMonitoringService.csproj", "{E8AC0B40-297D-4B88-91FB-0142F3A98FEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
