@@ -32,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\services\BillProcessorAPI\BillProcessorAPI.csproj" />
     <ProjectReference Include="..\gamawab247\src\services\BillProcessorAPI\BillProcessorAPI.csproj" />
   </ItemGroup>
 </Project>

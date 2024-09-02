@@ -1,5 +1,4 @@
-﻿using BillProcessorAPI.Entities;
-using BillProcessorAPI.Enums;
+﻿using BillProcessorAPI.Enums;
 using BillProcessorAPI.Repositories.Interfaces;
 using Microsoft.Extensions.Options;
 using TransactionMonitoringService.Helpers;
