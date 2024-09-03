@@ -14,11 +14,11 @@ public class FlutterwaveMgtService: IFlutterwaveMgtService
     {
         _serviceScopeFactory = serviceScopeFactory;
     }
-    public async Task<SuccessResponse<PaymentCreationResponse>> CreateTransaction(string email, decimal amount, string billPaymentCode)
+    public async Task<SuccessResponse<PaymentCreationResponse>> CreateTransaction(string email, decimal amount, string billPaymentCode, string phoneNumber)
     {
         using IServiceScope scope = _serviceScopeFactory.CreateAsyncScope();
         var flutterwaveService = scope.ServiceProvider.GetRequiredService<IFlutterwaveService>();
-        return await flutterwaveService.CreateTransaction(email, amount, billPaymentCode);
+        return await flutterwaveService.CreateTransaction(email, amount, billPaymentCode, phoneNumber);
 
     }
 

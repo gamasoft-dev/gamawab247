@@ -6,7 +6,6 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BroadcastMessageServiceWorker;
 using BroadcastMessageServiceWorker.Services;
-using Microsoft.AspNetCore.Hosting;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureWebHostDefaults(webBuilder =>
@@ -24,10 +23,10 @@ IHost host = Host.CreateDefaultBuilder(args)
   .ConfigureServices(services =>
   {
         services.AddHostedService<Worker>();
-        services.AddScoped<IBroadcastDispatchService, BroadcastDispatchService>();
-        services.AddScoped<IOutboundMesageService, OutboundMessageService>();
-        services.AddScoped<IMailService, MailService>();
-        services.AddScoped<IEmailTemplateService, EmailTemplateService>();
+        services.AddSingleton<IBroadcastDispatchService, BroadcastDispatchService>();
+        services.AddSingleton<IOutboundMesageService, OutboundMessageService>();
+        services.AddSingleton<IMailService, MailService>();
+        services.AddSingleton<IEmailTemplateService, EmailTemplateService>();
   }).Build();
 
 await host.RunAsync();

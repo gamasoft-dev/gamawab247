@@ -25,7 +25,7 @@ namespace BroadcastMessageServiceWorker.Services
 
         public async Task SendMessage()
         {
-            // get paginated list of broacast messages on pending by order of FIFO using the createdTime
+            // get paginated list of broadcast messages on pending by order of FIFO using the createdTime
             var pendingBroadcastMessage = _broadcastMessageRepo
                 .Query(x => x.Status == EBroadcastMessageStatus.Pending).OrderBy(x => x.CreatedAt).ToList();
 

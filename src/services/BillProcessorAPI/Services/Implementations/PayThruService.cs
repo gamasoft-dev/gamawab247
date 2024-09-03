@@ -29,7 +29,7 @@ namespace BillProcessorAPI.Services.Implementations
         private readonly IRepository<Invoice> _invoiceRepo;
         private readonly PaythruOptions PaythruOptions;
         private readonly IHttpService _httpService;
-        private readonly IConfigurationService _configService;
+        private readonly IChargeService _configService;
         private readonly IMapper _mapper;
         private ILogger<PayThruService> _logger;
         private readonly BusinessesPhoneNumber _phoneNumberOptions;
@@ -40,7 +40,7 @@ namespace BillProcessorAPI.Services.Implementations
         public PayThruService(IRepository<BillPayerInfo> billPayerRepo,
             IRepository<BillTransaction> billTransactions,
             IOptions<PaythruOptions> paythruOptions,
-            IHttpService httpService, IConfigurationService configService,
+            IHttpService httpService, IChargeService configService,
             IMapper mapper,
             IRepository<Invoice> invoiceRepo,
             ILogger<PayThruService> logger, 

@@ -48,7 +48,7 @@ namespace BillProcessorAPI.Services.Implementations
 
 			if (string.IsNullOrEmpty(billPaymentCode))
 			{
-				throw new RestException(HttpStatusCode.BadRequest, ResponseMessages.Failed);
+				throw new RestException(HttpStatusCode.BadRequest, "phone number and bill code are required");
 			}
 			if (RevpayOptions is null)
 			{
@@ -78,9 +78,7 @@ namespace BillProcessorAPI.Services.Implementations
 					//current time update
 					revPayRes.CurrentDate = DateTime.Now;
 
-					var billPayerInfo = _mapper.Map<BillPayerInfo>(revPayRes);
-					billPayerInfo.PhoneNumber = phone;
-					
+					var billPayerInfo = _mapper.Map<BillPayerInfo>(revPayRes);					
 
 					if (billPayerInfo.PayerName == null && billPayerInfo.Status == "FAILED")
 						throw new RestException(HttpStatusCode.NotFound, revPayRes.statusMessage);
@@ -92,7 +90,6 @@ namespace BillProcessorAPI.Services.Implementations
                     // biller information response data
                     billPayerInfo.AccountInfoResponseData = JsonConvert.SerializeObject(revPayRes);
 					billPayerInfo.billCode = billPaymentCode;
-					billPayerInfo.PhoneNumber = phone;	
 					
 
 					// bill-payer information request data
@@ -121,7 +118,7 @@ namespace BillProcessorAPI.Services.Implementations
 					};
 				}
 
-				throw new RestException(HttpStatusCode.BadRequest, "Invalid Request");
+				throw new RestException(HttpStatusCode.BadRequest, httpResponse?.ReasonPhrase ?? "Invalid request");
 			}
 			catch (Exception ex)
 			{

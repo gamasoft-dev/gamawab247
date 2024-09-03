@@ -1,4 +1,5 @@
-﻿using Application.Services.Interfaces;
+﻿using System;
+using Application.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 
@@ -15,7 +16,7 @@ namespace Application.Services.Implementations
         public string GetConfirmEmailTemplate(string otp, string email, string firstName, string title)
         {
             string body;
-            var folderName = Path.Combine("wwwroot", "ComfirmEmail.html");
+            var folderName = Path.Combine("wwwroot", "ConfirmEmail.html");
             var filepath = Path.Combine(Directory.GetCurrentDirectory(), folderName);
             if (File.Exists(filepath))
                 body = File.ReadAllText(filepath);
@@ -32,16 +33,14 @@ namespace Application.Services.Implementations
 
         public string GetReceiptBroadcastEmailTemplate(string fullName, string message)
         {
-            string body;
+            var body = "Dear Bill Payer {full_name}, " + Environment.NewLine + 
+            "{message}";
             var folderName = Path.Combine("wwwroot", "SendReceiptTemplate.html");
             var filepath = Path.Combine(Directory.GetCurrentDirectory(), folderName).Replace("\\", "/");
             if (File.Exists(filepath))
                 body = File.ReadAllText(filepath);
-            else
-                return null;
 
-            string msgBody = body.Replace("{full_name}", fullName)
-                .Replace("{message}", message);
+            var msgBody = body.Replace("{full_name}", fullName).Replace("{message}", message);
 
             return msgBody;
         }
