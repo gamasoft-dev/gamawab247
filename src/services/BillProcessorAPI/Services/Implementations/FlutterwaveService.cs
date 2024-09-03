@@ -357,7 +357,7 @@ namespace BillProcessorAPI.Services.Implementations
                     billTransaction.ReceiptUrl = verifyPayment.ReceiptUrl;
                     await _billTransactionsRepo.SaveChangesAsync();
                 }
-                }
+                
 
                 var invoiceDto = _mapper.Map<PaymentConfirmationResponse>(invoice);
                 invoiceDto.DateCompleted = billTransaction.DateCompleted;
@@ -405,7 +405,7 @@ namespace BillProcessorAPI.Services.Implementations
                 throw new RestException(HttpStatusCode.BadRequest, "Unable to fetch transaction for this reference");
 
             if (transactionVerificationResponse.Data.Data.status != "successful"
-                || transactionVerificationResponse.Data.Data.amount != billTransationRecord.AmountPaid
+                || transactionVerificationResponse.Data.Data.amount != billTransactionRecord.AmountPaid
                 || transactionVerificationResponse.Data.Data.currency != "NGN")
             {
                 response.Status = false;
@@ -413,7 +413,6 @@ namespace BillProcessorAPI.Services.Implementations
             }
 
             response.StatusMessage = transactionVerificationResponse.Data.Data.status;
-            response.ReceiptUrl = billTransationRecord.ReceiptUrl;
             return response;
         }
 

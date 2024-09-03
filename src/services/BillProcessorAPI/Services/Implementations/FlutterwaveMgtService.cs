@@ -24,6 +24,7 @@ public class FlutterwaveMgtService: IFlutterwaveMgtService
 
     public async Task<SimpleTransactionVerificationResponse> VerifyTransaction(string transactionReference)
     {
+        
         using IServiceScope scope = _serviceScopeFactory.CreateAsyncScope();
         var flutterwaveService = scope.ServiceProvider.GetRequiredService<IFlutterwaveService>();
         

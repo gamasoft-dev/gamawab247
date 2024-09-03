@@ -9,7 +9,7 @@ namespace BillProcessorAPI.Services.Interfaces;
 
 public interface IFlutterwaveMgtService
 {
-    Task<SuccessResponse<PaymentCreationResponse>> CreateTransaction(string email, decimal amount, string billPaymentCode);
+    Task<SuccessResponse<PaymentCreationResponse>> CreateTransaction(string email, decimal amount, string billPaymentCode, string phoneNumber);
     Task<SimpleTransactionVerificationResponse> VerifyTransaction(string transactionReference);
     Task<SuccessResponse<PaymentConfirmationResponse>> PaymentConfirmation(string status, string txRef, string transactionId);
     Task<SuccessResponse<string>> PaymentNotification(WebHookNotificationWrapper model);
