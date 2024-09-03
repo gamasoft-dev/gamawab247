@@ -385,20 +385,20 @@ namespace BillProcessorAPI.Services.Implementations
             var billTransationRecord = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == transactionReference);
             var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.VerifyByReference}/?tx_ref={transactionReference}";
 
-            var transaction = await _httpService.Get<FlutterwaveResponse<FlutterwaveResponseData>>(url, headerParam);
-            if (transaction.Data.Status.ToLower() != "success")
+            var transactionVerificationResponse = await _httpService.Get<FlutterwaveResponse<SimpleFlutterwaveVerificationRes>>(url, headerParam);
+            if (transactionVerificationResponse.Data.Status.ToLower() != "success")
                 throw new RestException(HttpStatusCode.BadRequest, "Unable to fetch transaction for this reference");
 
-            if (transaction.Data.Data.status != "successful"
-                || transaction.Data.Data.amount != billTransationRecord.AmountPaid
-                || transaction.Data.Data.currency != "NGN")
+            if (transactionVerificationResponse.Data.Data.status != "successful"
+                || transactionVerificationResponse.Data.Data.amount != billTransationRecord.AmountPaid
+                || transactionVerificationResponse.Data.Data.currency != "NGN")
             {
                 response.Status = false;
-                response.StatusMessage = transaction.Data.Data.status;
+                response.StatusMessage = transactionVerificationResponse.Data.Data.status;
             }
 
-            response.StatusMessage = transaction.Data.Data.status;
-            response.ReceiptUrl = transaction.Data.Data.receipt_url;
+            response.StatusMessage = transactionVerificationResponse.Data.Data.status;
+            response.ReceiptUrl = billTransationRecord.ReceiptUrl;
             return response;
         }
 
