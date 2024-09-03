@@ -107,7 +107,7 @@ namespace BillProcessorAPI.Services.Implementations
                     Creditaccount = billPayer.CreditAccount
                 }
             };
-            
+
             BillTransaction billTransaction;
 
             try
@@ -133,17 +133,17 @@ namespace BillProcessorAPI.Services.Implementations
 
                 await _billTransactionsRepo.AddAsync(billTransaction);
                 await _billTransactionsRepo.SaveChangesAsync();
-                
+
                 var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.CreateTransaction}";
 
                 var paymentCreationResponse = await _httpService
                     .Post<FlutterwaveResponse<LinkData>, FCreateTransactionRequestDto>(url, headerParam, flutterwaveRequestPayload);
                 if (paymentCreationResponse.Data.Status != "success")
                     throw new RestException(HttpStatusCode.BadRequest, "An error occured while processing your request");
-               
+
                 var billInvoice = new Invoice();
 
-                async Task TransactionCommitAction ()
+                async Task TransactionCommitAction()
                 {
                     _billTransactionsRepo.Update(billTransaction);
                     billTransaction.PaymentUrl = paymentCreationResponse.Data.Data.Link;
@@ -164,11 +164,11 @@ namespace BillProcessorAPI.Services.Implementations
                     
                         await _invoiceRepo.AddAsync(billInvoice);
                     }
-                   
+
                 };
-                
+
                 await _invoiceRepo.BeginTransaction(TransactionCommitAction);
-                
+
                 var response = new PaymentCreationResponse
                 {
                     SystemCharge = billInvoice.TransactionCharge,
@@ -260,7 +260,7 @@ namespace BillProcessorAPI.Services.Implementations
                 {
                     transaction.Status = ETransactionStatus.Unsuccessful.ToString();
                 }
-                
+
                 transaction.DateCompleted = verificationResponse?.Data?.Data?.created_at.ToString();
                 transaction.StatusMessage = verificationResponse.Data.Data.status;
                 transaction.SuccessIndicator = verificationResponse.Data.Data.status;
@@ -280,7 +280,7 @@ namespace BillProcessorAPI.Services.Implementations
                 invoice.ReceiptUrl = model.ReceiptNumber;
                 invoice.AmountPaid = verificationResponse?.Data?.Data?.amount ?? 0.0m;
                 invoice.AmountDue = transaction.AmountDue;
-                invoice.GatewayTransactionCharge =  (decimal)verificationResponse.Data.Data.app_fee;
+                invoice.GatewayTransactionCharge = (decimal)verificationResponse.Data.Data.app_fee;
                 invoice.UpdatedAt = DateTime.UtcNow;
                 invoice.GatewayTransactionReference = verificationResponse.Data.Data.flw_ref;
 
@@ -319,24 +319,17 @@ namespace BillProcessorAPI.Services.Implementations
                 if (billTransaction == null)
                     throw new RestException(HttpStatusCode.NotFound, "Unable to fetch transaction: transaction failed");
 
-                // check the transaction for the bill
-                // if it's pending dont perform verification..
-                if (billTransaction.Status.Equals(ETransactionStatus.Pending.ToString())
-                    || billTransaction.Status.Equals(ETransactionStatus.Created.ToString()))
-                {
-                    var response = _mapper.Map<PaymentConfirmationResponse>(billTransaction);
 
-                    return new SuccessResponse<PaymentConfirmationResponse>
-                    {
-                        Data = response,
-                        Success = false,
-                        Message = "Transaction not completed",
-                    };
-                }
+                var invoice = await _invoiceRepo.Query(x => x.BillTransactionId == billTransaction.Id)
+                   .Include(x => x.Receipts).FirstOrDefaultAsync();
+                if (invoice is null)
+                    throw new RestException(HttpStatusCode.NotFound, "Unable to retrieve invoice for this transaction");
 
                 var verifyPayment = await VerifyTransaction(tx_ref);
-                if (!verifyPayment)
+
+                if (!verifyPayment.Status)
                 {
+
                     invoiceResponse.Success = false;
                     invoiceResponse.Message = "Unable to fetch transaction: transaction failed";
                     invoiceResponse.Data = null;
@@ -356,13 +349,15 @@ namespace BillProcessorAPI.Services.Implementations
                     return invoiceResponse;
                 }
 
-                var invoice = await _invoiceRepo.Query(x => x.BillTransactionId == billTransaction.Id)
-                    .Include(x => x.Receipts).FirstOrDefaultAsync();
-                if (invoice is null)
+                //if the flow gets here then verify payment status will be successful
+                if (billTransaction.Status != ETransactionStatus.Successful.ToString())
                 {
-                    // create invoice here. as far as the transaction exist on our system. You should not throw exception here
-                    throw new RestException(HttpStatusCode.NotFound, "Unable to retrieve invoice for this transaction");
+                    billTransaction.Status = ETransactionStatus.Successful.ToString();
+                    billTransaction.StatusMessage = verifyPayment?.StatusMessage;
+                    billTransaction.ReceiptUrl = verifyPayment.ReceiptUrl;
+                    await _billTransactionsRepo.SaveChangesAsync();
                 }
+                
 
                 var invoiceDto = _mapper.Map<PaymentConfirmationResponse>(invoice);
                 invoiceDto.DateCompleted = billTransaction.DateCompleted;
@@ -390,14 +385,14 @@ namespace BillProcessorAPI.Services.Implementations
             }
             catch (Exception ex)
             {
-
                 throw new RestException(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
-        public async Task<bool> VerifyTransaction(string transactionReference)
+        public async Task<SimpleTransactionVerificationResponse> VerifyTransaction(string transactionReference)
         {
-            var response = true;
+            var response = new SimpleTransactionVerificationResponse(true);
+
             IDictionary<string, string> param = new Dictionary<string, string>();
             param.Add(key: "Authorization", _flutterOptions.SecretKey);
 
@@ -405,18 +400,31 @@ namespace BillProcessorAPI.Services.Implementations
             var billTransactionRecord = await _billTransactionsRepo.FirstOrDefault(x => x.TransactionReference == transactionReference);
             var url = $"{_flutterOptions.BaseUrl}/{_flutterOptions.VerifyByReference}/?tx_ref={transactionReference}";
 
-            var transaction = await _httpService.Get<FlutterwaveResponse<FlutterwaveResponseData>>(url, headerParam);
-            if (transaction.Data.Status != "success")
+            var transactionVerificationResponse = await _httpService.Get<FlutterwaveResponse<SimpleFlutterwaveVerificationRes>>(url, headerParam);
+            if (transactionVerificationResponse.Data.Status.ToLower() != "success")
                 throw new RestException(HttpStatusCode.BadRequest, "Unable to fetch transaction for this reference");
 
-            if (transaction.Data.Data.status != "successful"
-                || transaction.Data.Data.amount != billTransactionRecord.AmountPaid
-                || transaction.Data.Data.currency != "NGN")
+            if (transactionVerificationResponse.Data.Data.status != "successful"
+                || transactionVerificationResponse.Data.Data.amount != billTransactionRecord.AmountPaid
+                || transactionVerificationResponse.Data.Data.currency != "NGN")
             {
-                response = false;
+                response.Status = false;
+                response.StatusMessage = transactionVerificationResponse.Data.Data.status;
             }
 
+            response.StatusMessage = transactionVerificationResponse.Data.Data.status;
             return response;
+        }
+
+        public class SimpleTransactionVerificationResponse
+        {
+            public SimpleTransactionVerificationResponse(bool status)
+            {
+                Status = status;
+            }
+            public string StatusMessage { get; set; }
+            public bool Status { get; set; }
+            public string ReceiptUrl { get; set; }
         }
 
         public async Task<FailedWebhookResponseModel> ResendWebhook(FailedWebhookRequest model)

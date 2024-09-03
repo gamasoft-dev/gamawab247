@@ -1,4 +1,3 @@
-using Autofac.Core;
 using BillProcessorAPI.Data;
 using BillProcessorAPI.Dtos;
 using BillProcessorAPI.Dtos.BroadcastMessage;
@@ -9,12 +8,9 @@ using BillProcessorAPI.Helpers.Flutterwave;
 using BillProcessorAPI.Helpers.Paythru;
 using BillProcessorAPI.Helpers.Revpay;
 using BillProcessorAPI.Middlewares;
-using BillProcessorAPI.Services.Implementations;
-using BillProcessorAPI.Services.Interfaces;
 using BillProcessorAPI.Validators;
 using Domain.Common.ShortLink.ValueObjects;
 using FluentValidation;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Serilog;

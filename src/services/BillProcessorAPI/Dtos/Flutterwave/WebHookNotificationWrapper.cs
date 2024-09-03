@@ -90,6 +90,16 @@ namespace BillProcessorAPI.Dtos.Flutterwave
         public DateTime created_at { get; set; }
     }
 
+    public record SimpleFlutterwaveVerificationRes
+    {
+        [JsonProperty("amount")]
+        public decimal amount { get; set; }
+        [JsonProperty("currency")]
+        public string currency { get; set; }
+        [JsonProperty("status")]
+        public string status { get; set; }
+    }
+
     public record FlutterwaveResponseData
     {
         [JsonProperty("id")]

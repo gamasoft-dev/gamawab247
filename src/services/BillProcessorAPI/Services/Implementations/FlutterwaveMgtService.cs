@@ -3,6 +3,7 @@ using BillProcessorAPI.Dtos.Common;
 using BillProcessorAPI.Dtos.Flutterwave;
 using BillProcessorAPI.Helpers;
 using BillProcessorAPI.Services.Interfaces;
+using static BillProcessorAPI.Services.Implementations.FlutterwaveService;
 
 namespace BillProcessorAPI.Services.Implementations;
 
@@ -21,8 +22,9 @@ public class FlutterwaveMgtService: IFlutterwaveMgtService
 
     }
 
-    public async Task<bool> VerifyTransaction(string transactionReference)
+    public async Task<SimpleTransactionVerificationResponse> VerifyTransaction(string transactionReference)
     {
+        
         using IServiceScope scope = _serviceScopeFactory.CreateAsyncScope();
         var flutterwaveService = scope.ServiceProvider.GetRequiredService<IFlutterwaveService>();
         
