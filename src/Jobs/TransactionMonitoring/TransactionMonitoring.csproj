@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>dotnet-TransactionMonitoring-84235c5f-f5ba-486b-a7f2-cb3a1673d69a</UserSecretsId>
   </PropertyGroup>
