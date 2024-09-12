@@ -122,7 +122,7 @@ namespace BillProcessorAPI.Services.Implementations
                     BillNumber = billPayer.billCode,
                     Pid = billPayer.Pid,
                     RevName = billPayer.RevName,
-                    PhoneNumber = phoneNumber,
+                    PhoneNumber = AppendCountryCode(phoneNumber,"234"),
                     DueDate = billPayer.AcctCloseDate,
                     TransactionReference = trxReference,
                     TransactionCharge = _chargeService.CalculateBillChargesOnAmount(charge).Data.AmountCharge,
@@ -223,6 +223,10 @@ namespace BillProcessorAPI.Services.Implementations
                     };
                 }
                 _logger.LogInformation($"No transaction was found for the webhook received, webhook saved to the database");
+                transaction.NotificationReceiptTime = DateTime.Now;
+
+                transaction.ReceiptUrl = model.ReceiptNumber;
+                await _billTransactionsRepo.SaveChangesAsync();
 
                 //verify transaction with flutterwave using the transactionId from the webhook
                 IDictionary<string, string> param = new Dictionary<string, string>();
@@ -245,11 +249,9 @@ namespace BillProcessorAPI.Services.Implementations
                 transaction.FiName = "N/A";
                 transaction.Narration = verificationResponse.Data.Data.narration;
 
-                if (verificationResponse?.Data?.Status?.ToUpper() == "SUCCESS")
+                if (verificationResponse?.Data?.Data.status?.ToUpper() == "SUCCESSFUL")
                 {
-                    transaction.Status = ETransactionStatus.Successful.ToString();
-                    transaction.ReceiptUrl = model.ReceiptNumber;
-                    
+                    transaction.Status = ETransactionStatus.Successful.ToString();                    
                     ReceiptBroadcast.SendReceipt(transaction, _phoneNumberOptions,_cutlyService,
                         _receiptBroadcastOptions,_httpService).SafeFireAndForget(onException: exception =>
                     {
@@ -274,16 +276,16 @@ namespace BillProcessorAPI.Services.Implementations
 
                 //add the receipt to the invoice
                 var invoice = await _invoiceRepo.FirstOrDefault(x => x.BillTransactionId == transaction.Id);
-                if (invoice is null)
-                    throw new PaymentVerificationException(HttpStatusCode.NotFound, "No invoice found for this transaction");
-
-                invoice.ReceiptUrl = model.ReceiptNumber;
-                invoice.AmountPaid = verificationResponse?.Data?.Data?.amount ?? 0.0m;
-                invoice.AmountDue = transaction.AmountDue;
-                invoice.GatewayTransactionCharge =  (decimal)verificationResponse.Data.Data.app_fee;
-                invoice.UpdatedAt = DateTime.UtcNow;
-                invoice.GatewayTransactionReference = verificationResponse.Data.Data.flw_ref;
-
+                if (invoice is not null)
+                {
+                    invoice.ReceiptUrl = model.ReceiptNumber;
+                    invoice.AmountPaid = verificationResponse?.Data?.Data?.amount ?? 0.0m;
+                    invoice.AmountDue = transaction.AmountDue;
+                    invoice.GatewayTransactionCharge = (decimal)verificationResponse.Data.Data.app_fee;
+                    invoice.UpdatedAt = DateTime.UtcNow;
+                    invoice.GatewayTransactionReference = verificationResponse.Data.Data.flw_ref;
+                }
+              
             }
             catch (Exception ex)
             {
@@ -456,6 +458,20 @@ namespace BillProcessorAPI.Services.Implementations
                 throw new RestException(HttpStatusCode.InternalServerError, ex.Message);
             }
 
+        }
+
+        private string AppendCountryCode(string phoneNumber, string countryCode)
+        {
+            if (phoneNumber.StartsWith("0"))
+            {
+                phoneNumber = phoneNumber.Substring(1);
+            }
+            else
+            {
+                return $"{countryCode}{phoneNumber}";
+            }
+
+            return $"{countryCode}{phoneNumber}";
         }
 
     }
