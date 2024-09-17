@@ -3,6 +3,7 @@ using BillProcessorAPI.Dtos;
 using BillProcessorAPI.Dtos.Common;
 using BillProcessorAPI.Dtos.Flutterwave;
 using BillProcessorAPI.Helpers;
+using Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -17,6 +18,7 @@ namespace BillProcessorAPI.Controllers
         public async Task<IActionResult> CreateFlutterwavePayment(string email,  
             decimal amount, string billPaymentCode, string phoneNumber)
         {
+            throw new BadRequestException("Payment service temporarily unavailable");
             var response = await _flutterwaveMgtService.CreateTransaction(email, amount, billPaymentCode, phoneNumber);
             return Ok(response);
         }
