@@ -3,7 +3,6 @@ using BillProcessorAPI.Dtos;
 using BillProcessorAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using System.ComponentModel.DataAnnotations;
 
 namespace BillProcessorAPI.Controllers
 {

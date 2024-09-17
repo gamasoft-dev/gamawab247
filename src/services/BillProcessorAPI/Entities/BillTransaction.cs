@@ -39,6 +39,7 @@ namespace BillProcessorAPI.Entities
         public string PaymentInfoRequestData { get; set; }
 		public string PaymentInfoResponseData { get; set; }
 		public string NotificationResponseData { get; set; }
+        public DateTime? NotificationReceiptTime { get; set; }
         public Guid? BillPayerInfoId { get; set; }
         public BillPayerInfo BillPayerInfo { get; set; }
         public string ErrorMessage { get; set; }
