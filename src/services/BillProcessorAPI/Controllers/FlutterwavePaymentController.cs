@@ -1,4 +1,5 @@
-﻿using AsyncAwaitBestPractices;
+﻿using System.Net;
+using AsyncAwaitBestPractices;
 using BillProcessorAPI.Dtos;
 using BillProcessorAPI.Dtos.Common;
 using BillProcessorAPI.Dtos.Flutterwave;
@@ -18,9 +19,9 @@ namespace BillProcessorAPI.Controllers
         public async Task<IActionResult> CreateFlutterwavePayment(string email,  
             decimal amount, string billPaymentCode, string phoneNumber)
         {
-            throw new BadRequestException("Payment service temporarily unavailable");
-            var response = await _flutterwaveMgtService.CreateTransaction(email, amount, billPaymentCode, phoneNumber);
-            return Ok(response);
+            throw new RestException(HttpStatusCode.ExpectationFailed, "Payment service temporarily unavailable");
+            // var response = await _flutterwaveMgtService.CreateTransaction(email, amount, billPaymentCode, phoneNumber);
+            // return Ok(response);
         }
 
 
@@ -60,6 +61,7 @@ namespace BillProcessorAPI.Controllers
         {
             try
             {
+                var k = "".Substring(1, 3);
                 var response = await _flutterwaveMgtService.VerifyTransaction(tranRef);
                 return Ok(response);
             }

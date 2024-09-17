@@ -101,14 +101,12 @@ namespace BillProcessorAPI.Middlewares
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     break;
             }
-            DefaultContractResolver contractResolver = new DefaultContractResolver
-            {
-                NamingStrategy = new CamelCaseNamingStrategy()
-            };
+            var contractResolver = new DefaultContractResolver {NamingStrategy = new CamelCaseNamingStrategy()};
             var response = new ErrorResponse<object>
             {
                 Message = message,
-                Error = errors
+                Error = errors,
+                Success = false
             };
             
             context.Response.ContentType = "application/json";
