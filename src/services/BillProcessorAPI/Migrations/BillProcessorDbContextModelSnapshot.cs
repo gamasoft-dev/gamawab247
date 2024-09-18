@@ -207,6 +207,9 @@ namespace BillProcessorAPI.Migrations
                     b.Property<string>("Narration")
                         .HasColumnType("text");
 
+                    b.Property<DateTime?>("NotificationReceiptTime")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("NotificationResponseData")
                         .HasColumnType("text");
 
