@@ -19,9 +19,9 @@ namespace BillProcessorAPI.Controllers
         public async Task<IActionResult> CreateFlutterwavePayment(string email,  
             decimal amount, string billPaymentCode, string phoneNumber)
         {
-            throw new RestException(HttpStatusCode.ExpectationFailed, "Payment service temporarily unavailable");
-            // var response = await _flutterwaveMgtService.CreateTransaction(email, amount, billPaymentCode, phoneNumber);
-            // return Ok(response);
+            // throw new RestException(HttpStatusCode.ExpectationFailed, "Payment service temporarily unavailable");
+            var response = await _flutterwaveMgtService.CreateTransaction(email, amount, billPaymentCode, phoneNumber);
+            return Ok(response);
         }
 
 
