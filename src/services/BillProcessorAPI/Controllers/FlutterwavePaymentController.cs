@@ -20,8 +20,8 @@ namespace BillProcessorAPI.Controllers
             decimal amount, string billPaymentCode, string phoneNumber)
         {
             throw new RestException(HttpStatusCode.ExpectationFailed, "Payment service temporarily unavailable");
-            // var response = await _flutterwaveMgtService.CreateTransaction(email, amount, billPaymentCode, phoneNumber);
-            // return Ok(response);
+            //var response = await _flutterwaveMgtService.CreateTransaction(email, amount, billPaymentCode, phoneNumber);
+            //return Ok(response);
         }
 
 
@@ -36,11 +36,13 @@ namespace BillProcessorAPI.Controllers
         public IActionResult FlutterwavePaymentNotification([FromBody] WebHookNotificationWrapper model)
         {
             _logger.LogInformation("Flutter wave request received");
-                
+
             _flutterwaveMgtService.PaymentNotification(model).SafeFireAndForget(exception =>
             {
                 _logger.LogError($"An error occurred on receipt of flutter wave payment notification {exception}");
             }, continueOnCapturedContext: false);
+
+            //var response = _flutterwaveMgtService.PaymentNotification(model);
 
             return Ok("Transaction Status received");
         }

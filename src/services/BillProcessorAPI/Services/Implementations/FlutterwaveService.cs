@@ -223,7 +223,7 @@ namespace BillProcessorAPI.Services.Implementations
                     };
                 }
                 _logger.LogInformation($"No transaction was found for the webhook received, webhook saved to the database");
-                transaction.NotificationReceiptTime = DateTime.Now;
+                transaction.NotificationReceiptTime = DateTime.UtcNow;
 
                 transaction.ReceiptUrl = model.ReceiptNumber;
                 await _billTransactionsRepo.SaveChangesAsync();
@@ -303,7 +303,7 @@ namespace BillProcessorAPI.Services.Implementations
 
             return new SuccessResponse<string>
             {
-                Data = "Transaction Completed"
+                Data = "Transaction Status received"
             };
         }
 
