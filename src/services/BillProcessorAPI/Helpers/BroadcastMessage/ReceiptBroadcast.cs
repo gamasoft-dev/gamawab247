@@ -28,9 +28,10 @@ namespace BillProcessorAPI.Helpers.BroadcastMessage
                 var broadcastMessage = new CreateBroadcastMessageDto
                 {
                     From = phoneNumberOptions.LUC.PhoneNumber,
-                    Message = string.IsNullOrEmpty(failureMessage) 
-                        ? $"Please click on the link below to download your payment receipt.{Environment.NewLine}{Environment.NewLine}{shortReceiptUrl}" 
-                        : failureMessage,
+                    //Message = string.IsNullOrEmpty(failureMessage) 
+                    //    ? $"Please click on the link below to download your payment receipt.{Environment.NewLine}{Environment.NewLine}{shortReceiptUrl}" 
+                    //    : failureMessage,
+                    Message = shortReceiptUrl,
                     To = transaction.PhoneNumber,
                     FullName= transaction.PayerName,
                     EmailAddress = transaction.Email
