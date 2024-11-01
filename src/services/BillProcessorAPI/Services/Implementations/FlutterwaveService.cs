@@ -463,16 +463,19 @@ namespace BillProcessorAPI.Services.Implementations
 
         private string AppendCountryCode(string phoneNumber, string countryCode)
         {
-            if (phoneNumber.StartsWith("0"))
+            if (phoneNumber.StartsWith("234"))
+            {
+                return phoneNumber;
+            }
+            else if (phoneNumber.StartsWith("0"))
             {
                 phoneNumber = phoneNumber.Substring(1);
+                return $"{countryCode}{phoneNumber}";
             }
             else
             {
-                return $"{countryCode}{phoneNumber}";
+                return phoneNumber;
             }
-
-            return $"{countryCode}{phoneNumber}";
         }
 
     }
