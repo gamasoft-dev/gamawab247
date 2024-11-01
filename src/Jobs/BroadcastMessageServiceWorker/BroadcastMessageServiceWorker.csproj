@@ -24,6 +24,9 @@
     <ProjectReference Include="..\..\Libraries\Application\Application.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Content Update="wwwroot\DisputeResolutionTemplate.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\SendReceiptTemplate.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

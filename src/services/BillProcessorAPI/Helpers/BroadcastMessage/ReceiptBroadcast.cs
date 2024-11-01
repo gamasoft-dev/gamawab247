@@ -1,10 +1,8 @@
-﻿using System.Net;
-using BillProcessorAPI.Dtos.BroadcastMessage;
+﻿using BillProcessorAPI.Dtos.BroadcastMessage;
 using BillProcessorAPI.Entities;
-using BillProcessorAPI.Helpers;
 using Infrastructure.Http;
 using Infrastructure.ShortLink;
-using Microsoft.Extensions.Options;
+using System.Net;
 
 namespace BillProcessorAPI.Helpers.BroadcastMessage
 {
@@ -28,10 +26,9 @@ namespace BillProcessorAPI.Helpers.BroadcastMessage
                 var broadcastMessage = new CreateBroadcastMessageDto
                 {
                     From = phoneNumberOptions.LUC.PhoneNumber,
-                    //Message = string.IsNullOrEmpty(failureMessage) 
-                    //    ? $"Please click on the link below to download your payment receipt.{Environment.NewLine}{Environment.NewLine}{shortReceiptUrl}" 
-                    //    : failureMessage,
-                    Message = shortReceiptUrl,
+                    Message = string.IsNullOrEmpty(failureMessage)
+                        ? $"Please click on the link below to download your payment receipt.{Environment.NewLine}{Environment.NewLine}{shortReceiptUrl}"
+                        : failureMessage,
                     To = transaction.PhoneNumber,
                     FullName= transaction.PayerName,
                     EmailAddress = transaction.Email

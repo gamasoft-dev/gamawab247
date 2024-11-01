@@ -3,7 +3,6 @@ using Application.Services.Interfaces;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using MimeKit.Text;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;

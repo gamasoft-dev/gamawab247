@@ -248,7 +248,7 @@ namespace BillProcessorAPI.Services.Implementations
                 transaction.PaymentReference = model.PaymentRef.ToString();
                 transaction.FiName = "N/A";
                 transaction.Narration = verificationResponse.Data.Data.narration;
-                transaction.PhoneNumber = AppendCountryCode(transaction.PhoneNumber, "234");
+                transaction.PhoneNumber = transaction.PhoneNumber;
 
                 if (verificationResponse?.Data?.Data.status?.ToUpper() == "SUCCESSFUL")
                 {
