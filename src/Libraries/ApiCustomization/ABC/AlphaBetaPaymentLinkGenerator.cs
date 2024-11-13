@@ -1,6 +1,4 @@
-﻿using System;
-using ApiCustomization.Common;
-using Domain.Common.ShortLink;
+﻿using ApiCustomization.Common;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Exceptions;
@@ -11,7 +9,7 @@ using Microsoft.Extensions.Options;
 
 namespace ApiCustomization.ABC
 {
-	public class AlphaBetaPaymentLinkGenerator: IApiContentRetrievalService
+    public class AlphaBetaPaymentLinkGenerator: IApiContentRetrievalService
     {
         private readonly IApiCustomizationUtil customizationUtil;
         private readonly IRepository<PartnerIntegrationDetails> partnerIntegrationRepo;

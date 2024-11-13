@@ -19,7 +19,11 @@
         public decimal MaximumCharge { get; set; }
         public decimal MinCharge { get; set; }
 
-
+        /// Link options
+        public string HolderVerificationEndpoint { get; set; }
+        public string ClientKey { get; set; }
+        public string LinkGeneratorUserParamKey { get; set; }
+        public string BillCodePaymentPageLink { get; set; }
     }
 
 

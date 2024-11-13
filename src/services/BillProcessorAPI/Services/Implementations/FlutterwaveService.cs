@@ -13,7 +13,6 @@ using BillProcessorAPI.Services.Interfaces;
 using Domain.Common;
 using Domain.Exceptions;
 using Infrastructure.Http;
-using Infrastructure.ShortLink;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;

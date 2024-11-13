@@ -4,10 +4,7 @@ using BillProcessorAPI.Repositories.Interfaces;
 using BillProcessorAPI.Services.Implementations;
 using BillProcessorAPI.Services.Interfaces;
 using Infrastructure.Http;
-using Infrastructure.ShortLink;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 
 namespace BillProcessorAPI.Data
 {

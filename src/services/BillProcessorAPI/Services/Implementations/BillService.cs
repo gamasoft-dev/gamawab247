@@ -24,6 +24,8 @@ namespace BillProcessorAPI.Services.Implementations
 		private readonly IRepository<Receipt> _billReceipt;
 		private readonly RevpayOptions RevpayOptions;
 		private readonly IMapper _mapper;
+		private readonly ICutlyService _cutlyService;
+		private readonly ILogger<BillService> _logger;
 
         public BillService(IBillPayerRepository billPayerRepo,
             IOptions<RevpayOptions> options,
@@ -31,7 +33,9 @@ namespace BillProcessorAPI.Services.Implementations
             IRepository<BillTransaction> billTransactions,
             HttpClient httpClient,
             IConfiguration config,
-            IRepository<Receipt> billReceipt)
+            IRepository<Receipt> billReceipt,
+            ICutlyService cutlyService,
+            ILogger<BillService> logger)
         {
             _billPayerRepo = billPayerRepo;
             RevpayOptions = options.Value;
@@ -41,6 +45,8 @@ namespace BillProcessorAPI.Services.Implementations
             _httpClient = httpClient;
             _config = config;
             _billReceipt = billReceipt;
+            _cutlyService = cutlyService;
+            _logger = logger;
         }
 
         public async Task<SuccessResponse<BillReferenceResponseDto>> ReferenceVerification(string phone, string billPaymentCode)
@@ -108,8 +114,21 @@ namespace BillProcessorAPI.Services.Implementations
 						_mapper.Map(billPayerInfo, existingBillPayerInfo);
 					}
 
+                    try
+                    {
+                        var paymentLink = await _cutlyService.GenerateShortenedPaymentLink(phone, billPaymentCode);
+                        if (paymentLink.Success)
+                        {
+                            revPayRes.PaymentLink = paymentLink.Data;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Failed to generate shortened payment link.");
+                        revPayRes.PaymentLink = null;
+                    }
 
-					await _billPayerRepo.SaveChangesAsync();
+                    await _billPayerRepo.SaveChangesAsync();
 
 					return new SuccessResponse<BillReferenceResponseDto>
 					{

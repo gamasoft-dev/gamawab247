@@ -1,7 +1,7 @@
 ﻿using BillProcessorAPI.Dtos.BroadcastMessage;
 using BillProcessorAPI.Entities;
+using BillProcessorAPI.Services.Interfaces;
 using Infrastructure.Http;
-using Infrastructure.ShortLink;
 using System.Net;
 
 namespace BillProcessorAPI.Helpers.BroadcastMessage

@@ -66,6 +66,7 @@ namespace BillProcessorAPI.Dtos
         public DateTime CurrentDate { get; set; }
         public string AccountInfoResponseData { get; set; }
         public string AccountInfoRequestData { get; set; }
+        public string PaymentLink { get; set; }
     }
 
 	public record BillRequestDto
